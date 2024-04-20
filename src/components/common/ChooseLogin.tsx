@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 const ChooseLogin = () => {
   return (
     <div className="bg-black text-white min-h-screen">
+
+      
       <Container>
         <Row>
           <Col xs={6} className="text-center">

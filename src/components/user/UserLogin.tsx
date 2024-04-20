@@ -1,5 +1,6 @@
 import React from 'react'
 import userlogin from '../../assets/userlogin.png'
+import { Link } from 'react-router-dom'
 
 const UserLogin = () => {
   return (
@@ -15,16 +16,7 @@ const UserLogin = () => {
               <h2 className="text-3xl font-bold leading-tight sm:text-4xl">
                 Sign in
               </h2>
-              <p className="mt-2 text-sm text-gray-300">
-                Don&apos;t have an account?{" "}
-                <a
-                  href="#"
-                  title=""
-                  className="font-semibold text-black transition-all duration-200 hover:underline"
-                >
-                  Create a free account
-                </a>
-              </p>
+        
               <form action="#" method="POST" className="mt-8">
                 <div className="space-y-5">
                   <div>
@@ -97,7 +89,7 @@ const UserLogin = () => {
                   Sign in with Google
                 </button>
 
-                <p className='text-sm text-center'>Dont have an account? <span className='text-red-500'>Signup for free</span> </p>
+                <p className='text-sm text-center'>Dont have an account? <span className='text-red-500'><Link to={'/user-register'}>Signup for free</Link></span> </p>
            
               </div>
             </div>

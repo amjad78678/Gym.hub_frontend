@@ -1,5 +1,6 @@
 import React from 'react'
 import gymlogin from '../../assets/gymlogin.png'
+import { Link } from 'react-router-dom'
 
 const GymLogin = () => {
   return (
@@ -97,7 +98,7 @@ const GymLogin = () => {
                   Sign in with Google
                 </button>
 
-                <p className='text-sm text-center'>Dont have an account? <span className='text-red-500'>Signup for free</span> </p>
+                <p className='text-sm text-center'>Dont have an account? <span className='text-red-500'><Link to={"/signup"}>Signup for free</Link></span> </p>
            
               </div>
             </div>
