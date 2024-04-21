@@ -6,6 +6,7 @@ import UserLoginPage from '../pages/user/UserLoginPage'
 import GymLoginPage from '../pages/gym/GymLoginPage'
 import UserRegisterPage from '../pages/user/UserRegisterPage'
 import OtpPage from '@/pages/common/OtpPage'
+import GymRegisterPage from '@/pages/gym/GymRegisterPage'
 
 const UserRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const UserRoutes = () => {
        <Route path='user-login' element={<UserLoginPage/>} />
        <Route path='user-register' element={<UserRegisterPage/>}/>
        <Route path='gym-login' element={<GymLoginPage/>} />
+       <Route path='gym-register' element={<GymRegisterPage />} />
        <Route path='test' element={<OtpPage userType='user' closeOtp={()=>{'amjad'}}/>} />
        
 
