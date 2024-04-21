@@ -42,8 +42,4 @@ export const UserSignupValidation = Yup.object({
   confirmpassword: Yup.string()
     .required("Confirm password is required")
     .oneOf([Yup.ref("password")], "Passwords do not match"),
-
-  gender: Yup.string()
-    .required("Gender is required")
-    .oneOf(["Male", "Female", "Others"], "Invalid gender selection"),
 });
