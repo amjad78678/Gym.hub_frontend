@@ -3,7 +3,7 @@ import userRoutes from "@/services/endpoints/userEndPoints";
 import errorHandle from "./error";
 
 interface userFormData {
-    username: string,
+    username?: string,
     email: string,
     mobileNumber?: string,
     age?: string,
@@ -40,6 +40,17 @@ export const userOtpResend = async () => {
 
     try {
         const response = await Api.post(userRoutes.userOtpResend);
+        return response;
+    } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err);   
+    }
+}
+
+export const userLogin = async (loginData: userFormData)=>{
+
+    try {
+        const response = await Api.post(userRoutes.userLogin, loginData);
         return response;
     } catch (error) {
         const err: Error = error as Error;

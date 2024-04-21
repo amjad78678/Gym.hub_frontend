@@ -1,29 +1,116 @@
-import React from 'react'
-import userlogin from '../../assets/userlogin.png'
-import { Link } from 'react-router-dom'
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import userlogin from "../../assets/userlogin.png";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useMutation } from "@tanstack/react-query";
+import { userLogin } from "@/api/user";
+import toast from "react-hot-toast";
+import Loader from "../common/Loader";
+import { setUserLogin } from "@/redux/slices/authSlice";
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 
-const UserLogin = () => {
+const G_PASSWORD=import.meta.env.VITE_GOOGLE_PASSWORD
+
+// interface iState {
+//   auth: {
+//     uLoggedIn: boolean;
+//   };
+// }
+const UserLogin: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = formData;
+
+  const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+
+  const gSignIn=useGoogleLogin({
+    onSuccess: async (response) => {
+      try {
+        const res = await axios.get(
+          `https://www.googleapis.com/oauth2/v3/userinfo`,
+          {
+            headers: {
+              Authorization: `Bearer ${response.access_token}`,
+            }
+          }
+        );
+
+        console.log(res.data);
+
+        const data = {
+          email: res.data.email,
+          password: G_PASSWORD,
+        };
+
+        const response2 = await userLogin(data);
+        if (response2) {
+          toast.success(response2.data.message);
+          navigate("/");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (email.trim().length === 0 || password.trim().length === 0) {
+      toast.error("Please enter email and password");
+      return;
+    }
+
+    const data = { email, password };
+    userLoginMutate(data);
+  };
+
+  // const {uLoggedIn} = useSelector((state: iState)=>state.auth)
+
+  const { status: userLoginStatus, mutate: userLoginMutate } = useMutation({
+    mutationFn: userLogin,
+    onSuccess: (response) => {
+      if (response) {
+        navigate("/");
+        console.log("iam response in mutation", response);
+
+        const data = {
+          id: response.data.message._id,
+          name: response.data.message.username,
+          profilePic: response.data.message.profilePic,
+        };
+
+        dispatch(setUserLogin(data));
+      }
+    },
+  });
+
   return (
     <div>
       <section>
         <div className="grid grid-cols-1 lg:grid-cols-2 text-white bg-black">
-      
           <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
             <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
-              <h1 className='text-xl py-4'>Welcome back! Please enter your details.</h1>
-
+              <h1 className="text-xl py-4">
+                Welcome back! Please enter your details.
+              </h1>
 
               <h2 className="text-3xl font-bold leading-tight sm:text-4xl">
                 Sign in
               </h2>
-        
-              <form action="#" method="POST" className="mt-8">
+
+              <form onSubmit={submitHandler} className="mt-8">
                 <div className="space-y-5">
                   <div>
-                    <label
-                      htmlFor=""
-                      className="text-base font-medium "
-                    >
+                    <label htmlFor="" className="text-base font-medium ">
                       {" "}
                       Email address{" "}
                     </label>
@@ -31,16 +118,16 @@ const UserLogin = () => {
                       <input
                         className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                         type="email"
+                        id="email"
+                        value={email}
+                        onChange={inputHandler}
                         placeholder="Email"
                       ></input>
                     </div>
                   </div>
                   <div>
                     <div className="flex items-center justify-between">
-                      <label
-                        htmlFor=""
-                        className="text-base font-medium"
-                      >
+                      <label htmlFor="" className="text-base font-medium">
                         {" "}
                         Password{" "}
                       </label>
@@ -57,40 +144,65 @@ const UserLogin = () => {
                       <input
                         className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                         type="password"
+                        id="password"
+                        value={password}
+                        onChange={inputHandler}
                         placeholder="Password"
                       ></input>
                     </div>
                   </div>
                   <div>
                     <button
-                      type="button"
+                      type="submit"
                       className="inline-flex w-full items-center justify-center rounded-md bg-red-500 px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-red-700"
                     >
-                      Sign in 
+                      Sign in
                     </button>
                   </div>
                 </div>
               </form>
               <div className="mt-3 space-y-3">
-                <button
-                  type="button"
-                  className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400 bg-black px-3.5 py-2.5 font-semibold text-white transition-all duration-200 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
-                >
-                  <span className="mr-2 inline-block">
+              <button className="inline-flex w-full items-center justify-center rounded-md  font-semibold leading-7 text-white">
+                  <button
+                    className="inline-flex w-full items-center justify-center rounded-md bg-white px-3.5 py-2.5 font-semibold leading-7 text-black hover:bg-red-700"
+                    onClick={() => gSignIn()}
+                  >
+                    Login with Google{" "}
                     <svg
-                      className="h-6 w-6 text-rose-500"
+                      className="ml-2"
                       xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
+                      x="0px"
+                      y="0px"
+                      width="30"
+                      height="30"
+                      viewBox="0 0 48 48"
                     >
-                      <path d="M20.283 10.356h-8.327v3.451h4.792c-.446 2.193-2.313 3.453-4.792 3.453a5.27 5.27 0 0 1-5.279-5.28 5.27 5.27 0 0 1 5.279-5.279c1.259 0 2.397.447 3.29 1.178l2.6-2.599c-1.584-1.381-3.615-2.233-5.89-2.233a8.908 8.908 0 0 0-8.934 8.934 8.907 8.907 0 0 0 8.934 8.934c4.467 0 8.529-3.249 8.529-8.934 0-.528-.081-1.097-.202-1.625z"></path>
+                      <path
+                        fill="#FFC107"
+                        d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
+                      ></path>
+                      <path
+                        fill="#FF3D00"
+                        d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
+                      ></path>
+                      <path
+                        fill="#4CAF50"
+                        d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
+                      ></path>
+                      <path
+                        fill="#1976D2"
+                        d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+                      ></path>
                     </svg>
-                  </span>
-                  Sign in with Google
+                  </button>
                 </button>
 
-                <p className='text-sm text-center'>Dont have an account? <span className='text-red-500'><Link to={'/user-register'}>Signup for free</Link></span> </p>
-           
+                <p className="text-sm text-center">
+                  Dont have an account?{" "}
+                  <span className="text-red-500">
+                    <Link to={"/user-register"}>Signup for free</Link>
+                  </span>{" "}
+                </p>
               </div>
             </div>
           </div>
@@ -103,8 +215,9 @@ const UserLogin = () => {
           </div>
         </div>
       </section>
+      {userLoginStatus === "pending" && <Loader />}
     </div>
-  )
-}
+  );
+};
 
-export default UserLogin
+export default UserLogin;
