@@ -98,7 +98,7 @@ const GymLogin = () => {
                   Sign in with Google
                 </button>
 
-                <p className='text-sm text-center'>Dont have an account? <span className='text-red-500'><Link to={"/gym-register"}>Signup for free</Link></span> </p>
+                <p className='text-sm text-center'>Dont have an account? <span className='text-red-500'><Link to={"/gym/gym-register"}>Signup for free</Link></span> </p>
            
               </div>
             </div>

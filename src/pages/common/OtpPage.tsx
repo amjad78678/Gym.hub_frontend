@@ -1,3 +1,4 @@
+import { gymOtpResend, gymOtpVerifyApi } from "@/api/gym";
 import { userOtpResend, userOtpVerify } from "@/api/user";
 import React, { ChangeEvent, FormEvent, useEffect, useRef, useState,KeyboardEvent } from "react";
 import toast from "react-hot-toast";
@@ -24,6 +25,14 @@ const OtpPage: React.FC<UserType> = ({ userType, closeOtp }) => {
             setTimer(120)
          }
     }
+    if(userType==='gym'){
+      const response=await gymOtpResend()
+
+      if(response){
+         toast.success(response?.data.message)
+         setTimer(120)
+      }
+ }
 
   }
 
@@ -84,6 +93,17 @@ const OtpPage: React.FC<UserType> = ({ userType, closeOtp }) => {
         }
 
     }
+
+    if(userType ==="gym"){
+
+      const response = await gymOtpVerifyApi(parseInt(otpValue));
+
+      if(response){
+          toast.success(response?.data.message)
+          navigate('/gym/gym-login')
+      }
+
+  }
 
 
 

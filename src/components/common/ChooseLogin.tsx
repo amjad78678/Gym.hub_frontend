@@ -25,7 +25,7 @@ const ChooseLogin = () => {
               enhance the overall customer experience.
             </h5>
 
-            <Link to={"/gym-login"}>  <Button
+            <Link to={"/gym/gym-login"}>  <Button
               className="my-8 text-center inline-flex justify-center px-28"
               variant="danger"
               size="lg"
