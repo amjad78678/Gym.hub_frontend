@@ -58,3 +58,14 @@ export const userLogin = async (loginData: userFormData)=>{
     }
 }
 
+export const userLogout = async () => {
+
+    try {
+        const response = await Api.post(userRoutes.userLogout);
+        return response
+    } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err);   
+    }
+}
+

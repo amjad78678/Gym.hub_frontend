@@ -1,5 +1,5 @@
 import React from 'react'
-import GymLogin from '../../components/gym/GymLogin'
+import GymLogin from '../../components/gym/gymLogin/GymLogin'
 
 const GymLoginPage = () => {
   return (

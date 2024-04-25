@@ -6,11 +6,11 @@ import { useMutation } from "@tanstack/react-query";
 import { userLogin } from "@/api/user";
 import toast from "react-hot-toast";
 import Loader from "../common/Loader";
-import { setUserLogin } from "@/redux/slices/authSlice";
+import { setUserDetails, setUserLogin } from "@/redux/slices/authSlice";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 
-const G_PASSWORD=import.meta.env.VITE_GOOGLE_PASSWORD
+const G_PASSWORD = import.meta.env.VITE_GOOGLE_PASSWORD;
 
 // interface iState {
 //   auth: {
@@ -32,8 +32,7 @@ const UserLogin: React.FC = () => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-
-  const gSignIn=useGoogleLogin({
+  const gSignIn = useGoogleLogin({
     onSuccess: async (response) => {
       try {
         const res = await axios.get(
@@ -41,7 +40,7 @@ const UserLogin: React.FC = () => {
           {
             headers: {
               Authorization: `Bearer ${response.access_token}`,
-            }
+            },
           }
         );
 
@@ -52,9 +51,20 @@ const UserLogin: React.FC = () => {
           password: G_PASSWORD,
         };
 
+        console.log("iam ayakkunnna data", data);
+
         const response2 = await userLogin(data);
         if (response2) {
-          toast.success(response2.data.message);
+          console.log("iam response20", response2);
+          dispatch(setUserLogin());
+          dispatch(
+            setUserDetails({
+              name: response2.data.message.username,
+              id: response2.data.message._id,
+              profilePic: response2.data.message.profilePic,
+            })
+          );
+          toast.success("Successfully logined");
           navigate("/");
         }
       } catch (error) {
@@ -88,7 +98,8 @@ const UserLogin: React.FC = () => {
           profilePic: response.data.message.profilePic,
         };
 
-        dispatch(setUserLogin(data));
+        dispatch(setUserLogin());
+        dispatch(setUserDetails(data));
       }
     },
   });
@@ -162,7 +173,7 @@ const UserLogin: React.FC = () => {
                 </div>
               </form>
               <div className="mt-3 space-y-3">
-              <button className="inline-flex w-full items-center justify-center rounded-md  font-semibold leading-7 text-white">
+                <button className="inline-flex w-full items-center justify-center rounded-md  font-semibold leading-7 text-white">
                   <button
                     className="inline-flex w-full items-center justify-center rounded-md bg-white px-3.5 py-2.5 font-semibold leading-7 text-black hover:bg-red-700"
                     onClick={() => gSignIn()}

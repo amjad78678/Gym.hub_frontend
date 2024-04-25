@@ -8,22 +8,26 @@ import {
   StepButton,
   Stepper,
 } from "@mui/material";
-import AddLocation from "./AddLocation";
+import AddLocation from "./addLocation/AddLocation";
 import AddDetails from "./AddDetails";
 import AddGymImages from "./addImages/AddGymImages";
-import {  useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useMutation } from "@tanstack/react-query";
 import { gymRegister } from "@/api/gym";
 import toast from "react-hot-toast";
-import { setDetails, setImages, setLatitude, setLongitude } from "@/redux/slices/appSlice";
+import {
+  setDetails,
+  setImages,
+  setLatitude,
+  setLongitude,
+} from "@/redux/slices/appSlice";
 import Loader from "@/components/common/Loader";
 
-
 interface UserType {
-  setShowOtp: () => void
+  setShowOtp: () => void;
 }
- 
- interface GymDetails {
+
+interface GymDetails {
   gymName: string;
   email: string;
   contactNumber: number;
@@ -33,72 +37,65 @@ interface UserType {
   businessId: string;
   password: string;
   confirmPassword: string;
- }
- 
- interface Image {
+}
+
+interface Image {
   imageUrl: string;
   public_id: string;
- }
- 
- interface AppState {
+}
+
+interface AppState {
   lat: number;
   long: number;
   details: GymDetails;
   images: Image[];
- }
- 
- interface iState {
+}
+
+interface iState {
   app: AppState;
- }
+}
 
-const GymRegister: React.FC<UserType> = ({setShowOtp}) => {
-
-
+const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
   const dispatch = useDispatch();
-  const { lat, long, details, images } = useSelector((state: iState) => state.app);
+  const { lat, long, details, images } = useSelector(
+    (state: iState) => state.app
+  );
 
-  const handleSubmitAllDetails=()=>{
-
-    const obj={
-      gymName:details.gymName,
-      email:details.email,
-      contactNumber:details.contactNumber,
-      state:details.state,
-      city:details.city,
-      pincode:details.pincode,
-      businessId:details.businessId,
-      password:details.password,
-      confirmPassword:details.confirmPassword,
-      location:{
-        type:"Point",
-        coordinates:[long,lat] as [number,number]
+  const handleSubmitAllDetails = () => {
+    const obj = {
+      gymName: details.gymName,
+      email: details.email,
+      contactNumber: details.contactNumber,
+      state: details.state,
+      city: details.city,
+      pincode: details.pincode,
+      businessId: details.businessId,
+      password: details.password,
+      confirmPassword: details.confirmPassword,
+      location: {
+        type: "Point",
+        coordinates: [long, lat] as [number, number],
       },
-      images:images
-       
-    }
+      images: images,
+    };
 
-    gymRegisterMutate(obj)
+    gymRegisterMutate(obj);
+  };
 
-  }
+  const { status: registerStatus, mutate: gymRegisterMutate } = useMutation({
+    mutationFn: gymRegister,
+    onSuccess: (res) => {
+      dispatch(setLatitude(0));
+      dispatch(setLongitude(0));
+      dispatch(setDetails({}));
+      dispatch(setImages([]));
 
-    const { status: registerStatus, mutate: gymRegisterMutate } = useMutation({
-      mutationFn: gymRegister,
-      onSuccess: (res) => {
-
-     
-        dispatch(setLatitude(0))
-        dispatch(setLongitude(0))
-        dispatch(setDetails({}))
-        dispatch(setImages([]))
-
-        setShowOtp()
-        if(res){
-          toast.success(res.data.message)
-        }
-      },
+      setShowOtp();
+      if (res) {
+        toast.success(res.data.message);
+      }
+    },
   });
-
- 
 
   const handleNext = () => {
     if (activeStep < steps.length - 1) {
@@ -171,59 +168,62 @@ const GymRegister: React.FC<UserType> = ({setShowOtp}) => {
 
   return (
     <div>
-    <Container sx={{ py: 5 }}>
-      <Stepper
-        alternativeLabel
-        nonLinear
-        activeStep={activeStep}
-        sx={{ mb: 4 }}
-      >
-        {steps.map((step, index) => (
-          <Step
-            sx={{ color: "white" }}
-            key={step.label}
-            completed={step.completed}
-          >
-            <StepButton onClick={() => setActiveStep(index)}>
-              <p className="text-white">{step.label}</p>
-            </StepButton>
-          </Step>
-        ))}
-      </Stepper>
-
-      <Box>
-        {
-          {
-            0: <AddLocation />,
-            1: <AddDetails />,
-            2: <AddGymImages />,
-          }[activeStep]
-        }
-      </Box>
-
-      <Stack
-        direction="row"
-        sx={{ pt: 2, pb: 7, justifyContent: "space-around" }}
-      >
-        <Button
-          color="primary"
-          disabled={!activeStep}
-          onClick={() => setActiveStep((prevActiveStep) => prevActiveStep - 1)}
+      <Container sx={{ py: 5 }}>
+        <Stepper
+          alternativeLabel
+          nonLinear
+          activeStep={activeStep}
+          sx={{ mb: 4 }}
         >
-          Back
-        </Button>
+          {steps.map((step, index) => (
+            <Step
+              sx={{ color: "white" }}
+              key={step.label}
+              completed={step.completed}
+            >
+              <StepButton onClick={() => setActiveStep(index)}>
+                <p className="text-white">{step.label}</p>
+              </StepButton>
+            </Step>
+          ))}
+        </Stepper>
 
-        {steps.every((step) => step.completed == true) ? (
-          <Button onClick={handleSubmitAllDetails} color="success">Finish</Button>
-        ) : (
-          <Button disabled={checkDisabled()} onClick={handleNext}>
-            Next
+        <Box>
+          {
+            {
+              0: <AddLocation />,
+              1: <AddDetails />,
+              2: <AddGymImages />,
+            }[activeStep]
+          }
+        </Box>
+
+        <Stack
+          direction="row"
+          sx={{ pt: 2, pb: 7, justifyContent: "space-around" }}
+        >
+          <Button
+            color="primary"
+            disabled={!activeStep}
+            onClick={() =>
+              setActiveStep((prevActiveStep) => prevActiveStep - 1)
+            }
+          >
+            Back
           </Button>
-        )}
-      </Stack>
-    </Container>
-{registerStatus === "pending" && <Loader />}
-    
+
+          {steps.every((step) => step.completed == true) ? (
+            <Button onClick={handleSubmitAllDetails} color="success">
+              Finish
+            </Button>
+          ) : (
+            <Button disabled={checkDisabled()} onClick={handleNext}>
+              Next
+            </Button>
+          )}
+        </Stack>
+      </Container>
+      {registerStatus === "pending" && <Loader />}
     </div>
   );
 };

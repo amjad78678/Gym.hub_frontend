@@ -1,5 +1,5 @@
 import React from 'react'
-import gymlogin from '../../assets/gymlogin.png'
+import gymlogin from '../../../assets/gymlogin.png'
 import { Link } from 'react-router-dom'
 
 const GymLogin = () => {
@@ -23,7 +23,7 @@ const GymLogin = () => {
                   title=""
                   className="font-semibold text-black transition-all duration-200 hover:underline"
                 >
-                  Create a free account
+                  Create a free account  
                 </a>
               </p>
               <form action="#" method="POST" className="mt-8">
