@@ -102,7 +102,7 @@ const AddGymImages = () => {
           {isDragActive ? (
             <p className="text-green-500">Drop the files here</p>
           ) : (
-            <p>Drap and drop some files here, or click to select files</p>
+            <p>Drag and drop exactly 4 images, then only you can finish your registration </p>
           )}
 
           <em>images with *.jpeg *.png or *.jpg extension will be accepted </em>

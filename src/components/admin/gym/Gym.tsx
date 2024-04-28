@@ -238,7 +238,7 @@ const Gym = () => {
                       <DeleteOutlineOutlinedIcon
                         onClick={() => handleDelete(gym._id)}
                         sx={{ color: "red", fontSize: "35px" }}
-                        className="ms-2"
+                        className="ms-2 cursor-pointer"
                       />
                     </td>
                   ) : (

@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Col, Row, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 const ChooseLogin = () => {
+
+const {uLoggedIn}= useSelector((state)=>state.auth)
+const navigate=useNavigate()
+  useEffect(()=>{
+
+
+   if(uLoggedIn){
+    navigate('/')
+   }
+
+
+  },[navigate,uLoggedIn])
+
+
   return (
     <div className="bg-black text-white min-h-screen">
 

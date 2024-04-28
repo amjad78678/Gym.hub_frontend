@@ -10,6 +10,15 @@ interface gymRegisterData {
     city: string;
     pincode?: string;
     businessId?: string;
+    subscriptions: {
+        quarterlyFee: number;
+        monthlyFee: number;
+        yearlyFee: number;
+    }
+    quarterlyFee: number;
+    monthlyFee: number;
+    yearlyFee: number;
+    description: string;
     password: string;
     confirmPassword: string;
     isVerified?: boolean;
@@ -22,6 +31,8 @@ interface gymRegisterData {
         public_id: string;
     }[];
   }
+
+
   
 export const gymRegister=async (gymData :gymRegisterData)=>{
 

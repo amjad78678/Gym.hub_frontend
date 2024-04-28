@@ -1,8 +1,34 @@
+import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { adminLogout } from "@/api/admin";
+import { useDispatch } from "react-redux";
+import { setAdminLogout } from "@/redux/slices/authSlice";
+import toast from "react-hot-toast";
 
 const Header = () => {
+
+  const dispatch=useDispatch()
+  const navigate=useNavigate()
+
+  const {mutate}=useMutation({
+    mutationFn: adminLogout,
+    onSuccess:(res)=>{
+      toast.success(res.data.message)
+      dispatch(setAdminLogout())
+      navigate('/admin')
+
+
+    }
+  })
+
+  const handleLogout=()=>{
+   
+    
+    mutate()
+    
+  }
   return (
     <>
       <div className="fixed w-full flex items-center justify-between h-14 text-white z-10 bg-[#1f2a38]">
@@ -20,14 +46,11 @@ const Header = () => {
             <li>
               <div className="block w-px h-6 mx-3 bg-gray-400 dark:bg-gray-700"></div>
             </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center mr-4 hover:text-blue-100"
-              >
-                <span className="inline-flex mr-1">
+            <li onClick={handleLogout}>
+    
+                <span className="inline-flex mr-1 cursor-pointer">
                   <svg
-                    className="w-5 h-5"
+                    className="w-5 h-5 mt-1"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -40,9 +63,13 @@ const Header = () => {
                       d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                     ></path>
                   </svg>
+
+               <span className="ml-2 ">Logout</span> 
                 </span>
-                Logout
-              </a>
+                
+
+              
+           
             </li>
           </ul>
         </div>

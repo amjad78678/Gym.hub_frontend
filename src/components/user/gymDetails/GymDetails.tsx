@@ -1,0 +1,208 @@
+import { Box, Button, Rating } from "@mui/material";
+import React, { useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import StarIcon from "@mui/icons-material/Star";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+
+const GymDetails = ({ gymId }) => {
+
+  const [currentView, setCurrentView] = useState('description');
+
+  const [value, setValue] = useState(4);
+
+  const labels = {
+    0.5: "Useless",
+    1: "Useless+",
+    1.5: "Poor",
+    2: "Poor+",
+    2.5: "Ok",
+    3: "Ok+",
+    3.5: "Good",
+    4: "Good+",
+    4.5: "Excellent",
+    5: "Excellent+",
+  };
+
+  function getLabelText(value) {
+    return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
+  }
+
+  const [alignment, setAlignment] = useState("");
+
+  console.log("iam alignment", alignment);
+  const handleChange = (event, newAlignment) => {
+    setAlignment(newAlignment);
+  };
+
+  return (
+    <div>
+      <Container>
+        <Row>
+          <Col xs={6}>
+            <Row>
+              <Col xs={3}>
+                <img
+                  className="mb-3 rounded-lg"
+                  src="https://imgs.search.brave.com/R9sf8the75vTbB3abeP1CSrqkcl79GmprS9UBMX0wD4/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNzc5/MzE2NDUvcGhvdG8v/d29tYW4tYW5kLXlv/dW5nLWdpcmwtb3V0/ZG9vcnMtd2l0aC1w/ZW9wbGUtaW4tYmFj/a2dyb3VuZC5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9bG5V/UWZnTHlVZ21HUHR6/NkZzYXRIWVNub3dZ/Xzl3YmRQUXVYZmI4/WDNxQT0"
+                  alt=""
+                />
+                <img
+                  className="mb-3 rounded-lg"
+                  src="https://imgs.search.brave.com/R9sf8the75vTbB3abeP1CSrqkcl79GmprS9UBMX0wD4/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNzc5/MzE2NDUvcGhvdG8v/d29tYW4tYW5kLXlv/dW5nLWdpcmwtb3V0/ZG9vcnMtd2l0aC1w/ZW9wbGUtaW4tYmFj/a2dyb3VuZC5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9bG5V/UWZnTHlVZ21HUHR6/NkZzYXRIWVNub3dZ/Xzl3YmRQUXVYZmI4/WDNxQT0"
+                  alt=""
+                />
+                <img
+                  className="mb-3 rounded-lg"
+                  src="https://imgs.search.brave.com/R9sf8the75vTbB3abeP1CSrqkcl79GmprS9UBMX0wD4/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNzc5/MzE2NDUvcGhvdG8v/d29tYW4tYW5kLXlv/dW5nLWdpcmwtb3V0/ZG9vcnMtd2l0aC1w/ZW9wbGUtaW4tYmFj/a2dyb3VuZC5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9bG5V/UWZnTHlVZ21HUHR6/NkZzYXRIWVNub3dZ/Xzl3YmRQUXVYZmI4/WDNxQT0"
+                  alt=""
+                />
+              </Col>
+
+              <Col xs={9}>
+                <img
+                  className="rounded-lg"
+                  src="https://imgs.search.brave.com/R9sf8the75vTbB3abeP1CSrqkcl79GmprS9UBMX0wD4/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNzc5/MzE2NDUvcGhvdG8v/d29tYW4tYW5kLXlv/dW5nLWdpcmwtb3V0/ZG9vcnMtd2l0aC1w/ZW9wbGUtaW4tYmFj/a2dyb3VuZC5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9bG5V/UWZnTHlVZ21HUHR6/NkZzYXRIWVNub3dZ/Xzl3YmRQUXVYZmI4/WDNxQT0"
+                  alt=""
+                />
+              </Col>
+            </Row>
+          </Col>
+
+          <Col xs={6}>
+            <h1 className="text-2xl font-serif">Radisson blu fitness centre</h1>
+            <Box
+              sx={{
+                width: 200,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Rating
+                name="hover-feedback"
+                value={value}
+                precision={0.5}
+                getLabelText={getLabelText}
+                emptyIcon={
+                  <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                }
+                readOnly
+              />
+              {value !== null && <Box sx={{ ml: 2 }}>{labels[value]}</Box>}
+            </Box>
+
+            <p className="my-3 text-xs">
+              {" "}
+              This fitness membership is perfect for any occasion. Crafted to
+              offer superior comfort and style, it's designed to keep you
+              motivated and fit.
+            </p>
+
+            <p className="text-white text-sm font-mono my-1">
+              <LocationOnIcon /> kakkancheri bustopinte aduthu
+            </p>
+            <p className="text-white text-sm font-mono my-1">
+              <MailOutlineIcon /> 6w0bS@example.com
+            </p>
+            <p className="text-white text-sm font-mono my-1">
+              <CallOutlinedIcon /> 0712345678
+            </p>
+
+            <ToggleButtonGroup
+              color="success"
+              sx={{ backgroundColor: "white" }}
+              value={alignment}
+              exclusive
+              onChange={handleChange}
+              aria-label="Platform"
+            >
+              <ToggleButton
+                sx={{ backgroundColor: "gray" }}
+                value="quarterlyFee"
+              >
+                Quarterly
+              </ToggleButton>
+              <ToggleButton sx={{ backgroundColor: "gray" }} value="monthlyFee">
+                Monthly
+              </ToggleButton>
+              <ToggleButton sx={{ backgroundColor: "gray" }} value="yearlyFee">
+                Yearly
+              </ToggleButton>
+            </ToggleButtonGroup>
+
+            <div>
+              <Button
+                sx={{
+                  color: "white",
+                  backgroundColor: "green",
+                  borderRadius: "10px",
+                  my: 1,
+                  "&:hover": {
+                    backgroundColor: "#4caf50",
+                  },
+                }}
+              >
+                Purchase now
+              </Button>
+            </div>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <p onClick={()=>setCurrentView('description')} className="mt-12 text-center text-xl cursor-pointer">
+              Gym description
+            </p>
+            {currentView === "description" ? (
+              <div className="w-full h-1 bg-white mt-1 mb-5"></div>
+              
+            ):(
+            <div className="w-full h-1 bg-gray-600 mt-1 mb-5"></div>
+              
+            )}
+          </Col>
+
+          <Col>
+            <p  onClick={() => setCurrentView('reviews')} className="mt-12 text-center text-xl cursor-pointer">Reviews</p>
+            {currentView === "reviews" ? (
+              <div className="w-full h-1 bg-white mt-1 mb-5"></div>
+              
+            ):(
+            <div className="w-full h-1 bg-gray-600 mt-1 mb-5"></div>
+              
+            )}
+          </Col>
+        </Row>
+
+        <Row className="nopadding">
+          <Col>
+            <Box
+              sx={{ display: "flex", flexDirection: "column", width: "100%" }}
+            >
+              {currentView === "description" ? (
+                    <div className="border border-gray-400 p-2 rounded-lg">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Omnis
+                    alias animi sit maxime similique sapiente, doloremque velit id
+                    facilis tempore vitae veniam distinctio laboriosam praesentium
+                    impedit. Vitae aperiam laborum tenetur.
+                  </div>
+              ):(
+                <div className="border border-gray-400 p-2 rounded-lg">
+                 
+                iam review aaneu Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa facere mollitia recusandae laudantium tempore libero assumenda perferendis, inventore quidem labore doloremque, ab fuga dignissimos, amet consequatur asperiores voluptatum porro enim?
+                </div>
+              )}
+          
+          
+            </Box>
+          </Col>
+        </Row>
+      </Container>
+    </div>
+  );
+};
+
+export default GymDetails;

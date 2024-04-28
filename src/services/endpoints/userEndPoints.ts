@@ -7,6 +7,7 @@ const userRoutes={
     userOtpResend:'/user/resend_otp',
     userLogin:'/user/login',
     userLogout:'/user/logout',
+    fetchGymList:'/user/gym_list',
 }
 
 export default userRoutes

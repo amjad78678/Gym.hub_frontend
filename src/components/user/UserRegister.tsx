@@ -6,6 +6,8 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { UserSignupValidation } from "../../validation/UserSignupValidation";
 import axios from "axios";
 import { signUp } from "@/api/user";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const G_PASSWORD = import.meta.env.VITE_GOOGLE_PASSWORD;
 
@@ -15,6 +17,20 @@ interface UserType {
 
 const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
   const navigate = useNavigate();
+
+
+  const {uLoggedIn}= useSelector((state)=>state.auth)
+  useEffect(()=>{
+
+
+   if(uLoggedIn){
+    navigate('/')
+   }
+
+
+  },[navigate,uLoggedIn])
+
+  
   const gSignup = useGoogleLogin({
     onSuccess: async (response) => {
       try {

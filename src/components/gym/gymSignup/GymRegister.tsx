@@ -9,7 +9,7 @@ import {
   Stepper,
 } from "@mui/material";
 import AddLocation from "./addLocation/AddLocation";
-import AddDetails from "./AddDetails";
+import AddDetails from "./addDetails/AddDetails";
 import AddGymImages from "./addImages/AddGymImages";
 import { useDispatch, useSelector } from "react-redux";
 import { useMutation } from "@tanstack/react-query";
@@ -35,6 +35,10 @@ interface GymDetails {
   city: string;
   pincode: string;
   businessId: string;
+  quarterlyFee: number;
+  monthlyFee: number;
+  yearlyFee: number;
+  description: string;
   password: string;
   confirmPassword: string;
 }
@@ -69,6 +73,12 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
       state: details.state,
       city: details.city,
       pincode: details.pincode,
+      subscriptions: {
+        quarterlyFee: details.quarterlyFee,
+        monthlyFee: details.monthlyFee,
+        yearlyFee: details.yearlyFee,
+      },
+      description: details.description,
       businessId: details.businessId,
       password: details.password,
       confirmPassword: details.confirmPassword,
@@ -143,7 +153,11 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
       details?.city?.length > 0 && details?.pincode?.length > 0,
       details?.businessId?.length > 0 &&
         details?.password?.length > 0 &&
-        details?.confirmPassword?.length > 0)
+        details?.confirmPassword?.length > 0 &&
+        details.quarterlyFee > 0 &&
+        details.monthlyFee > 0 &&
+        details.yearlyFee > 0 &&
+        details.description?.length > 0)
     ) {
       if (!steps[1].completed) setComplete(1, true);
     } else {

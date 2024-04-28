@@ -69,3 +69,15 @@ export const userLogout = async () => {
     }
 }
 
+
+export const fetchGymList= async () => {
+
+    try {
+        const response = await Api.get(userRoutes.fetchGymList);
+        return response
+    } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err);   
+    }
+   
+}

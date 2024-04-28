@@ -4,7 +4,8 @@ const adminRoutes={
     gymAdminResponse:'/admin/gym_admin_response',
     blockAdminAction: (id: string)=>`/admin/gym_block_action/${id}`,
     deleteGym:(id: string)=>`/admin/delete_gym/${id}`,
-    adminLogin:'/admin/admin_login'
+    adminLogin:'/admin/admin_login',
+    adminLogout:'/admin/admin_logout'
 
 }
 

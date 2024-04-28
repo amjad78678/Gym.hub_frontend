@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import { GymSignupValidation } from "../../../validation/GymSignupValidation";
+import { Col, Container, FloatingLabel, Form, Row } from "react-bootstrap";
+import { GymSignupValidation } from "../../../../validation/GymSignupValidation";
 import { useDispatch } from "react-redux";
 import { setDetails } from "@/redux/slices/appSlice";
 
@@ -15,6 +15,10 @@ const AddDetails = () => {
     city: "",
     pincode: "",
     businessId: "",
+    quarterlyFee: "",
+    monthlyFee: "",
+    yearlyFee: "",
+    description: "",
     password: "",
     confirmPassword: "",
   };
@@ -40,7 +44,6 @@ const AddDetails = () => {
                 className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
                 onChange={(e) => {
                   handleChange(e);
-
                   console.log(errors);
                   if (!errors.gymName) {
                     dispatch(
@@ -48,6 +51,7 @@ const AddDetails = () => {
                     );
                   }
                 }}
+
                 autoComplete="off"
                 onBlur={handleBlur}
                 value={values.gymName}
@@ -100,6 +104,35 @@ const AddDetails = () => {
               {errors.contactNumber && (
                 <small className="text-red-500">{errors.contactNumber}</small>
               )}
+            </div>
+
+      <div>
+      <h1 className="my-3">Description</h1>
+
+   
+        <Form.Control
+          className="bg-black text-white border border-white"
+          as="textarea"
+          name="description"
+          value={values.description}
+          autoComplete="off"
+          onBlur={handleBlur}
+          onChange={(e) => {
+            handleChange(e);
+
+            if (!errors.description) {
+              dispatch(
+                setDetails({ ...values, description: e.target.value })
+              );
+            }
+          }}
+          placeholder="Leave a comment here"
+          style={{ height: '100px' }}
+        />
+            {errors.description && (
+                    <small className="text-red-500">{errors.description}</small>
+                  )}
+   
             </div>
           </Col>
           <Col xs={6}>
@@ -184,7 +217,7 @@ const AddDetails = () => {
               </Col>
               <Col xs={6}>
                 <div className="">
-                  <h1>Business Id</h1>
+                  <h1>Businesss id</h1>
                   <input
                     type="text"
                     name="businessId"
@@ -208,6 +241,101 @@ const AddDetails = () => {
                 </div>
               </Col>
             </Row>
+
+
+
+<Row className="my-3"> 
+  <Col xs={4}>
+
+  
+  <div className="">
+                  <h1>Quarterly fee</h1>
+                  <input
+                    type="text"
+                    name="quarterlyFee"
+                    className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
+                    onChange={(e) => {
+                      handleChange(e);
+
+                      if (!errors.quarterlyFee) {
+                        dispatch(
+                          setDetails({ ...values, quarterlyFee: e.target.value })
+                        );
+                      }
+                    }}
+                    autoComplete="off"
+                    onBlur={handleBlur}
+                    value={values.quarterlyFee}
+                  />
+                  {errors.quarterlyFee && (
+                    <small className="text-red-500">{errors.quarterlyFee}</small>
+                  )}
+                </div>
+
+  
+  </Col>
+  <Col xs={4}>
+
+  
+  <div className="">
+                  <h1>Monthly fee</h1>
+                  <input
+                    type="text"
+                    name="monthlyFee"
+                    className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
+                    onChange={(e) => {
+                      handleChange(e);
+
+                      if (!errors.monthlyFee) {
+                        dispatch(
+                          setDetails({ ...values, monthlyFee: e.target.value })
+                        );
+                      }
+                    }}
+                    autoComplete="off"
+                    onBlur={handleBlur}
+                    value={values.monthlyFee}
+                  />
+                  {errors.monthlyFee && (
+                    <small className="text-red-500">{errors.monthlyFee}</small>
+                  )}
+                </div>
+
+  
+  </Col>
+  <Col xs={4}>
+
+  
+  <div className="">
+                  <h1>Yearly fee</h1>
+                  <input
+                    type="text"
+                    name="yearlyFee"
+                    className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
+                    onChange={(e) => {
+                      handleChange(e);
+
+                      if (!errors.yearlyFee) {
+                        dispatch(
+                          setDetails({ ...values, yearlyFee: e.target.value })
+                        );
+                      }
+                    }}
+                    autoComplete="off"
+                    onBlur={handleBlur}
+                    value={values.yearlyFee}
+                  />
+                  {errors.businessId && (
+                    <small className="text-red-500">{errors.yearlyFee}</small>
+                  )}
+                </div>
+
+  
+  </Col>
+</Row>
+
+
+
 
             <Row>
               <Col xs={6}>

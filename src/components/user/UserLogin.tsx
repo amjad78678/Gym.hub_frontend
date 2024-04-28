@@ -1,7 +1,7 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import userlogin from "../../assets/userlogin.png";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useMutation } from "@tanstack/react-query";
 import { userLogin } from "@/api/user";
 import toast from "react-hot-toast";
@@ -20,6 +20,19 @@ const G_PASSWORD = import.meta.env.VITE_GOOGLE_PASSWORD;
 const UserLogin: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+
+  
+const {uLoggedIn}= useSelector((state)=>state.auth)
+  useEffect(()=>{
+
+
+   if(uLoggedIn){
+    navigate('/')
+   }
+
+
+  },[navigate,uLoggedIn])
 
   const [formData, setFormData] = useState({
     email: "",

@@ -1,6 +1,9 @@
 import * as Yup from "yup";
 
 export const GymSignupValidation = Yup.object({
+
+
+
   gymName: Yup.string()
     .required("Gym name is required")
     .min(4, "Gym name must be at least 4 characters"),
@@ -22,5 +25,15 @@ export const GymSignupValidation = Yup.object({
   confirmPassword: Yup.string()
   .required("Confirm password is required")
   .oneOf([Yup.ref("password")], "Passwords do not match"),
+  quarterlyFee: Yup.string()
+    .required("Fee is required")
+    .matches(/^[0-9]+$/, "Invalid quarterly fee"),
+  monthlyFee: Yup.string()
+    .required("Fee is required")
+    .matches(/^[0-9]+$/, "Invalid monthly fee"),
+  yearlyFee: Yup.string()
+    .required("Fee is required")
+    .matches(/^[0-9]+$/, "Invalid yearly fee"),
+  description: Yup.string().required("Description is required").max(300),
+  
 });
- 

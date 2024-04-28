@@ -1,3 +1,4 @@
+import { adminLogoout } from './admin';
 import Api from "@/services/axios";
 import errorHandle from "./error";
 import adminRoutes from "@/services/endpoints/adminEndPoints";
@@ -67,4 +68,17 @@ export const adminLogin = async (data :iLogin) => {
         const err: Error = error as Error;
         return errorHandle(err);  
     } 
+}
+
+export const adminLogout = async () => {
+    
+    try {
+        
+        const response = await Api.post(adminRoutes.adminLogout);
+        return response;
+
+    } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err);  
+    }
 }

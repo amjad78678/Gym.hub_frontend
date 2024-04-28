@@ -33,7 +33,7 @@ const authSlice=createSlice({
             state.aLoggedIn = true;
             localStorage.setItem('aLoggedIn', 'true');
         },
-        adminLogout: (state) => {
+        setAdminLogout: (state) => {
             state.aLoggedIn = false;
             localStorage.removeItem('aLoggedIn');
         }
@@ -41,5 +41,5 @@ const authSlice=createSlice({
 })
 
 
-export const {setUserLogin,setUserLogout,setUserDetails,setAdminLogin,adminLogout}=authSlice.actions
+export const {setUserLogin,setUserLogout,setUserDetails,setAdminLogin,setAdminLogout}=authSlice.actions
 export default authSlice.reducer

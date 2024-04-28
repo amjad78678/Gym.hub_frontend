@@ -1,24 +1,23 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import { useDispatch, useSelector } from 'react-redux';
-import { Dropdown } from '@mui/base/Dropdown';
-import { MenuButton } from '@mui/base/MenuButton';
-import  MenuItem from '@mui/material/MenuItem';
-import { MenuItem as MuiDropMenuItem } from '@mui/base/MenuItem';
-import { Menu as DropMenu } from '@mui/base/Menu';
-import { useMutation } from '@tanstack/react-query';
-import { userLogout } from '@/api/user';
-import { setUserLogout } from '@/redux/slices/authSlice';
-import Loader from './Loader';
-import { Link, useNavigate } from 'react-router-dom';
-
-const pages = ['Home', 'Book offline gym', 'Personal trainer','Workouts','Contact'];
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import Button from "@mui/material/Button";
+import { Container } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Dropdown } from "@mui/base/Dropdown";
+import { MenuButton } from "@mui/base/MenuButton";
+import MenuItem from "@mui/material/MenuItem";
+import { MenuItem as MuiDropMenuItem } from "@mui/base/MenuItem";
+import { Menu as DropMenu } from "@mui/base/Menu";
+import { useMutation } from "@tanstack/react-query";
+import { userLogout } from "@/api/user";
+import { setUserLogout } from "@/redux/slices/authSlice";
+import Loader from "./Loader";
+import { Link, useNavigate } from "react-router-dom";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 
 interface iState {
   auth: {
@@ -32,98 +31,140 @@ interface iState {
   };
 }
 function Navbar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const { uLoggedIn, userDetails } = useSelector((state: iState) => state.auth);
 
-  const dispatch=useDispatch()
-  const navigate=useNavigate()
+  const { status, mutate: handleLogout } = useMutation({
+    mutationFn: userLogout,
+    onSuccess: (res) => {
+      console.log(res);
+      dispatch(setUserLogout());
+      navigate("/login");
+    },
+  });
 
-  const { uLoggedIn,userDetails } = useSelector((state: iState) => state.auth);
-
-    const {status,mutate :handleLogout}=useMutation({
-
-      mutationFn:userLogout,
-      onSuccess:(res)=>{
-        console.log(res)
-        dispatch(setUserLogout())
-        navigate('/login')
-      }
-    })
-   
-
-
-
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-
-
-
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-
-
   return (
-    <AppBar position="static">
-      <Container className='bg-black p-2 '  maxWidth="xl">
+    <AppBar sx={{ backgroundColor: "black" }} position="static">
+      <Container className="bg-black p-2 ">
         <Toolbar disableGutters>
-           <img className='w-28 mr-4' src="./removebg.png" alt="" />
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <Menu 
+          <img className="w-28" src="/removebg.png" alt="" />
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: "block", md: "none" },
+                justifyContent: "center",
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">Home</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">Book offline gym</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">Personal trainer</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">Workouts</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">Contact</Typography>
+              </MenuItem>
             </Menu>
           </Box>
-   
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "center",
+            }}
+          >
+          <Link to={'/'}>  <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Home
+            </Button>
+            </Link>
+          <Link to={'/book-gym'}>  <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Book offline gym
+            </Button></Link>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Personal trainer
+            </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Workouts
+            </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Contact
+            </Button>
           </Box>
 
-    {uLoggedIn ? (
-      <Dropdown>
-      <MenuButton className='font-semibold text-lg mx-2'>{userDetails.name}</MenuButton>
-      <DropMenu className='bg-black px-4 py-2 rounded-md'  slots={{ listbox: 'ol'  }} >
-        <MuiDropMenuItem className='text-white cursor-pointer'>Profile</MuiDropMenuItem>
-    
-       <MuiDropMenuItem onClick={() => { handleLogout(); }} className='text-white cursor-pointer'>Log out</MuiDropMenuItem>
-      </DropMenu>
-    </Dropdown>
-    ):<Link to={'/login'}><Button className='font-bold mx-4' variant="contained" style={{backgroundColor: 'gold', color: 'black'}}>Login</Button></Link>
-  
-    }
-          
+          {uLoggedIn ? (
+            //   <Dropdown>
+            //   <MenuButton className='font-semibold text-lg mx-2'>{userDetails.name}</MenuButton>
+            //   <DropMenu className='bg-black px-4 py-2 rounded-md'  slots={{ listbox: 'ol'  }} >
+            //     <MuiDropMenuItem className='text-white cursor-pointer'>Profile</MuiDropMenuItem>
+
+            //    <MuiDropMenuItem onClick={() => { handleLogout(); }} className='text-white cursor-pointer'>Log out</MuiDropMenuItem>
+            //   </DropMenu>
+            // </Dropdown>
+            <AccountCircleOutlinedIcon
+              onClick={() => {
+                handleLogout();
+              }}
+              sx={{ fontSize: 33, cursor: "pointer" }}
+            />
+          ) : (
+            <Link to={"/login"}>
+              <Button
+                className="font-bold mx-4"
+                variant="contained"
+                style={{ backgroundColor: "gold", color: "black" }}
+              >
+                Login
+              </Button>
+            </Link>
+          )}
         </Toolbar>
       </Container>
       {status === "pending" && <Loader />}
-
     </AppBar>
   );
 }
