@@ -14,7 +14,6 @@ const G_PASSWORD = import.meta.env.VITE_GOOGLE_PASSWORD;
 interface UserType {
   setShowOtp: () => void;
 }
-
 const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
   const navigate = useNavigate();
 
@@ -59,16 +58,16 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
     },
   });
 
-  const { handleSubmit, handleChange, handleBlur, values, touched, errors } =
+  const { handleSubmit, handleChange, handleBlur, values, errors } =
     useFormik({
       initialValues: {
         username: "",
         email: "",
         mobilenumber: "",
         age: "",
-        state: "",
-        city: "",
-        pincode: "",
+        // state: "",
+        // city: "",
+        // pincode: "",
         password: "",
         confirmpassword: "",
         gender: "",
@@ -84,9 +83,9 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
             email: values.email,
             mobileNumber: values.mobilenumber,
             age: values.age,
-            state: values.state,
-            city: values.city,
-            pincode: values.pincode,
+            // state: values.state,
+            // city: values.city,
+            // pincode: values.pincode,
             password: values.password,
             gender: values.gender,
           });
@@ -242,7 +241,7 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
                     </div>
                   </div>
 
-                  <div className="flex">
+                  {/* <div className="flex">
                     <div className="flex flex-col w-1/3">
                       <label htmlFor="" className="text-base font-medium">
                         State
@@ -302,7 +301,7 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
                         </small>
                       )}
                     </div>
-                  </div>
+                  </div> */}
 
                   <div>
                     <div className="flex items-center justify-between">

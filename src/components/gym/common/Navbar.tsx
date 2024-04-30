@@ -1,11 +1,33 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Dropdown } from '@mui/base/Dropdown';
 import { MenuButton } from '@mui/base/MenuButton';
 import { Menu } from '@mui/base/Menu';
 import { MenuItem } from '@mui/base/MenuItem';
+import { useMutation } from '@tanstack/react-query';
+import { gymLogout } from '@/api/gym';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { setGymLogout } from '@/redux/slices/authSlice';
 
 const Navbar = () => {
+
+const navigate=useNavigate()
+const dispatch=useDispatch()
+
+    const { mutate: gymLogoutMutate} = useMutation({
+        mutationFn: gymLogout,
+        onSuccess: (res) => {
+            if (res) {
+                toast.success(res.data.message);
+                dispatch(setGymLogout());
+                navigate("/gym/gym-login");
+            }
+        },
+    })
+
+
+
   return (
   <div className=" bg-opacity-30 bg-black text-white right-0 left-0 top-0 z-50 px-4 md:pl-14">
     <div>
@@ -36,9 +58,9 @@ const Navbar = () => {
    <Dropdown>
   <MenuButton className='font-semibold'>My Gym</MenuButton>
   <Menu slots={{ listbox: 'ol' }} >
-    <MenuItem className='text-white'>Profile</MenuItem>
+    <MenuItem className='text-white cursor-pointer'>Profile</MenuItem>
 
-    <MenuItem className='text-white'>Log out</MenuItem>
+    <MenuItem onClick={()=>gymLogoutMutate()} className='text-white cursor-pointer'>Log out</MenuItem>
   </Menu>
 </Dropdown>
             </div>

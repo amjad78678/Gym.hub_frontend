@@ -24,7 +24,7 @@ const UserRoutes = () => {
         
               <Route path="" element={<UserHomePage />} />
               <Route path="book-gym" element={<GymListPage/>}/>
-              <Route path="gym-details/:id" element={<GymDetailsPage/>}/>
+              <Route path="gym-details" element={<GymDetailsPage/>}/>
 
 
       </Route>

@@ -5,8 +5,8 @@ import Navbar from '@/components/gym/common/Navbar'
 
 const GymDashboardPage = () => {
   return (
-    <div>
-        <Navbar/>
+    <div className='bg-black min-h-screen'>
+      <Navbar/>
      <GymDashboard/>
     </div>
   )

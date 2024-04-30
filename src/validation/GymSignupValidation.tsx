@@ -34,6 +34,6 @@ export const GymSignupValidation = Yup.object({
   yearlyFee: Yup.string()
     .required("Fee is required")
     .matches(/^[0-9]+$/, "Invalid yearly fee"),
-  description: Yup.string().required("Description is required").max(300),
+  description: Yup.string().required("Description is required"),
   
 });

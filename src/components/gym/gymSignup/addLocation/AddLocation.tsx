@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useRef } from "react";
 import ReactMapGl, {
-  GeolocateControl,
+  GeolocateControl, 
   GeolocateResultEvent,
   Marker,
   NavigationControl,

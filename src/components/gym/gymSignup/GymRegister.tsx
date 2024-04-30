@@ -22,6 +22,7 @@ import {
   setLongitude,
 } from "@/redux/slices/appSlice";
 import Loader from "@/components/common/Loader";
+import { useNavigate } from "react-router-dom";
 
 interface UserType {
   setShowOtp: () => void;
@@ -59,8 +60,25 @@ interface iState {
   app: AppState;
 }
 
+interface iRootState {
+  auth : {
+    gLoggedIn : boolean
+  }
+}
+
 const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
+  
   const dispatch = useDispatch();
+  const navigate= useNavigate();
+
+  const { gLoggedIn } = useSelector((state: iRootState) => state.auth);
+  useEffect(() => {
+    if (gLoggedIn) {
+      navigate("gym/dashboard");
+    }
+  }, [navigate, gLoggedIn]);
+
+
   const { lat, long, details, images } = useSelector(
     (state: iState) => state.app
   );

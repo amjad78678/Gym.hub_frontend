@@ -19,18 +19,18 @@ export const UserSignupValidation = Yup.object({
     .min(18, "Minimum age is 18")
     .max(55, "Maximum age is 55"),
 
-  state: Yup.string()
-    .required("State is required")
-    .matches(/^[a-zA-Z\s]+$/, "State must contain only letters"),
+  // state: Yup.string()
+  //   .required("State is required")
+  //   .matches(/^[a-zA-Z\s]+$/, "State must contain only letters"),
 
-  city: Yup.string()
-    .required("City is required")
-    .matches(/^[a-zA-Z\s]+$/, "City must contain only letters"),
+  // city: Yup.string()
+  //   .required("City is required")
+  //   .matches(/^[a-zA-Z\s]+$/, "City must contain only letters"),
 
-  pincode: Yup.string()
-    .required("Pincode is required")
-    .min(6, "Pincode must be 6 characters")
-    .max(6, "Pincode must be 6 characters"),
+  // pincode: Yup.string()
+  //   .required("Pincode is required")
+  //   .min(6, "Pincode must be 6 characters")
+  //   .max(6, "Pincode must be 6 characters"),
 
   password: Yup.string()
     .required("Password is required")

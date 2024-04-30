@@ -21,18 +21,12 @@ const UserLogin: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
-  
-const {uLoggedIn}= useSelector((state)=>state.auth)
-  useEffect(()=>{
-
-
-   if(uLoggedIn){
-    navigate('/')
-   }
-
-
-  },[navigate,uLoggedIn])
+  const { uLoggedIn } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (uLoggedIn) {
+      navigate("/");
+    }
+  }, [navigate, uLoggedIn]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -106,7 +100,6 @@ const {uLoggedIn}= useSelector((state)=>state.auth)
         console.log("iam response in mutation", response);
 
         const data = {
-          id: response.data.message._id,
           name: response.data.message.username,
           profilePic: response.data.message.profilePic,
         };

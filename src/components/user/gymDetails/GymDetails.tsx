@@ -1,5 +1,5 @@
 import { Box, Button, Rating } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import StarIcon from "@mui/icons-material/Star";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -7,10 +7,29 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { fetchGymDetails } from "@/api/user";
+import { useQuery } from "@tanstack/react-query";
+import Loader from "@/components/common/Loader";
+import axios from "axios";
 
-const GymDetails = ({ gymId }) => {
+const GymDetails = () => {
+  // const {isLoading,data: gymData,refetch}=useQuery({queryKey:['gymDetails'],queryFn:()=>fetchGymDetails(gymId)})
 
-  const [currentView, setCurrentView] = useState('description');
+  const queryParams = new URLSearchParams(location.search);
+  const gymId = queryParams.get("id");
+
+  console.log("gymId", gymId);
+
+  const {
+    isLoading,
+    data: gymDetailsData,
+    refetch,
+  } = useQuery({
+    queryKey: ["gymDetails", gymId],
+    queryFn: fetchGymDetails,
+  });
+
+  const [currentView, setCurrentView] = useState("description");
 
   const [value, setValue] = useState(4);
 
@@ -33,12 +52,26 @@ const GymDetails = ({ gymId }) => {
 
   const [alignment, setAlignment] = useState("");
 
-  console.log("iam alignment", alignment);
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
   };
 
-  return (
+  
+  const [streetAddress,setStreetAddress]=useState('')
+
+
+  useEffect(()=>{
+    
+   axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${gymDetailsData?.data.message.location.coordinates[1]},${gymDetailsData?.data.message.location.coordinates[0]}&key=AIzaSyByuTK8Ngx2fLFeZX2umzie7ghokMJCFR8`).then((res)=>{
+    
+   setStreetAddress(res.data.results[0].formatted_address)
+
+   })
+  },[])
+
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div>
       <Container>
         <Row>
@@ -47,17 +80,17 @@ const GymDetails = ({ gymId }) => {
               <Col xs={3}>
                 <img
                   className="mb-3 rounded-lg"
-                  src="https://imgs.search.brave.com/R9sf8the75vTbB3abeP1CSrqkcl79GmprS9UBMX0wD4/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNzc5/MzE2NDUvcGhvdG8v/d29tYW4tYW5kLXlv/dW5nLWdpcmwtb3V0/ZG9vcnMtd2l0aC1w/ZW9wbGUtaW4tYmFj/a2dyb3VuZC5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9bG5V/UWZnTHlVZ21HUHR6/NkZzYXRIWVNub3dZ/Xzl3YmRQUXVYZmI4/WDNxQT0"
+                  src={gymDetailsData?.data.message.images[1].imageUrl}
                   alt=""
                 />
                 <img
                   className="mb-3 rounded-lg"
-                  src="https://imgs.search.brave.com/R9sf8the75vTbB3abeP1CSrqkcl79GmprS9UBMX0wD4/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNzc5/MzE2NDUvcGhvdG8v/d29tYW4tYW5kLXlv/dW5nLWdpcmwtb3V0/ZG9vcnMtd2l0aC1w/ZW9wbGUtaW4tYmFj/a2dyb3VuZC5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9bG5V/UWZnTHlVZ21HUHR6/NkZzYXRIWVNub3dZ/Xzl3YmRQUXVYZmI4/WDNxQT0"
+                  src={gymDetailsData?.data.message.images[2].imageUrl}
                   alt=""
                 />
                 <img
                   className="mb-3 rounded-lg"
-                  src="https://imgs.search.brave.com/R9sf8the75vTbB3abeP1CSrqkcl79GmprS9UBMX0wD4/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNzc5/MzE2NDUvcGhvdG8v/d29tYW4tYW5kLXlv/dW5nLWdpcmwtb3V0/ZG9vcnMtd2l0aC1w/ZW9wbGUtaW4tYmFj/a2dyb3VuZC5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9bG5V/UWZnTHlVZ21HUHR6/NkZzYXRIWVNub3dZ/Xzl3YmRQUXVYZmI4/WDNxQT0"
+                  src={gymDetailsData?.data.message.images[3].imageUrl}
                   alt=""
                 />
               </Col>
@@ -65,7 +98,7 @@ const GymDetails = ({ gymId }) => {
               <Col xs={9}>
                 <img
                   className="rounded-lg"
-                  src="https://imgs.search.brave.com/R9sf8the75vTbB3abeP1CSrqkcl79GmprS9UBMX0wD4/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNzc5/MzE2NDUvcGhvdG8v/d29tYW4tYW5kLXlv/dW5nLWdpcmwtb3V0/ZG9vcnMtd2l0aC1w/ZW9wbGUtaW4tYmFj/a2dyb3VuZC5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9bG5V/UWZnTHlVZ21HUHR6/NkZzYXRIWVNub3dZ/Xzl3YmRQUXVYZmI4/WDNxQT0"
+                  src={gymDetailsData?.data.message.images[0].imageUrl}
                   alt=""
                 />
               </Col>
@@ -73,7 +106,9 @@ const GymDetails = ({ gymId }) => {
           </Col>
 
           <Col xs={6}>
-            <h1 className="text-2xl font-serif">Radisson blu fitness centre</h1>
+            <h1 className="text-2xl font-serif">
+              {gymDetailsData?.data.message.gymName}
+            </h1>
             <Box
               sx={{
                 width: 200,
@@ -102,13 +137,13 @@ const GymDetails = ({ gymId }) => {
             </p>
 
             <p className="text-white text-sm font-mono my-1">
-              <LocationOnIcon /> kakkancheri bustopinte aduthu
+              <LocationOnIcon /> {streetAddress}
             </p>
             <p className="text-white text-sm font-mono my-1">
-              <MailOutlineIcon /> 6w0bS@example.com
+              <MailOutlineIcon /> {gymDetailsData?.data.message?.email}
             </p>
             <p className="text-white text-sm font-mono my-1">
-              <CallOutlinedIcon /> 0712345678
+              <CallOutlinedIcon /> {gymDetailsData?.data.message?.contactNumber}
             </p>
 
             <ToggleButtonGroup
@@ -153,26 +188,30 @@ const GymDetails = ({ gymId }) => {
 
         <Row>
           <Col>
-            <p onClick={()=>setCurrentView('description')} className="mt-12 text-center text-xl cursor-pointer">
+            <p
+              onClick={() => setCurrentView("description")}
+              className="mt-12 text-center text-xl cursor-pointer"
+            >
               Gym description
             </p>
             {currentView === "description" ? (
               <div className="w-full h-1 bg-white mt-1 mb-5"></div>
-              
-            ):(
-            <div className="w-full h-1 bg-gray-600 mt-1 mb-5"></div>
-              
+            ) : (
+              <div className="w-full h-1 bg-gray-600 mt-1 mb-5"></div>
             )}
           </Col>
 
           <Col>
-            <p  onClick={() => setCurrentView('reviews')} className="mt-12 text-center text-xl cursor-pointer">Reviews</p>
+            <p
+              onClick={() => setCurrentView("reviews")}
+              className="mt-12 text-center text-xl cursor-pointer"
+            >
+              Reviews
+            </p>
             {currentView === "reviews" ? (
               <div className="w-full h-1 bg-white mt-1 mb-5"></div>
-              
-            ):(
-            <div className="w-full h-1 bg-gray-600 mt-1 mb-5"></div>
-              
+            ) : (
+              <div className="w-full h-1 bg-gray-600 mt-1 mb-5"></div>
             )}
           </Col>
         </Row>
@@ -183,20 +222,20 @@ const GymDetails = ({ gymId }) => {
               sx={{ display: "flex", flexDirection: "column", width: "100%" }}
             >
               {currentView === "description" ? (
-                    <div className="border border-gray-400 p-2 rounded-lg">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Omnis
-                    alias animi sit maxime similique sapiente, doloremque velit id
-                    facilis tempore vitae veniam distinctio laboriosam praesentium
-                    impedit. Vitae aperiam laborum tenetur.
-                  </div>
-              ):(
                 <div className="border border-gray-400 p-2 rounded-lg">
-                 
-                iam review aaneu Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa facere mollitia recusandae laudantium tempore libero assumenda perferendis, inventore quidem labore doloremque, ab fuga dignissimos, amet consequatur asperiores voluptatum porro enim?
+                  <p className="text-md text-gray-400 mb-2 ">Gym information</p>
+                  {gymDetailsData?.data.message.description}
+                </div>
+              ) : (
+                <div className="border border-gray-400 p-2 rounded-lg">
+                  <p className="text-md text-gray-400 mb-2 ">Gym ratings</p>
+                  iam review aaneu Lorem ipsum dolor sit amet consectetur
+                  adipisicing elit. Ipsa facere mollitia recusandae laudantium
+                  tempore libero assumenda perferendis, inventore quidem labore
+                  doloremque, ab fuga dignissimos, amet consequatur asperiores
+                  voluptatum porro enim?
                 </div>
               )}
-          
-          
             </Box>
           </Col>
         </Row>

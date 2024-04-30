@@ -1,6 +1,7 @@
 import Api from "../services/axios";
 import userRoutes from "@/services/endpoints/userEndPoints";
 import errorHandle from "./error";
+import { QueryFunctionContext } from "@tanstack/react-query";
 
 interface userFormData {
     username?: string,
@@ -79,5 +80,23 @@ export const fetchGymList= async () => {
         const err: Error = error as Error;
         return errorHandle(err);   
     }
-   
+
 }
+ export const fetchGymDetails= async ({queryKey}: QueryFunctionContext<[string, string | null]>) => {
+        try {
+
+           console.log('iam queryKey',queryKey)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+           const [_, id] = queryKey;
+           if(id){
+
+               const response = await Api.get(userRoutes.fetchGymDetails(id));
+               return response
+           }
+        } catch (error) {
+            const err: Error = error as Error;
+            return errorHandle(err); 
+        }
+    }
+   
+
