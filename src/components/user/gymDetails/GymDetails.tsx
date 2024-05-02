@@ -11,6 +11,7 @@ import { fetchGymDetails } from "@/api/user";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "@/components/common/Loader";
 import axios from "axios";
+import CalenderDatePicker from "./CalenderDatePicker";
 
 const GymDetails = () => {
   // const {isLoading,data: gymData,refetch}=useQuery({queryKey:['gymDetails'],queryFn:()=>fetchGymDetails(gymId)})
@@ -18,7 +19,6 @@ const GymDetails = () => {
   const queryParams = new URLSearchParams(location.search);
   const gymId = queryParams.get("id");
 
-  console.log("gymId", gymId);
 
   const {
     isLoading,
@@ -69,6 +69,14 @@ const GymDetails = () => {
    })
   },[])
 
+
+  const [mainImageIndex, setMainImageIndex] = useState(0);
+
+  // Function to handle image click
+  const handleImageClick = (index) => {
+     setMainImageIndex(index);
+  };
+
   return isLoading ? (
     <Loader />
   ) : (
@@ -77,35 +85,34 @@ const GymDetails = () => {
         <Row>
           <Col xs={6}>
             <Row>
-              <Col xs={3}>
-                <img
-                  className="mb-3 rounded-lg"
-                  src={gymDetailsData?.data.message.images[1].imageUrl}
-                  alt=""
-                />
-                <img
-                  className="mb-3 rounded-lg"
-                  src={gymDetailsData?.data.message.images[2].imageUrl}
-                  alt=""
-                />
-                <img
-                  className="mb-3 rounded-lg"
-                  src={gymDetailsData?.data.message.images[3].imageUrl}
-                  alt=""
-                />
+              <Col  xs={3}>
+        
+            {gymDetailsData?.data.message.images.map((image, index) => (
+            (
+            <img
+              key={index}
+              className="mb-3 rounded-lg"
+              src={image.imageUrl}
+              alt=""
+              onClick={() => handleImageClick(index)}
+            />
+           )
+           ))}
               </Col>
 
-              <Col xs={9}>
+              <Col className="mb-3" xs={9}>
                 <img
-                  className="rounded-lg"
-                  src={gymDetailsData?.data.message.images[0].imageUrl}
+                  className="rounded-lg w-full h-full object-cover "
+                  src={gymDetailsData?.data.message.images[mainImageIndex].imageUrl}
                   alt=""
+            
                 />
               </Col>
             </Row>
           </Col>
 
           <Col xs={6}>
+            
             <h1 className="text-2xl font-serif">
               {gymDetailsData?.data.message.gymName}
             </h1>
@@ -129,26 +136,26 @@ const GymDetails = () => {
               {value !== null && <Box sx={{ ml: 2 }}>{labels[value]}</Box>}
             </Box>
 
-            <p className="my-3 text-xs">
+            <p className="my-3 text-sm">
               {" "}
               This fitness membership is perfect for any occasion. Crafted to
               offer superior comfort and style, it's designed to keep you
               motivated and fit.
             </p>
 
-            <p className="text-white text-sm font-mono my-1">
+            <p className="text-white text-sm font-mono my-2">
               <LocationOnIcon /> {streetAddress}
             </p>
-            <p className="text-white text-sm font-mono my-1">
+            <p className="text-white text-sm font-mono my-2">
               <MailOutlineIcon /> {gymDetailsData?.data.message?.email}
             </p>
-            <p className="text-white text-sm font-mono my-1">
+            <p className="text-white text-sm font-mono my-2">
               <CallOutlinedIcon /> {gymDetailsData?.data.message?.contactNumber}
             </p>
 
-            <ToggleButtonGroup
+            <ToggleButtonGroup 
               color="success"
-              sx={{ backgroundColor: "white" }}
+              sx={{ backgroundColor: "white" , my:3}}
               value={alignment}
               exclusive
               onChange={handleChange}
@@ -156,25 +163,28 @@ const GymDetails = () => {
             >
               <ToggleButton
                 sx={{ backgroundColor: "gray" }}
-                value="quarterlyFee"
+                value="Daily"
               >
-                Quarterly
+                Daily
               </ToggleButton>
-              <ToggleButton sx={{ backgroundColor: "gray" }} value="monthlyFee">
+
+              <ToggleButton sx={{ backgroundColor: "gray" }} value="Monthly">
                 Monthly
               </ToggleButton>
-              <ToggleButton sx={{ backgroundColor: "gray" }} value="yearlyFee">
+              <ToggleButton sx={{ backgroundColor: "gray" }} value="Yearly">
                 Yearly
               </ToggleButton>
             </ToggleButtonGroup>
 
+
             <div>
+
               <Button
                 sx={{
                   color: "white",
                   backgroundColor: "green",
                   borderRadius: "10px",
-                  my: 1,
+                  my:1,
                   "&:hover": {
                     backgroundColor: "#4caf50",
                   },
@@ -184,6 +194,8 @@ const GymDetails = () => {
               </Button>
             </div>
           </Col>
+<CalenderDatePicker/>
+
         </Row>
 
         <Row>

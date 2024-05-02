@@ -15,22 +15,11 @@ const UserRoutes = () => {
       <Route path="login" element={<LoginPage />} />
       <Route path="user-login" element={<UserLoginPage />} />
       <Route path="user-register" element={<UserRegisterPage />} />
-
-
-
-
-
-      <Route element={<Footer/>}>
-        
-              <Route path="" element={<UserHomePage />} />
-              <Route path="book-gym" element={<GymListPage/>}/>
-              <Route path="gym-details" element={<GymDetailsPage/>}/>
-
-
+      <Route element={<Footer />}>
+        <Route path="" element={<UserHomePage />} />
+        <Route path="book-gym" element={<GymListPage />} />
+        <Route path="gym-details" element={<GymDetailsPage />} />
       </Route>
-     
-
-     
 
       <Route element={<UserProtect />}></Route>
     </Routes>

@@ -9,7 +9,7 @@ import { gymLogin } from "@/api/gym";
 import { useDispatch, useSelector } from "react-redux";
 import { setGymLogin } from "@/redux/slices/authSlice";
 
-const GymLogin = () => {
+const GymLogin = ({showForgotEmail}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -116,9 +116,9 @@ const GymLogin = () => {
                         Password{" "}
                       </label>
                       <a
-                        href="#"
+                        onClick={showForgotEmail}
                         title=""
-                        className="text-sm font-semibold text-black hover:underline"
+                        className="text-sm font-semibold text-blue-500 hover:underline"
                       >
                         {" "}
                         Forgot password?{" "}
@@ -156,9 +156,9 @@ const GymLogin = () => {
               </div>
             </div>
           </div>
-          <div className="h-full w-full">
+          <div className="h-full w-full flex justify-center items-center">
             <img
-              className="mx-auto h-full w-full rounded-md object-cover"
+              className="mx-auto h-3/4 w-3/4 rounded-md object-cover"
               src={gymlogin}
               alt=""
             />

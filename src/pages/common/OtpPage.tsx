@@ -1,5 +1,5 @@
-import { gymOtpResend, gymOtpVerifyApi } from "@/api/gym";
-import { userOtpResend, userOtpVerify } from "@/api/user";
+import { gResendForgotOtp, gVerifyForgotPassword, gymOtpResend, gymOtpVerifyApi } from "@/api/gym";
+import { resendForgotOtp, userOtpResend, userOtpVerify, verifyForgotPassword } from "@/api/user";
 import React, { ChangeEvent, FormEvent, useEffect, useRef, useState,KeyboardEvent } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ interface UserType {
   userType?: string;
   closeOtp: () => void;
 }
-const OtpPage: React.FC<UserType> = ({ userType, closeOtp }) => {
+const OtpPage: React.FC<UserType> = ({ userType, closeOtp,showChangePassword }) => {
 
   const navigate=useNavigate()
   const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
@@ -32,7 +32,26 @@ const OtpPage: React.FC<UserType> = ({ userType, closeOtp }) => {
          toast.success(response?.data.message)
          setTimer(120)
       }
- }
+    }
+
+    if(userType === 'user-forgot-password'){
+
+      const response=await resendForgotOtp()
+
+      if(response){
+         toast.success(response?.data.message)
+         setTimer(120)
+      }
+    }
+    if(userType === 'gym-forgot-password'){
+
+      const response=await gResendForgotOtp()
+
+      if(response){
+         toast.success(response?.data.message)
+         setTimer(120)
+      }
+    }
 
   }
 
@@ -74,6 +93,7 @@ const OtpPage: React.FC<UserType> = ({ userType, closeOtp }) => {
     }
   };
 
+
   const submitHandler=async (e: FormEvent<HTMLFormElement>)=>{
 
     e.preventDefault()
@@ -105,10 +125,29 @@ const OtpPage: React.FC<UserType> = ({ userType, closeOtp }) => {
 
   }
 
+  if(userType === "user-forgot-password"){
 
+   const response = await verifyForgotPassword(parseInt(otpValue));
 
+   if(response){
+    toast.success(response?.data.message)
+    closeOtp()
+    showChangePassword()
+   }
 
   }
+  if(userType === "gym-forgot-password"){
+
+   const response = await gVerifyForgotPassword(parseInt(otpValue));
+
+   if(response){
+    toast.success(response?.data.message)
+    closeOtp()
+    showChangePassword()
+   }
+
+  }
+}
 
   const minutes = Math.floor(timer / 60);
   const seconds = timer % 60;
@@ -182,4 +221,4 @@ const OtpPage: React.FC<UserType> = ({ userType, closeOtp }) => {
   );
 };
 
-export default OtpPage;
+export default OtpPage

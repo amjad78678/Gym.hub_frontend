@@ -27,7 +27,7 @@ const GymList = () => {
 
   return (
     <div className="text-white min-h-screen">
-      <Container fluid>
+      <Container >
         <Row>
           <Col xs={3}>
             <div>
@@ -93,7 +93,7 @@ const GymList = () => {
             className=" rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
           >
             {gymList?.map((gym) => {
-              return <GymCard key={gym._id} gym={gym} />;
+              return !gym.isDeleted && <GymCard key={gym._id} gym={gym} />;
             })}
           </Col>
         </Row>

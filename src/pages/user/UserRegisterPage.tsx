@@ -3,6 +3,7 @@ import UserRegister from "../../components/user/UserRegister";
 import ReactDOM from "react-dom";
 import OtpPage from "../common/OtpPage";
 import Backdrop from "../common/Backdrop";
+import Navbar from "@/components/common/Navbar";
 
 
 const UserRegisterPage = () => {
@@ -16,6 +17,7 @@ const UserRegisterPage = () => {
 
   return (
     <>
+    <Navbar/>
       <div className="relative z-0">
         <UserRegister setShowOtp={otpHandler} />
       </div>

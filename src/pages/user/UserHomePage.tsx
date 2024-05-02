@@ -4,7 +4,7 @@ import React from 'react'
 
 const UserHomePage = () => {
   return (
-    <div className='bg-black'>
+    <div className='bg-black text-white'>
   
         <Navbar />
 

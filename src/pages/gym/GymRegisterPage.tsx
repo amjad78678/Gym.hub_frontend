@@ -3,6 +3,7 @@ import GymRegister from '../../components/gym/gymSignup/GymRegister'
 import ReactDOM from "react-dom";
 import OtpPage from "../common/OtpPage";
 import Backdrop from '../common/Backdrop';
+import Navbar from '@/components/common/Navbar';
 
 
 
@@ -14,6 +15,7 @@ const GymRegisterPage = () => {
   };
   return (
     <>
+    <Navbar/>
     <div className='bg-black'>
         <GymRegister setShowOtp={otpHandler}/>
     </div>

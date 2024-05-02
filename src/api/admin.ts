@@ -1,4 +1,3 @@
-import { adminLogoout } from './admin';
 import Api from "@/services/axios";
 import errorHandle from "./error";
 import adminRoutes from "@/services/endpoints/adminEndPoints";

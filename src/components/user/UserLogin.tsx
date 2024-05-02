@@ -17,7 +17,7 @@ const G_PASSWORD = import.meta.env.VITE_GOOGLE_PASSWORD;
 //     uLoggedIn: boolean;
 //   };
 // }
-const UserLogin: React.FC = () => {
+const UserLogin: React.FC = ({showForgotEmail}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -111,12 +111,12 @@ const UserLogin: React.FC = () => {
   });
 
   return (
-    <div>
+    <div className="h-3/4">
       <section>
         <div className="grid grid-cols-1 lg:grid-cols-2 text-white bg-black">
           <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
-            <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
-              <h1 className="text-xl py-4">
+            <div className="xl:mx-auto mb-36 xl:w-full xl:max-w-sm 2xl:max-w-md">
+              <h1 className="text-xl pb-4">
                 Welcome back! Please enter your details.
               </h1>
 
@@ -124,7 +124,7 @@ const UserLogin: React.FC = () => {
                 Sign in
               </h2>
 
-              <form onSubmit={submitHandler} className="mt-8">
+              <form onSubmit={submitHandler}>
                 <div className="space-y-5">
                   <div>
                     <label htmlFor="" className="text-base font-medium ">
@@ -148,10 +148,10 @@ const UserLogin: React.FC = () => {
                         {" "}
                         Password{" "}
                       </label>
-                      <a
-                        href="#"
+                      <a onClick={()=>showForgotEmail()}
+                       
                         title=""
-                        className="text-sm font-semibold text-black hover:underline"
+                        className="text-sm font-semibold text-blue-500 hover:underline"
                       >
                         {" "}
                         Forgot password?{" "}
@@ -223,9 +223,9 @@ const UserLogin: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="h-full w-full">
+          <div className="flex justify-center items-center">
             <img
-              className="mx-auto h-full w-full rounded-md object-cover"
+              className="mx-auto h-3.5/4 w-3.5/4  rounded-md object-cover"
               src={userlogin}
               alt=""
             />

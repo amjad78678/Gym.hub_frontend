@@ -219,7 +219,7 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
                         className="text-base font-medium inline"
                       >
                         Age
-                      </label>
+                      </label> 
                       <div className="">
                         <input
                           className="h-10 rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"

@@ -50,18 +50,22 @@ const GymSubscription = () => {
 
 
   return (
-    <div className="bg-black min-h-screen">
+    <div className="bg-black">
+
       <Container className="text-white">
+      <p className="text-white text-4xl font-bold text-center py-12">Manage Subscriptions</p>
+
         <Box
           sx={{
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
+              
+            height: "50vh",
           }}
         >
+          
           <TableContainer
-            className="mx-auto"
+            className="absolute mx-auto"
             sx={{ maxHeight: "500px", maxWidth: "70%" }}
             component={Paper}
           >

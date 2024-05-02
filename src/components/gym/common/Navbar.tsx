@@ -29,7 +29,7 @@ const dispatch=useDispatch()
 
 
   return (
-  <div className=" bg-opacity-30 bg-black text-white right-0 left-0 top-0 z-50 px-4 md:pl-14">
+  <div className="bg-opacity-30 bg-black text-white right-0 left-0 top-0 z-50 px-4 md:pl-14">
     <div>
         <div className="flex items-center justify-between py-2.5">
             <div>

@@ -172,10 +172,10 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
       details?.businessId?.length > 0 &&
         details?.password?.length > 0 &&
         details?.confirmPassword?.length > 0 &&
+        details?.description?.length > 0 &&
         details.quarterlyFee > 0 &&
         details.monthlyFee > 0 &&
-        details.yearlyFee > 0 &&
-        details.description?.length > 0)
+        details.yearlyFee > 0 )
     ) {
       if (!steps[1].completed) setComplete(1, true);
     } else {

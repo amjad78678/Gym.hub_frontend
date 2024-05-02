@@ -9,11 +9,11 @@ const AdminLoginPage = () => {
 
   useEffect(() => {
     if (aLoggedIn) {
-      navigate("/admin/dashboard");
+      navigate("/admin/dashboard"); 
     }
   }, [aLoggedIn]);
 
-  return (
+  return ( 
     <div>
       <AdminLogin />
     </div>
