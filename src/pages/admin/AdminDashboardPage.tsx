@@ -1,7 +1,12 @@
 import Dashboard from '@/components/admin/dashboard/Dashboard'
-import React from 'react'
+import React, { useEffect } from 'react'
 
-const AdminDashboardPage = () => {
+const AdminDashboardPage = ({setSelectedLink,link}) => {
+
+  useEffect(()=>{
+    setSelectedLink(link)
+  },[])
+  
   return (
     <div>
   

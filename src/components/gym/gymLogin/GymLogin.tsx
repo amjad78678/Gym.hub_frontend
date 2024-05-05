@@ -52,17 +52,16 @@ const GymLogin = ({showForgotEmail}) => {
   const { status, mutate: gymLoginMutate } = useMutation({
     mutationFn: gymLogin,
     onSuccess: (res) => {
-      console.log(res.data.message);
 
       if (res) {
-        toast.success(res.data.message);
+      toast.success(res.data.message);
         navigate("/gym/dashboard");
-
         const data = {
           name: res.data.gym.gymName,
+          id: res.data.gym._id,
           location: res.data.gym.location,
+          token: res.data.token,
         };
-
         dispatch(setGymLogin(data));
       }
     },

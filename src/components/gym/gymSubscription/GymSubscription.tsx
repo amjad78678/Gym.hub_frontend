@@ -11,10 +11,12 @@ import { Box, Button } from "@mui/material";
 import ModalSubscriptionEdit from "./ModalSubscriptionEdit";
 import { useQuery } from "@tanstack/react-query";
 import { fetchGymSubscription } from "@/api/gym";
+import { useDispatch, useSelector } from "react-redux";
 
 const GymSubscription = () => {
   const [open, setOpen] = useState(false);
   const [editingSubscription, setEditingSubscription] = useState<string[] | null>(null);
+  const {gymDetails}=useSelector((state)=>state.auth)
 
   const functionopenpopup = (subscriptionDetails: string[]|null) => {
     setEditingSubscription(subscriptionDetails);
@@ -27,20 +29,22 @@ const GymSubscription = () => {
     refetch,
   } = useQuery({
     queryKey: ["gymSubscription"],
-    queryFn: fetchGymSubscription,
+    queryFn: fetchGymSubscription(gymDetails.id),
   });
 
   const [subs,setSubs]=useState([])
+  console.log('iam data',gymSubscriptionData)
 
 
 
+  
   useEffect(() => {
     if (gymSubscriptionData) {
-       // Assuming gymSubscriptionData.data[0].subscription is the correct path to your subscription data
+      
        setSubs(gymSubscriptionData.data[0].subscriptions);
     }
   
-   }, [gymSubscriptionData]); // Depend on gymSubscriptionData to trigger the effect when it changes
+   }, [gymSubscriptionData]); 
    
 
    const subsArray = Object.entries(subs).map(([key, value]) => ({

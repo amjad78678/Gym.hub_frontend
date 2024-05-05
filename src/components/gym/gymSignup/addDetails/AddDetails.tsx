@@ -15,7 +15,7 @@ const AddDetails = () => {
     city: "",
     pincode: "",
     businessId: "",
-    quarterlyFee: "",
+    dailyFee: "",
     monthlyFee: "",
     yearlyFee: "",
     description: "",
@@ -277,26 +277,26 @@ const AddDetails = () => {
 
   
   <div className="">
-                  <h1>Quarterly fee</h1>
+                  <h1>Daily fee</h1>
                   <input
                     type="text"
-                    name="quarterlyFee"
+                    name="dailyFee"
                     className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
                     onChange={(e) => {
                       handleChange(e);
 
-                      if (!errors.quarterlyFee) {
+                      if (!errors.dailyFee) {
                         dispatch(
-                          setDetails({ ...values, quarterlyFee: e.target.value })
+                          setDetails({ ...values, dailyFee: e.target.value })
                         );
                       }
                     }}
                     autoComplete="off"
                     onBlur={handleBlur}
-                    value={values.quarterlyFee}
+                    value={values.dailyFee}
                   />
-                  {errors.quarterlyFee && (
-                    <small className="text-red-500">{errors.quarterlyFee}</small>
+                  {errors.dailyFee && (
+                    <small className="text-red-500">{errors.dailyFee}</small>
                   )}
                 </div>
 

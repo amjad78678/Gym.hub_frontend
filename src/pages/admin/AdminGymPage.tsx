@@ -1,9 +1,12 @@
 import Gym from '@/components/admin/gym/Gym'
-import React from 'react'
+import React, { useEffect } from 'react'
 
-const AdminGymPage = () => {
+const AdminGymPage = ({setSelectedLink,link}) => {
+  useEffect(()=>{
+    setSelectedLink(link)
+  },[])
   return (
-    <div><Gym/></div>
+    <div className='bg-black'><Gym/></div>
   )
 }
 

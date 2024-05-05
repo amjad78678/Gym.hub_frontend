@@ -13,7 +13,7 @@ import Loader from "@/components/common/Loader";
 import axios from "axios";
 import CalenderDatePicker from "./CalenderDatePicker";
 
-const GymDetails = () => {
+const GymDetails = ({ showCalender}) => {
   // const {isLoading,data: gymData,refetch}=useQuery({queryKey:['gymDetails'],queryFn:()=>fetchGymDetails(gymId)})
 
   const queryParams = new URLSearchParams(location.search);
@@ -76,6 +76,13 @@ const GymDetails = () => {
   const handleImageClick = (index) => {
      setMainImageIndex(index);
   };
+
+  const handlePurchase = () =>{
+
+    if(alignment === "Daily"){
+      showCalender()
+    }
+  }
 
   return isLoading ? (
     <Loader />
@@ -177,9 +184,11 @@ const GymDetails = () => {
             </ToggleButtonGroup>
 
 
+
             <div>
 
               <Button
+              onClick={handlePurchase}
                 sx={{
                   color: "white",
                   backgroundColor: "green",
@@ -192,9 +201,10 @@ const GymDetails = () => {
               >
                 Purchase now
               </Button>
+
+
             </div>
           </Col>
-<CalenderDatePicker/>
 
         </Row>
 

@@ -25,7 +25,7 @@ export const GymSignupValidation = Yup.object({
   confirmPassword: Yup.string()
   .required("Confirm password is required")
   .oneOf([Yup.ref("password")], "Passwords do not match"),
-  quarterlyFee: Yup.string()
+  dailyFee: Yup.string()
     .required("Fee is required")
     .matches(/^[0-9]+$/, "Invalid quarterly fee"),
   monthlyFee: Yup.string()

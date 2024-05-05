@@ -150,25 +150,26 @@ const Gym = () => {
 
 
   return (
-    <div className="mt-4 mx-2">
+    <div className="mt-4 mx-2 bg-black">
       <div className="w-full overflow-hidden rounded-lg shadow-xs">
         <div className="w-full overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+              <tr className="text-xs font-semibold tracking-wide text-left text-gray-400 uppercase border-b dark:border-gray-700  dark:text-gray-400 dark:bg-gray-800">
                 <th className="px-4 py-3">Image</th>
                 <th className="px-4 py-3">Gym name</th>
+                <th className="px-4 py-3">Location</th>
                 <th className="px-4 py-3">Details</th>
                 <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3 ">Action</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+            <tbody className=" divide-y dark:divide-gray-700 ">
               {/* Repeat the following block for each row */}
 
               {gymList.map((gym: any) => ( !gym.isDeleted &&
 
-                <tr className="bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400">
+                <tr className=" dark:bg-gray-800  dark:hover:bg-gray-900 text-white">
                   <td className="px-4 py-3">
                     <div className="flex items-center">
                       <div className="relative hidden w-24 h-24 mr-3 rounded-full md:block">
@@ -187,6 +188,7 @@ const Gym = () => {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-sm">{gym.gymName}</td>
+                  <td className="px-4 py-3 text-sm">{gym.state}, {gym.city}</td>
                   <td className="px-4 py-3 text-sm text-blue-600">
                     View details
                   </td>
@@ -265,7 +267,7 @@ const Gym = () => {
             </tbody>
           </table>
         </div>
-        <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+        <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-400 uppercase border-t dark:border-gray-700  sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
           <span className="flex items-center col-span-3">
             {" "}
             Showing 21-30 of 100{" "}

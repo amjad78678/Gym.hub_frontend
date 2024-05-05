@@ -8,12 +8,12 @@ import {
   Popper,
   Paper,
   ClickAwayListener,
+  Button,
 } from "@mui/material";
 import "./datePicker.css";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 import { useDispatch, useSelector } from "react-redux";
 import { setDateRange } from "@/redux/slices/dateRangeSlice"; // Corrected import
 
@@ -23,9 +23,6 @@ const CalenderDatePicker: React.FC<{
 }> = ({ isOpen, onToggle }) => {
   const dispatch = useDispatch();
 
-
-
-
   const [dateRange, setDateRangeState] = useState([
     {
       startDate: dayjs().startOf("day").toDate(), // Ensure this is a JavaScript Date object
@@ -34,13 +31,8 @@ const CalenderDatePicker: React.FC<{
     },
   ]);
 
-  const startDate = useSelector((state) => dayjs(state.dateRange.startDate));
-  const endDate = useSelector((state) => dayjs(state.dateRange.endDate));
-
-  useEffect(() => {
-    // This effect runs when the component mounts and whenever startDate or endDate changes
-    // You can use this to update your local state if needed
-  }, [startDate, endDate]);
+  const startDate = useSelector((state) => state.dateRange.startDate);
+  const endDate = useSelector((state) => state.dateRange.endDate);
 
   const handleSelect = (ranges) => {
     const newDateRange = [
@@ -50,10 +42,18 @@ const CalenderDatePicker: React.FC<{
       },
     ];
 
-    console.log("iamnew date range", newDateRange);
+    console.log("newdate", newDateRange);
 
-    setDateRangeState(newDateRange); // Update local state
-    dispatch(setDateRange(newDateRange)); // Dispatch the action to update Redux store
+    const startDate = dayjs(newDateRange[0].startDate);
+    const endDate = dayjs(newDateRange[0].endDate);
+
+    const obj = {
+      startDate,
+      endDate,
+    };
+
+    setDateRangeState(newDateRange);
+    dispatch(setDateRange(obj));
   };
 
   const handleClickAway = () => {
@@ -65,9 +65,7 @@ const CalenderDatePicker: React.FC<{
   return (
     <Box
       display="flex"
-      alignItems="center"
       sx={{
-        ml: 25,
         "@media (max-width: 976px)": {
           marginTop: "0px",
           marginLeft: "0px",
@@ -82,7 +80,7 @@ const CalenderDatePicker: React.FC<{
         label="Select Date"
         onClick={onToggle}
         contentEditable={false}
-        value={`${startDate.format("YYYY-MM-DD")} ────── ${endDate.format(
+        value={`${startDate?.format("YYYY-MM-DD")} ────── ${endDate?.format(
           "YYYY-MM-DD"
         )}`}
       />
@@ -91,18 +89,36 @@ const CalenderDatePicker: React.FC<{
         open={true}
         anchorEl={null}
         placement="bottom-start"
-        style={{ zIndex: 1000, top: "15%", left: "5%" }}
+        style={{ zIndex: 1000, top: "15%", left: "50%" }}
       >
         <ClickAwayListener onClickAway={handleClickAway}>
-          <Paper>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateRangePicker
-                ranges={dateRange}
-                minDate={dayjs().startOf("day").toDate()}
-                onChange={handleSelect}
-              />
-            </LocalizationProvider>
-          </Paper>
+          <>
+            <Paper>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateRangePicker
+                  ranges={dateRange}
+                  minDate={dayjs().startOf("day").toDate()}
+                  onChange={handleSelect}
+                />
+              </LocalizationProvider>
+              <div className="flex justify-center">
+                <Button
+                  onClick={() => onToggle()}
+                  sx={{
+                    my: 1,
+                    py: 1,
+                    px: 2,
+                    color: "white",
+                    backgroundColor: "black",
+                    borderRadius: "10px",
+                    "&:hover": { backgroundColor: "#4caf50", color: "white" },
+                  }}
+                >
+                  Purchase
+                </Button>
+              </div>
+            </Paper>
+          </>
         </ClickAwayListener>
       </Popper>
     </Box>

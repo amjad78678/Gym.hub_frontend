@@ -3,6 +3,8 @@ import Header from "@/components/admin/common/Header";
 import AdminDashboardPage from "@/pages/admin/AdminDashboardPage";
 import AdminGymPage from "@/pages/admin/AdminGymPage";
 import AdminLoginPage from "@/pages/admin/AdminLoginPage";
+import AdminPage from "@/pages/admin/adminMain/AdminPage";
+import AdminUsersPage from "@/pages/admin/AdminUsersPage";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
@@ -11,10 +13,7 @@ const AdminRoutes = () => {
     <Routes>
       <Route path="" element={<AdminLoginPage />} />
       <Route element={<AdminProtect />}>
-        <Route path="" element={<Header />}>
-          <Route path="dashboard" element={<AdminDashboardPage />} />
-          <Route path="gyms" element={<AdminGymPage />} />
-        </Route>
+        <Route path="dashboard/*" element={<AdminPage />} />
       </Route>
     </Routes>
   );

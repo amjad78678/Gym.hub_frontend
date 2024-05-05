@@ -81,3 +81,27 @@ export const adminLogout = async () => {
         return errorHandle(err);  
     }
 }
+
+export const fetchUsers = async () => {
+    try {
+
+        const response= await Api.get(adminRoutes.fetchUsers)
+        return response
+        
+    } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err); 
+    }
+}
+export const updateUserAction = async ({id,isBlocked,isDeleted}) => {
+    try {
+        
+        console.log('insideADmin',id,isBlocked,isDeleted)
+
+        const response = await Api.patch(adminRoutes.updateUser(id),{id,isBlocked,isDeleted});
+        return response;
+    } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err);
+    }
+}

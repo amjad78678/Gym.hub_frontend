@@ -36,7 +36,7 @@ interface GymDetails {
   city: string;
   pincode: string;
   businessId: string;
-  quarterlyFee: number;
+  dailyFee: number;
   monthlyFee: number;
   yearlyFee: number;
   description: string;
@@ -92,9 +92,9 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
       city: details.city,
       pincode: details.pincode,
       subscriptions: {
-        quarterlyFee: details.quarterlyFee,
-        monthlyFee: details.monthlyFee,
-        yearlyFee: details.yearlyFee,
+        Daily: details.dailyFee,
+        Monthly: details.monthlyFee,
+        Yearly: details.yearlyFee,
       },
       description: details.description,
       businessId: details.businessId,
@@ -173,7 +173,7 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
         details?.password?.length > 0 &&
         details?.confirmPassword?.length > 0 &&
         details?.description?.length > 0 &&
-        details.quarterlyFee > 0 &&
+        details.dailyFee > 0 &&
         details.monthlyFee > 0 &&
         details.yearlyFee > 0 )
     ) {

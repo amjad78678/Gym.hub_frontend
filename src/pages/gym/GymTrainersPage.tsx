@@ -1,15 +1,15 @@
-import Navbar from '@/components/gym/common/Navbar'
-import React from 'react'
+import Navbar from "@/components/gym/common/Navbar";
+import GymTrainer from "@/components/gym/gymTrainer/GymTrainer";
+import React from "react";
 
 const GymTrainersPage = () => {
   return (
     <div>
-    <Navbar/>
-    
-    
-    <div>GymTrainersPage</div>
-    </div>
-  )
-}
+      <Navbar />
 
-export default GymTrainersPage
+      <GymTrainer />
+    </div>
+  );
+};
+
+export default GymTrainersPage;

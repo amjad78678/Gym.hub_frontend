@@ -29,13 +29,17 @@ interface gymRegisterData {
   }[];
 }
 
+
+
+
+
 export const gymRegister = async (gymData: gymRegisterData) => {
   try {
     const response = await Api.post(gymRoutes.gymRegister, gymData);
     return response;
   } catch (error) {
     const err: Error = error as Error;
-    return errorHandle(err);
+    return errorHandle(err);  
   }
 };
 
@@ -98,10 +102,9 @@ export const editGymSubscription = async (data: iEditSubscription)=>{
   }
 }
 
-export const fetchGymSubscription = async () => {
+export const fetchGymSubscription = async (gymId: string) => {
   try {
-    
-    const response= await Api.get(gymRoutes.fetchGymSubscription)
+    const response= await Api.get(gymRoutes.fetchGymSubscription(gymId))
     return response
   } catch (error) {
     const err: Error = error as Error;
