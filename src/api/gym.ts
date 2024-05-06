@@ -30,6 +30,21 @@ interface gymRegisterData {
 }
 
 
+interface iTrainer {
+    
+  name?: string,
+  gender?: string,
+  age?: number,
+  experience?: number,
+  achievements?: string,
+  monthlyFee?: number,
+  yearlyFee?: number,
+  email?: string,
+  password?: string,
+  isBlocked: boolean,
+  isDeleted: boolean,
+  _id?: any,
+}
 
 
 
@@ -102,9 +117,9 @@ export const editGymSubscription = async (data: iEditSubscription)=>{
   }
 }
 
-export const fetchGymSubscription = async (gymId: string) => {
+export const fetchGymSubscription = async () => {
   try {
-    const response= await Api.get(gymRoutes.fetchGymSubscription(gymId))
+    const response= await Api.get(gymRoutes.fetchGymSubscription)
     return response
   } catch (error) {
     const err: Error = error as Error;
@@ -156,4 +171,34 @@ export const gResendForgotOtp = async () => {
         return errorHandle(err);
     }
    
+}
+export const fetchTrainers = async () => {
+  try {
+      const response= await Api.get(gymRoutes.fetchTrainers)
+      return response
+  } catch (error) {
+      const err: Error = error as Error;
+      return errorHandle(err); 
+  }
+}
+
+export const addTrainer = async (data: iTrainer) => {
+  try {
+    const response= await Api.post(gymRoutes.addTrainer,data)
+    return response
+  }catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
+ 
+export const updateTrainer = async (data) => {
+  try {
+
+    const response = await Api.put(gymRoutes.updateTrainer, data);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
 }

@@ -23,7 +23,6 @@ const authSlice=createSlice({
         setUserDetails:(state,action)=>{
             state.userDetails=action.payload
             localStorage.setItem('userDetails',JSON.stringify(action.payload))
-
         },
         setUserLogout:(state)=>{
             state.uLoggedIn=false,

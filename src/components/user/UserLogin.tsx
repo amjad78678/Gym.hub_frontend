@@ -102,6 +102,7 @@ const UserLogin: React.FC = ({showForgotEmail}) => {
         const data = {
           name: response.data.message.username,
           profilePic: response.data.message.profilePic,
+          token: response.data.token,
         };
 
         dispatch(setUserLogin());

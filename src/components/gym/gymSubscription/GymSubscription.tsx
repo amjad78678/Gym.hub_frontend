@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Container } from "react-bootstrap";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import ModalSubscriptionEdit from "./ModalSubscriptionEdit";
 import { useQuery } from "@tanstack/react-query";
 import { fetchGymSubscription } from "@/api/gym";
@@ -29,7 +29,7 @@ const GymSubscription = () => {
     refetch,
   } = useQuery({
     queryKey: ["gymSubscription"],
-    queryFn: fetchGymSubscription(gymDetails.id),
+    queryFn: fetchGymSubscription,
   });
 
   const [subs,setSubs]=useState([])
@@ -57,7 +57,19 @@ const GymSubscription = () => {
     <div className="bg-black">
 
       <Container className="text-white">
-      <p className="text-white text-4xl font-bold text-center py-12">Manage Subscriptions</p>
+      
+      <Typography
+          variant="h3"
+          component="h3"
+          sx={{
+            textAlign: "center", 
+            color: "white",
+            mt: 3,
+            mb: 3,
+          }}
+        >
+          Manage Subscriptions
+        </Typography>
 
         <Box
           sx={{

@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import GymLogin from '../../components/gym/gymLogin/GymLogin'
-import Navbar from '@/components/common/Navbar'
 import ReactDOM from "react-dom";
 import OtpPage from "../common/OtpPage";
 import Backdrop from "../common/Backdrop";
 import ForgotEmail from '../common/ForgotEmail';
 import ChangePassword from '../common/ChangePassword';
+import Navbar from '@/components/common/Navbar';
 
 const GymLoginPage = () => {
   
@@ -30,8 +30,8 @@ const GymLoginPage = () => {
 
   return (
     <>
+    <Navbar/>
     <div>
-        <Navbar/>
         <GymLogin showForgotEmail={forgotEmailHandler}/>
     </div>
     {showForgotEmail && (

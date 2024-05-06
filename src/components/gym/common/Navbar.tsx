@@ -9,6 +9,7 @@ import { gymLogout } from '@/api/gym';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { setGymLogout } from '@/redux/slices/authSlice';
+import { Container } from 'react-bootstrap';
 
 const Navbar = () => {
 
@@ -29,7 +30,9 @@ const dispatch=useDispatch()
 
 
   return (
-  <div className="bg-opacity-30 bg-black text-white right-0 left-0 top-0 z-50 px-4 md:pl-14">
+    <Container>
+
+<div className="bg-opacity-30 bg-black text-white right-0 left-0 top-0 z-50">
     <div>
         <div className="flex items-center justify-between py-2.5">
             <div>
@@ -83,6 +86,9 @@ const dispatch=useDispatch()
         </div>
     </div>
 </div>
+
+    </Container>
+
   )
 }
 

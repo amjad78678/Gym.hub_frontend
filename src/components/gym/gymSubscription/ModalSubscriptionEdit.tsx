@@ -77,18 +77,15 @@ const ModalSubscriptionEdit: React.FC<iType> = ({clickHandle,subscription,setSub
              open={true} onClose={clickHandle} fullWidth maxWidth="xs">
                 <DialogTitle>Edit Subscription  <IconButton onClick={clickHandle} style={{float:'right'}}><CloseIcon color="primary"></CloseIcon></IconButton>  </DialogTitle>
                 <DialogContent>
-                    {/* <DialogContentText>Do you want remove this user?</DialogContentText> */}
                     <Stack spacing={2} margin={2}>
                       <TextField variant="outlined" value={subscription?.[0]} label="Subscription"></TextField>
                       <TextField variant="outlined" onChange={inputHandler} id='amount' value={subscription?.[1]} label="Amount"></TextField>
            
-                      {/* <FormControlLabel control={<Checkbox defaultChecked color="primary"></Checkbox>} label="Agree terms & conditions"></FormControlLabel> */}
                       <Button onClick={submitHandler} color="primary" variant="contained">Submit</Button>
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                {/* <Button color="success" variant="contained">Yes</Button>
-                    <Button onClick={closepopup} color="error" variant="contained">Close</Button> */}
+
                 </DialogActions>
             </Dialog>
         </div>

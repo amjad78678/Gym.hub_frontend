@@ -96,7 +96,6 @@ export const fetchUsers = async () => {
 export const updateUserAction = async ({id,isBlocked,isDeleted}) => {
     try {
         
-        console.log('insideADmin',id,isBlocked,isDeleted)
 
         const response = await Api.patch(adminRoutes.updateUser(id),{id,isBlocked,isDeleted});
         return response;
@@ -105,3 +104,4 @@ export const updateUserAction = async ({id,isBlocked,isDeleted}) => {
         return errorHandle(err);
     }
 }
+
