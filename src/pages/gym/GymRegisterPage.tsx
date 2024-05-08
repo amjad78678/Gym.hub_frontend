@@ -16,7 +16,7 @@ const GymRegisterPage = () => {
   return (
     <>
     <Navbar/>
-    <div className=''>
+    <div className='bg-black'>
         <GymRegister setShowOtp={otpHandler}/>
     </div>
 

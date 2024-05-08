@@ -2,25 +2,27 @@ import { useFormik } from "formik";
 import React from "react";
 import { Col, Container,  Form, Row } from "react-bootstrap";
 import { GymSignupValidation } from "../../../../validation/GymSignupValidation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from "@/redux/slices/appSlice";
 
 const AddDetails = () => {
   const dispatch = useDispatch();
+  const {details} = useSelector((state) => state.app);
+
   const initialValues = {
-    gymName: "",
-    email: "",
-    contactNumber: "",
-    state: "",
-    city: "",
-    pincode: "",
-    businessId: "",
-    dailyFee: "",
-    monthlyFee: "",
-    yearlyFee: "",
-    description: "",
-    password: "",
-    confirmPassword: "",
+    gymName: details.gymName,
+    email: details.email,
+    contactNumber: details.contactNumber,
+    state: details.state,
+    city: details.city,
+    pincode: details.pincode,
+    businessId: details.businessId,
+    dailyFee: details.dailyFee,
+    monthlyFee: details.monthlyFee,
+    yearlyFee: details.yearlyFee,
+    description: details.description,
+    password: details.password,
+    confirmPassword: details.confirmPassword,
   };
 
   const { handleChange, handleBlur, values, errors } = useFormik({
@@ -379,6 +381,7 @@ const AddDetails = () => {
           value={values.description}
           autoComplete="off"
           onBlur={handleBlur}
+          onPaste={(e) => e.preventDefault()}
           onChange={(e) => {
             handleChange(e);
 

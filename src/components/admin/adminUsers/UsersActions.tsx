@@ -1,15 +1,18 @@
 import { updateUserAction } from "@/api/admin";
-import { Check, Save } from "@mui/icons-material";
-import { Box, CircularProgress, Fab } from "@mui/material";
+import { Check, Delete, Save } from "@mui/icons-material";
+import { Box, CircularProgress, Fab, IconButton, Tooltip } from "@mui/material";
 import { green } from "@mui/material/colors";
 import { useMutation } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const UsersActions = ({
   params,
   selectedRowId,
   setSelectedRowId,
   setRowId,
+  refetch
 }) => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -47,7 +50,34 @@ const UsersActions = ({
     }, 1000);
   };
 
+
+  const handleDelete = async (row: any) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: `Do you want to delete ${row.name} user!`,
+      icon: "error",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Delete",
+      cancelButtonText: "No, cancel!",
+      customClass: {
+        container: "custom-swal-container",
+      },
+      width: 400, 
+      background: "#f0f0f0",
+      iconHtml: '<i class="bi bi-trash" style="font-size:30px"></i>',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+
+        console.log('confirmed')
+        updateUserActions({ id: row._id, isDeleted: true ,isBlocked: row.isBlocked});
+        refetch()
+        toast.success("User deleted successfully");
+      }
+    });
+  };
+
   return (
+    <>
     <Box
       sx={{
         m: 1,
@@ -95,6 +125,16 @@ const UsersActions = ({
         />
       )}
     </Box>
+
+    <Box>
+
+<Tooltip title="Delete this trainer">
+          <IconButton onClick={() => handleDelete(params.row)}>
+            <Delete />
+          </IconButton>
+        </Tooltip>
+    </Box>
+    </>
   );
 };
 

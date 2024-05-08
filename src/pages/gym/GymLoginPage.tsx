@@ -40,7 +40,6 @@ const GymLoginPage = () => {
             <Backdrop />,
             document.getElementById("backdrop-root") as HTMLElement
           )}
-
           {ReactDOM.createPortal(
             <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-20">
               <ForgotEmail user='gym'  closeModal={forgotEmailHandler} otpShow={otpHandler} />

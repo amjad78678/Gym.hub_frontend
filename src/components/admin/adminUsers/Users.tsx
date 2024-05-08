@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import UsersActions from "./UsersActions";
 
 const Users = () => {
-  const { isLoading, data: usersData } = useQuery({
+  const { isLoading, data: usersData,refetch } = useQuery({
     queryKey: ["usersData"],
     queryFn: fetchUsers,
   });
@@ -29,6 +29,8 @@ const Users = () => {
   }, [usersData]);
 
   console.log(users);
+  const activeUsers = users.filter((user) => !user.isDeleted);
+
 
   const columns = useMemo(
     () => [
@@ -76,18 +78,11 @@ const Users = () => {
         editable: true,
       },
       {
-        field: "isDeleted",
-        headerName: "Delete ",
-        width: 110,
-        type: "boolean",
-        editable: true,
-      },
-      {
         field: "actions",
         headerName: "Actions",
-        type: "actions",
+        type: "actions", 
         renderCell: (params) => (
-          <UsersActions {...{params,selectedRowId,setSelectedRowId,setRowId}} />
+          <UsersActions {...{params,selectedRowId,setSelectedRowId,setRowId,refetch}} />
         )
       },
     ],
@@ -118,7 +113,7 @@ const Users = () => {
 
         <DataGrid
           columns={columns}
-          rows={users}
+          rows={activeUsers}
           pageSizeOptions={[5, 10, 25]}
           initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
           sx={{

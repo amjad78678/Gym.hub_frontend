@@ -61,9 +61,7 @@ const GymCard = ({ gym }) => {
                   />
                 </svg>
               </div>
-              <div className="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 hidden md:block">
-                Superhost
-              </div>
+         
             </div>
             <h3 className="font-black text-white md:text-3xl text-xl">
               {gym.gymName}
@@ -82,8 +80,7 @@ const GymCard = ({ gym }) => {
               <p className="text-xl font-black text-white">
                 ₹{gym.quarterlyFee}
                 <span className="font-normal text-white text-base">
-                  {gym.subscriptions.quarterlyFee}/
-                  <span className="font-bold mx-1">7</span>Days
+                  {gym.subscriptions.Daily}/Days
                 </span>
               </p>
 

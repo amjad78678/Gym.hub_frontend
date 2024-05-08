@@ -7,19 +7,23 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { fetchGymDetails } from "@/api/user";
-import { useQuery } from "@tanstack/react-query";
+import { addToCart, fetchGymDetails } from "@/api/user";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Loader from "@/components/common/Loader";
 import axios from "axios";
-import CalenderDatePicker from "./CalenderDatePicker";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import ReactDOM from "react-dom";
+import CalenderDatePicker from '@/components/user/gymDetails/CalenderDatePicker';
+import Backdrop from "@/pages/common/Backdrop";
 
-const GymDetails = ({ showCalender}) => {
-  // const {isLoading,data: gymData,refetch}=useQuery({queryKey:['gymDetails'],queryFn:()=>fetchGymDetails(gymId)})
+const GymDetails = () => {
+// const {isLoading,data: gymData,refetch}=useQuery({queryKey:['gymDetails'],queryFn:()=>fetchGymDetails(gymId)})
 
   const queryParams = new URLSearchParams(location.search);
   const gymId = queryParams.get("id");
-
-
+  const [showCalender,setShowCalender]=useState(false)
+  
   const {
     isLoading,
     data: gymDetailsData,
@@ -30,6 +34,7 @@ const GymDetails = ({ showCalender}) => {
   });
 
   const [currentView, setCurrentView] = useState("description");
+  const navigate = useNavigate();
 
   const [value, setValue] = useState(4);
 
@@ -59,7 +64,6 @@ const GymDetails = ({ showCalender}) => {
   
   const [streetAddress,setStreetAddress]=useState('')
 
-
   useEffect(()=>{
     
    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${gymDetailsData?.data.message.location.coordinates[1]},${gymDetailsData?.data.message.location.coordinates[0]}&key=AIzaSyByuTK8Ngx2fLFeZX2umzie7ghokMJCFR8`).then((res)=>{
@@ -67,56 +71,85 @@ const GymDetails = ({ showCalender}) => {
    setStreetAddress(res.data.results[0].formatted_address)
 
    })
-  },[])
+  },[streetAddress])
 
 
   const [mainImageIndex, setMainImageIndex] = useState(0);
 
-  // Function to handle image click
-  const handleImageClick = (index) => {
-     setMainImageIndex(index);
+  const handleImageHover = (index) => {
+    setMainImageIndex(index);
   };
 
-  const handlePurchase = () =>{
+  const {mutate: addCartMutation}=useMutation({
+    mutationFn: addToCart,
+    onSuccess: (res) => {
+      if(res){
+        
+       navigate('/checkout')
 
-    if(alignment === "Daily"){
-      showCalender()
+      }else{
+        toast.error('Something went wrong')
+      }
     }
-  }
+  })
+
+  const handlePurchase = () => {
+    if (alignment === "Daily") {
+
+       setShowCalender(true);
+
+    } else if (alignment === "Monthly") {
+      const data = {
+        gymId: gymId,
+        date: new Date(),
+        expiryDate: new Date(new Date().setMonth(new Date().getMonth() + 1)), 
+        subscriptionType: alignment,
+        price: gymDetailsData?.data.message.subscriptions.Monthly,
+      };
+      addCartMutation(data);
+    } else if (alignment === "Yearly") {
+      const data = {
+        gymId: gymId,
+        date: new Date(),
+        expiryDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), 
+        subscriptionType: alignment,
+        price: gymDetailsData?.data.message.subscriptions.Yearly,
+      };
+      addCartMutation(data);
+    }
+  };
+  
 
   return isLoading ? (
     <Loader />
   ) : (
+    <>
     <div>
       <Container>
         <Row>
-          <Col xs={6}>
-            <Row>
-              <Col  xs={3}>
-        
+        <Col xs={6}>
+        <Row>
+          <Col xs={3}>
             {gymDetailsData?.data.message.images.map((image, index) => (
-            (
-            <img
-              key={index}
-              className="mb-3 rounded-lg"
-              src={image.imageUrl}
-              alt=""
-              onClick={() => handleImageClick(index)}
-            />
-           )
-           ))}
-              </Col>
-
-              <Col className="mb-3" xs={9}>
-                <img
-                  className="rounded-lg w-full h-full object-cover "
-                  src={gymDetailsData?.data.message.images[mainImageIndex].imageUrl}
-                  alt=""
-            
-                />
-              </Col>
-            </Row>
+              <img
+                key={index}
+                className="mb-3 rounded-lg cursor-pointer hover:scale-105 transition-transform duration-200"
+                src={image.imageUrl}
+                alt=""
+                onMouseEnter={() => handleImageHover(index)}
+              />
+            ))}
           </Col>
+
+          <Col className="mb-3" xs={9}>
+            <img
+              className="rounded-lg w-full h-full object-cover"
+              src={gymDetailsData?.data.message.images[mainImageIndex].imageUrl}
+              alt=""
+            />
+          </Col>
+        </Row>
+      </Col>
 
           <Col xs={6}>
             
@@ -263,6 +296,22 @@ const GymDetails = ({ showCalender}) => {
         </Row>
       </Container>
     </div>
+    {showCalender && (
+      <>
+        {ReactDOM.createPortal(
+          <Backdrop />,
+          document.getElementById("backdrop-root") as HTMLElement
+        )}
+    
+        {ReactDOM.createPortal(
+          <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-20">
+           <CalenderDatePicker isOpen={showCalender} onToggle={() => setShowCalender(!showCalender)} />
+          </div>,
+          document.getElementById("root-modal") as HTMLElement
+        )}
+      </>
+    )}
+</>
   );
 };
 

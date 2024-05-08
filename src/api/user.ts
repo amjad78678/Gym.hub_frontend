@@ -136,3 +136,39 @@ export const resendForgotOtp = async () => {
     }
    
 }
+
+export const addToCart = async (data: any) => {
+  try {
+    
+    const response = await Api.post(userRoutes.addToCart, data);
+    return response
+
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
+
+export const getCheckoutData = async () => {
+  try {
+    
+    const response = await Api.get(userRoutes.getCheckoutDetails); 
+    return response
+
+
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
+
+export const addNewSubscription = async (data: any) => {
+  try {
+    
+    const response = await Api.post(userRoutes.addNewSubscription, data);
+    return response
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}

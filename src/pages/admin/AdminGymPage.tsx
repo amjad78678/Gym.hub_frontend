@@ -1,4 +1,4 @@
-import Gym from '@/components/admin/gym/Gym'
+import Gym from '@/components/admin/adminGym/Gym'
 import React, { useEffect } from 'react'
 
 const AdminGymPage = ({setSelectedLink,link}) => {

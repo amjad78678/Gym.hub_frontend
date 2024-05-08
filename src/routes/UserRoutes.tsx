@@ -8,6 +8,9 @@ import UserHomePage from "@/pages/user/UserHomePage";
 import GymListPage from "@/pages/user/GymListPage";
 import GymDetailsPage from "@/pages/user/GymDetailsPage";
 import Footer from "@/components/common/Footer";
+import GymCheckoutPage from "@/pages/user/GymCheckoutPage";
+import PaymentSuccess from "@/components/user/payments/PaymentSuccess";
+import PaymentFailure from "@/components/user/payments/PaymentFailure";
 
 const UserRoutes = () => {
   return (
@@ -19,8 +22,10 @@ const UserRoutes = () => {
         <Route path="" element={<UserHomePage />} />
         <Route path="book-gym" element={<GymListPage />} />
         <Route path="gym-details" element={<GymDetailsPage />} />
+        <Route path="checkout" element={<GymCheckoutPage/>} />
+        <Route path="success" element={<PaymentSuccess/>} />
+        <Route path="cancel" element={<PaymentFailure/>} />
       </Route>
-
       <Route element={<UserProtect />}></Route>
     </Routes>
   );

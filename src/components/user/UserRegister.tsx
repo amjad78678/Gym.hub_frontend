@@ -65,9 +65,6 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
         email: "",
         mobilenumber: "",
         age: "",
-        // state: "",
-        // city: "",
-        // pincode: "",
         password: "",
         confirmpassword: "",
         gender: "",
@@ -83,16 +80,16 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
             email: values.email,
             mobileNumber: values.mobilenumber,
             age: values.age,
-            // state: values.state,
-            // city: values.city,
-            // pincode: values.pincode,
             password: values.password,
             gender: values.gender,
           });
 
           if (res) {
-            console.log("response", res.data);
-            setShowOtp();
+
+            if(res.data.status){
+              setShowOtp();
+            }
+            
           }
         }
       },

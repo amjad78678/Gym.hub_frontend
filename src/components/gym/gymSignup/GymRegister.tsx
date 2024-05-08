@@ -61,15 +61,14 @@ interface iState {
 }
 
 interface iRootState {
-  auth : {
-    gLoggedIn : boolean
-  }
+  auth: {
+    gLoggedIn: boolean;
+  };
 }
 
 const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
-  
   const dispatch = useDispatch();
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
   const { gLoggedIn } = useSelector((state: iRootState) => state.auth);
   useEffect(() => {
@@ -77,7 +76,6 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
       navigate("gym/dashboard");
     }
   }, [navigate, gLoggedIn]);
-
 
   const { lat, long, details, images } = useSelector(
     (state: iState) => state.app
@@ -113,15 +111,22 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
   const { status: registerStatus, mutate: gymRegisterMutate } = useMutation({
     mutationFn: gymRegister,
     onSuccess: (res) => {
-      dispatch(setLatitude(0));
-      dispatch(setLongitude(0));
-      dispatch(setDetails({}));
-      dispatch(setImages([]));
 
-      setShowOtp();
       if (res) {
-        toast.success(res.data.message);
+
+        if (res.data.status) {
+          dispatch(setLatitude(0));
+          dispatch(setLongitude(0));
+          dispatch(setDetails({}));
+          dispatch(setImages([]));
+          setShowOtp();
+          toast.success(res.data.message);
+  
+        }
       }
+
+
+   
     },
   });
 
@@ -175,7 +180,7 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
         details?.description?.length > 0 &&
         details.dailyFee > 0 &&
         details.monthlyFee > 0 &&
-        details.yearlyFee > 0 )
+        details.yearlyFee > 0)
     ) {
       if (!steps[1].completed) setComplete(1, true);
     } else {

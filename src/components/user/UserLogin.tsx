@@ -67,8 +67,8 @@ const UserLogin: React.FC = ({showForgotEmail}) => {
           dispatch(
             setUserDetails({
               name: response2.data.message.username,
-              id: response2.data.message._id,
               profilePic: response2.data.message.profilePic,
+              token: response2.data.token,
             })
           );
           toast.success("Successfully logined");

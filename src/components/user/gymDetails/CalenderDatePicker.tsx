@@ -62,6 +62,13 @@ const CalenderDatePicker: React.FC<{
     }
   };
 
+  const handlePurchase = () => {
+    
+     const data = {
+      
+     }
+  }
+
   return (
     <Box
       display="flex"
@@ -73,17 +80,7 @@ const CalenderDatePicker: React.FC<{
         },
       }}
     >
-      <TextField
-        variant="outlined"
-        size="small"
-        sx={{ width: 200, mt: 2, position: "relative" }}
-        label="Select Date"
-        onClick={onToggle}
-        contentEditable={false}
-        value={`${startDate?.format("YYYY-MM-DD")} ────── ${endDate?.format(
-          "YYYY-MM-DD"
-        )}`}
-      />
+
 
       <Popper
         open={true}
@@ -100,10 +97,12 @@ const CalenderDatePicker: React.FC<{
                   minDate={dayjs().startOf("day").toDate()}
                   onChange={handleSelect}
                 />
+              <Button onClick={onToggle}>x</Button>
+
               </LocalizationProvider>
               <div className="flex justify-center">
                 <Button
-                  onClick={() => onToggle()}
+                  onClick={handlePurchase}
                   sx={{
                     my: 1,
                     py: 1,

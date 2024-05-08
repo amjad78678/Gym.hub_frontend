@@ -25,6 +25,11 @@ import AdminSubscriptionPlans from "../AdminSubscriptionPlans";
 import AdminTrainerPlans from "../AdminTrainerPlans";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import AdminBannerPage from "../AdminBannerPage";
+import { useMutation } from "@tanstack/react-query";
+import { adminLogout } from "@/api/admin";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setAdminLogout } from "@/redux/slices/authSlice";
 
 const drawerWidth = 240;
 
@@ -79,6 +84,8 @@ const Drawer = styled(MuiDrawer, {
 
 
 const SideList = ({ open, setOpen }) => {
+
+  const dispatch=useDispatch()
   const [selectedLink,setSelectedLink]=useState("")
 
 
@@ -92,9 +99,21 @@ const SideList = ({ open, setOpen }) => {
     {title: "Banners",icon: <ViewCarouselOutlined/> ,link: "banners",component: <AdminBannerPage {...{setSelectedLink, link: 'banners'}}/>},
 ],[])
 
+const {mutate}=useMutation({
+  mutationFn: adminLogout,
+  onSuccess:(res)=>{
+    toast.success(res.data.message)
+    dispatch(setAdminLogout())
+    navigate('/admin')
+
+
+  }
+})
 
 const handleLogout = () => {
   console.log("logout");
+  mutate();
+
 };
 
 const navigate=useNavigate()

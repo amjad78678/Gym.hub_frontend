@@ -1,4 +1,4 @@
-import Users from '@/components/admin/users/Users'
+import Users from '@/components/admin/adminUsers/Users'
 import React, { useEffect } from 'react'
 
 const AdminUsersPage = ({setSelectedLink,link}) => {

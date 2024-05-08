@@ -95,8 +95,6 @@ export const fetchUsers = async () => {
 }
 export const updateUserAction = async ({id,isBlocked,isDeleted}) => {
     try {
-        
-
         const response = await Api.patch(adminRoutes.updateUser(id),{id,isBlocked,isDeleted});
         return response;
     } catch (error) {

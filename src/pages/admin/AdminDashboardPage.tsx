@@ -1,4 +1,4 @@
-import Dashboard from '@/components/admin/dashboard/Dashboard'
+import Dashboard from '@/components/admin/adminDashboard/Dashboard'
 import React, { useEffect } from 'react'
 
 const AdminDashboardPage = ({setSelectedLink,link}) => {
