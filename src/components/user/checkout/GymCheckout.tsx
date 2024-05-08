@@ -75,9 +75,7 @@ const GymCheckout = ({ checkoutData }) => {
                 <h1 className="sm:text-lg font-semibold">
                   SUBSCRIPTION DETAILS
                 </h1>
-                <h1 className="sm:text-lg border py-2 px-4 w-fit text-yellow-400">
-                  00:00
-                </h1>
+           
               </div>
               <div className="bg-gray-800 p-3">
                 <h1 className="text-xl font-semibold tracking-wider mb-2">

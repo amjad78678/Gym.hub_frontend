@@ -82,30 +82,32 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
   );
 
   const handleSubmitAllDetails = () => {
-    const obj = {
-      gymName: details.gymName,
-      email: details.email,
-      contactNumber: details.contactNumber,
-      state: details.state,
-      city: details.city,
-      pincode: details.pincode,
-      subscriptions: {
-        Daily: details.dailyFee,
-        Monthly: details.monthlyFee,
-        Yearly: details.yearlyFee,
-      },
-      description: details.description,
-      businessId: details.businessId,
-      password: details.password,
-      confirmPassword: details.confirmPassword,
-      location: {
-        type: "Point",
-        coordinates: [long, lat] as [number, number],
-      },
-      images: images,
-    };
 
-    gymRegisterMutate(obj);
+    const formData = new FormData();
+    formData.append('gymName', details.gymName);
+    formData.append('email', details.email);
+    formData.append('contactNumber', details.contactNumber);
+    formData.append('state', details.state);
+    formData.append('city', details.city);
+    formData.append('pincode', details.pincode);
+    formData.append('dailyFee', details.dailyFee);
+    formData.append('monthlyFee', details.monthlyFee);
+    formData.append('yearlyFee', details.yearlyFee);
+    formData.append('description', details.description);
+    formData.append('businessId', details.businessId);
+    formData.append('password', details.password);
+    formData.append('confirmPassword', details.confirmPassword);
+  
+    // Append images to formData
+    images.forEach((image) => {
+      formData.append(`images`, image);
+    });
+  
+    // Append location data
+    formData.append('long', long.toString());
+    formData.append('lat', lat.toString());
+
+    gymRegisterMutate(formData);
   };
 
   const { status: registerStatus, mutate: gymRegisterMutate } = useMutation({

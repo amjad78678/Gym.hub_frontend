@@ -8,11 +8,6 @@ import { useMutation } from "@tanstack/react-query";
 import Loader from "@/components/common/Loader";
 
 
-
-interface Iobj {
-  imageUrl:string
-  public_id:string
-}
 const AddGymImages = () => {
   const dispatch = useDispatch();
   const [files, setFiles] = useState<File[]>([]);
@@ -25,52 +20,17 @@ const AddGymImages = () => {
     });
   };
 
-  const preset_key = "ilhnxgqy";
-  const cloud_name = "dkxtgziy2";
+  
 
-  const uploadImages = async () => {
-    try {
-      const uploadedImages = await Promise.all(
-        files.map(async (file) => {
-          const formData = new FormData();
-          formData.append("file", file);
-          formData.append("upload_preset", preset_key);
-
-          const res = await axios.post(
-            `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload?folder=gymRegister`,
-            formData
-          );
-
-          const obj: Iobj = {
-            imageUrl: res.data.secure_url,
-            public_id: res.data.public_id
-          };
-
-          return obj;
-        })
-      );
-
-      console.log("Uploaded Images:", uploadedImages);
-      dispatch(setImages(uploadedImages));
-    } catch (error) {
-      console.error("Error uploading images:", error);
-    }
-  };
-  const {status: uploadStatus,mutate: uploadImagesMutation}=useMutation({
-
-     mutationFn:uploadImages,
-     onSuccess:(res)=>{
-       console.log(res)
-     }
-  })
 
 
   useEffect(() => {
 
 
     if (files.length > 0) {
-      uploadImagesMutation()
-    }
+      dispatch(setImages(files));
+      console.log('iam files ',files)
+    } 
   }, [files, dispatch]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -116,7 +76,7 @@ const AddGymImages = () => {
           style={{ position: "relative", display: "inline-block" }}
         >
           <img
-            className="p-5"
+            className="p-5 w-[600px] h-[400px]"
             src={URL.createObjectURL(fileObject)}
             alt="images"
           />
@@ -142,7 +102,7 @@ const AddGymImages = () => {
         </div>
       ))}
 
-{uploadStatus === "pending" && <Loader />}
+{/* {uploadStatus === "pending" && <Loader />} */}
     </div>
   );
 };
