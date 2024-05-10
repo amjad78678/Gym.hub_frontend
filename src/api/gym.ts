@@ -1,6 +1,6 @@
-import Api from "@/services/axios";
 import gymRoutes from "@/services/endpoints/gymEndPoints";
 import errorHandle from "./error";
+import axios from "axios";
 
 interface gymRegisterData {
   gymName: string;
@@ -10,23 +10,21 @@ interface gymRegisterData {
   city: string;
   pincode?: string;
   businessId?: string;
-  subscriptions: {
-    quarterlyFee: number;
-    monthlyFee: number;
-    yearlyFee: number;
-  };
+  dailyFee: number;
+  monthlyFee: number;
+  yearlyFee: number;
   description: string;
   password: string;
   confirmPassword: string;
   isVerified?: boolean;
-  location: {
+  location?: {
     type: string;
     coordinates: [number, number];
   };
-  images: {
-    imageUrl: string;
-    public_id: string;
-  }[];
+  lat: number;
+  long: number;
+  address: string;
+  images: any;
 }
 
 
@@ -43,9 +41,46 @@ interface iTrainer {
   password?: string,
   isBlocked: boolean,
   isDeleted: boolean,
-  _id?: any,
+  _id?: string,
 }
 
+
+
+const BASE_URL = import.meta.env.VITE_BASE_URL
+const Api = axios.create({baseURL:`${BASE_URL}/gym`,withCredentials:true})
+
+
+Api.interceptors.response.use((response)=>{
+   return response
+}, (error) => {
+    if(error.response){
+        const {data}=error.response
+        console.log('axio',data.message)  
+    }else{
+        console.log(error);
+        
+    }
+    return Promise.reject(error)
+})
+
+
+Api.interceptors.request.use(
+    (config) => {
+
+      const gymDetails = JSON.parse(localStorage.getItem('gymDetails'));
+      const gymToken = gymDetails?.token; 
+
+
+      if (gymToken) {
+        config.headers['Authorization'] = `Bearer ${gymToken}`;
+    }
+
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
 
 export const gymRegister = async (gymData: gymRegisterData) => {

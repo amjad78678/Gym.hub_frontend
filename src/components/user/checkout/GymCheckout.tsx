@@ -48,7 +48,7 @@ const GymCheckout = ({ checkoutData }) => {
         expiryDate: checkoutData?.expiryDate,
         subscriptionType: checkoutData?.subscriptionType,
         paymentType: paymentMethod,
-        price: checkoutData.price
+        price: checkoutData.totalPrice
 
     }
 
@@ -56,6 +56,8 @@ const GymCheckout = ({ checkoutData }) => {
 
 
   };
+
+
 
   console.log("checkoutData", checkoutData);
 
@@ -98,6 +100,8 @@ const GymCheckout = ({ checkoutData }) => {
                   <thead>
                     <tr className="bg-gray-900">
                       <th className="text-left py-2 px-4">ITEM</th>
+
+                      <th className=" py-2 px-4">AMOUNT</th>
                       <th className=" py-2 px-4">JOINING DATE</th>
                       <th className=" py-2 px-4">EXPIRY DATE</th>
                       <th className="text-right py-2 px-4">TOTAL</th>
@@ -111,13 +115,16 @@ const GymCheckout = ({ checkoutData }) => {
                         </h1>
                       </td>
                       <td className="align-top  py-4 px-4 font-bold">
+                        ₹{checkoutData.amount}
+                      </td>
+                      <td className="align-top  py-4 px-4 font-bold">
                         {dayjs(checkoutData.date).format("DD MMM YYYY")}
                       </td>
                       <td className="align-top  py-4 px-4 font-bold">
                         {dayjs(checkoutData.expiryDate).format("DD MMM YYYY")}
                       </td>
                       <td className="align-top text-right py-4 px-4 font-bold">
-                        ₹{checkoutData.price}
+                        ₹{checkoutData.totalPrice}
                       </td>
                     </tr>
                   </tbody>

@@ -1,7 +1,8 @@
-import Api from "../services/axios";
 import userRoutes from "@/services/endpoints/userEndPoints";
 import errorHandle from "./error";
 import { QueryFunctionContext } from "@tanstack/react-query";
+import axios from 'axios'
+
 
 interface userFormData {
   username?: string;
@@ -14,6 +15,43 @@ interface userFormData {
   gender?: string;
   password: string;
 }
+
+ 
+const BASE_URL = import.meta.env.VITE_BASE_URL
+const Api = axios.create({baseURL:`${BASE_URL}/user`,withCredentials:true})
+
+
+Api.interceptors.response.use((response)=>{
+   return response
+}, (error) => {
+    if(error.response){
+        const {data}=error.response
+        console.log('axio',data.message)  
+    }else{
+        console.log(error);
+        
+    }
+    return Promise.reject(error)
+})
+
+
+Api.interceptors.request.use(
+    (config) => {
+
+        const userDetails = JSON.parse(localStorage.getItem('userDetails')); 
+        const userToken = userDetails?.token; 
+
+
+       if (userToken) {
+            config.headers['Authorization'] = `Bearer ${userToken}`;
+        }
+
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
 export const signUp = async (userData: userFormData) => {
   try {
@@ -65,6 +103,15 @@ export const userLogout = async () => {
   }
 };
 
+export const fetchNearGymList = async ({latitude,longitude}) => {
+  try {
+    const response = await Api.get(userRoutes.fetchNearGymList(latitude,longitude));
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
 export const fetchGymList = async () => {
   try {
     const response = await Api.get(userRoutes.fetchGymList);

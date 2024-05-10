@@ -3,86 +3,99 @@ import { Col, Container, Row } from "react-bootstrap";
 import GymCard from "./GymCard";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import { useQuery } from "@tanstack/react-query";
-import { fetchGymList } from "@/api/user";
+import { fetchNearGymList } from "@/api/user";
 import { Slider } from "@mui/material";
 import LocationInput from "./LocationInput";
+import SearchBar from "./SearchBar";
 
 const GymList = () => {
-  const [gymList, setGymList] = useState([]);
 
-  const { isLoading, data, refetch } = useQuery({
+  const [gymList, setGymList] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [location, setLocation] = useState({ latitude: null, longitude: null });
+
+  const { isLoading, data: gymData, refetch } = useQuery({
     queryKey: ["gyms"],
-    queryFn: fetchGymList,
+    queryFn: async () => {
+      if (location.latitude !== null && location.longitude !== null) {
+        return await fetchNearGymList({ latitude: location.latitude, longitude: location.longitude });
+      }
+    },
+    enabled : location.latitude !== null && location.longitude !== null
   });
 
-  const getAriaValueText = (value: number) => {
-    return `Value: ${value}`;
+  useEffect(() => {
+    if (gymData) {
+      setGymList(gymData?.data?.message);
+      setFilteredItems(gymData?.data?.message);
+    }
+  
+  }, [gymData]);
+
+  useEffect(() => {
+    if (location.latitude !== null && location.longitude !== null) {
+      refetch();
+    }
+  }, [location]);
+
+  const maxPrice = Math.max(...gymList.map((gym) => gym.subscriptions.Daily));
+  const [search, setSearch] = useState("");
+  const searchHandler = (val: string) => {
+    setSearch(val);
   };
 
   useEffect(() => {
-    if (data) {
-      setGymList(data.data.message);
-    }
-  }, [data]);
+    const filtered = gymList.filter((gym) => {
+      const location = gym.address;
+      const gymName = gym.gymName;
 
-  return (
+      return (
+        location.toLowerCase().includes(search.toLowerCase()) ||
+        gymName.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+
+    setFilteredItems(filtered);
+  }, [search]);
+
+  const [sliderValue, setSliderValue] = useState(maxPrice);
+
+  const handleSliderChange = (event: Event, newValue: number | number[]) => {
+    setSliderValue(newValue as number);
+  };
+
+  useEffect(() => {
+    const filtered = gymList.filter((gym) => {
+      return gym.subscriptions.Daily <= sliderValue;
+    });
+    setFilteredItems(filtered);
+  }, [sliderValue]);
+
+  return  (
     <div className="text-white min-h-screen">
-      <Container >
+      <Container>
         <Row>
           <Col xs={3}>
             <div>
-              <div className="flex items-center max-w-md mx-auto bg-black border border-white rounded-lg my-4">
-                <div className="w-full">
-                  <input
-                    type="search"
-                    className="w-full px-4 py-1 bg-black text-white rounded-full focus:outline-none"
-                    placeholder="search"
-                  />
-                </div>
-                <div>
-                  <button
-                    type="submit"
-                    className={`flex items-center justify-center w-12 h-12 text-white rounded-r-lg `}
-                  >
-                    <svg
-                      className="w-5 h-5 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
+              <SearchBar searchHandler={searchHandler} />
               <div>
-                <span className="mx-2 text-xl">
+                <span className=" text-xl">
                   <span>Filters</span>{" "}
                   <FilterListOutlinedIcon
                     sx={{ color: "white", float: "right", fontSize: "27px" }}
                   />
                 </span>
 
-                <div className="mx-2">
-                 <LocationInput/>
+                <div className="">
+                  <LocationInput setLocationData={setLocation} />
                   <h1 className=" text-lg mt-4 mb-2">Price</h1>
                   <Slider
                     aria-label="Small steps"
-                    defaultValue={0.00000005}
-                    getAriaValueText={(value) => getAriaValueText(value)}
-                    step={0.00000001}
-                    marks
-                    min={-0.00000005}
-                    max={0.0000001}
                     sx={{ color: "white", ml: 0, mr: 6 }}
                     valueLabelDisplay="auto"
+                    defaultValue={200}
+                    max={maxPrice}
+                    onChange={handleSliderChange}
                   />
                 </div>
               </div>
@@ -92,9 +105,9 @@ const GymList = () => {
             xs={9}
             className=" rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
           >
-            {gymList?.map((gym) => {
-              return !gym.isDeleted && <GymCard key={gym._id} gym={gym} />;
-            })}
+            {filteredItems?.map((gym) => {
+                  return !gym.isDeleted && <GymCard key={gym._id} gym={gym} />;
+                })}
           </Col>
         </Row>
       </Container>

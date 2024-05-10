@@ -84,7 +84,7 @@ function Navbar() {
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">Book offline gym</Typography>
               </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
+              <MenuItem onClick={handleCloseNavMenu}> 
                 <Typography textAlign="center">Personal trainer</Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>

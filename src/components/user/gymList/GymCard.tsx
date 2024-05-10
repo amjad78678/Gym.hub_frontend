@@ -1,21 +1,22 @@
-import axios from "axios";
+// import axios from "axios";
 import React, { useEffect, useState } from "react";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
+// const API_KEY = import.meta.env.GOOGLE_API_KEY
 
 const GymCard = ({ gym }) => {
-  const [streetAddress, setStreetAddress] = useState("");
+  // const [streetAddress, setStreetAddress] = useState("");
 
-  useEffect(() => {
-    axios
-      .get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${gym.location.coordinates[1]},${gym.location.coordinates[0]}&key=AIzaSyByuTK8Ngx2fLFeZX2umzie7ghokMJCFR8`
-      )
-      .then((res) => {
-        setStreetAddress(res.data.results[0].formatted_address);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${gym.location.coordinates[1]},${gym.location.coordinates[0]}&key=${API_KEY}`
+  //     )
+  //     .then((res) => {
+  //       setStreetAddress(res.data.results[0].formatted_address);
+  //     });
+  // }, []);
 
   return (
     <div className="bg-black">
@@ -68,7 +69,7 @@ const GymCard = ({ gym }) => {
             </h3>
             <p className="text-white text-sm">
               <LocationOnIcon />
-              {streetAddress}
+              {gym?.address}
             </p>
             <p className="md:text-[0.7rem] text-white">
               {gym.description.length > 300

@@ -381,7 +381,6 @@ const AddDetails = () => {
           value={values.description}
           autoComplete="off"
           onBlur={handleBlur}
-          onPaste={(e) => e.preventDefault()}
           onChange={(e) => {
             handleChange(e);
 

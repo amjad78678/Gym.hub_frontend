@@ -1,22 +1,20 @@
-import { forgotEmail } from "@/api/user"
 
 const userRoutes={
-
-
-    signup:'/user/sign_up',
-    userOtpVerify:'/user/verify',
-    userOtpResend:'/user/resend_otp',
-    userLogin:'/user/login',
-    userLogout:'/user/logout',
-    fetchGymList:'/user/gym_list',
-    fetchGymDetails:(id: string)=>`/user/gym_details/${id}`,
-    forgotPassword:'/user/forgot_password',
-    verifyForgotPassword:'/user/verify_forgot',
-    updataPasswordForgot:'/user/update_password',
-    resendForgotOtp:'/user/resend_forgot_otp',
-    addToCart:`/user/add_to_cart`,
-    getCheckoutDetails:`/user/get_checkout_details`,
-    addNewSubscription:`/user/add_new_subscription`,
+    signup:'/sign_up',
+    userOtpVerify:'/verify',
+    userOtpResend:'/resend_otp',
+    userLogin:'/login',
+    userLogout:'/logout',
+    fetchNearGymList:(latitude: number,longitude: number)=>`/gym_list?latitude=${latitude}&longitude=${longitude}`,
+    fetchGymList: '/gym_list_normal',
+    fetchGymDetails:(id: string)=>`/gym_details/${id}`,
+    forgotPassword:'/forgot_password',
+    verifyForgotPassword:'/verify_forgot',
+    updataPasswordForgot:'/update_password',
+    resendForgotOtp:'/resend_forgot_otp',
+    addToCart:`/add_to_cart`,
+    getCheckoutDetails:`/get_checkout_details`,
+    addNewSubscription:`/add_new_subscription`,
 }
 
 export default userRoutes

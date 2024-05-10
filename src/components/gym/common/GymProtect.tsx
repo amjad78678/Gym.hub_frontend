@@ -7,7 +7,7 @@ interface iType {
     auth: {
         gLoggedIn: boolean
     }
-}
+} 
 const GymProtect = () => {
     const {gLoggedIn}=useSelector((state: iType)=>state.auth)
 

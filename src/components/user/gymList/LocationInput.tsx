@@ -4,27 +4,17 @@ import MyLocationOutlinedIcon from "@mui/icons-material/MyLocationOutlined";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Audio } from "react-loader-spinner";
+const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 
-const LocationInput = () => {
-  //  const [location, setLocation] = useState({ latitude: null, longitude: null });
 
-  //  const [streetAddress,setStreetAddress]=useState('')
-
-  //  useEffect(()=>{
-
-  //   axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=AIzaSyByuTK8Ngx2fLFeZX2umzie7ghokMJCFR8`).then((res)=>{
-
-  //   setStreetAddress(res.data.results[0].formatted_address)
-
-  //   })
-  //  },[location,setLocation])
+const LocationInput = ({setLocationData}) => {
 
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [streetAddress, setStreetAddress] = useState("");
 
   const fetchStreetAddress = async () => {
     const response = await axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=AIzaSyByuTK8Ngx2fLFeZX2umzie7ghokMJCFR8`
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=${API_KEY}`
     );
     return response.data.results[0].formatted_address;
   };
@@ -55,6 +45,7 @@ const LocationInput = () => {
       (position) => {
         const { latitude, longitude } = position.coords;
         setLocation({ latitude, longitude });
+        setLocationData({latitude, longitude})
       },
       (error) => {
         console.error("Error getting location", error);

@@ -5,6 +5,8 @@ const storedUserInfo=localStorage.getItem('userDetails');
 const parsedUserInfo= storedUserInfo?JSON.parse(storedUserInfo):null    ;
 const storedGymDetails=localStorage.getItem('gymDetails');
 const parsedGymDetails= storedGymDetails?JSON.parse(storedGymDetails):null;
+const storedTrainerDetails=localStorage.getItem('trainerDetails');
+const parsedTrainerDetails= storedTrainerDetails?JSON.parse(storedTrainerDetails):null;
 
 const authSlice=createSlice({
     initialState:{
@@ -12,7 +14,10 @@ const authSlice=createSlice({
         userDetails:parsedUserInfo,
         gLoggedIn: localStorage.getItem('gLoggedIn')?true:false,
         gymDetails:parsedGymDetails,
+        tLoggedIn: localStorage.getItem('tLoggedIn')?true:false,
+        trainerDetails:parsedTrainerDetails,
         aLoggedIn: localStorage.getItem('aLoggedIn')?true:false
+
     },
     name:'auth',
     reducers:{
@@ -49,10 +54,22 @@ const authSlice=createSlice({
         setAdminLogout: (state) => {
             state.aLoggedIn = false;
             localStorage.removeItem('aLoggedIn');
-        }
+        },
+        setTrainerLogin: (state,action) => {
+            state.tLoggedIn = true;
+            localStorage.setItem('tLoggedIn', 'true');
+            state.trainerDetails=action.payload
+            localStorage.setItem('trainerDetails',JSON.stringify(action.payload))
+        },
+        setTrainerLogout: (state) => {
+            state.tLoggedIn = false;
+            localStorage.removeItem('tLoggedIn');
+            state.gymDetails=null
+            localStorage.removeItem('trainerDetails')
+        },
     }
 })
 
 
-export const {setUserLogin,setUserLogout,setUserDetails,setAdminLogin,setAdminLogout,setGymLogin,setGymLogout}=authSlice.actions
+export const {setUserLogin,setUserLogout,setUserDetails,setAdminLogin,setAdminLogout,setGymLogin,setGymLogout,setTrainerLogin,setTrainerLogout}=authSlice.actions
 export default authSlice.reducer

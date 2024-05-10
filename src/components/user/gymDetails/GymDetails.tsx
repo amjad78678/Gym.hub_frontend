@@ -1,5 +1,5 @@
 import { Box, Button, Rating } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import StarIcon from "@mui/icons-material/Star";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -10,7 +10,6 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { addToCart, fetchGymDetails } from "@/api/user";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Loader from "@/components/common/Loader";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import ReactDOM from "react-dom";
@@ -18,11 +17,13 @@ import CalenderDatePicker from '@/components/user/gymDetails/CalenderDatePicker'
 import Backdrop from "@/pages/common/Backdrop";
 
 const GymDetails = () => {
-// const {isLoading,data: gymData,refetch}=useQuery({queryKey:['gymDetails'],queryFn:()=>fetchGymDetails(gymId)})
 
   const queryParams = new URLSearchParams(location.search);
   const gymId = queryParams.get("id");
   const [showCalender,setShowCalender]=useState(false)
+  const [dailyDate,setDailyDate]=useState({startDate:'',endDate:''})
+
+
   
   const {
     isLoading,
@@ -32,6 +33,8 @@ const GymDetails = () => {
     queryKey: ["gymDetails", gymId],
     queryFn: fetchGymDetails,
   });
+
+
 
   const [currentView, setCurrentView] = useState("description");
   const navigate = useNavigate();
@@ -61,18 +64,6 @@ const GymDetails = () => {
     setAlignment(newAlignment);
   };
 
-  
-  const [streetAddress,setStreetAddress]=useState('')
-
-  useEffect(()=>{
-    
-   axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${gymDetailsData?.data.message.location.coordinates[1]},${gymDetailsData?.data.message.location.coordinates[0]}&key=AIzaSyByuTK8Ngx2fLFeZX2umzie7ghokMJCFR8`).then((res)=>{
-    
-   setStreetAddress(res.data.results[0].formatted_address)
-
-   })
-  },[streetAddress])
-
 
   const [mainImageIndex, setMainImageIndex] = useState(0);
 
@@ -83,7 +74,7 @@ const GymDetails = () => {
   const {mutate: addCartMutation}=useMutation({
     mutationFn: addToCart,
     onSuccess: (res) => {
-      if(res){
+      if(res){ 
         
        navigate('/checkout')
 
@@ -95,7 +86,6 @@ const GymDetails = () => {
 
   const handlePurchase = () => {
     if (alignment === "Daily") {
-
        setShowCalender(true);
 
     } else if (alignment === "Monthly") {
@@ -104,7 +94,8 @@ const GymDetails = () => {
         date: new Date(),
         expiryDate: new Date(new Date().setMonth(new Date().getMonth() + 1)), 
         subscriptionType: alignment,
-        price: gymDetailsData?.data.message.subscriptions.Monthly,
+        amount: gymDetailsData?.data.message.subscriptions.Monthly,
+        totalPrice: gymDetailsData?.data.message.subscriptions.Monthly,
       };
       addCartMutation(data);
     } else if (alignment === "Yearly") {
@@ -113,7 +104,8 @@ const GymDetails = () => {
         date: new Date(),
         expiryDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), 
         subscriptionType: alignment,
-        price: gymDetailsData?.data.message.subscriptions.Yearly,
+        amount: gymDetailsData?.data.message.subscriptions.Yearly,
+        totalPrice: gymDetailsData?.data.message.subscriptions.Yearly,
       };
       addCartMutation(data);
     }
@@ -184,7 +176,7 @@ const GymDetails = () => {
             </p>
 
             <p className="text-white text-sm font-mono my-2">
-              <LocationOnIcon /> {streetAddress}
+              <LocationOnIcon /> {gymDetailsData?.data.message?.address}
             </p>
             <p className="text-white text-sm font-mono my-2">
               <MailOutlineIcon /> {gymDetailsData?.data.message?.email}
@@ -305,7 +297,7 @@ const GymDetails = () => {
     
         {ReactDOM.createPortal(
           <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-20">
-           <CalenderDatePicker isOpen={showCalender} onToggle={() => setShowCalender(!showCalender)} />
+           <CalenderDatePicker isOpen={showCalender} onToggle={() => setShowCalender(!showCalender)} {...{gymDetailsData: gymDetailsData?.data.message, subscriptionType: alignment}} />
           </div>,
           document.getElementById("root-modal") as HTMLElement
         )}

@@ -1,6 +1,23 @@
-import Api from "@/services/axios";
 import errorHandle from "./error";
 import adminRoutes from "@/services/endpoints/adminEndPoints";
+import axios from "axios";
+
+const BASE_URL = import.meta.env.VITE_BASE_URL
+const Api = axios.create({baseURL:`${BASE_URL}/admin`,withCredentials:true})
+
+
+Api.interceptors.response.use((response)=>{
+   return response
+}, (error) => {
+    if(error.response){
+        const {data}=error.response
+        console.log('axio',data.message)  
+    }else{
+        console.log(error);
+        
+    }
+    return Promise.reject(error)
+})
 
 export const getGymDetails = async () => {
     try {
@@ -59,7 +76,6 @@ export interface iLogin {
 }
 export const adminLogin = async (data :iLogin) => {
     try {
-        
         const response = await Api.post(adminRoutes.adminLogin,data);
         return response;
 

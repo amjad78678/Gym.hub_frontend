@@ -4,6 +4,7 @@ import CarousalGyms from "./CarousalGyms";
 import Carousel from "react-bootstrap/Carousel";
 import { useQuery } from "@tanstack/react-query";
 import { fetchGymList } from "@/api/user";
+import FaqSection from "./FaqSection";
 
 const UserHome = () => {
   const [gymList, setGymList] = useState([]);
@@ -11,17 +12,16 @@ const UserHome = () => {
   const {
     isLoading,
     data: gymsQuery,
-    refetch,
-  } = useQuery({
+  } = useQuery({ 
     queryKey: ["gyms"],
     queryFn: fetchGymList,
   });
 
-  useEffect(() => {
-    setGymList(gymsQuery?.data?.message);
+  useEffect(() => { 
+    setGymList(gymsQuery?.data.message);
   }, [gymsQuery]);
 
-  console.log(gymList);
+
 
   return (
     <Container>
@@ -36,6 +36,8 @@ const UserHome = () => {
           <h1 className="text-2xl font-bold mt-4 mb-10">EXPLORE OUR GYMS</h1>
 
           <CarousalGyms loading={isLoading} gyms={gymList} />
+
+          <FaqSection/>
         </Col>
       </Row>
     </Container>

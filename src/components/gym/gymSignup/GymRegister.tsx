@@ -23,6 +23,9 @@ import {
 } from "@/redux/slices/appSlice";
 import Loader from "@/components/common/Loader";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
+
 
 interface UserType {
   setShowOtp: () => void;
@@ -81,33 +84,53 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
     (state: iState) => state.app
   );
 
+  const [streetAddress, setStreetAddress] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${API_KEY}`
+      )
+      .then((res) => {
+        setStreetAddress(res.data.results[0].formatted_address);
+      });
+  }, [lat, long]);
+  
+
   const handleSubmitAllDetails = () => {
 
-    const formData = new FormData();
-    formData.append('gymName', details.gymName);
-    formData.append('email', details.email);
-    formData.append('contactNumber', details.contactNumber);
-    formData.append('state', details.state);
-    formData.append('city', details.city);
-    formData.append('pincode', details.pincode);
-    formData.append('dailyFee', details.dailyFee);
-    formData.append('monthlyFee', details.monthlyFee);
-    formData.append('yearlyFee', details.yearlyFee);
-    formData.append('description', details.description);
-    formData.append('businessId', details.businessId);
-    formData.append('password', details.password);
-    formData.append('confirmPassword', details.confirmPassword);
+    if(streetAddress){
+      const formData = new FormData();
+      formData.append('gymName', details.gymName);
+      formData.append('email', details.email);
+      formData.append('contactNumber', details.contactNumber); 
+      formData.append('state', details.state);
+      formData.append('city', details.city);
+      formData.append('pincode', details.pincode);
+      formData.append('dailyFee', details.dailyFee);
+      formData.append('monthlyFee', details.monthlyFee);
+      formData.append('yearlyFee', details.yearlyFee);
+      formData.append('description', details.description);
+      formData.append('businessId', details.businessId);
+      formData.append('password', details.password);
+      formData.append('confirmPassword', details.confirmPassword);
+      formData.append('address', streetAddress);
+    
+      // Append images to formData
+      images.forEach((image) => {
+        formData.append(`images`, image);
+      });
+    
+      // Append location data
+      formData.append('long', long.toString());
+      formData.append('lat', lat.toString());
   
-    // Append images to formData
-    images.forEach((image) => {
-      formData.append(`images`, image);
-    });
   
-    // Append location data
-    formData.append('long', long.toString());
-    formData.append('lat', lat.toString());
+  
+      gymRegisterMutate(formData);
 
-    gymRegisterMutate(formData);
+    }
+
   };
 
   const { status: registerStatus, mutate: gymRegisterMutate } = useMutation({

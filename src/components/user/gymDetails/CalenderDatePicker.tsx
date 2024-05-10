@@ -16,12 +16,18 @@ import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { setDateRange } from "@/redux/slices/dateRangeSlice"; // Corrected import
+import { CloseOutlined } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { addToCart } from "@/api/user";
+import toast from "react-hot-toast";
 
 const CalenderDatePicker: React.FC<{
   isOpen: boolean;
   onToggle: () => void;
-}> = ({ isOpen, onToggle }) => {
+}> = ({ isOpen, onToggle,subscriptionType,gymDetailsData }) => {
   const dispatch = useDispatch();
+  const navigate=useNavigate()
 
   const [dateRange, setDateRangeState] = useState([
     {
@@ -52,10 +58,24 @@ const CalenderDatePicker: React.FC<{
       endDate,
     };
 
+  
+
     setDateRangeState(newDateRange);
     dispatch(setDateRange(obj));
   };
 
+  const {mutate: addCartMutation}=useMutation({
+    mutationFn: addToCart,
+    onSuccess: (res) => {
+      if(res){ 
+        
+       navigate('/checkout')
+
+      }else{
+        toast.error('Something went wrong')
+      }
+    }
+  })
   const handleClickAway = () => {
     if (isOpen) {
       onToggle();
@@ -64,10 +84,19 @@ const CalenderDatePicker: React.FC<{
 
   const handlePurchase = () => {
     
+
+    const daysDifference = endDate.diff(startDate, 'day');
      const data = {
-      
+      gymId: gymDetailsData._id,
+      date: startDate,
+      expiryDate: endDate, 
+      subscriptionType: subscriptionType,
+      amount: gymDetailsData?.subscriptions.Daily,
+      totalPrice: gymDetailsData?.subscriptions.Daily * daysDifference,
      }
-  }
+
+     addCartMutation(data);
+  } 
 
   return (
     <Box
@@ -88,8 +117,8 @@ const CalenderDatePicker: React.FC<{
         placement="bottom-start"
         style={{ zIndex: 1000, top: "15%", left: "50%" }}
       >
+        <>
         <ClickAwayListener onClickAway={handleClickAway}>
-          <>
             <Paper>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateRangePicker
@@ -97,7 +126,6 @@ const CalenderDatePicker: React.FC<{
                   minDate={dayjs().startOf("day").toDate()}
                   onChange={handleSelect}
                 />
-              <Button onClick={onToggle}>x</Button>
 
               </LocalizationProvider>
               <div className="flex justify-center">
@@ -117,8 +145,8 @@ const CalenderDatePicker: React.FC<{
                 </Button>
               </div>
             </Paper>
-          </>
         </ClickAwayListener>
+          </>
       </Popper>
     </Box>
   );

@@ -1,8 +1,12 @@
+import TrainerLogin from '@/components/trainer/trainerLogin/TrainerLogin'
 import React from 'react'
 
-const TrainerLoginPage = () => {
+const TrainerLoginPage = () => { 
+  
   return (
-    <div>TrainerLoginPage</div>
+    <div>
+      <TrainerLogin/>
+    </div>
   )
 }
 

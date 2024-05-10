@@ -1,9 +1,16 @@
-import React from 'react'
+import React from "react";
+import { useSelector } from "react-redux";
+import { Navigate, Outlet } from "react-router-dom";
 
-const TrainerProtect = () => {
-  return (
-    <div>TrainerProtect</div>
-  )
+interface iType {
+  auth: {
+    tLoggedIn: boolean;
+  };
 }
+const TrainerProtect = () => {
+  const { tLoggedIn } = useSelector((state: iType) => state.auth);
 
-export default TrainerProtect
+  return tLoggedIn ? <Outlet /> : <Navigate to="/trainer" replace />;
+};
+
+export default TrainerProtect;
