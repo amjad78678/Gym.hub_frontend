@@ -1,65 +1,90 @@
-import { addNewSubscription } from "@/api/user";
+import { addNewSubscription, validateCoupon } from "@/api/user";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import {loadStripe} from '@stripe/stripe-js';
+import { loadStripe } from "@stripe/stripe-js";
+import { useNavigate } from "react-router-dom";
 const STRIPE_PK = import.meta.env.VITE_STRIPE_PK;
 
-
-const GymCheckout = ({ checkoutData }) => {
+const GymCheckout = ({ checkoutData, handleShowCoupon, userWallet }) => {
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [couponApplied, setCouponApplied] = useState(false);
+  const [coupon, setCoupon] = useState("");
+  const navigate=useNavigate()
 
-
-
-  const {status,mutate: createSubscription}=useMutation({
+  const { status, mutate: createSubscription } = useMutation({
     mutationFn: addNewSubscription,
     onSuccess: async (res) => {
+      const stripe = await loadStripe(STRIPE_PK);
+      if (res && res.data && stripe && paymentMethod === "online") {
+        const result = await stripe.redirectToCheckout({
+          sessionId: res.data.stripeId,
+        });
 
-        const stripe = await loadStripe(STRIPE_PK)
-        console.log(stripe)
-
-        if(res && res.data && stripe && paymentMethod === "online"){
-            const result = await stripe.redirectToCheckout({
-                sessionId: res.data.stripeId
-            })
-
-            if(result.error){
-                const msg = result.error;
-                console.log(msg);
-
-            }
+        if (result.error) {
+          const msg = result.error;
+          console.log(msg);
         }
-    }
-})
+      } else {
+        if (res && res.data) {
+          toast.success(res.data.message);
+          navigate('/success')
+        }
+       
+      }
+    },
+  });
   const submitHandler = () => {
-
-    if(!paymentMethod){
-        toast.error('Please select a payment method')
-        return;
+    if (!paymentMethod) {
+      toast.error("Please select a payment method");
+      return;
     }
-
-
 
     const subscriptionData = {
-     
-        gymId: checkoutData?.gymId?._id,
-        date: checkoutData?.date,
-        expiryDate: checkoutData?.expiryDate,
-        subscriptionType: checkoutData?.subscriptionType,
-        paymentType: paymentMethod,
-        price: checkoutData.totalPrice
+      gymId: checkoutData?.gymId?._id,
+      date: checkoutData?.date,
+      expiryDate: checkoutData?.expiryDate,
+      subscriptionType: checkoutData?.subscriptionType,
+      paymentType: paymentMethod,
+      price: checkoutData.totalPrice,
+      coupon: {
+        name: coupon,
+        isApplied: couponApplied,
+      },
+    };
 
-    }
-
-    createSubscription(subscriptionData)
-
-
+    createSubscription(subscriptionData);
   };
 
-
-
   console.log("checkoutData", checkoutData);
+
+  const { mutate: applyCouponMutate } = useMutation({
+    mutationFn: validateCoupon,
+    onSuccess: (res) => {
+      if (res) {
+        toast.success("Coupon Applied");
+        setCouponApplied(true);
+        setCoupon(res?.data?.coupon?.name);
+        checkoutData.totalPrice =
+          checkoutData.totalPrice - res?.data?.coupon?.discount;
+      }
+    },
+  });
+
+  const handleCouponApply = () => {
+    if (coupon.trim().length < 1) {
+      toast.error("Enter coupon code");
+      return;
+    }
+
+    const obj = {
+      coupon: coupon,
+      price: checkoutData?.totalPrice,
+    };
+
+    applyCouponMutate(obj);
+  };
 
   return (
     checkoutData && (
@@ -77,7 +102,6 @@ const GymCheckout = ({ checkoutData }) => {
                 <h1 className="sm:text-lg font-semibold">
                   SUBSCRIPTION DETAILS
                 </h1>
-           
               </div>
               <div className="bg-gray-800 p-3">
                 <h1 className="text-xl font-semibold tracking-wider mb-2">
@@ -142,17 +166,16 @@ const GymCheckout = ({ checkoutData }) => {
                     <input
                       id="coupon"
                       type="text"
-                      className="border uppercase outline-none pl-2 py-2"
+                      className="border uppercase text-black pl-2 py-2"
                       placeholder="Coupon code"
-                      readOnly={false}
-                      value=""
-                      onChange={() => {}}
+                      value={coupon}
+                      onChange={(e) => setCoupon(e.target.value)}
                     />
                   </div>
                   <div>
                     <button
                       className="bg-yellow-400 px-4 py-2 hover:bg-yellow-500 text-white"
-                      onClick={() => {}}
+                      onClick={handleCouponApply}
                     >
                       Apply
                     </button>
@@ -163,7 +186,12 @@ const GymCheckout = ({ checkoutData }) => {
                   onClick={() => {}}
                   className="cursor-pointer flex justify-start mt-2"
                 >
-                  <p className="text-blue-700 font-semibold">find coupons</p>
+                  <p
+                    onClick={handleShowCoupon}
+                    className="text-blue-700 font-semibold"
+                  >
+                    find coupons
+                  </p>
                 </div>
               </div>
               <div className="sm:flex gap-5 flex-wrap sm:gap-10 justify-center p-3">
@@ -175,7 +203,7 @@ const GymCheckout = ({ checkoutData }) => {
                     onChange={() => setPaymentMethod("wallet")}
                   />
                   <span className="ml-2 text-gray-400">
-                    Wallet ( Balance: ₹1000 )
+                    Wallet ( Balance: ₹{userWallet} )
                   </span>
                 </label>
                 <label className="flex items-center text-lg">

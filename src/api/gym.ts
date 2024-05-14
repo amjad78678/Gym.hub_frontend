@@ -237,3 +237,32 @@ export const updateTrainer = async (data) => {
     return errorHandle(err);
   }
 }
+
+export const fetchCoupons = async () => {
+  try {
+    const response = await Api.get(gymRoutes.fetchCoupons);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
+
+export const addCoupon = async (data) => {
+  try {
+    const response = await Api.post(gymRoutes.addCoupon, data);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
+export const updateCoupon = async (data) => {
+  try {
+    const response = await Api.put(gymRoutes.updateCoupon, data);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}

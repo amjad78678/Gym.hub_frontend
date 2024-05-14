@@ -12,9 +12,6 @@ import { MenuButton } from "@mui/base/MenuButton";
 import MenuItem from "@mui/material/MenuItem";
 import { MenuItem as MuiDropMenuItem } from "@mui/base/MenuItem";
 import { Menu as DropMenu } from "@mui/base/Menu";
-import { useMutation } from "@tanstack/react-query";
-import { userLogout } from "@/api/user";
-import { setUserLogout } from "@/redux/slices/authSlice";
 import Loader from "./Loader";
 import { Link, useNavigate } from "react-router-dom";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
@@ -36,14 +33,7 @@ function Navbar() {
 
   const { uLoggedIn, userDetails } = useSelector((state: iState) => state.auth);
 
-  const { status, mutate: handleLogout } = useMutation({
-    mutationFn: userLogout,
-    onSuccess: (res) => {
-      console.log(res);
-      dispatch(setUserLogout());
-      navigate("/login");
-    },
-  });
+
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -54,8 +44,9 @@ function Navbar() {
   };
 
   return (
-    <AppBar sx={{ backgroundColor: "black" }} position="static">
-      <Container className="bg-black p-2 ">
+    <div className="relative z-10">
+    <AppBar sx={{ backgroundColor: "black",boxShadow: "none" }} position="static">
+      <Container className="bg-transparent p-2 border-none ">
         <Toolbar disableGutters>
           <img className="w-28" src="/removebg.png" alt="" />
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -146,9 +137,7 @@ function Navbar() {
             //   </DropMenu>
             // </Dropdown>
             <AccountCircleOutlinedIcon
-              onClick={() => {
-                handleLogout();
-              }}
+              onClick={() => navigate('/profile/subscriptions')}
               sx={{ fontSize: 33, cursor: "pointer" }}
             />
           ) : (
@@ -166,6 +155,7 @@ function Navbar() {
       </Container>
       {status === "pending" && <Loader />}
     </AppBar>
+    </div>
   );
 }
 export default Navbar;

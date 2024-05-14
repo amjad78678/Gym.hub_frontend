@@ -45,7 +45,7 @@ const Users = () => {
       {
         field: "name",
         headerName: "Name",
-        width: 140,
+        width: 180,
         renderCell: (params) => {
           return <div>{params.row.username}</div>;
         },

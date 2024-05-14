@@ -1,3 +1,4 @@
+import AdminSubscriptions from '@/components/admin/adminSubscriptions/AdminSubscriptions'
 import React, { useEffect } from 'react'
 
 const AdminSubscriptionPlans = ({setSelectedLink,link}) => {
@@ -5,7 +6,9 @@ const AdminSubscriptionPlans = ({setSelectedLink,link}) => {
         setSelectedLink(link)
       },[])
   return (
-    <div>AdminSubscriptionPlans</div>
+    <div>
+      <AdminSubscriptions/>
+    </div>
   )
 }
 

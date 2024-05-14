@@ -7,7 +7,8 @@ import { UserSignupValidation } from "../../validation/UserSignupValidation";
 import axios from "axios";
 import { signUp } from "@/api/user";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserDetails, setUserLogin } from "@/redux/slices/authSlice";
 
 const G_PASSWORD = import.meta.env.VITE_GOOGLE_PASSWORD;
 
@@ -16,6 +17,7 @@ interface UserType {
 }
 const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
 
   const {uLoggedIn}= useSelector((state)=>state.auth)
@@ -50,7 +52,15 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
         const response2 = await signUp(data);
         if (response2) {
           toast.success(response2.data.message);
-          navigate("/user-login");
+          dispatch(setUserLogin());
+          dispatch(
+            setUserDetails({
+              name: response2.data.user.username,
+              profilePic: response2.data.user.profilePic,
+              token: response2.data.token,
+            })
+          )
+          navigate("/");
         }
       } catch (error) {
         console.log(error);

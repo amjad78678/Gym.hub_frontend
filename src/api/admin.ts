@@ -119,3 +119,13 @@ export const updateUserAction = async ({id,isBlocked,isDeleted}) => {
     }
 }
 
+export const fetchSubscriptions = async () => {
+    try {
+        const response=await Api.get(adminRoutes.fetchSubscriptions)
+        return response
+    } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err);
+    }
+}
+

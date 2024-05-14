@@ -15,6 +15,9 @@ const gymRoutes = {
     fetchTrainers:`/fetch_gym_trainers`,
     addTrainer:'/add_gym_trainer',
     updateTrainer:`/update_gym_trainer`,
+    fetchCoupons:`/fetch_coupons`,
+    addCoupon:'/add_coupon',
+    updateCoupon:`/update_coupon`,
 
 }
 

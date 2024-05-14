@@ -12,11 +12,7 @@ import axios from "axios";
 
 const G_PASSWORD = import.meta.env.VITE_GOOGLE_PASSWORD;
 
-// interface iState {
-//   auth: {
-//     uLoggedIn: boolean;
-//   };
-// }
+
 const UserLogin: React.FC = ({showForgotEmail}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();

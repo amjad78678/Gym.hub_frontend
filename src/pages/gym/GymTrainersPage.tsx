@@ -36,7 +36,7 @@ console.log('selectedRow',selectedRow)
 
    </Container>
    {open && <AddTrainerModal {...{open,setOpen,refetch}}/>}
-   {editOpen && <EditTrainerModal {...{editOpen,selectedRow,setEditOpen,refetch,selectedRow}}/>}
+   {editOpen && <EditTrainerModal {...{editOpen,selectedRow,setEditOpen,refetch}}/>}
    </>
 
   );

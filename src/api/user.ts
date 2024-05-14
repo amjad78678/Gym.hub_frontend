@@ -15,18 +15,17 @@ interface userFormData {
   gender?: string;
   password: string;
 }
-
  
 const BASE_URL = import.meta.env.VITE_BASE_URL
 const Api = axios.create({baseURL:`${BASE_URL}/user`,withCredentials:true})
 
-
 Api.interceptors.response.use((response)=>{
-   return response
+  return response
 }, (error) => {
     if(error.response){
         const {data}=error.response
         console.log('axio',data.message)  
+       
     }else{
         console.log(error);
         
@@ -217,5 +216,33 @@ export const addNewSubscription = async (data: any) => {
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
+  }
+}
+
+export const validateCoupon = async (data: any) => {
+  try {
+    const response = await Api.post(userRoutes.validateCoupon, data);
+    return response
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
+export const fetchUserDetails = async () => {
+  try {
+    const response = await Api.get(userRoutes.fetchUserDetails);
+    return response
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err); 
+  }
+}
+export const addMoneyWallet = async (data: any) => {
+  try{
+    const response = await Api.post(userRoutes.addMoneyWallet,data)
+    return response
+  }catch (error){
+    const err: Error = error as Error;
+    return errorHandle(err); 
   }
 }

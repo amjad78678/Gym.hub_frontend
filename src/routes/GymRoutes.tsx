@@ -1,5 +1,6 @@
 import Footer from "@/components/common/Footer";
 import GymProtect from "@/components/gym/common/GymProtect";
+import GymCouponPage from "@/pages/gym/GymCouponPage";
 import GymDashboardPage from "@/pages/gym/GymDashboardPage";
 import GymLoginPage from "@/pages/gym/GymLoginPage";
 import GymMembersPage from "@/pages/gym/GymMembersPage";
@@ -24,6 +25,7 @@ const GymRoutes = () => {
             <Route path="members" element={<GymMembersPage />} />
             <Route path="trainers" element={<GymTrainersPage />} />
             <Route path="profile" element={<GymProfilePage />} />
+            <Route path="coupons" element={<GymCouponPage/>} />
           </Route>
         </Route>
       </Route>

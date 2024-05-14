@@ -11,11 +11,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
     "@mapbox/mapbox-gl-geocoder": "^5.0.2",
     "@mui/icons-material": "^5.15.16",
-    "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.16",
     "@mui/system": "^5.15.15",
     "@mui/x-data-grid": "^7.3.1",

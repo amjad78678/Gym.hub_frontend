@@ -92,7 +92,7 @@ const CalenderDatePicker: React.FC<{
       expiryDate: endDate, 
       subscriptionType: subscriptionType,
       amount: gymDetailsData?.subscriptions.Daily,
-      totalPrice: gymDetailsData?.subscriptions.Daily * daysDifference,
+      totalPrice: daysDifference==0 ? gymDetailsData?.subscriptions.Daily:gymDetailsData?.subscriptions.Daily * daysDifference,
      }
 
      addCartMutation(data);

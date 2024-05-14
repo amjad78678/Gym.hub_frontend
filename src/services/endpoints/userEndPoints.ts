@@ -15,6 +15,9 @@ const userRoutes={
     addToCart:`/add_to_cart`,
     getCheckoutDetails:`/get_checkout_details`,
     addNewSubscription:`/add_new_subscription`,
-}
+    validateCoupon:`/validate_coupon`,
+    fetchUserDetails:`/user_details`,
+    addMoneyWallet:`/add_money_wallet`,
+}   
 
 export default userRoutes
