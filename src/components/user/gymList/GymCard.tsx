@@ -86,15 +86,22 @@ const GymCard = ({ gym }) => {
               </p>
 
               <Link to={`/gym-details?id=${gym._id}`}>
-                <Button
-                  sx={{
-                    textTransform: "none",
-                    fontWeight: "bold",
-                    color: "green",
-                  }}
-                >
-                  Book now
-                </Button>
+              <Button
+                      sx={{
+                        textTransform: "none",
+                        float: "right",
+                        fontWeight: "bold",
+                        color: "green",
+                        ":hover": {
+                          color: "yellowgreen",
+                          transition: "all 0.3s ease",
+                          transform: "scale(1.05)",
+                          cursor: "pointer",
+                        },
+                      }}
+                    >
+                      Book now
+                    </Button>
               </Link>
             </div>
           </div>
