@@ -6,7 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import { gymLogin } from "@/api/gym";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; 
 import { setGymLogin } from "@/redux/slices/authSlice";
 
 const GymLogin = ({showForgotEmail}) => {

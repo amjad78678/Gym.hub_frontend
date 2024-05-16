@@ -18,6 +18,8 @@ const userRoutes={
     validateCoupon:`/validate_coupon`,
     fetchUserDetails:`/user_details`,
     addMoneyWallet:`/add_money_wallet`,
+    fetchSubscriptions:`/fetch_subscriptions`,
+    fetchTrainers:`/fetch_trainers`,
 }   
 
 export default userRoutes

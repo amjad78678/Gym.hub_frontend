@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import CloseIcon from "@mui/icons-material/Close";
 import { updatePassword } from "@/api/user";
 import { gUpdatePassword } from "@/api/gym";
+import { tUpdatePassword } from "@/api/trainer";
 
 const ChangePassword = ({ userType, closeModal }) => {
   const [formData, setFormData] = useState({
@@ -42,6 +43,15 @@ const ChangePassword = ({ userType, closeModal }) => {
       }
     },
   });
+  const { mutate: tUpdataPasswordMutation } = useMutation({
+    mutationFn: tUpdatePassword,
+    onSuccess: (res) => {
+      if (res) {
+        toast.success("Password updated successfully");
+        closeModal();
+      }
+    },
+  });
 
   const submitHandler = () => {
     if (formData.password === formData.confirmPassword) {
@@ -49,6 +59,8 @@ const ChangePassword = ({ userType, closeModal }) => {
         updataPasswordMutation(formData.password);
       } else if (userType === "gym") {
         gUpdataPasswordMutation(formData.password);
+      }else if(userType === "trainer"){
+        tUpdataPasswordMutation(formData.password);
       }
     } else {
       toast.error("Password does not match");

@@ -1,13 +1,32 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react';
+import SubscriptionCard from './gymSubscription/SubscriptionCard';
+import { useQuery } from '@tanstack/react-query';
+import { fetchSubscriptions } from '@/api/user';
 
-const ProfileSubscriptions = ({selected,setSelected}) => {
-    useEffect(()=>{
-        setSelected(selected)
-      },[])
-    
+
+const ProfileSubscriptions = ({ selected, setSelected }) => {
+  useEffect(() => {
+    setSelected(selected);
+  }, []);
+
+  const [subs, setSubs] = useState([]);
+  const { isLoading, data: subscriptionData, refetch } = useQuery({
+    queryKey: ['subscriptionData'],
+    queryFn: fetchSubscriptions,
+  });
+
+  useEffect(() => {
+    setSubs(subscriptionData?.data.subscriptions);
+  }, [subscriptionData]);
+
   return (
-    <div>ProfileSubscriptions Lorem ipsum dolor sit amet consectetur adipisicing elit. Et facere architecto iure eum laboriosam tempora minima minus, reprehenderit numquam dolorem accusamus ullam, esse consectetur corrupti beatae. Debitis voluptatum fugiat reprehenderit voluptates ipsum natus animi nisi ullam? Ratione nemo in fugiat adipisci cumque harum! Obcaecati nam saepe impedit atque totam cumque voluptatibus mollitia voluptate similique dignissimos quam porro hic eaque ad, suscipit quibusdam expedita minima. Nihil officia eveniet sint culpa assumenda minus molestiae, ipsam, provident minima sapiente consectetur vero maiores aperiam doloribus repudiandae sunt voluptate alias quis iusto distinctio nisi earum laborum commodi quidem. Sit aliquid quae maiores accusantium inventore ad asperiores eveniet earum adipisci. Sed non inventore accusamus velit necessitatibus vel quod in, similique possimus placeat tenetur mollitia quas eius est nisi unde sint provident molestiae error fugit fuga dolor temporibus. Sed, suscipit porro. Voluptatem accusamus quod tempora, libero praesentium, natus dignissimos assumenda voluptas quas beatae optio? Iure omnis voluptatem possimus obcaecati quos architecto suscipit optio, maiores quae blanditiis voluptatibus tempora voluptatum eligendi ea alias aspernatur esse in neque perspiciatis saepe. Ut expedita consectetur ducimus placeat rerum dolor rem voluptatum recusandae repudiandae eum, tempore hic consequatur quisquam delectus facere temporibus, ex quaerat quam aspernatur eveniet, doloremque reiciendis officiis enim! Iusto ipsa exercitationem et voluptas quaerat earum ea iure necessitatibus placeat! Ducimus quasi iste eligendi ut corporis? Ipsam tempore nihil illo officiis suscipit praesentium, doloribus labore a odio illum id officia quos harum, modi corrupti, quaerat magnam? Dignissimos nobis vitae quo asperiores cum, debitis totam culpa quod magni repellat saepe distinctio optio voluptas blanditiis ducimus reiciendis eum commodi obcaecati ad nisi odit! Voluptatem commodi doloremque dolore aliquam officiis nisi. Corporis voluptatibus fugit culpa vel at. Optio, necessitatibus repellendus. Voluptatibus, et. Eos explicabo et voluptates officiis eum eligendi voluptatibus sequi ea ducimus earum exercitationem, eveniet eaque doloremque vitae optio dolorem soluta a.</div>
-  )
-}
+    <>
+      {subs?.map((sub) => (
+        <SubscriptionCard sub={sub} />
+      ))}
+    </>
+  );
+};
+
 
 export default ProfileSubscriptions

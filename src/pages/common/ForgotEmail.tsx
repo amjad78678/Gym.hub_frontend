@@ -1,4 +1,5 @@
 import { gForgotPassword } from "@/api/gym";
+import { tForgotPassword } from "@/api/trainer";
 import { forgotPassword } from "@/api/user";
 import { useMutation } from "@tanstack/react-query";
 import React, { FormEvent, useState } from "react";
@@ -44,6 +45,25 @@ const ForgotEmail = ({user, closeModal,otpShow }) => {
       }
   })
 
+    const {mutate: tForgotPassMutation}=useMutation({
+      mutationFn:tForgotPassword,
+      onSuccess:(res)=>{
+          console.log('iam kittiyathu',res)
+          if(res){
+              if(res.data.success){
+   
+                  closeModal()
+                  otpShow()
+                  toast.success(res.data.message)
+
+              }
+          }
+       
+      }
+  })
+
+
+
     const submitHandler = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
@@ -55,6 +75,10 @@ const ForgotEmail = ({user, closeModal,otpShow }) => {
         
         gForgotPassMutation(email)
         
+      }else if(user==="trainer"){
+
+        tForgotPassMutation(email)
+
       }
 
     }

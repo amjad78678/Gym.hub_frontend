@@ -41,7 +41,7 @@ const AppBar = styled(MuiAppBar, {
 export default function TrainerPage() {
   const [open, setOpen] = useState(false);
   const [dark, setDark] = useState(true);
- 
+
   const darkTheme = useMemo(() => {
     return createTheme({
       palette: {
@@ -58,9 +58,14 @@ export default function TrainerPage() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box sx={{ display: "flex" }}>
+      <Box
+        sx={{
+          display: "flex",
+          backgroundColor: !dark ? "#ffffff" : "#000000",
+        }}
+      >
         <CssBaseline />
-        <AppBar position="fixed" open={open}>
+        <AppBar  sx={{ backgroundColor: !dark ? "#9f9f9f" : "#000000", padding: 1 }} position="fixed" open={open}>
           <Toolbar>
             <IconButton
               color="inherit"

@@ -11,8 +11,9 @@ import Footer from "@/components/common/Footer";
 import GymCheckoutPage from "@/pages/user/GymCheckoutPage";
 import PaymentSuccess from "@/components/user/payments/PaymentSuccess";
 import PaymentFailure from "@/components/user/payments/PaymentFailure";
-import Coupon from "@/components/user/checkout/Coupon";
 import UserProfilePage from "@/pages/user/UserProfilePage";
+import PersonalTrainer from "@/components/user/personalTrainer/PersonalTrainer";
+import PersonalTrainerPage from "@/pages/user/PersonalTrainerPage";
 
 const UserRoutes = () => {
   return (
@@ -28,7 +29,8 @@ const UserRoutes = () => {
         <Route path="success" element={<PaymentSuccess/>} />
         <Route path="cancel/*" element={<PaymentFailure/>} />
         <Route path="profile/*" element={<UserProfilePage/>}/>
-        <Route path="test" element={<Coupon/>} />
+        <Route path="personal-trainer/*" element={<PersonalTrainerPage/>}/>
+        {/* <Route path="test" element={<Coupon/>} /> */}
       </Route>
       <Route element={<UserProtect />}></Route>
     </Routes>

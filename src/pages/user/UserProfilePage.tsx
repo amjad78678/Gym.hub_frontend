@@ -20,7 +20,7 @@ const UserProfilePage = () => {
 
   return !isLoading && (
    
-       <div className='min-h-[750px] bg-black'>
+       <div className='min-h-[800px] bg-black'>
        <Navbar/>
        <ProfileTop userData={userDetails} {...{refetch}}/>
        </div>

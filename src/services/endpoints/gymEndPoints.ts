@@ -11,7 +11,7 @@ const gymRoutes = {
     forgotPassword:'/forgot_password',
     verifyForgotPassword:'/verify_forgot',
     updataPasswordForgot:'/update_password',
-    resendForgotOtp:'/resend_forgot_otp',
+    resendForgotOtp:'/resend_forgot_otp',   
     fetchTrainers:`/fetch_gym_trainers`,
     addTrainer:'/add_gym_trainer',
     updateTrainer:`/update_gym_trainer`,

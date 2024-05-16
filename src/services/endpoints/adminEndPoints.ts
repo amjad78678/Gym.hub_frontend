@@ -9,6 +9,7 @@ const adminRoutes={
     fetchUsers:'/fetch_users',
     updateUser:(id: string)=>`/update_user/${id}`,
     fetchSubscriptions:'/fetch_subscriptions',
+    fetchGymWithId:(id: string)=>`/fetch_gym_with_id/${id}`
 
 }
 

@@ -96,7 +96,7 @@ const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
                 <Stack spacing={2} margin={2}>
                 <img
                   className="rounded-xl mx-auto object-cover w-1/2"
-                  src={image? URL.createObjectURL(image) : selectedRow.imageUrl}
+                  src={image? URL.createObjectURL(image) : selectedRow.image.imageUrl}
                   alt="Selected"
                 />
                   <TextField

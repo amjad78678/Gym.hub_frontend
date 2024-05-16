@@ -1,38 +1,29 @@
-// import axios from "axios";
-import React, { useEffect, useState } from "react";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
-// const API_KEY = import.meta.env.GOOGLE_API_KEY
+import { Button, Link } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 
-const GymCard = ({ gym }) => {
-  // const [streetAddress, setStreetAddress] = useState("");
+const TrainerCard = ({trainer}) => {
 
-  // useEffect(() => {
-  //   axios 
-  //     .get(
-  //       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${gym.location.coordinates[1]},${gym.location.coordinates[0]}&key=${API_KEY}`
-  //     )
-  //     .then((res) => {
-  //       setStreetAddress(res.data.results[0].formatted_address);
-  //     });
-  // }, []);
+  const dummyImageUrl = "https://via.placeholder.com/150"; // Dummy image URL
+  const dummyGymName = "Gym Name";
+  const dummyDescription = "A great place to workout!";
+  const dummyQuarterlyFee = "$50";
+  const dummyDailySubscription = "Daily";
 
-  return (
+  console.log('inside trainer card', trainer)
+
+  return ( 
     <div className="bg-black">
       <div className="flex flex-col my-4">
-        <div className="relative bg-black flex flex-col md:flex-row md:space-x-5  md:space-y-0 rounded-xl shadow-lg p-3 max-w-xs md:max-w-3xl mx-auto border border-white">
+        <div className="relative bg-black flex flex-col md:flex-row md:space-x-5 md:space-y-0 rounded-xl shadow-lg p-3 max-w-xs md:max-w-3xl mx-auto border border-white">
           <div className="w-full md:w-1/3 bg-black grid place-items-center">
-            <img
-              src={gym.images[0].imageUrl}
-              alt="tailwind logo"
-              className="rounded-xl"
-            />
+            <img src={trainer.image.imageUrl} alt="Gym Image" className="rounded-xl" />
           </div>
           <div className="w-full md:w-2/3 bg-black text-white flex flex-col space-y-2 p-3">
             <div className="flex justify-between items-center">
               <p className="text-gray-500 font-medium hidden md:block">Gyms</p>
               <div className="flex items-center">
+                {/* Rating SVG */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5 text-yellow-500"
@@ -48,44 +39,26 @@ const GymCard = ({ gym }) => {
                   </span>
                 </p>
               </div>
-              <div className="">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-pink-500"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-         
+              {/* Other icons */}
             </div>
             <h3 className="font-black text-white md:text-3xl text-xl">
-              {gym.gymName}
+              {dummyGymName}
             </h3>
-            <p className="text-white text-sm">
-              <LocationOnIcon />
-              {gym?.address}
-            </p>
             <p className="md:text-[0.7rem] text-white">
-              {gym.description.length > 300
-                ? gym.description.substring(0, 250) + "..."
-                : gym.description}
+              {dummyDescription.length > 300
+                ? dummyDescription.substring(0, 250) + "..."
+                : dummyDescription}
             </p>
 
             <div className="flex justify-between items-center">
               <p className="text-xl font-black text-white">
-                ₹{gym.quarterlyFee}
+                ₹{dummyQuarterlyFee}
                 <span className="font-normal text-white text-base">
-                  {gym.subscriptions.Daily}/Days
+                  {dummyDailySubscription}/Days
                 </span>
               </p>
 
-              <Link to={`/gym-details?id=${gym._id}`}>
+              <Link href={`/gym-details?id=123`}>
                 <Button
                   sx={{
                     textTransform: "none",
@@ -104,4 +77,4 @@ const GymCard = ({ gym }) => {
   );
 };
 
-export default GymCard;
+export default TrainerCard;

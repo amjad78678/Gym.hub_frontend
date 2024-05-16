@@ -246,3 +246,22 @@ export const addMoneyWallet = async (data: any) => {
     return errorHandle(err); 
   }
 }
+export const fetchSubscriptions = async () => {
+  try {
+      const response=await Api.get(userRoutes.fetchSubscriptions)
+      return response
+  } catch (error) {
+      const err: Error = error as Error; 
+      return errorHandle(err);
+  }
+}
+
+export const fetchTrainers=async()=>{
+  try {
+    const response=await Api.get(userRoutes.fetchTrainers)
+    return response
+  } catch (error) {
+    const err: Error = error as Error; 
+    return errorHandle(err);
+  }
+}

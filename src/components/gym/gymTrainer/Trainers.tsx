@@ -34,7 +34,7 @@ const Trainers = ({open,setOpen,editOpen,setEditOpen,trainers,refetch,setSelecte
             headerName: "Avatar",
             width: 90,
             renderCell: (params) => {
-              return <Avatar src={params.row.imageUrl} />;
+              return <Avatar src={params.row.image.imageUrl} />;
             },
           },
           {

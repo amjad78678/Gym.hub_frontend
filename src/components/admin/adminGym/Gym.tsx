@@ -10,6 +10,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { Button } from "@mui/material";
 import toast from "react-hot-toast";
 import { blockAdminAction,deleteGym } from "@/api/admin";
+import { Link } from "react-router-dom";
 
 const MySwal = withReactContent(Swal);
 
@@ -189,8 +190,8 @@ const Gym = () => {
                   </td>
                   <td className="px-4 py-3 text-sm">{gym.gymName}</td>
                   <td className="px-4 py-3 text-sm">{gym.state}, {gym.city}</td>
-                  <td className="px-4 py-3 text-sm text-blue-600">
-                    View details
+                <td className="px-4 py-3 text-sm cursor-pointer hover:underline text-blue-600">
+                <Link to={`/admin/dashboard/gym/${gym._id}`}>   View details </Link>
                   </td>
                   <td className="px-4 py-3 text-xs">
                     {gym.isVerified ? (

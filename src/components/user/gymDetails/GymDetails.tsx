@@ -73,6 +73,10 @@ const GymDetails = () => {
         if (res.data.success) {
         
           navigate("/checkout");
+
+        }else if(res.data.failure){
+         toast.error(res.data.message);
+
         }
         
       }else{
@@ -93,7 +97,7 @@ const GymDetails = () => {
         amount: gymDetailsData?.data.message.subscriptions.Monthly,
         totalPrice: gymDetailsData?.data.message.subscriptions.Monthly,
       };
-      addCartMutation(data);
+      addCartMutation(data); 
     } else if (alignment === "Yearly") {
       const data = {
         gymId: gymId,
@@ -233,7 +237,7 @@ const GymDetails = () => {
                 Gym description
               </p>
               {currentView === "description" ? (
-                <div className="w-full h-1 bg-white mt-1 mb-5"></div>
+                <div className="w-full h-1 bg-white mt-1 mb-5 "></div>
               ) : (
                 <div className="w-full h-1 bg-gray-600 mt-1 mb-5"></div>
               )}
@@ -260,20 +264,25 @@ const GymDetails = () => {
                 sx={{ display: "flex", flexDirection: "column", width: "100%" }}
               >
                 {currentView === "description" ? (
-                  <div className="border border-gray-400 p-2 rounded-lg">
-                    <p className="text-md text-gray-400 mb-2 ">
+                  <div className="border border-gray-400 p-4 rounded-sm">
+                    <h2 className="text-xl font-serif  text-white mb-2 ">
                       Gym information
-                    </p>
-                    {gymDetailsData?.data.message.description}
+                    </h2>
+
+                    <p className="text-gray-300">{gymDetailsData?.data.message.description}</p>
+
                   </div>
                 ) : (
-                  <div className="border border-gray-400 p-2 rounded-lg">
-                    <p className="text-md text-gray-400 mb-2 ">Gym ratings</p>
+                  <div className="border border-gray-400 p-4 rounded-sm">
+                    <h2 className="text-xl font-serif  text-white mb-2 ">Gym ratings</h2>
+                    <p className="text-gray-300">
                     iam review aaneu Lorem ipsum dolor sit amet consectetur
                     adipisicing elit. Ipsa facere mollitia recusandae laudantium
                     tempore libero assumenda perferendis, inventore quidem
                     labore doloremque, ab fuga dignissimos, amet consequatur
                     asperiores voluptatum porro enim?
+                    </p>
+                 
                   </div>
                 )}
               </Box>

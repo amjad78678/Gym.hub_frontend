@@ -15,6 +15,7 @@ const errorHandle = (error: Error | AxiosError) => {
     if(errorResponse.message.includes("Not authorized")){
      
       toast.error("Please Login Again");
+      
     }else if (errorResponse.message) {
       
        toast.error(errorResponse.message);

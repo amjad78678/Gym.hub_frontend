@@ -106,13 +106,13 @@ function Navbar() {
               sx={{ my: 2, color: "white", display: "block" }}
             >
               Book offline gym
-            </Button></Link>
-            <Button
+          </Button></Link>
+          <Link to={'/personal-trainer'}><Button
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >
               Personal trainer
-            </Button>
+            </Button></Link>
             <Button
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}

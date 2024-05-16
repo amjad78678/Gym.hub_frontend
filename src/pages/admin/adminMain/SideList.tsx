@@ -30,6 +30,7 @@ import { adminLogout } from "@/api/admin";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setAdminLogout } from "@/redux/slices/authSlice";
+import AdminGymDetailsPage from "../AdminGymDetailsPage";
 
 const drawerWidth = 240;
 
@@ -185,10 +186,10 @@ const navigate=useNavigate()
 
     <Routes>
 
-  
   {list.map((item)=> (
     <Route key={item.title} path={item.link} element={item.component} />
   ))}
+    <Route path="gym/:id" element={<AdminGymDetailsPage/>} />
 
 
     </Routes>

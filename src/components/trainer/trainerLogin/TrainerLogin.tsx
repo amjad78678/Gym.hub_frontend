@@ -9,9 +9,9 @@ import { trainerLogin } from '@/api/trainer';
 interface iType {
   auth: {
     tLoggedIn: boolean
-  }
+  } 
 }
-const TrainerLogin = () => {
+const TrainerLogin = ({showForgotEmail}) => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
 
@@ -108,13 +108,13 @@ useEffect(()=>{
                     Password{" "}
                   </label>
                   <a
-                    href="#"
+                    onClick={showForgotEmail}
                     title=""
-                    className="text-sm font-semibold text-black hover:underline"
+                    className="text-sm font-semibold text-blue-500 hover:underline"
                   >
                     {" "}
                     Forgot password?{" "}
-                  </a>
+                  </a> 
                 </div>
                 <div className="mt-2">
                   <input

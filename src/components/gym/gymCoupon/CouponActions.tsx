@@ -38,7 +38,7 @@ const CouponActions = ({
       const { isBlocked } = params.row;
 
       try {
-        trainerUpdateMutation({ isBlocked, _id: params.row._id });
+        couponUpdateMutation({ isBlocked, _id: params.row._id });
       } catch (error) {
         console.error("Error updating user:", error);
       } finally {
@@ -67,7 +67,7 @@ const CouponActions = ({
       iconHtml: '<i class="bi bi-trash" style="font-size:30px"></i>',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        trainerUpdateMutation({ _id: row._id, isDeleted: true });
+        couponUpdateMutation({ _id: row._id, isDeleted: true });
         toast.success("Trainer deleted successfully");
       }
     });

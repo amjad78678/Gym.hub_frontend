@@ -62,3 +62,50 @@ export const trainerLogout = async () => {
     return errorHandle(err);
   }
 };
+
+export const tForgotPassword = async (email: string) => {
+  try {
+    const response = await Api.post(trainerRoutes.forgotPassword, { email });
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+
+};
+export const tVerifyForgotPassword = async (otp: number) => {
+    try {
+      
+        const response = await Api.post(trainerRoutes.verifyForgotPassword, { otp });
+        return response;
+
+    } catch (error) {
+      
+      const err: Error = error as Error;
+      return errorHandle(err);
+    }
+}
+
+export const tUpdatePassword = async (password: string) => {
+    try {
+        
+        const response = await Api.patch(trainerRoutes.updataPasswordForgot, {password});
+        return response;
+    } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err);
+    }
+}
+
+
+export const tResendForgotOtp = async () => {
+    
+    try {
+        const response = await Api.post(trainerRoutes.resendForgotOtp);
+        return response
+    } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err);
+    }
+   
+}

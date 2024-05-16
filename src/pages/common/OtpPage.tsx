@@ -1,4 +1,5 @@
 import { gResendForgotOtp, gVerifyForgotPassword, gymOtpResend, gymOtpVerifyApi } from "@/api/gym";
+import { tResendForgotOtp, tVerifyForgotPassword } from "@/api/trainer";
 import { resendForgotOtp, userOtpResend, userOtpVerify, verifyForgotPassword } from "@/api/user";
 import React, { ChangeEvent, FormEvent, useEffect, useRef, useState,KeyboardEvent } from "react";
 import toast from "react-hot-toast";
@@ -46,6 +47,15 @@ const OtpPage: React.FC<UserType> = ({ userType, closeOtp,showChangePassword }) 
     if(userType === 'gym-forgot-password'){
 
       const response=await gResendForgotOtp()
+
+      if(response){
+         toast.success(response?.data.message)
+         setTimer(120)
+      }
+    }
+    if(userType === 'trainer-forgot-password'){
+
+      const response=await tResendForgotOtp()
 
       if(response){
          toast.success(response?.data.message)
@@ -139,6 +149,17 @@ const OtpPage: React.FC<UserType> = ({ userType, closeOtp,showChangePassword }) 
   if(userType === "gym-forgot-password"){
 
    const response = await gVerifyForgotPassword(parseInt(otpValue));
+
+   if(response){
+    toast.success(response?.data.message)
+    closeOtp()
+    showChangePassword()
+   }
+
+  }
+  if(userType === "trainer-forgot-password"){
+
+   const response = await tVerifyForgotPassword(parseInt(otpValue));
 
    if(response){
     toast.success(response?.data.message)
