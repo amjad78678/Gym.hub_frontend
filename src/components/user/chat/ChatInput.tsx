@@ -1,10 +1,11 @@
 import { userChatCreate } from '@/api/user';
+import { useSocket } from '@/redux/context/socketContext';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react'
 
 const ChatInput = ({userId,trainerId}) => {
     const [newMessage, setNewMessage] = useState("");
-
+    const socket = useSocket()
    
     const {status, mutate: userChatCreateMutate} = useMutation({
         mutationFn: userChatCreate,
@@ -23,14 +24,24 @@ const ChatInput = ({userId,trainerId}) => {
         }
 
       userChatCreateMutate(obj)
+      socket.emit("send_message", obj);
       setNewMessage(""); 
     };
+
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Enter") {
+        handleSendMessage();
+      }
+    };
+    
   return (
     <div className="flex items-center space-x-2">
       <input
         type="text"
         value={newMessage}
         onChange={(e) => setNewMessage(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder="Type your message..."
         className="flex-grow text-black rounded-l-md border-2 border-gray-300 p-2"
       />

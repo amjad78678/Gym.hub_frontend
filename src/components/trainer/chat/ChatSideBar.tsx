@@ -71,9 +71,9 @@ const ChatSideBar = ({ selectedChat ,setSelectedChat}) => {
                 overflowY: "auto",
               }}
             >
-              {usersList.map((chat) => (
+              {usersList.map((chat,index) => (
                 <Box
-                  key={chat._id}
+                  key={index}
                   onClick={() => setSelectedChat(chat)}
                   sx={{
                     cursor: "pointer",

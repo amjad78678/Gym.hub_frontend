@@ -65,6 +65,7 @@ const UserLogin: React.FC = ({showForgotEmail}) => {
               name: response2.data.message.username,
               profilePic: response2.data.message.profilePic,
               token: response2.data.token,
+              userId: response2.data.message._id,
             })
           );
           toast.success("Successfully logined");
@@ -99,6 +100,7 @@ const UserLogin: React.FC = ({showForgotEmail}) => {
           name: response.data.message.username,
           profilePic: response.data.message.profilePic,
           token: response.data.token,
+          userId: response.data.message._id,
         };
 
         dispatch(setUserLogin());

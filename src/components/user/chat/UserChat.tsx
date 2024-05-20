@@ -7,40 +7,53 @@ import { useParams } from "react-router-dom";
 import { CheckCircle } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTrainerData, fetchUserChatMessages } from "@/api/user";
-import { io } from "socket.io-client";
-const ENDPOINT = import.meta.env.VITE_SOCKET_ENDPOINT
-var socket: any, selectedChatCompare: any;
+import { Socket, io } from "socket.io-client";
+import { useSocket } from "@/redux/context/socketContext";
+import iMessageType from "@/interfaces/iMessageType";
 
 const UserChat = () => {
-
-
-
   const { userId, trainerId } = useParams();
-  const [socketConnected,setSocketConnected] = useState(false)
+  const [socketConnected, setSocketConnected] = useState(false);
+  const [messages, setMessages] = useState<iMessageType[]>([]);
+  const socket: Socket = useSocket();
 
   const { isLoading, data: userChat } = useQuery({
     queryKey: ["userChatMessages", userId ?? null, trainerId ?? null],
     queryFn: fetchUserChatMessages,
   });
 
-  const {isLoading: trainerDataLoading,data: trainerData} = useQuery({
+  const { isLoading: trainerDataLoading, data: trainerData } = useQuery({
     queryKey: ["userTrainerData", trainerId ?? null],
     queryFn: fetchTrainerData,
-  })
+  });
 
-  
+  useEffect(() => {
+    if (userChat) {
+      setMessages(userChat.data.conversations);
+    }
+  }, [userChat]);
+
+  useEffect(() => {
+    console.log("i am socket connecting");
+    socket.on("connection", () => setSocketConnected(true));
+    socket.emit("add_user", userId);
+    socket.emit("chat_started", { to: trainerId });
+  }, []);
+
   useEffect(()=>{
-    console.log('i am socket connecting')
-    socket = io(ENDPOINT)
-    socket.emit("setup", userId )
-    socket.on("connection",()=> setSocketConnected(true))
-    socket.emit("joinChat", trainerId)
-  
-  },[])
+
+    socket.on("message",(message: iMessageType)=>{
+
+      setMessages([...messages,message])
+
+    })
+
+  },[socket,messages])
 
   return (
     !isLoading &&
-    userChat && !trainerDataLoading && (
+    userChat &&
+    !trainerDataLoading && (
       <Container>
         <div className="flex-1 p-2 bg-gray-200 sm:p-6 justify-between flex flex-col h-screen rounded-md">
           <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
@@ -73,7 +86,7 @@ const UserChat = () => {
             id="messages"
             className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
           >
-            {userChat.data.conversations.map((msg, index) => (
+            {messages.map((msg, index) => (
               <Message
                 key={index}
                 sender={msg.sender}
