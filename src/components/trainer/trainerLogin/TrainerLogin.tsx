@@ -45,7 +45,8 @@ useEffect(()=>{
         const data = {
           name: res.data.trainer.name,
           token: res.data.token,
-          image: res.data.trainer.imageUrl,
+          trainerId: res.data.trainer._id,
+          image: res.data.trainer.image.imageUrl,
         }
         dispatch(setTrainerLogin(data))
         navigate('/trainer/dashboard')

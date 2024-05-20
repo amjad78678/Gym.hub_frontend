@@ -1,0 +1,31 @@
+<div className="flex h-screen antialiased text-gray-800">
+    <div className="flex flex-row h-full w-full overflow-x-hidden">
+        <div className="flex flex-col flex-auto h-full p-2">
+            <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full p-2 bg-white shadow-lg">
+                {/* DoctorChatHeader Component */}
+                <div className="flex items-center space-x-4 p-4">
+                    <img src="dummy-image-url.jpg" alt="Patient Image" className="w-10 h-10 rounded-full"/> {/* Placeholder image URL */}
+                    <div>
+                        <span>Patient Name</span> {/* Placeholder name */}
+                        <button className="ml-2 px-2 py-1 bg-blue-500 text-white rounded">End Session</button> {/* End session button */}
+                        <button className="ml-2 px-2 py-1 bg-green-500 text-white rounded">Handle Call</button> {/* Handle call button */}
+                    </div>
+                </div>
+                <div className="hide_scrollbar flex flex-col h-full overflow-x-auto">
+                    <div className="flex flex-col h-full">
+                        <div className="grid grid-cols-12 gap-y-2">
+                            {/* Messages mapped here */}
+                            <div className="col-span-6 p-2 bg-gray-200 rounded">Message from Doctor</div> {/* Example message from doctor */}
+                            <div className="col-span-6 p-2 bg-gray-300 rounded">Message from Patient</div> {/* Example message from patient */}
+                        </div>
+                    </div>
+                </div>
+                {/* DoctorChatInput Component */}
+                <div className="p-4">
+                    <input type="text" placeholder="Type your message..." className="w-full p-2 border border-gray-300 rounded"/>
+                    <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -21,7 +21,7 @@ const AddMoneyModal = ({
 }) => {
   const [amount, setAmount] = useState(100);
 
-  const { mutate: addMoneyMutate } = useMutation({
+  const { mutate: addMoneyMutate } = useMutation({ 
     mutationFn: addMoneyWallet,
     onSuccess: async (res) => {
       if (res) {

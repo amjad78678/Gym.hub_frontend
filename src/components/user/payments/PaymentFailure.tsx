@@ -56,7 +56,7 @@ const PaymentFailure: React.FC = () => {
           paddingTop={4}
           paddingBottom={2}
         >
-          {location.pathname === "/cancel/checkout" ? (
+          {location.pathname === "/cancel/checkout" && (
             <>
               <Button
                 variant="outlined"
@@ -65,7 +65,7 @@ const PaymentFailure: React.FC = () => {
                 color="inherit"
                 onClick={() => navigate(`/book-gym`)}
               >
-                <span>Book gyms</span>
+                <span>Book Gyms</span>
               </Button>
               <Button
                 variant="outlined"
@@ -77,17 +77,44 @@ const PaymentFailure: React.FC = () => {
                 <span>Back to home</span>
               </Button>
             </>
-          ) : (
-            <Button
-            variant="outlined"
-            className="book_room_btn"
-            sx={{ width: "20%", p: 1, borderRadius: 0 }}
-            color="inherit"
-            onClick={() => navigate(`/profile/subscriptions`)}
-          >
-            <span>Back to profile</span>
-          </Button>
           )}
+
+          {location.pathname === "/cancel/book_trainer" && (
+            <>
+            <Button
+              variant="outlined"
+              className="book_room_btn"
+              sx={{ width: "20%", p: 1, borderRadius: 0 }}
+              color="inherit"
+              onClick={() => navigate(`/personal-trainer`)}
+            >
+              <span>Book Trainer</span>
+            </Button>
+            <Button
+              variant="outlined"
+              className="book_room_btn"
+              sx={{ width: "20%", p: 1, borderRadius: 0 }}
+              color="inherit"
+              onClick={() => navigate(`/`)}
+            >
+              <span>Back to home</span>
+            </Button>
+          </>
+          )}
+
+          {
+            location.pathname === "/cancel/add_money" && (
+              <Button
+              variant="outlined"
+              className="book_room_btn"
+              sx={{ width: "20%", p: 1, borderRadius: 0 }}
+              color="inherit"
+              onClick={() => navigate(`/profile/subscriptions`)}
+            >
+              <span>Back to profile</span>
+            </Button>
+            )
+          }
         </Stack>
       </Container>
     </div>

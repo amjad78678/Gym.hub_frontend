@@ -127,10 +127,10 @@ export const fetchSubscriptions = async () => {
 };
 
 export const fetchGymWithId = async ({
-  queryKey,
+  queryKey, 
 }: QueryFunctionContext<[string, string | null]>) => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars 
     const [_, id] = queryKey;
     const response = await Api.get(adminRoutes.fetchGymWithId(id));
     return response;

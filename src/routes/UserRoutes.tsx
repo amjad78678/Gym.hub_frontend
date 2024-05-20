@@ -12,8 +12,8 @@ import GymCheckoutPage from "@/pages/user/GymCheckoutPage";
 import PaymentSuccess from "@/components/user/payments/PaymentSuccess";
 import PaymentFailure from "@/components/user/payments/PaymentFailure";
 import UserProfilePage from "@/pages/user/UserProfilePage";
-import PersonalTrainer from "@/components/user/personalTrainer/PersonalTrainer";
 import PersonalTrainerPage from "@/pages/user/PersonalTrainerPage";
+import UserChatPage from "@/pages/user/UserChatPage";
 
 const UserRoutes = () => {
   return (
@@ -26,12 +26,13 @@ const UserRoutes = () => {
         <Route path="book-gym" element={<GymListPage />} />
         <Route path="gym-details" element={<GymDetailsPage />} />
         <Route path="checkout" element={<GymCheckoutPage/>} />
-        <Route path="success" element={<PaymentSuccess/>} />
+        <Route path="success/*" element={<PaymentSuccess/>} />
         <Route path="cancel/*" element={<PaymentFailure/>} />
         <Route path="profile/*" element={<UserProfilePage/>}/>
         <Route path="personal-trainer/*" element={<PersonalTrainerPage/>}/>
+        <Route path="chat/:userId/:trainerId" element={<UserChatPage/>}/>
         {/* <Route path="test" element={<Coupon/>} /> */}
-      </Route>
+      </Route> 
       <Route element={<UserProtect />}></Route>
     </Routes>
   );

@@ -20,6 +20,11 @@ const userRoutes={
     addMoneyWallet:`/add_money_wallet`,
     fetchSubscriptions:`/fetch_subscriptions`,
     fetchTrainers:`/fetch_trainers`,
+    bookTrainer:`/book_trainer`,
+    fetchBookedTrainers:`/fetch_booked_trainers`,
+    userChatCreate: '/chat/create',
+    fetchUserChatMessages: (senderId: string | null,receiverId: string | null)=> `/chat/user_chat_data/${senderId}/${receiverId}`,
+    fetchTrainerData: (trainerId: string | null)=> `/trainer_details/${trainerId}`
 }   
 
 export default userRoutes

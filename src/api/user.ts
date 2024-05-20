@@ -1,8 +1,8 @@
 import userRoutes from "@/services/endpoints/userEndPoints";
 import errorHandle from "./error";
 import { QueryFunctionContext } from "@tanstack/react-query";
-import axios from 'axios'
-
+import axios from "axios";
+import iUserChat from "@/interfaces/iUserChat";
 
 interface userFormData {
   username?: string;
@@ -15,41 +15,42 @@ interface userFormData {
   gender?: string;
   password: string;
 }
- 
-const BASE_URL = import.meta.env.VITE_BASE_URL
-const Api = axios.create({baseURL:`${BASE_URL}/user`,withCredentials:true})
 
-Api.interceptors.response.use((response)=>{
-  return response
-}, (error) => {
-    if(error.response){
-        const {data}=error.response
-        console.log('axio',data.message)  
-       
-    }else{
-        console.log(error);
-        
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+const Api = axios.create({
+  baseURL: `${BASE_URL}/user`,
+  withCredentials: true,
+});
+
+Api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response) {
+      const { data } = error.response;
+      console.log("axio", data.message);
+    } else {
+      console.log(error);
     }
-    return Promise.reject(error)
-})
-
+    return Promise.reject(error);
+  }
+);
 
 Api.interceptors.request.use(
-    (config) => {
+  (config) => {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const userToken = userDetails?.token;
 
-        const userDetails = JSON.parse(localStorage.getItem('userDetails')); 
-        const userToken = userDetails?.token; 
-
-
-       if (userToken) {
-            config.headers['Authorization'] = `Bearer ${userToken}`;
-        }
-
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
+    if (userToken) {
+      config.headers["Authorization"] = `Bearer ${userToken}`;
     }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 export const signUp = async (userData: userFormData) => {
@@ -102,9 +103,11 @@ export const userLogout = async () => {
   }
 };
 
-export const fetchNearGymList = async ({latitude,longitude}) => {
+export const fetchNearGymList = async ({ latitude, longitude }) => {
   try {
-    const response = await Api.get(userRoutes.fetchNearGymList(latitude,longitude));
+    const response = await Api.get(
+      userRoutes.fetchNearGymList(latitude, longitude)
+    );
     return response;
   } catch (error) {
     const err: Error = error as Error;
@@ -144,124 +147,168 @@ export const forgotPassword = async (email: string) => {
     const err: Error = error as Error;
     return errorHandle(err);
   }
-
 };
 export const verifyForgotPassword = async (otp: number) => {
-    try {
-      
-        const response = await Api.post(userRoutes.verifyForgotPassword, { otp });
-        return response;
-
-    } catch (error) {
-      
-      const err: Error = error as Error;
-      return errorHandle(err);
-    }
-}
+  try {
+    const response = await Api.post(userRoutes.verifyForgotPassword, { otp });
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
 
 export const updatePassword = async (password: string) => {
-    try {
-        
-        const response = await Api.patch(userRoutes.updataPasswordForgot, {password});
-        return response;
-    } catch (error) {
-        const err: Error = error as Error;
-        return errorHandle(err);
-    }
-}
-
+  try {
+    const response = await Api.patch(userRoutes.updataPasswordForgot, {
+      password,
+    });
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
 
 export const resendForgotOtp = async () => {
-    
-    try {
-        const response = await Api.post(userRoutes.resendForgotOtp);
-        return response
-    } catch (error) {
-        const err: Error = error as Error;
-        return errorHandle(err);
-    }
-   
-}
+  try {
+    const response = await Api.post(userRoutes.resendForgotOtp);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
 
 export const addToCart = async (data: any) => {
   try {
-    
     const response = await Api.post(userRoutes.addToCart, data);
-    return response
-
+    return response;
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
   }
-}
+};
 
 export const getCheckoutData = async () => {
   try {
-    
-    const response = await Api.get(userRoutes.getCheckoutDetails); 
-    return response
-
-
+    const response = await Api.get(userRoutes.getCheckoutDetails);
+    return response;
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
   }
-}
+};
 
 export const addNewSubscription = async (data: any) => {
   try {
-    
     const response = await Api.post(userRoutes.addNewSubscription, data);
-    return response
+    return response;
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
   }
-}
+};
 
 export const validateCoupon = async (data: any) => {
   try {
     const response = await Api.post(userRoutes.validateCoupon, data);
-    return response
+    return response;
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
   }
-}
+};
 export const fetchUserDetails = async () => {
   try {
     const response = await Api.get(userRoutes.fetchUserDetails);
-    return response
+    return response;
   } catch (error) {
     const err: Error = error as Error;
-    return errorHandle(err); 
+    return errorHandle(err);
   }
-}
+};
 export const addMoneyWallet = async (data: any) => {
-  try{
-    const response = await Api.post(userRoutes.addMoneyWallet,data)
-    return response
-  }catch (error){
+  try {
+    const response = await Api.post(userRoutes.addMoneyWallet, data);
+    return response;
+  } catch (error) {
     const err: Error = error as Error;
-    return errorHandle(err); 
+    return errorHandle(err);
   }
-}
+};
 export const fetchSubscriptions = async () => {
   try {
-      const response=await Api.get(userRoutes.fetchSubscriptions)
-      return response
+    const response = await Api.get(userRoutes.fetchSubscriptions);
+    return response;
   } catch (error) {
-      const err: Error = error as Error; 
-      return errorHandle(err);
+    const err: Error = error as Error;
+    return errorHandle(err);
   }
-}
+};
 
-export const fetchTrainers=async()=>{
+export const fetchTrainers = async () => {
   try {
-    const response=await Api.get(userRoutes.fetchTrainers)
-    return response
+    const response = await Api.get(userRoutes.fetchTrainers);
+    return response;
   } catch (error) {
-    const err: Error = error as Error; 
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const bookTrainer = async (data: any) => {
+  try {
+    const response = await Api.post(userRoutes.bookTrainer, data);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const fetchBookedTrainers = async () => {
+  try {
+    const response = await Api.get(userRoutes.fetchBookedTrainers);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const userChatCreate = async (data: iUserChat) => {
+  try {
+    const response = await Api.post(userRoutes.userChatCreate, data);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const fetchUserChatMessages = async ({
+  queryKey,
+}: QueryFunctionContext<[string, string | null, string | null]>) => {
+  try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, senderId,receiverId] = queryKey;
+    const response = await Api.get(userRoutes.fetchUserChatMessages(senderId,receiverId));
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const fetchTrainerData = async ({ queryKey }: QueryFunctionContext<[string, string | null]>) => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, id] = queryKey;
+    const response = await Api.get(userRoutes.fetchTrainerData(id));
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
     return errorHandle(err);
   }
 }

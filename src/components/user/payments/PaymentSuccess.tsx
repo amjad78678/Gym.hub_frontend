@@ -1,10 +1,11 @@
 import Navbar from "@/components/common/Navbar";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const PaymentSuccess = () => {
   const navigate = useNavigate();
+  const location= useLocation();
   return (
     <div className="bg-black text-white">
       <Navbar />
@@ -56,7 +57,10 @@ const PaymentSuccess = () => {
           paddingTop={4}
           paddingBottom={2}
         >
-          <Button
+
+          {location.pathname === "/success/checkout" && (
+            <>
+               <Button
             variant="outlined"
             className="book_room_btn"
             sx={{ width: "20%", p: 1, borderRadius: 0 }}
@@ -70,10 +74,40 @@ const PaymentSuccess = () => {
             className="book_room_btn"
             sx={{ width: "20%", p: 1, borderRadius: 0 }}
             color="inherit"
-            onClick={() => navigate(`/`)}
+            onClick={() => navigate(`/profile/subscriptions`)}
           >
             <span>My Bookings</span>
           </Button>
+            
+            </>
+          )}
+
+
+          {location.pathname === "/success/book_trainer" && (
+            
+            <>
+               <Button
+            variant="outlined"
+            className="book_room_btn"
+            sx={{ width: "20%", p: 1, borderRadius: 0 }}
+            color="inherit"
+            onClick={() => navigate(`/personal-trainer`)}
+          >
+            <span>Book Trainers</span>
+          </Button>
+          <Button
+            variant="outlined"
+            className="book_room_btn"
+            sx={{ width: "20%", p: 1, borderRadius: 0 }}
+            color="inherit"
+            onClick={() => navigate(`/profile/trainers`)} 
+          >
+            <span>My Trainers</span>
+          </Button>
+            
+            </>
+          )}
+       
         </Stack>
       </Container>
     </div>

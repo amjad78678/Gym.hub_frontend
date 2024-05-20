@@ -34,6 +34,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAdminLogout, setTrainerLogout } from "@/redux/slices/authSlice";
 import TrainerDashboardPage from "../TrainerDashboardPage";
 import { trainerLogout } from "@/api/trainer";
+import TrainerChatPage from "../TrainerChatPage";
+import ChatIcon from "@mui/icons-material/Chat";
 
 const drawerWidth = 240;
 
@@ -86,7 +88,7 @@ const Drawer = styled(MuiDrawer, {
 
 const SideList = ({ open, setOpen }) => {
   const dispatch = useDispatch();
-  const {trainerDetails}=useSelector((state:any)=>state.auth)
+  const { trainerDetails } = useSelector((state: any) => state.auth);
 
   const [selectedLink, setSelectedLink] = useState("");
 
@@ -97,6 +99,12 @@ const SideList = ({ open, setOpen }) => {
         icon: <Dashboard />,
         link: "",
         component: <TrainerDashboardPage {...{ setSelectedLink, link: "" }} />,
+      },
+      {
+        title: "Chat with students",
+        icon: <ChatIcon />,
+        link: "chat",
+        component: <TrainerChatPage />,
       },
     ],
     []
@@ -161,7 +169,15 @@ const SideList = ({ open, setOpen }) => {
         </List>
         <Divider />
 
-        <Box sx={{ mx: "auto", mt: 3, mb: 1 }}>
+        <Box
+          sx={{
+            mx: "auto",
+            mt: 3,
+            mb: 1,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
           <Tooltip title="Profile">
             <Avatar
               src={trainerDetails?.image}
@@ -171,7 +187,9 @@ const SideList = ({ open, setOpen }) => {
         </Box>
 
         <Box sx={{ textAlign: "center" }}>
-          {open ? <Typography variant="h6">{trainerDetails?.name}</Typography> : null}
+          {open ? (
+            <Typography variant="h6">{trainerDetails?.name}</Typography>
+          ) : null}
           <Typography variant="body2">TRAINER</Typography>
           <Tooltip title="Logout" sx={{ mt: 1 }}>
             <IconButton onClick={handleLogout}>

@@ -9,8 +9,8 @@ const SubscriptionCard = ({sub}) => {
 
   return (
         
-<div className="md:flex border justify-between gap-5">
-                <div className="flex-1 border-b sm:border-r sm:border-b-0 border-dotted border-gray-400">
+<div className="grid sm:grid-cols-12 border justify-between">
+                <div className="sm:col-span-9 border-b sm:border-r sm:border-b-0 border-dotted border-gray-400">
                     <div className="px-5">
                         <div className="border-b py-2">
                             <div className="flex flex-col sm:flex-row items-center justify-between">
@@ -36,15 +36,10 @@ const SubscriptionCard = ({sub}) => {
                     </div>
                 </div>
 
-                {/* qrSection */}
-                <div className="p-5 sm:w-1/4 flex flex-col justify-center gap-2">
-                    <div>
-                        <h1 className="text-gray-600 text-sm text-center">MonthAndDay Year</h1>
-                        <h1 className="text-gray-600 text-sm text-center">FormattedTime</h1>
-                    </div>
-                    <div className="flex justify-center">
-                        <img src="ticketQrCode.jpg" alt="QR code" className="w-28 sm:w-52" />
-                    </div>
+                <div className="sm:col-span-3 flex justify-center items-center">
+               
+                        <img src={sub.qrCode} alt="QR code" className="mx-auto p-2 h-full" />
+                 
                 </div>
             </div>
        

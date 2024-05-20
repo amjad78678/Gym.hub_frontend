@@ -10,6 +10,7 @@ const TrainerRoutes = () => {
       <Route path="" element={<TrainerLoginPage />} />
       <Route element={<TrainerProtect />}>
         <Route path="dashboard/*" element={<TrainerPage />} />
+ 
       </Route>
     </Routes>
   );
