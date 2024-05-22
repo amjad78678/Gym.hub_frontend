@@ -41,12 +41,17 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
 
         console.log(res.data);
 
+        const obj ={
+          imageUrl:res.data.picture,
+          public_id: "",
+        }
+
         const data = {
           username: res.data.name,
           email: res.data.email,
           password: G_PASSWORD,
           isGoogle: true,
-          profilePic: res.data.picture,
+          profilePic: obj,
         };
 
         const response2 = await signUp(data);
@@ -56,7 +61,7 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
           dispatch(
             setUserDetails({
               name: response2.data.user.username,
-              profilePic: response2.data.user.profilePic,
+              profilePic: response2.data.user.profilePic.imageUrl,
               token: response2.data.token,
             })
           )

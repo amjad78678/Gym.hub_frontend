@@ -3,6 +3,7 @@ import errorHandle from "./error";
 import { QueryFunctionContext } from "@tanstack/react-query";
 import axios from "axios";
 import iUserChat from "@/interfaces/iUserChat";
+import iEditProfile from "@/interfaces/iEditProfile";
 
 interface userFormData {
   username?: string;
@@ -306,6 +307,16 @@ export const fetchTrainerData = async ({ queryKey }: QueryFunctionContext<[strin
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, id] = queryKey;
     const response = await Api.get(userRoutes.fetchTrainerData(id));
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
+
+export const editProfile = async (data: iEditProfile) => {
+  try {
+    const response = await Api.post(userRoutes.editProfile, data);
     return response;
   } catch (error) {
     const err: Error = error as Error;

@@ -14,7 +14,7 @@ export const EditTrainerValidation = Yup.object({
       value.type === "image/jpg"
     );
   }),
-  name: Yup.string().required("Name is required"),
+  name: Yup.string().required("Name is required"), 
   age: Yup.number().typeError("Age must be a number").required("Age is required").positive().integer(),
   gender: Yup.string().required("Gender is required"),
   experience: Yup.number()

@@ -63,7 +63,7 @@ const UserLogin: React.FC = ({showForgotEmail}) => {
           dispatch(
             setUserDetails({
               name: response2.data.message.username,
-              profilePic: response2.data.message.profilePic,
+              profilePic: response2.data.message.profilePic.imageUrl,
               token: response2.data.token,
               userId: response2.data.message._id,
             })
@@ -98,7 +98,7 @@ const UserLogin: React.FC = ({showForgotEmail}) => {
 
         const data = {
           name: response.data.message.username,
-          profilePic: response.data.message.profilePic,
+          profilePic: response.data.message.profilePic.imageUrl,
           token: response.data.token,
           userId: response.data.message._id,
         };

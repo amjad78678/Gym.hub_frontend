@@ -1,20 +1,26 @@
 import Loader from "@/components/common/Loader";
-import { Box, Container, FormControl, Input } from "@mui/material";
+import { Box, Container, FormControl, IconButton, Input } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Message from "./Message";
 import ChatInput from "./ChatInput";
-import { useParams } from "react-router-dom";
-import { CheckCircle } from "@mui/icons-material";
+import { useNavigate, useParams } from "react-router-dom";
+import { AddIcCall, CheckCircle, PhoneCallback } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTrainerData, fetchUserChatMessages } from "@/api/user";
 import { Socket, io } from "socket.io-client";
 import { useSocket } from "@/redux/context/socketContext";
 import iMessageType from "@/interfaces/iMessageType";
+import VideoCall from "@mui/icons-material/VideoCall";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const UserChat = () => {
   const { userId, trainerId } = useParams();
   const [socketConnected, setSocketConnected] = useState(false);
+  const {userDetails} = useSelector((state: RootState) => state.auth)
+  const userName = userDetails?.name.replaceAll(" ","")
   const [messages, setMessages] = useState<iMessageType[]>([]);
+  const navigate = useNavigate();
   const socket: Socket = useSocket();
 
   const { isLoading, data: userChat } = useQuery({
@@ -35,7 +41,7 @@ const UserChat = () => {
 
   useEffect(() => {
     console.log("i am socket connecting");
-    socket.on("connection", () => setSocketConnected(true));
+    socket.on("connected", () => setSocketConnected(true));
     socket.emit("add_user", userId);
     socket.emit("chat_started", { to: trainerId });
   }, []);
@@ -59,7 +65,7 @@ const UserChat = () => {
           <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
             <div className="relative flex items-center space-x-4">
               <div className="relative">
-                <span className="absolute text-green-500 right-0 bottom-0">
+                <span className={`absolute ${socketConnected ? "text-green-500" : "text-red-500"}  right-0 bottom-0`}>
                   <svg width="20" height="20">
                     <circle cx="8" cy="8" r="8" fill="currentColor"></circle>
                   </svg>
@@ -80,7 +86,6 @@ const UserChat = () => {
                 </span>
               </div>
             </div>
-            <div className="flex items-center space-x-2">{/* Buttons */}</div>
           </div>
           <div
             id="messages"

@@ -1,22 +1,28 @@
 import Loader from "@/components/common/Loader";
-import { Box, Container, FormControl, Input } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Box, Container, FormControl, IconButton, Input } from "@mui/material";
+import React, { useCallback, useEffect, useState } from "react";
 import Message from "./Message";
 import ChatInput from "./ChatInput";
 import ChatSideBar from "./ChatSideBar";
 import { fetchTrainerChats, fetchUserData } from "@/api/trainer";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { CheckCircle } from "@mui/icons-material";
+import { AddIcCall, CheckCircle, VideoCall } from "@mui/icons-material";
 import iMessageType from "@/interfaces/iMessageType";
 import { useSocket } from "@/redux/context/socketContext";
 import { Socket } from "socket.io-client";
+import { RootState } from "@/redux/store";
 
 const TrainerChat = () => {
-  const [loading, setLoading] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
   const socket: Socket = useSocket();
-  const { trainerDetails } = useSelector((state) => state.auth);
+  const { trainerDetails } = useSelector((state: RootState) => state.auth);
+  const trainerName = trainerDetails?.name.replaceAll(" ","")
+  const openInNewTab = (url: string) => {
+
+    window.open(url, '_blank', 'noopener,noreferrer')
+    
+  }
   const { isLoading, data: messageData } = useQuery({
     queryKey: [
       "trainerMessages",
@@ -28,8 +34,7 @@ const TrainerChat = () => {
   });
 
   const [messages, setMessages] = useState<iMessageType[]>([]);
-
-
+  const [socketConnected,setSocketConnected]=useState(false);
 
   useEffect(() => {
     if (messageData) {
@@ -51,6 +56,10 @@ const TrainerChat = () => {
     });
   }, [socket, messages]);
 
+  const handleJoinRoom = useCallback(() =>{
+   openInNewTab(`/call/${trainerName}`)
+  },[trainerName])
+
   return (
     <div className="grid sm:grid-cols-12">
       <div className="sm:col-span-3 mx-2 ">
@@ -71,7 +80,7 @@ const TrainerChat = () => {
             <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
               <div className="relative flex items-center space-x-4">
                 <div className="relative">
-                  <span className="absolute text-green-500 right-0 bottom-0">
+                  <span className={`absolute ${socketConnected ?  `text-green-500` : `text-red-500`} right-0 bottom-0`}>
                     <svg width="20" height="20">
                       <circle cx="8" cy="8" r="8" fill="currentColor"></circle>
                     </svg>
@@ -94,7 +103,9 @@ const TrainerChat = () => {
                   </span>
                 </div>
               </div>
-              <div className="flex items-center space-x-2">{/* Buttons */}</div>
+              <div className="flex items-center space-x-2 mr-4 mb-2">
+              <IconButton onClick={handleJoinRoom}><VideoCall sx={{width: 50,height:50,color:"green"}}/></IconButton>      
+            </div>
             </div>
             <div
               id="messages"
@@ -106,6 +117,7 @@ const TrainerChat = () => {
                   sender={msg.sender}
                   text={msg.content}
                   selectedChat={selectedChat}
+                  {...{setSocketConnected}}
                 />
               ))}
             </div>

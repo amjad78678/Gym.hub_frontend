@@ -23,7 +23,6 @@ import { EditTrainerValidation } from "@/validation/EditTrainerValidation";
 
 const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
   const [image, setImage] = useState<File | null>(null);
-
   const { status: mutStatus, mutate } = useMutation({
     mutationFn: updateTrainer,
     onSuccess: (res) => {
@@ -65,7 +64,6 @@ const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
           }}
           validationSchema={EditTrainerValidation}
           onSubmit={(values) => {
-            console.log("iam submitted values", values);
 
             const formData = new FormData();
             formData.append("name", values.name);
@@ -76,7 +74,6 @@ const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
             formData.append("monthlyFee", values.monthlyFee);
             formData.append("yearlyFee", values.yearlyFee);
             formData.append("_id", selectedRow._id);
-            console.log("values image", values.imageUrl);
             if (values.imageUrl) {
               formData.append("imageUrl", image);
               mutate(formData);
@@ -110,7 +107,7 @@ const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
                       }
                     }}
                     variant="outlined"
-                  />
+                  /> 
                   <ErrorMessage name="imageUrl">
                     {(msg) => <div style={{ color: "red" }}>{msg}</div>}
                   </ErrorMessage>

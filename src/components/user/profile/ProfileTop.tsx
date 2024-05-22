@@ -8,8 +8,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import ProfileSubscriptions from "./ProfileSubscriptions";
 import ProfilePersonalTrainers from "./Trainers/ProfilePersonalTrainers";
-import ProfileEditProfile from "./ProfileEditProfile";
-import ProfileChangePassword from "./ProfileChangePassword";
+import ProfileEditProfile from "./userEditProfile/ProfileEditProfile";
 import { useMutation } from "@tanstack/react-query";
 import { userLogout } from "@/api/user";
 import { setUserLogout } from "@/redux/slices/authSlice";
@@ -64,16 +63,7 @@ const ProfileTop = ({ userData, refetch }) => {
         title: "Edit Profile",
         link: "edit_profile",
         component: (
-          <ProfileEditProfile {...{ selected: "Edit profile", setSelected }} />
-        ),
-      },
-      {
-        title: "Change Password",
-        link: "change_password",
-        component: (
-          <ProfileChangePassword
-            {...{ selected: "Change password", setSelected }}
-          />
+          <ProfileEditProfile {...{ selected: "Edit profile", setSelected,refetch }} />
         ),
       },
       {
@@ -107,7 +97,7 @@ const ProfileTop = ({ userData, refetch }) => {
             <div className="relative mt-[-40px]">
               <img
                 className="rounded-full border-8 border-black w-40"
-                src={userData?.profilePic}
+                src={userData?.profilePic.imageUrl}
                 alt=""
               />
             </div>
@@ -169,12 +159,6 @@ const ProfileTop = ({ userData, refetch }) => {
                       {" "}
                       <div className="py-3 border-b hover:bg-gray-700 transition-all duration-100 cursor-pointer">
                         <h1 className="text-lg">Edit Profile</h1>
-                      </div>
-                    </Link>
-                    <Link to={"/profile/change_password"}>
-                      {" "}
-                      <div className="py-3 border-b hover:bg-gray-700 transition-all duration-100 cursor-pointer">
-                        <h1 className="text-lg">Change Password</h1>
                       </div>
                     </Link>
                     <Link to={"/profile/wallet_history"}>

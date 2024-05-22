@@ -36,6 +36,7 @@ import TrainerDashboardPage from "../TrainerDashboardPage";
 import { trainerLogout } from "@/api/trainer";
 import TrainerChatPage from "../TrainerChatPage";
 import ChatIcon from "@mui/icons-material/Chat";
+import TrainerCallPage from "../TrainerCallPage";
 
 const drawerWidth = 240;
 
@@ -204,7 +205,8 @@ const SideList = ({ open, setOpen }) => {
         <Routes>
           {list.map((item) => (
             <Route key={item.title} path={item.link} element={item.component} />
-          ))}
+          ))} 
+          <Route path="/call/:roomId" element={<TrainerCallPage />} />
         </Routes>
       </Box>
     </>

@@ -1,17 +1,29 @@
 import { useSocket } from '@/redux/context/socketContext';
-import React, { useEffect } from 'react'
+import { RootState } from '@/redux/store';
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
 
-const Message = ({ sender, text,selectedChat }) => {
+const Message = ({ sender, text,selectedChat, setSocketConnected }) => {
 
   const socket = useSocket();
-
+  const messageEndRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     socket.emit("add_user", trainerDetails.trainerId);
     socket.emit("chat_started", { to: selectedChat.userId });
+    socket.on("connected",()=>{
+      setSocketConnected(true);
+    })
+   
   }, []);
 
-  const {trainerDetails} = useSelector((state) => state.auth);
+  useEffect(() => {
+    // Scroll to the top when a new message is added
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: 'smooth'});
+    }
+  }, [sender, text]);
+
+  const {trainerDetails} = useSelector((state: RootState) => state.auth);
     const isSenderYou = sender === trainerDetails.trainerId;
     const senderImage = isSenderYou 
       ?  trainerDetails.image
@@ -22,7 +34,7 @@ const Message = ({ sender, text,selectedChat }) => {
       : "bg-gray-300 text-gray-600 rounded-bl-none";
   
     return (
-      <div className="chat-message">
+      <div className="chat-message " ref={messageEndRef} >
         <div className={`flex items-end ${isSenderYou ? "justify-end" : ""}`}>
         <img
             src={senderImage}
