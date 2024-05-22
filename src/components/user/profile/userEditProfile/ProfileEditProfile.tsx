@@ -5,39 +5,37 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const ProfileEditProfile = ({ selected, setSelected,refetch }) => {
+const ProfileEditProfile = ({ selected, setSelected, refetch, userData }) => {
   useEffect(() => {
     setSelected(selected);
   }, []);
 
-  const { isLoading, data: userData } = useQuery({
-    queryKey: ["profileUserData"],
-    queryFn: fetchUserDetails,
-  });
+
+  console.log('iam userdata kittunnu .........',userData)
   const [image, setImage] = useState<File | null>(null);
-  const {mutate} = useMutation({
+  const { mutate } = useMutation({
     mutationFn: editProfile,
     onSuccess: (res) => {
-      if(res){
-        if(res.data.success){
-          
+      if (res) {
+        if (res.data.success) {
           toast.success(res.data.message);
           refetch();
         }
       }
-    }
-  })
+    },
+  });
 
   console.log("iam userdaata", userData);
   return (
-    !isLoading &&
     userData && (
       <Formik
         initialValues={{
-          username: userData.data.username,
-          email: userData.data.email,
-          mobileNumber: userData.data.mobileNumber?userData.data.mobileNumber:"",
-          profilePic: userData.data.profilePic,
+          username: userData.username,
+          email: userData.email,
+          mobileNumber: userData.mobileNumber
+            ? userData.mobileNumber
+            : "",
+          profilePic: userData.profilePic,
           oldPassword: "",
           newPassword: "",
           confirmPassword: "",
@@ -60,9 +58,7 @@ const ProfileEditProfile = ({ selected, setSelected,refetch }) => {
           }
         }}
       >
-        {({ setFieldValue, handleSubmit,errors }) => (
-   
-
+        {({ setFieldValue, handleSubmit, errors }) => (
           <Form onSubmit={handleSubmit}>
             <div className="w-2/3 flex flex-col justify-center items-center mx-auto  rounded-md">
               <div className="w-2/3 flex flex-col">
@@ -72,7 +68,7 @@ const ProfileEditProfile = ({ selected, setSelected,refetch }) => {
                   src={
                     image
                       ? URL.createObjectURL(image)
-                      : userData.data.profilePic.imageUrl
+                      : userData.profilePic.imageUrl
                   }
                   alt="Selected Profile Pic"
                 />
@@ -90,7 +86,7 @@ const ProfileEditProfile = ({ selected, setSelected,refetch }) => {
                     }
                   }}
                 />
-            
+
                 <ErrorMessage
                   name="profilePic"
                   component="div"

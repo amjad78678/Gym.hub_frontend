@@ -7,7 +7,7 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { addToCart, fetchGymDetails } from "@/api/user";
+import { addToCart, fetchGymDetails, isReviewPossible } from "@/api/user";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Loader from "@/components/common/Loader";
 import toast from "react-hot-toast";
@@ -16,11 +16,10 @@ import ReactDOM from "react-dom";
 import CalenderDatePicker from "@/components/user/gymDetails/CalenderDatePicker";
 import Backdrop from "@/pages/common/Backdrop";
 
-const GymDetails = () => {
+const GymDetails = ({ handleShowReview }) => {
   const queryParams = new URLSearchParams(location.search);
   const gymId = queryParams.get("id");
   const [showCalender, setShowCalender] = useState(false);
-  const [dailyDate, setDailyDate] = useState({ startDate: "", endDate: "" });
 
   const {
     isLoading,
@@ -33,6 +32,11 @@ const GymDetails = () => {
 
   const [currentView, setCurrentView] = useState("description");
   const navigate = useNavigate();
+
+  const { data: isPossible } = useQuery({
+    queryKey: ["isReviewPossible", gymId],
+    queryFn: isReviewPossible,
+  });
 
   const [value, setValue] = useState(4);
 
@@ -69,17 +73,12 @@ const GymDetails = () => {
     mutationFn: addToCart,
     onSuccess: (res) => {
       if (res) {
-
         if (res.data.success) {
-        
           navigate("/checkout");
-
-        }else if(res.data.failure){
-         toast.error(res.data.message);
-
+        } else if (res.data.failure) {
+          toast.error(res.data.message);
         }
-        
-      }else{
+      } else {
         navigate("/user-login");
       }
     },
@@ -97,7 +96,7 @@ const GymDetails = () => {
         amount: gymDetailsData?.data.message.subscriptions.Monthly,
         totalPrice: gymDetailsData?.data.message.subscriptions.Monthly,
       };
-      addCartMutation(data); 
+      addCartMutation(data);
     } else if (alignment === "Yearly") {
       const data = {
         gymId: gymId,
@@ -269,20 +268,35 @@ const GymDetails = () => {
                       Gym information
                     </h2>
 
-                    <p className="text-gray-300">{gymDetailsData?.data.message.description}</p>
-
+                    <p className="text-gray-300">
+                      {gymDetailsData?.data.message.description}
+                    </p>
                   </div>
                 ) : (
                   <div className="border border-gray-400 p-4 rounded-sm">
-                    <h2 className="text-xl font-serif  text-white mb-2 ">Gym ratings</h2>
+                    <div className="flex justify-between">
+                      <h2 className="text-xl font-serif  text-white mb-2 ">
+                        Gym ratings
+                      </h2>
+
+                      {isPossible?.data.isPossible && (
+                        <button
+                          onClick={handleShowReview}
+                          className="btn group mt-[-10px] mb-2 border-yellow-500 flex items-center bg-transparent p-2 px-6 text-xl font-thin tracking-widest text-white"
+                        >
+                          <span className="relative text-center  pb-1 text-white after:transition-transform after:duration-500 after:ease-out after:absolute after:bottom-0 after:left-0 after:block after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-blue-500 after:content-[''] after:group-hover:origin-bottom-left after:group-hover:scale-x-100">
+                            Rate Review
+                          </span>
+                        </button>
+                      )}
+                    </div>
                     <p className="text-gray-300">
-                    iam review aaneu Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit. Ipsa facere mollitia recusandae laudantium
-                    tempore libero assumenda perferendis, inventore quidem
-                    labore doloremque, ab fuga dignissimos, amet consequatur
-                    asperiores voluptatum porro enim?
+                      iam review aaneu Lorem ipsum dolor sit amet consectetur
+                      adipisicing elit. Ipsa facere mollitia recusandae
+                      laudantium tempore libero assumenda perferendis, inventore
+                      quidem labore doloremque, ab fuga dignissimos, amet
+                      consequatur asperiores voluptatum porro enim?
                     </p>
-                 
                   </div>
                 )}
               </Box>

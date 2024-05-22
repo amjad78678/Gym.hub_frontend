@@ -3,10 +3,10 @@ import {
   EmailOutlined,
   WalletOutlined,
 } from "@mui/icons-material";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
-import ProfileSubscriptions from "./ProfileSubscriptions";
+import ProfileSubscriptions from "./gymSubscription/ProfileSubscriptions";
 import ProfilePersonalTrainers from "./Trainers/ProfilePersonalTrainers";
 import ProfileEditProfile from "./userEditProfile/ProfileEditProfile";
 import { useMutation } from "@tanstack/react-query";
@@ -15,11 +15,16 @@ import { setUserLogout } from "@/redux/slices/authSlice";
 import { useDispatch } from "react-redux";
 import AddMoneyModal from "./AddMoneyModal";
 import { Button, IconButton } from "@mui/material";
-import ProfileWalletHistory from "./ProfileWalletHistory";
+import ProfileWalletHistory from "./walletHistory/ProfileWalletHistory";
 
 const ProfileTop = ({ userData, refetch }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [addMoneyOpen, setAddMoneyOpen] = useState(false);
+  const handleCloseModalAddMoney = () => {
+    setAddMoneyOpen(!addMoneyOpen);
+    console.log(addMoneyOpen);
+  };
   const divStyle = {
     backgroundImage:
       'url("https://t4.ftcdn.net/jpg/03/50/81/89/240_F_350818949_lJTfzSTDr79e9Kn55PUVZjN19ct20uGc.jpg")',
@@ -63,7 +68,7 @@ const ProfileTop = ({ userData, refetch }) => {
         title: "Edit Profile",
         link: "edit_profile",
         component: (
-          <ProfileEditProfile {...{ selected: "Edit profile", setSelected,refetch }} />
+          <ProfileEditProfile {...{ selected: "Edit profile", setSelected,refetch,userData }} />
         ),
       },
       {
@@ -71,7 +76,7 @@ const ProfileTop = ({ userData, refetch }) => {
         link: "wallet_history",
         component: (
           <ProfileWalletHistory
-            {...{ selected: "Wallet History", setSelected }}
+            {...{ selected: "Wallet History", setSelected, userData,handleCloseModalAddMoney,refetch }}
           />
         ),
       },
@@ -79,13 +84,11 @@ const ProfileTop = ({ userData, refetch }) => {
     []
   );
 
-  const [addMoneyOpen, setAddMoneyOpen] = useState(false);
-  const handleCloseModalAddMoney = () => {
-    setAddMoneyOpen(!addMoneyOpen);
-    console.log(addMoneyOpen);
-  };
 
-  return (
+
+
+
+  return  (
     <>
       <div className="absolute inset-0 bg-black text-white">
         <div style={divStyle} className="h-52 relative">

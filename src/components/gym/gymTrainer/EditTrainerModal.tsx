@@ -59,7 +59,7 @@ const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
             gender: selectedRow.gender,
             experience: selectedRow.experience,
             achievements: selectedRow.achievements,
-            monthlyFee: selectedRow.monthlyFee,
+            monthlyFee: selectedRow.monthlyFee, 
             yearlyFee: selectedRow.yearlyFee,
           }}
           validationSchema={EditTrainerValidation}

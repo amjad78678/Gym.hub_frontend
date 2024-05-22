@@ -15,19 +15,7 @@ import { Box, Container } from "@mui/system";
 import dayjs from "dayjs";
 import React, { forwardRef } from "react";
 import toast from "react-hot-toast";
-
-const Transition = forwardRef<HTMLDivElement, SlideProps>((props, ref) => {
-  const transitionSpeed = 500;
-
-  return (
-    <Slide
-      direction="down"
-      {...props}
-      ref={ref}
-      timeout={{ enter: transitionSpeed, exit: transitionSpeed }}
-    />
-  );
-});
+import Transition from "./Transition.tsx";
 
 const Coupon = ({ handleShowCoupon, showCoupon, coupons }) => {
   const handleCopyCouponCode = (val) => {

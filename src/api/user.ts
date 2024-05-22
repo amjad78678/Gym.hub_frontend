@@ -323,3 +323,25 @@ export const editProfile = async (data: iEditProfile) => {
     return errorHandle(err);
   }
 }
+
+export const isReviewPossible = async ({ queryKey }: QueryFunctionContext<[string, string | null]>) => {
+  try {
+     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, id] = queryKey;
+    const response = await Api.get(userRoutes.isReviewPossible(id));
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
+
+export const addRatingGym = async (data) => {
+  try {
+    const response = await Api.post(userRoutes.addRatingGym, data);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}

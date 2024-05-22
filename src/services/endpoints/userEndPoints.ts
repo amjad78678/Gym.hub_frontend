@@ -25,7 +25,9 @@ const userRoutes={
     userChatCreate: '/chat/create',
     fetchUserChatMessages: (senderId: string | null,receiverId: string | null)=> `/chat/user_chat_data/${senderId}/${receiverId}`,
     fetchTrainerData: (trainerId: string | null)=> `/trainer_details/${trainerId}`,
-    editProfile: '/edit_profile'
+    editProfile: '/edit_profile',
+    isReviewPossible: (gymId: string)=> `/is_review_possible/${gymId}`,
+    addRatingGym:'/add_review'
 }   
 
 export default userRoutes

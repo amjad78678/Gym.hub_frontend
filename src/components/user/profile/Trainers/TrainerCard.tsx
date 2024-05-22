@@ -61,7 +61,7 @@ const TrainerCard = ({ trainer }) => {
       
       </div>
     </>
-  );
+  )
 };
 
 export default TrainerCard;

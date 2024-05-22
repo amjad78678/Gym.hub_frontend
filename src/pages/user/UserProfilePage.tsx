@@ -6,17 +6,17 @@ import React, { useEffect, useState } from 'react'
 
 const UserProfilePage = () => {
 
+  const [userDetails,setUserDetails]=useState(null)
 
   const {isLoading,data: userData,refetch}=useQuery({
     queryKey:['profile'],
     queryFn: fetchUserDetails,
   })
-  const [userDetails,setUserDetails]=useState(null)
   useEffect(()=>{
    setUserDetails(userData?.data)
   },[userData])
 
-  return !isLoading && (
+  return !isLoading && userDetails && (
    
        <div className='min-h-[800px] bg-black'>
        <Navbar/>

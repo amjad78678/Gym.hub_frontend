@@ -51,6 +51,7 @@ const AddMoneyModal = ({
         date: Date.now(),
         amount: amount,
         description: "Deposited money via stripe",
+        type: "credit",
       },
     };
 

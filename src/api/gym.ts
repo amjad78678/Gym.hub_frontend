@@ -266,3 +266,4 @@ export const updateCoupon = async (data) => {
     return errorHandle(err);
   }
 }
+

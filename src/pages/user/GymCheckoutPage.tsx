@@ -11,7 +11,7 @@ const GymCheckoutPage = () => {
   const [couponData,setCouponData]=useState({})
   const [userWallet,setUserWallet]=useState(0)
   const [showCoupon,setShowCoupon] = useState(false)
-  const {data: checkout}=useQuery({
+  const {isLoading,data: checkout}=useQuery({
     queryKey:['checkoutData'],
     queryFn: getCheckoutData
   })
@@ -31,7 +31,7 @@ const GymCheckoutPage = () => {
     setShowCoupon(!showCoupon)
   }
 
-  return (
+  return !isLoading && checkout &&  (
     <>
     <Navbar/>
     <div className='bg-black text-white'>
