@@ -9,7 +9,7 @@ const GymCard = ({ gym }) => {
   // const [streetAddress, setStreetAddress] = useState("");
 
   // useEffect(() => {
-  //   axios 
+  //   axios
   //     .get(
   //       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${gym.location.coordinates[1]},${gym.location.coordinates[0]}&key=${API_KEY}`
   //     )
@@ -48,17 +48,20 @@ const GymCard = ({ gym }) => {
                   </span>
                 </p>
               </div>
-           
-         
             </div>
-            <h3 className="font-black text-white md:text-3xl text-xl">
+            <h3 className="font-black text-white text-lg lg:text-3xl">
               {gym.gymName}
             </h3>
-            <p className="text-white text-sm">
+            <p className="text-white text-xs lg:sm">
               <LocationOnIcon />
               {gym?.address}
             </p>
-            <p className="md:text-[0.7rem] text-white">
+            <p className="block lg:hidden sm:text-[0.7rem] text-white">
+              {gym.description.length > 70
+                ? gym.description.substring(0, 70) + "..."
+                : gym.description}
+            </p>
+            <p className="hidden lg:block sm:text-[0.7rem] text-white">
               {gym.description.length > 300
                 ? gym.description.substring(0, 250) + "..."
                 : gym.description}
@@ -73,22 +76,22 @@ const GymCard = ({ gym }) => {
               </p>
 
               <Link to={`/gym-details?id=${gym._id}`}>
-              <Button
-                      sx={{
-                        textTransform: "none",
-                        float: "right",
-                        fontWeight: "bold",
-                        color: "green",
-                        ":hover": {
-                          color: "yellowgreen",
-                          transition: "all 0.3s ease",
-                          transform: "scale(1.05)",
-                          cursor: "pointer",
-                        },
-                      }}
-                    >
-                      Book now
-                    </Button>
+                <Button
+                  sx={{
+                    textTransform: "none",
+                    float: "right",
+                    fontWeight: "bold",
+                    color: "green",
+                    ":hover": {
+                      color: "yellowgreen",
+                      transition: "all 0.3s ease",
+                      transform: "scale(1.05)",
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  Book now
+                </Button>
               </Link>
             </div>
           </div>

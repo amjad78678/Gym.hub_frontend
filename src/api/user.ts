@@ -292,9 +292,11 @@ export const fetchUserChatMessages = async ({
   queryKey,
 }: QueryFunctionContext<[string, string | null, string | null]>) => {
   try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, senderId,receiverId] = queryKey;
-    const response = await Api.get(userRoutes.fetchUserChatMessages(senderId,receiverId));
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, senderId, receiverId] = queryKey;
+    const response = await Api.get(
+      userRoutes.fetchUserChatMessages(senderId, receiverId)
+    );
     return response;
   } catch (error) {
     const err: Error = error as Error;
@@ -302,7 +304,9 @@ export const fetchUserChatMessages = async ({
   }
 };
 
-export const fetchTrainerData = async ({ queryKey }: QueryFunctionContext<[string, string | null]>) => {
+export const fetchTrainerData = async ({
+  queryKey,
+}: QueryFunctionContext<[string, string | null]>) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, id] = queryKey;
@@ -312,7 +316,7 @@ export const fetchTrainerData = async ({ queryKey }: QueryFunctionContext<[strin
     const err: Error = error as Error;
     return errorHandle(err);
   }
-}
+};
 
 export const editProfile = async (data: iEditProfile) => {
   try {
@@ -322,11 +326,13 @@ export const editProfile = async (data: iEditProfile) => {
     const err: Error = error as Error;
     return errorHandle(err);
   }
-}
+};
 
-export const isReviewPossible = async ({ queryKey }: QueryFunctionContext<[string, string | null]>) => {
+export const isReviewPossible = async ({
+  queryKey,
+}: QueryFunctionContext<[string, string | null]>) => {
   try {
-     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, id] = queryKey;
     const response = await Api.get(userRoutes.isReviewPossible(id));
     return response;
@@ -334,7 +340,7 @@ export const isReviewPossible = async ({ queryKey }: QueryFunctionContext<[strin
     const err: Error = error as Error;
     return errorHandle(err);
   }
-}
+};
 
 export const addRatingGym = async (data) => {
   try {
@@ -344,4 +350,52 @@ export const addRatingGym = async (data) => {
     const err: Error = error as Error;
     return errorHandle(err);
   }
-}
+};
+
+export const fetchGymReviews = async ({
+  queryKey,
+}: QueryFunctionContext<[string, string | null]>) => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, id] = queryKey;
+    const response = await Api.get(userRoutes.fetchGymReviews(id));
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const updateRating = async (data) => {
+  try {
+    const response = await Api.post(userRoutes.updateRating, data);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const getWorkoutsBodyList = async () => {
+  try {
+    const response = await Api.get(userRoutes.getWorkoutsBodyList);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const getWorkoutDetails = async ({
+  queryKey,
+}: QueryFunctionContext<[string, string | null]>) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, bodyPart] = queryKey;
+  try {
+    const response = await Api.get(userRoutes.getWorkoutDetails(bodyPart));
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};

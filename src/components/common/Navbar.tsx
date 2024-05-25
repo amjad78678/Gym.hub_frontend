@@ -1,20 +1,18 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
+
 import Button from "@mui/material/Button";
 import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Dropdown } from "@mui/base/Dropdown";
-import { MenuButton } from "@mui/base/MenuButton";
-import MenuItem from "@mui/material/MenuItem";
-import { MenuItem as MuiDropMenuItem } from "@mui/base/MenuItem";
-import { Menu as DropMenu } from "@mui/base/Menu";
 import Loader from "./Loader";
 import { Link, useNavigate } from "react-router-dom";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import { GridMenuIcon } from "@mui/x-data-grid";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { userLogout } from "@/api/user";
+import { setUserLogout } from "@/redux/slices/authSlice";
 
 interface iState {
   auth: {
@@ -28,133 +26,145 @@ interface iState {
   };
 }
 function Navbar() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { uLoggedIn } = useSelector((state: iState) => state.auth);
+  const [dropMenu, setDropMenu] = useState(false);
+  const handleDropMenu = () => {
+    setDropMenu((prevDropMenu) => !prevDropMenu);
+  };
 
-  const { uLoggedIn, userDetails } = useSelector((state: iState) => state.auth);
-
-
-
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+  const { status, mutate: handleLogout } = useMutation({
+    mutationFn: userLogout,
+    onSuccess: (res) => {
+      console.log(res);
+      dispatch(setUserLogout());
+      navigate("/login");
+    },
+  });
+  const logoutHandler = () => {
+    handleLogout();
   };
 
   return (
     <div className="relative z-10">
-    <AppBar sx={{ backgroundColor: "black",boxShadow: "none" }} position="static">
-      <Container className="bg-transparent p-2 border-none ">
-        <Toolbar disableGutters>
-          <img className="w-28" src="/removebg.png" alt="" />
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+      <AppBar
+        sx={{  backgroundColor: {
+          xs: "transparent", 
+          lg: "black" 
+        },boxShadow: "none" }}
+        position="static"
+      >
+        <Container className="bg-transparent p-2 border-none">
+          <Toolbar disableGutters>
+            <Box
               sx={{
-                display: { xs: "block", md: "none" },
-                justifyContent: "center",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
               }}
             >
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Home</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Book offline gym</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}> 
-                <Typography textAlign="center">Personal trainer</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Workouts</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Contact</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <img className="w-28" src="/removebg.png" alt="GymHub Logo" />
+              </Box>
 
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: { xs: "none", md: "flex" },
-              justifyContent: "center",
-            }}
-          >
-          <Link to={'/'}>  <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              Home
-            </Button>
-            </Link>
-          <Link to={'/book-gym'}>  <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              Book offline gym
-          </Button></Link>
-          <Link to={'/personal-trainer'}><Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              Personal trainer
-            </Button></Link>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              Workouts
-            </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              Contact
-            </Button>
-          </Box>
-
-          {uLoggedIn ? (
-            //   <Dropdown>
-            //   <MenuButton className='font-semibold text-lg mx-2'>{userDetails.name}</MenuButton>
-            //   <DropMenu className='bg-black px-4 py-2 rounded-md'  slots={{ listbox: 'ol'  }} >
-            //     <MuiDropMenuItem className='text-white cursor-pointer'>Profile</MuiDropMenuItem>
-
-            //    <MuiDropMenuItem onClick={() => { handleLogout(); }} className='text-white cursor-pointer'>Log out</MuiDropMenuItem>
-            //   </DropMenu>
-            // </Dropdown>
-            <AccountCircleOutlinedIcon
-              onClick={() => navigate('/profile/subscriptions')}
-              sx={{ fontSize: 33, cursor: "pointer" }}
-            />
-          ) : (
-            <Link to={"/login"}>
-              <Button
-                className="font-bold mx-4"
-                variant="contained"
-                style={{ backgroundColor: "gold", color: "black" }}
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: { xs: "none", md: "flex" },
+                  justifyContent: "center",
+                }}
               >
-                Login
-              </Button>
-            </Link>
-          )}
-        </Toolbar>
-      </Container>
-      {status === "pending" && <Loader />}
-    </AppBar>
+                <Link to="/">
+                  <Button sx={{ my: 2, color: "white" }}>Home</Button>
+                </Link>
+                <Link to="/book-gym">
+                  <Button sx={{ my: 2, color: "white" }}>
+                    Book offline gym
+                  </Button>
+                </Link>
+                <Link to="/personal-trainer">
+                  <Button sx={{ my: 2, color: "white" }}>
+                    Book personal trainer
+                  </Button>
+                </Link>
+                <Link to="/workouts">
+                  <Button sx={{ my: 2, color: "white" }}>Workouts</Button>
+                </Link>
+              </Box>
+
+              <Box
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  alignItems: "center",
+                }}
+              >
+                {uLoggedIn ? (
+                  <AccountCircleOutlinedIcon
+                    onClick={() => navigate("/profile/subscriptions")}
+                    sx={{ fontSize: 33, cursor: "pointer", color: "white" }}
+                  />
+                ) : (
+                  <Link to="/login">
+                    <Button
+                      variant="contained"
+                      sx={{ backgroundColor: "gold", color: "black" }}
+                    >
+                      Login
+                    </Button>
+                  </Link>
+                )}
+              </Box>
+              <GridMenuIcon
+                onClick={handleDropMenu}
+                sx={{
+                  display: { xs: "flex", md: "none" },
+                  color: "white",
+                  ml: 2,
+                }}
+              />
+            </Box>
+          </Toolbar>
+        </Container>
+        {status === "pending" && <Loader />}
+      </AppBar>
+
+      {dropMenu && (
+        <div
+          className="absolute left-1/2 z-full w-screen max-w-md -translate-x-1/2 transform"
+          style={{ display: "block" }}
+        >
+          <div className="overflow-hidden rounded-sm shadow-lg">
+            <div className="relative grid gap-2 bg-gray-200 text-black px-4 py-4 sm:gap-8 sm:p-8 mx-4 ">
+              <Link to="/">
+                <p className="font-bold text-lg font-serif">Home</p>
+              </Link>
+              <Link to="/book-gym">
+                <p className="font-bold text-lg font-serif">Book offline gym</p>
+              </Link>
+              <Link to="/personal-trainer">
+                <p className="font-bold text-lg font-serif">
+                  Book personal trainer
+                </p>
+              </Link>
+              <Link to="/workouts">
+                {" "}
+                <p className="font-bold text-lg font-serif">Workouts</p>
+              </Link>
+              <Link to="/profile/subscriptions">
+                <p className="font-bold text-lg font-serif">Profile </p>{" "}
+              </Link>
+              <p
+                onClick={logoutHandler}
+                className="font-bold text-lg font-serif btn btn-danger"
+              >
+                Logout
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

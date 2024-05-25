@@ -58,13 +58,12 @@ const ProfileEditProfile = ({ selected, setSelected, refetch, userData }) => {
           }
         }}
       >
-        {({ setFieldValue, handleSubmit, errors }) => (
+        {({ setFieldValue, handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
-            <div className="w-2/3 flex flex-col justify-center items-center mx-auto  rounded-md">
-              <div className="w-2/3 flex flex-col">
-                {console.log(errors)}
+            <div className="lg:w-2/3 flex flex-col justify-center items-center mx-auto  rounded-md">
+              <div className="lg:w-2/3 flex flex-col">
                 <img
-                  className="rounded-xl mx-auto object-cover w-1/3"
+                  className="rounded-xl mx-auto object-cover lg:w-1/3"
                   src={
                     image
                       ? URL.createObjectURL(image)

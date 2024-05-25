@@ -1,4 +1,5 @@
 import tailwindcss from 'tailwindcss';
+
 const config = {
   darkMode: ["class"],
   content: [
@@ -73,6 +74,9 @@ const config = {
       },
     },
   },
-  plugins: [tailwindcss],
+  plugins: [
+    tailwindcss,
+
+  ],
 }
 export default config;

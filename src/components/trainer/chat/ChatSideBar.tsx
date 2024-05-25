@@ -17,7 +17,7 @@ const ChatSideBar = ({ selectedChat ,setSelectedChat}) => {
   console.log("iam messages data", messagesData);
   useEffect(() => {
     if (messagesData) {
-      const uniqueUsers = Array.from(new Set(messagesData.data.messageData.map(msg => msg.sender.username)))
+      const uniqueUsers = Array.from(new Set(messagesData?.data.messageData.map(msg => msg?.sender?.username)))
        .map(username => ({
           username, 
           profilePic: messagesData.data.messageData.find(msg => msg.sender.username === username).sender.profilePic,
@@ -30,7 +30,7 @@ const ChatSideBar = ({ selectedChat ,setSelectedChat}) => {
 
   console.log("Current usersList:", usersList);
 
-  return (
+  return !isLoading && messagesData && usersList && (
     <div className={`${selectedChat? "hidden" : "block"} sm:block`}>
 
       <Box

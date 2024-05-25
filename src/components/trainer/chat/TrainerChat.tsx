@@ -17,12 +17,11 @@ const TrainerChat = () => {
   const [selectedChat, setSelectedChat] = useState(null);
   const socket: Socket = useSocket();
   const { trainerDetails } = useSelector((state: RootState) => state.auth);
-  const trainerName = trainerDetails?.name.replaceAll(" ","")
-  const openInNewTab = (url: string) => {
+  const trainerName = trainerDetails?.name.replaceAll(" ", "");
+  
+  const [messages, setMessages] = useState<iMessageType[]>([]);
+  const [socketConnected, setSocketConnected] = useState(false);
 
-    window.open(url, '_blank', 'noopener,noreferrer')
-    
-  }
   const { isLoading, data: messageData } = useQuery({
     queryKey: [
       "trainerMessages",
@@ -33,17 +32,6 @@ const TrainerChat = () => {
     enabled: !!selectedChat,
   });
 
-  const [messages, setMessages] = useState<iMessageType[]>([]);
-  const [socketConnected,setSocketConnected]=useState(false);
-
-  useEffect(() => {
-    if (messageData) {
-      setMessages(messageData.data.conversations);
-    }
-  }, [messageData]);
-
-  console.log("iam message data...................", messages);
-
   const { isLoading: userDataLoading, data: userData } = useQuery({
     queryKey: ["trainerUserData", selectedChat?.userId],
     queryFn: fetchUserData,
@@ -51,36 +39,46 @@ const TrainerChat = () => {
   });
 
   useEffect(() => {
-    socket.on("message", (message: iMessageType) => {
-      setMessages([...messages, message]);
-    });
-  }, [socket, messages]);
+    if (messageData) {
+      setMessages(messageData.data.conversations);
+    }
+  }, [messageData]);
 
-  const handleJoinRoom = useCallback(() =>{
-   openInNewTab(`/call/${trainerName}`)
-  },[trainerName])
+  useEffect(() => {
+    if (socket) {
+      socket.on("connect", () => setSocketConnected(true));
+      socket.on("disconnect", () => setSocketConnected(false));
+      socket.on("message", (message: iMessageType) => {
+        setMessages((prevMessages) => [...prevMessages, message]);
+      });
+    }
+
+    return () => {
+      if (socket) {
+        socket.off("connect");
+        socket.off("disconnect");
+        socket.off("message");
+      }
+    };
+  }, [socket]);
+
+  const handleJoinRoom = useCallback(() => {
+    window.open(`/call/${trainerName}`, "_blank", "noopener,noreferrer");
+  }, [trainerName]);
 
   return (
     <div className="grid sm:grid-cols-12">
-      <div className="sm:col-span-3 mx-2 ">
+      <div className="sm:col-span-3 mx-2">
         <ChatSideBar {...{ selectedChat, setSelectedChat }} />
       </div>
 
-      {selectedChat &&
-      messageData &&
-      !isLoading &&
-      !userDataLoading &&
-      messages ? (
-        <div
-          className={`sm:col-span-9 sm:block  ${
-            selectedChat ? "block" : "hidden"
-          }`}
-        >
+      {selectedChat && messageData && !isLoading && !userDataLoading && messages ? (
+        <div className={`sm:col-span-9 ${selectedChat ? "block" : "hidden"}`}>
           <div className="flex-1 p-2 bg-gray-200 sm:p-6 justify-between flex flex-col h-screen rounded-md">
             <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
               <div className="relative flex items-center space-x-4">
                 <div className="relative">
-                  <span className={`absolute ${socketConnected ?  `text-green-500` : `text-red-500`} right-0 bottom-0`}>
+                  <span className={`absolute ${socketConnected ? 'text-green-500' : 'text-red-500'} right-0 bottom-0`}>
                     <svg width="20" height="20">
                       <circle cx="8" cy="8" r="8" fill="currentColor"></circle>
                     </svg>
@@ -104,8 +102,10 @@ const TrainerChat = () => {
                 </div>
               </div>
               <div className="flex items-center space-x-2 mr-4 mb-2">
-              <IconButton onClick={handleJoinRoom}><VideoCall sx={{width: 50,height:50,color:"green"}}/></IconButton>      
-            </div>
+                <IconButton onClick={handleJoinRoom}>
+                  <VideoCall sx={{ width: 50, height: 50, color: "green" }} />
+                </IconButton>
+              </div>
             </div>
             <div
               id="messages"
@@ -117,7 +117,7 @@ const TrainerChat = () => {
                   sender={msg.sender}
                   text={msg.content}
                   selectedChat={selectedChat}
-                  {...{setSocketConnected}}
+                  {...{ setSocketConnected }}
                 />
               ))}
             </div>
@@ -128,7 +128,7 @@ const TrainerChat = () => {
         </div>
       ) : (
         <div className="sm:col-span-9 flex justify-center items-center">
-          <h1 className="text-4xl">You are not selected any messages yet !!</h1>
+          <h1 className="text-4xl">You have not selected any messages yet!</h1>
         </div>
       )}
     </div>

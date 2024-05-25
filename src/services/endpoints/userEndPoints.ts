@@ -27,7 +27,14 @@ const userRoutes={
     fetchTrainerData: (trainerId: string | null)=> `/trainer_details/${trainerId}`,
     editProfile: '/edit_profile',
     isReviewPossible: (gymId: string)=> `/is_review_possible/${gymId}`,
-    addRatingGym:'/add_review'
+    addRatingGym:'/add_review',
+    fetchGymReviews: (gymId: string)=> `/fetch_gym_reviews/${gymId}`,
+    userReviewed: (gymId: string)=> `/user_reviewed/${gymId}`,
+    updateRating: '/update_rating',
+    getWorkoutsBodyList: '/workouts_body_list',
+    getWorkoutDetails: (bodyPart: string | null)=> `/exercises/${bodyPart}`
+
+
 }   
 
 export default userRoutes

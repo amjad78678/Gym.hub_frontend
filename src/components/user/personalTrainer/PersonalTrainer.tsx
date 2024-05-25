@@ -1,27 +1,58 @@
-import React, { useState } from "react";
-import { Container } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
 import SearchBar from "../gymList/SearchBar";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import { Slider } from "@mui/material";
 import TrainerCard from "./TrainerCard";
 
-const PersonalTrainer = ({ trainerData,handleBookNow, handleModal, modalOpen, bookingTrainer,setBookingTrainer }) => {
-  const searchHandler = () => {
-    console.log("iam search handler");
-  };
-  const handleSliderChange = () => {
-    console.log("jfjfhsjdh");
+const PersonalTrainer = ({
+  trainerData,
+  handleBookNow,
+  handleModal,
+  modalOpen,
+  bookingTrainer,
+  setBookingTrainer,
+}) => {
+  const maxPrice = Math.max(
+    ...trainerData.data.trainers.map((trainer: any) => trainer.monthlyFee)
+  );
+  const [sliderValue, setSliderValue] = useState(maxPrice);
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredItems, setFilteredItems] = useState(trainerData.data.trainers);
+  const searchHandler = (value: string) => {
+    setSearchValue(value);
   };
 
-  return  (
+  console.log("i am largest price", maxPrice);
+  console.log("iam filtered Items", filteredItems);
+
+  useEffect(() => {
+    const filtered = trainerData.data.trainers.filter((trainer) => {
+      const trainerName = trainer.name;
+      const isSearchMatch = trainerName
+        .toLowerCase()
+        .includes(searchValue.toLowerCase());
+      const isPriceMatch = trainer.monthlyFee <= sliderValue;
+
+      return isSearchMatch && isPriceMatch;
+    });
+
+    setFilteredItems(filtered);
+  }, [sliderValue, searchValue]);
+
+  const handleSliderChange = (event: Event, newValue: number) => {
+    setSliderValue(newValue);
+  };
+
+  return (
     <>
       <Container>
-        <div className="grid sm:grid-cols-12 ">
-          <div className="sm:col-span-3 mx-3">
+        <Row>
+          <Col md={4} lg={3}>
             <div>
               <SearchBar searchHandler={searchHandler} />
               <div>
-                <span className=" text-xl">
+                <span className="text-xl">
                   <span>Filters</span>{" "}
                   <FilterListOutlinedIcon
                     sx={{ color: "white", float: "right", fontSize: "27px" }}
@@ -34,27 +65,38 @@ const PersonalTrainer = ({ trainerData,handleBookNow, handleModal, modalOpen, bo
                     aria-label="Small steps"
                     sx={{ color: "white", ml: 0, mr: 6 }}
                     valueLabelDisplay="auto"
-                    defaultValue={200}
-                    max={100}
+                    defaultValue={maxPrice}
+                    max={maxPrice}
                     onChange={handleSliderChange}
                   />
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="col-span-9">
-            {trainerData.data.trainers.map((trainer) => (
-               <>
-               {console.log('iam trainer each',trainer)}
-               <TrainerCard key={trainer._id} {...{ trainer, handleModal,modalOpen,handleBookNow,bookingTrainer,setBookingTrainer }} />
-               </>
+          </Col>
+          <Col
+            lg={9}
+            md={8}
+            className=" rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
+          >
+            {filteredItems.map((trainer) => (
+              <>
+                {console.log("iam trainer each", trainer)}
+                <TrainerCard
+                  key={trainer._id}
+                  {...{
+                    trainer,
+                    handleModal,
+                    modalOpen,
+                    handleBookNow,
+                    bookingTrainer,
+                    setBookingTrainer,
+                  }}
+                />
+              </>
             ))}
-          </div>
-
-        </div>
+          </Col>
+        </Row>
       </Container>
-
     </>
   );
 };

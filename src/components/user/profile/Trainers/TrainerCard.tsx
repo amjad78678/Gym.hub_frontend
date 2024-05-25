@@ -56,7 +56,7 @@ const TrainerCard = ({ trainer }) => {
         <span className="text-gray-300 ">
           Expiry Date : {dayjs(trainer.expiryDate).format("DD MMM YYYY")}
         </span>
-        <button onClick={()=>navigate(`/chat/${trainer.userId}/${trainer.trainerId._id}`)} className="float-right outline-dotted outline-1 outline-white p-2 rounded-md hover:outline-green-500 hover:text-green-500">Contact Trainer</button>
+        <button onClick={()=>navigate(`/chat/${trainer.userId}/${trainer.trainerId._id}`)} className="lg:float-right outline-dotted outline-1 outline-white p-2 rounded-md hover:outline-green-500 hover:text-green-500">Contact Trainer</button>
         </span>
       
       </div>

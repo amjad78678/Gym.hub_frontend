@@ -14,8 +14,8 @@ import PaymentFailure from "@/components/user/payments/PaymentFailure";
 import UserProfilePage from "@/pages/user/UserProfilePage";
 import PersonalTrainerPage from "@/pages/user/PersonalTrainerPage";
 import UserChatPage from "@/pages/user/UserChatPage";
-import UserCallPage from "@/pages/trainer/TrainerCallPage";
 import RatingForm from "@/components/user/gymDetails/RatingForm";
+import WorkoutsPage from "@/pages/user/WorkoutsPage";
 
 const UserRoutes = () => {
   return (
@@ -33,7 +33,7 @@ const UserRoutes = () => {
         <Route path="profile/*" element={<UserProfilePage/>}/>
         <Route path="personal-trainer/*" element={<PersonalTrainerPage/>}/>
         <Route path="chat/:userId/:trainerId" element={<UserChatPage/>}/>
-        <Route path="testable" element={<RatingForm/>} />
+        <Route path="workouts" element={<WorkoutsPage/>} />
       </Route> 
       <Route element={<UserProtect />}></Route>
     </Routes>

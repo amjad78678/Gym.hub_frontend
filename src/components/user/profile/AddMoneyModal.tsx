@@ -5,7 +5,7 @@ import {
   Stack,
   TextField,
   Typography,
-  Modal,
+  Modal, 
 } from "@mui/material";
 import { loadStripe } from "@stripe/stripe-js";
 import { useMutation } from "@tanstack/react-query";

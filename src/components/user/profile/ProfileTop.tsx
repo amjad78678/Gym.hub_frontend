@@ -68,7 +68,9 @@ const ProfileTop = ({ userData, refetch }) => {
         title: "Edit Profile",
         link: "edit_profile",
         component: (
-          <ProfileEditProfile {...{ selected: "Edit profile", setSelected,refetch,userData }} />
+          <ProfileEditProfile
+            {...{ selected: "Edit profile", setSelected, refetch, userData }}
+          />
         ),
       },
       {
@@ -76,7 +78,13 @@ const ProfileTop = ({ userData, refetch }) => {
         link: "wallet_history",
         component: (
           <ProfileWalletHistory
-            {...{ selected: "Wallet History", setSelected, userData,handleCloseModalAddMoney,refetch }}
+            {...{
+              selected: "Wallet History",
+              setSelected,
+              userData,
+              handleCloseModalAddMoney,
+              refetch,
+            }}
           />
         ),
       },
@@ -84,40 +92,40 @@ const ProfileTop = ({ userData, refetch }) => {
     []
   );
 
+  const [dropMenu, setDropMenu] = useState(false);
+  const handleOpenDropMenu = () => {
+    setDropMenu((prevDropMenu) => !prevDropMenu);
+  };
 
-
-
-
-  return  (
+  return (
     <>
-      <div className="absolute inset-0 bg-black text-white">
-        <div style={divStyle} className="h-52 relative">
+      <div className="absolute inset-0 lg:bg-black text-white">
+        <div style={divStyle} className="h-24 lg:h-52 relative">
           <div className="absolute inset-0 bg-black opacity-50"></div>
         </div>
 
         <Container>
-          <div className="flex">
-            <div className="relative mt-[-40px]">
+          <div className="lg:flex lg:flex-row lg:justify-between  flex flex-col items-center">
+            <div className="relative lg:mr-4 lg:mb-0 lg:mt-0 mt-[-40px]">
               <img
-                className="rounded-full border-8 border-black w-40"
+                className="rounded-full border-8 border-black w-48 lg:w-40"
                 src={userData?.profilePic.imageUrl}
                 alt=""
               />
             </div>
 
-            <div className="sm:flex sm:justify-between ms-4 sm:w-full">
-              <div className="sm:mt-14 mt-2 flex flex-col items-center">
-                <h1 className="sm:text-5xl text-3xl mr-4 font-semibold">
+            <div className="sm:flex sm:justify-between lg:items-center ms-4 sm:w-full lg:w-auto lg:flex-1">
+              <div className="mt-2 flex flex-col items-center lg:items-start">
+                <h1 className="lg:text-5xl text-center text-3xl mb-2 lg:mb-0 font-semibold">
                   Hi, {userData?.username}
                 </h1>
-                <div className="flex flex-col my-2  sm:flex-row gap-2 sm:gap-10  sm:pt-2">
-                  <p className="flex items-center gap-2 ms-4 sm:text-lg">
+                <div className="flex flex-col my-2 lg:flex-row gap-2 lg:gap-10 mr-4 sm:pt-2">
+                  <p className="flex justify-center items-center gap-2 sm:text-lg lg:text-left">
                     <EmailOutlined /> {userData?.email}
                   </p>
-                  <p className="sm:text-lg">
+                  <p className="sm:text-lg inline-flex justify-center items-center lg:text-left">
                     <WalletOutlined /> Wallet : ₹{userData?.wallet}
                     <IconButton onClick={handleCloseModalAddMoney}>
-                      {" "}
                       <AddOutlined
                         sx={{
                           color: "yellow",
@@ -129,7 +137,7 @@ const ProfileTop = ({ userData, refetch }) => {
                   </p>
                 </div>
               </div>
-              <div className="hidden sm:block clear-left mt-12">
+              <div className="hidden lg:block lg:ml-4 mt-4 lg:mt-0">
                 <button
                   className="bg-red-600 py-2 px-4 rounded bg-opacity-80 hover:bg-opacity-95 text-white"
                   onClick={logoutHandler}
@@ -143,7 +151,7 @@ const ProfileTop = ({ userData, refetch }) => {
           {/* profile menu section  */}
           <div className="my-5 bg-gray-800 p-3 rounded">
             <Row>
-              <Col xs={3}>
+              <Col lg={3}>
                 <div className="bg-black text-white my-4 shadow rounded w-64 text-center h-fit hidden lg:block">
                   <div className="py-2 px-5">
                     <Link to={"/profile/subscriptions"}>
@@ -174,15 +182,45 @@ const ProfileTop = ({ userData, refetch }) => {
                 </div>
               </Col>
 
-              <Col xs={9}>
-                <div className=" text-white shadow flex rounded justify-center gap-7 w-full">
+              <Col lg={9}>
+                <div className="text-white shadow flex rounded justify-center gap-7 w-full">
                   <div className="relative w-full">
-                    <div className="cursor-pointer bg-black rounded p-2  shadow focus:outline-none text-center">
+                    <div
+                      onClick={handleOpenDropMenu}
+                      className="cursor-pointer bg-black text-yellow-200 lg-text-white rounded p-2  shadow focus:outline-none text-center"
+                    >
                       <p className="uppercase">{selected}</p>
                     </div>
+                    {dropMenu && (
+                      <div className=" bg-black flex flex-col justify-center items-center text-white">
+                        <ul className="text-center">
+                          <Link to={"/profile/subscriptions"}>
+                            {" "}
+                            <li onClick={handleOpenDropMenu} className="my-2">
+                              Subscriptions
+                            </li>
+                          </Link>
+                          <Link to={"/profile/trainers"}>
+                            <li onClick={handleOpenDropMenu} className="my-2">
+                              Trainers
+                            </li>
+                          </Link>
+                          <Link to={"/profile/edit_profile"}>
+                            {" "}
+                            <li onClick={handleOpenDropMenu} className="my-2">
+                              Edit Profile
+                            </li>
+                          </Link>
+                          <Link to={"/profile/wallet_history"}>
+                            {" "}
+                            <li onClick={handleOpenDropMenu} className="my-2">
+                              Wallet History
+                            </li>
+                          </Link>
+                        </ul>
+                      </div>
+                    )}
                     <div className="py-1 my-2 bg-gray-800 h-[300px] overflow-y-scroll no-scrollbar w-full border border-gray-300 rounded shadow-lg text-center z-50">
-                      {/* list menus are shown here  */}
-
                       <Routes>
                         {list.map((item) => (
                           <Route

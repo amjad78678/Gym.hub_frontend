@@ -1,5 +1,5 @@
 import { Box, Button, Rating } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import StarIcon from "@mui/icons-material/Star";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -15,8 +15,10 @@ import { useNavigate } from "react-router-dom";
 import ReactDOM from "react-dom";
 import CalenderDatePicker from "@/components/user/gymDetails/CalenderDatePicker";
 import Backdrop from "@/pages/common/Backdrop";
+import { CheckCircle, Star } from "@mui/icons-material";
+import dayjs from "dayjs";
 
-const GymDetails = ({ handleShowReview }) => {
+const GymDetails = ({ handleShowReview, gymReviews }) => {
   const queryParams = new URLSearchParams(location.search);
   const gymId = queryParams.get("id");
   const [showCalender, setShowCalender] = useState(false);
@@ -119,7 +121,7 @@ const GymDetails = ({ handleShowReview }) => {
       <div>
         <Container>
           <Row>
-            <Col xs={6}>
+            <Col lg={6}>
               <Row>
                 <Col xs={3}>
                   {gymDetailsData?.data.message.images.map((image, index) => (
@@ -146,7 +148,7 @@ const GymDetails = ({ handleShowReview }) => {
               </Row>
             </Col>
 
-            <Col xs={6}>
+            <Col lg={6}>
               <h1 className="text-2xl font-serif">
                 {gymDetailsData?.data.message.gymName}
               </h1>
@@ -233,7 +235,7 @@ const GymDetails = ({ handleShowReview }) => {
                 onClick={() => setCurrentView("description")}
                 className="mt-12 text-center text-xl cursor-pointer"
               >
-                Gym description
+                Description
               </p>
               {currentView === "description" ? (
                 <div className="w-full h-1 bg-white mt-1 mb-5 "></div>
@@ -247,7 +249,7 @@ const GymDetails = ({ handleShowReview }) => {
                 onClick={() => setCurrentView("reviews")}
                 className="mt-12 text-center text-xl cursor-pointer"
               >
-                Reviews
+                Reviews ({gymReviews?.data.reviews.length})
               </p>
               {currentView === "reviews" ? (
                 <div className="w-full h-1 bg-white mt-1 mb-5"></div>
@@ -276,27 +278,90 @@ const GymDetails = ({ handleShowReview }) => {
                   <div className="border border-gray-400 p-4 rounded-sm">
                     <div className="flex justify-between">
                       <h2 className="text-xl font-serif  text-white mb-2 ">
-                        Gym ratings
+                        Gym ratings ({gymReviews?.data.reviews.length})
                       </h2>
 
-                      {isPossible?.data.isPossible && (
-                        <button
-                          onClick={handleShowReview}
-                          className="btn group mt-[-10px] mb-2 border-yellow-500 flex items-center bg-transparent p-2 px-6 text-xl font-thin tracking-widest text-white"
-                        >
-                          <span className="relative text-center  pb-1 text-white after:transition-transform after:duration-500 after:ease-out after:absolute after:bottom-0 after:left-0 after:block after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-blue-500 after:content-[''] after:group-hover:origin-bottom-left after:group-hover:scale-x-100">
-                            Rate Review
-                          </span>
-                        </button>
-                      )}
+                      {isPossible?.data.isPossible &&
+                        gymReviews?.data.isUserReviewed && (
+                          <>
+                            <button
+                              onClick={handleShowReview}
+                              className="btn group mt-[-10px] mb-2 border-yellow-500 flex items-center bg-transparent p-2 px-6 text-xl font-thin tracking-widest text-white"
+                            >
+                              <span className="relative text-center  pb-1 text-white after:transition-transform after:duration-500 after:ease-out after:absolute after:bottom-0 after:left-0 after:block after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-blue-500 after:content-[''] after:group-hover:origin-bottom-left after:group-hover:scale-x-100">
+                                Edit Review
+                              </span>
+                            </button>
+                          </>
+                        )}
+
+                      {isPossible?.data.isPossible &&
+                        !gymReviews?.data.isUserReviewed && (
+                          <>
+                            <button
+                              onClick={handleShowReview}
+                              className="btn group mt-[-10px] mb-2 border-yellow-500 flex items-center bg-transparent p-2 px-6 text-xl font-thin tracking-widest text-white"
+                            >
+                              <span className="relative text-center  pb-1 text-white after:transition-transform after:duration-500 after:ease-out after:absolute after:bottom-0 after:left-0 after:block after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-blue-500 after:content-[''] after:group-hover:origin-bottom-left after:group-hover:scale-x-100">
+                                Rate Review
+                              </span>
+                            </button>
+                          </>
+                        )}
                     </div>
-                    <p className="text-gray-300">
-                      iam review aaneu Lorem ipsum dolor sit amet consectetur
-                      adipisicing elit. Ipsa facere mollitia recusandae
-                      laudantium tempore libero assumenda perferendis, inventore
-                      quidem labore doloremque, ab fuga dignissimos, amet
-                      consequatur asperiores voluptatum porro enim?
-                    </p>
+
+                    <div className="max-h-96 overflow-y-scroll no-scrollbar">
+                      {gymReviews?.data.reviews.map((review) => (
+                        <p key={review._id} className="text-gray-200">
+                          <div className="flex items-center">
+                            <p className="text-white text-sm font-bold mt-1">
+                              {review.userId.username.toUpperCase()}
+                            </p>
+                            <span>
+                              <CheckCircle
+                                sx={{ my: 0, color: "green" }}
+                                fontSize="inherit"
+                              />
+                            </span>{" "}
+                            <p className="ms-1 mt-1 font-mono font-semibold">
+                              <span className="hidden lg:block">
+                                {" "}
+                                Certified Buyer
+                              </span>
+                              <span>
+                                {dayjs(review.createdAt).format("DD MMM YY")}
+                              </span>
+                            </p>
+                          </div>
+
+                          <div className="grid lg:grid-cols-12 border-b-2 my-2 border-gray-400">
+                            <div className="col-span-2">
+                              <div className="flex">
+                                {[...Array(5)].map((_, index) => (
+                                  <Star
+                                    fontSize="medium"
+                                    className={`${
+                                      index < review.rating
+                                        ? "text-yellow-500"
+                                        : "text-gray-400"
+                                    } my-1`}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="col-span-10 my-1 pb-4 lg:ml-[-20px]">
+                              <h1 className="text-xl font-serif font-bold">
+                                {review.title}
+                              </h1>
+                              <p className="text-gray-300">
+                                {review.description}
+                              </p>
+                            </div>
+                          </div>
+                        </p>
+                      ))}
+                    </div>
                   </div>
                 )}
               </Box>
