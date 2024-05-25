@@ -1,6 +1,6 @@
 import { Box, Button, Rating } from "@mui/material";
 import React, { useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Carousel, Col, Container, Row } from "react-bootstrap";
 import StarIcon from "@mui/icons-material/Star";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
@@ -122,8 +122,10 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
         <Container>
           <Row>
             <Col lg={6}>
-              <Row>
-                <Col xs={3}>
+           
+              {/* For Large Screens */}
+              <Row className="d-none d-lg-flex">
+                <Col lg={3}>
                   {gymDetailsData?.data.message.images.map((image, index) => (
                     <img
                       key={index}
@@ -135,7 +137,7 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
                   ))}
                 </Col>
 
-                <Col className="mb-3" xs={9}>
+                <Col lg={9}>
                   <img
                     className="rounded-lg w-full h-full object-cover"
                     src={
@@ -146,10 +148,26 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
                   />
                 </Col>
               </Row>
+              {/* For Smaller Screens */}
+              <Row className="d-lg-none">
+                <Col xs={12}>
+                  <Carousel indicators={false}>
+                    {gymDetailsData?.data.message.images.map((image, index) => (
+                      <Carousel.Item key={index}>
+                        <img
+                          className="d-block w-100"
+                          src={image.imageUrl}
+                          alt=""
+                        />
+                      </Carousel.Item>
+                    ))}
+                  </Carousel>
+                </Col>
+              </Row>
             </Col>
 
             <Col lg={6}>
-              <h1 className="text-2xl font-serif">
+              <h1 className="text-2xl font-serif mt-4 lg:mt-0">
                 {gymDetailsData?.data.message.gymName}
               </h1>
               <Box
