@@ -187,12 +187,13 @@ const ProfileTop = ({ userData, refetch }) => {
                   <div className="relative w-full">
                     <div
                       onClick={handleOpenDropMenu}
-                      className="cursor-pointer bg-black text-yellow-200 lg-text-white rounded p-2  shadow focus:outline-none text-center"
+                      className="cursor-pointer bg-black text-yellow-200 lg:text-white lg-text-white rounded p-2  shadow focus:outline-none text-center"
                     >
                       <p className="uppercase">{selected}</p>
                     </div>
                     {dropMenu && (
-                      <div className=" bg-black flex flex-col justify-center items-center text-white">
+                      <div className="block lg:hidden">
+                      <div className="bg-black flex flex-col justify-center items-center text-white">
                         <ul className="text-center">
                           <Link to={"/profile/subscriptions"}>
                             {" "}
@@ -218,6 +219,7 @@ const ProfileTop = ({ userData, refetch }) => {
                             </li>
                           </Link>
                         </ul>
+                      </div>
                       </div>
                     )}
                     <div className="py-1 my-2 bg-gray-800 h-[300px] overflow-y-scroll no-scrollbar w-full border border-gray-300 rounded shadow-lg text-center z-50">

@@ -1,4 +1,4 @@
-import { useSocket } from '@/redux/context/socketContext';
+import { useSocket } from '@/utils/context/socketContext';
 import { RootState } from '@/redux/store';
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';

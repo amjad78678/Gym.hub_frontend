@@ -21,7 +21,10 @@ const UsersActions = ({
   const { mutate: updateUserActions } = useMutation({
     mutationFn: updateUserAction,
     onSuccess: (res) => {
-      console.log(res);
+      if(res?.data.success){
+        toast.success(res.data.message);
+        refetch();
+      }
       setSuccess(true);
       setRowId("");
       setSelectedRowId("");
@@ -67,11 +70,7 @@ const UsersActions = ({
       iconHtml: '<i class="bi bi-trash" style="font-size:30px"></i>',
     }).then(async (result) => {
       if (result.isConfirmed) {
-
-        console.log('confirmed')
         updateUserActions({ id: row._id, isDeleted: true ,isBlocked: row.isBlocked});
-        refetch()
-        toast.success("User deleted successfully");
       }
     });
   };
@@ -126,7 +125,7 @@ const UsersActions = ({
       )}
     </Box>
 
-    <Box>
+    <Box sx={{ mt: 1 }}>
 
 <Tooltip title="Delete this trainer">
           <IconButton onClick={() => handleDelete(params.row)}>

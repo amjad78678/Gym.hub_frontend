@@ -5,6 +5,7 @@
     "lib": ["es2021", "dom", "dom.iterable", "esnext"],
     "module": "ESNext",
     "skipLibCheck": true,
+   
 
     
     "baseUrl": ".",
@@ -28,6 +29,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
+  "types":["@mui/types"] ,
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

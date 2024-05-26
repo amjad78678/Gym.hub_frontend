@@ -5,7 +5,9 @@ const AdminBannerPage = ({setSelectedLink,link}) => {
         setSelectedLink(link)
       },[])
   return (
-    <div>AdminBannerPage</div>
+    <div>
+      {/* <AdminBanner/> */}
+    </div>
   )
 }
 

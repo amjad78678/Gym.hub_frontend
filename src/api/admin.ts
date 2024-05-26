@@ -127,12 +127,32 @@ export const fetchSubscriptions = async () => {
 };
 
 export const fetchGymWithId = async ({
-  queryKey, 
+  queryKey,
 }: QueryFunctionContext<[string, string | null]>) => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, id] = queryKey;
     const response = await Api.get(adminRoutes.fetchGymWithId(id));
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const fetchTrainers = async () => {
+  try {
+    const response = await Api.get(adminRoutes.fetchTrainers);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const updateTrainer = async (data: any) => {
+  try {
+    const response = await Api.put(adminRoutes.updateTrainer, data);
     return response;
   } catch (error) {
     const err: Error = error as Error;

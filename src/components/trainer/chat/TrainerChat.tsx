@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { AddIcCall, CheckCircle, VideoCall } from "@mui/icons-material";
 import iMessageType from "@/interfaces/iMessageType";
-import { useSocket } from "@/redux/context/socketContext";
+import { useSocket } from "@/utils/context/socketContext";
 import { Socket } from "socket.io-client";
 import { RootState } from "@/redux/store";
 

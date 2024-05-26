@@ -14,7 +14,6 @@ import PaymentFailure from "@/components/user/payments/PaymentFailure";
 import UserProfilePage from "@/pages/user/UserProfilePage";
 import PersonalTrainerPage from "@/pages/user/PersonalTrainerPage";
 import UserChatPage from "@/pages/user/UserChatPage";
-import RatingForm from "@/components/user/gymDetails/RatingForm";
 import WorkoutsPage from "@/pages/user/WorkoutsPage";
 
 const UserRoutes = () => {

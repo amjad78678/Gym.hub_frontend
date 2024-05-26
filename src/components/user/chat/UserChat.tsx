@@ -8,7 +8,7 @@ import { AddIcCall, CheckCircle, PhoneCallback } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTrainerData, fetchUserChatMessages } from "@/api/user";
 import { Socket, io } from "socket.io-client";
-import { useSocket } from "@/redux/context/socketContext";
+import { useSocket } from "@/utils/context/socketContext";
 import iMessageType from "@/interfaces/iMessageType";
 import VideoCall from "@mui/icons-material/VideoCall";
 import { useSelector } from "react-redux";

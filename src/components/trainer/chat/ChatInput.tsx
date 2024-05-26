@@ -1,11 +1,11 @@
 import { trainerChatCreate } from "@/api/trainer";
-import { useSocket } from "@/redux/context/socketContext";
+import { useSocket } from "@/utils/context/socketContext";
 import { RootState } from "@/redux/store";
 import { useMutation } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
-import Lottie from "react-lottie";
+import {useLottie} from "lottie-react";
 import animationData from "../../../assets/animations/typing.json";
 
 const ChatInput = ({ selectedChat }) => {
@@ -40,14 +40,7 @@ const ChatInput = ({ selectedChat }) => {
     }
   };
 
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
+
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -74,16 +67,20 @@ const ChatInput = ({ selectedChat }) => {
       }
     }, timerLength);
   };
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    style: { width: 80,marginLeft:0 },
+  };
+
+  const View = useLottie(defaultOptions);
 
   return (
     <>
       {isTyping && (
         <div>
-          <Lottie
-            options={defaultOptions}
-            width={80}
-            style={{ marginLeft: 0 }}
-          />
+          {View}
         </div>
       )}
       <div className="flex items-center space-x-2">

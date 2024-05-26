@@ -136,7 +136,7 @@ function Navbar() {
           style={{ display: "block" }}
         >
           <div className="overflow-hidden rounded-sm shadow-lg">
-            <div className="relative grid gap-2 bg-gray-200 text-black px-4 py-4 sm:gap-8 sm:p-8 mx-4 ">
+            <div className="relative grid gap-2 bg-black text-gray-200 px-4 py-4 sm:gap-8 sm:p-8 mx-4 ">
               <Link to="/">
                 <p className="font-bold text-lg font-serif">Home</p>
               </Link>

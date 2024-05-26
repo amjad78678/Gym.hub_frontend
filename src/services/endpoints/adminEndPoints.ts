@@ -1,3 +1,4 @@
+
 const adminRoutes={
 
     getGymDetails:'/get_gym_details',
@@ -9,7 +10,9 @@ const adminRoutes={
     fetchUsers:'/fetch_users',
     updateUser:(id: string)=>`/update_user/${id}`,
     fetchSubscriptions:'/fetch_subscriptions',
-    fetchGymWithId:(id: string)=>`/fetch_gym_with_id/${id}`
+    fetchGymWithId:(id: string)=>`/fetch_gym_with_id/${id}`,
+    fetchTrainers:'/fetch_trainers',
+    updateTrainer: `/update_trainer`,
 
 }
 

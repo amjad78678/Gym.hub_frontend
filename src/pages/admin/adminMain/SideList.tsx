@@ -95,8 +95,8 @@ const SideList = ({ open, setOpen }) => {
     {title: "Dashboard",icon: <Dashboard/> ,link: "",component: <AdminDashboardPage {...{setSelectedLink, link: ''}}/>},
     {title: "Gyms",icon: <FitnessCenterOutlined/> ,link: "gyms",component: <AdminGymPage {...{setSelectedLink, link: 'gyms'}}/>},
     {title: "Users",icon: <GroupOutlined/> ,link: "users",component: <AdminUsersPage {...{setSelectedLink, link: 'users'}}/>},
-    {title: "Subscription plans",icon: <CardMembershipOutlined/> ,link: "subscription_plans",component: <AdminSubscriptionPlans {...{setSelectedLink, link: 'subscription_plans'}}/>},
-    {title: "Trainer plans",icon: <SportsKabaddiOutlined/> ,link: "trainer_plans",component: <AdminTrainerPlans {...{setSelectedLink, link: 'trainer_plans'}}/>},
+    {title: "Subscriptiona",icon: <CardMembershipOutlined/> ,link: "subscription_plans",component: <AdminSubscriptionPlans {...{setSelectedLink, link: 'subscription_plans'}}/>},
+    {title: "Trainers",icon: <SportsKabaddiOutlined/> ,link: "trainer_plans",component: <AdminTrainerPlans {...{setSelectedLink, link: 'trainer_plans'}}/>},
     {title: "Banners",icon: <ViewCarouselOutlined/> ,link: "banners",component: <AdminBannerPage {...{setSelectedLink, link: 'banners'}}/>},
 ],[])
 

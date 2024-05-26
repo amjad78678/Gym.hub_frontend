@@ -8,7 +8,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Provider } from "react-redux";
 import store from "./redux/store.ts";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { SocketProvider } from "./redux/context/socketContext.tsx";
+import { SocketProvider } from "./utils/context/socketContext.tsx";
 
 const queryClient = new QueryClient();
 

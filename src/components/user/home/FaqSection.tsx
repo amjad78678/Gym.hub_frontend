@@ -16,7 +16,7 @@ const FaqSection = () => {
         setIsOpen2(!isOpen2);
     };  
   return (
-    <section className="bg-black text-white px-0 md:px-14 xl:px-28 mt-20">
+    <section className="bg-black text-white px-0 lg:px-14 xl:px-28 mt-20">
     <div className="container lg:py-10 mx-auto">
         <h1 className="text-xl lg:text-3xl font-serif lg:font-sans lg:font-semibold text-white ">Frequently asked questions</h1>
 

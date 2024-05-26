@@ -1,26 +1,29 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Avatar, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Avatar, Box, Typography } from "@mui/material";
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
+import { useQuery } from "@tanstack/react-query";
 import { grey } from "@mui/material/colors";
 import dayjs from "dayjs";
-import UsersActions from "./UsersActions";
+import TrainerActions from "./TrainerActions";
+import { fetchTrainers } from "@/api/admin";
 import SearchInput from "../common/SearchInput";
 
-const Users = ({ usersData, refetch }) => {
+const AdminTrainers = ({trainersData,refetch}) => {
+
+
   const [rowId, setRowId] = useState<string>("");
   const [selectedRowId, setSelectedRowId] = useState<string>("");
-  const [activeUsers, setActiveUsers] = useState([]);
-  console.log("iamrowId", rowId);
-  console.log("iamselectedRowId", selectedRowId);
+  const [activeTrainers, setActiveTrainers] = useState([]);
 
   useEffect(() => {
-    if (usersData) {
-      setActiveUsers(usersData.data.message.filter((user) => !user.isDeleted));
+    if (trainersData) {
+      setActiveTrainers(
+        trainersData?.data.trainers.filter((trainer) => !trainer.isDeleted)
+      );
     }
-  }, [usersData]);
+  }, [trainersData]);
 
-  console.log("iam active users", activeUsers);
+  console.log("iam active trainers", activeTrainers);
 
   const columns = useMemo(
     () => [
@@ -30,8 +33,14 @@ const Users = ({ usersData, refetch }) => {
         width: 90,
         headerAlign: "center",
         renderCell: (params) => (
-          <Box display="flex" justifyContent="center" width="100%">
-            <Avatar src={params.row.profilePic.imageUrl} />
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
+          >
+            <Avatar src={params.row.image.imageUrl} />
           </Box>
         ),
       },
@@ -41,8 +50,31 @@ const Users = ({ usersData, refetch }) => {
         width: 180,
         headerAlign: "center",
         renderCell: (params) => (
-          <Box display="flex" justifyContent="center" width="100%">
-            {params.row.username}
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
+          >
+            {params.row.name}
+          </Box>
+        ),
+      },
+      {
+        field: "age",
+        headerName: "Age",
+        width: 60,
+        headerAlign: "center",
+        renderCell: (params) => (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
+          >
+            {params.row.age}
           </Box>
         ),
       },
@@ -52,19 +84,31 @@ const Users = ({ usersData, refetch }) => {
         width: 250,
         headerAlign: "center",
         renderCell: (params) => (
-          <Box display="flex" justifyContent="center" width="100%">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
+          >
             {params.row.email}
           </Box>
         ),
       },
       {
-        field: "mobileNumber",
-        headerName: "Mobile number",
-        width: 130,
+        field: "experience",
+        headerName: "Experience",
+        width: 90,
         headerAlign: "center",
         renderCell: (params) => (
-          <Box display="flex" justifyContent="center" width="100%">
-            {params.row.mobileNumber}
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
+          >
+            {params.row.experience} years
           </Box>
         ),
       },
@@ -74,8 +118,14 @@ const Users = ({ usersData, refetch }) => {
         width: 200,
         headerAlign: "center",
         renderCell: (params) => (
-          <Box display="flex" justifyContent="center" width="100%">
-            {dayjs(params.row.createdAt).format("DD/MM/YYYY hh:mm A")}
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
+          >
+            {dayjs(params.row.createdAt["$date"]).format("DD/MM/YYYY hh:mm A")}
           </Box>
         ),
       },
@@ -86,7 +136,13 @@ const Users = ({ usersData, refetch }) => {
         type: "boolean",
         headerAlign: "center",
         renderCell: (params) => (
-          <Box display="flex" justifyContent="center" width="100%">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
+          >
             {params.value.toString()}
           </Box>
         ),
@@ -95,11 +151,18 @@ const Users = ({ usersData, refetch }) => {
       {
         field: "actions",
         headerName: "Actions",
+        width: 150,
         type: "actions",
         headerAlign: "center",
         renderCell: (params) => (
-          <Box display="flex" justifyContent="center" width="100%">
-            <UsersActions
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
+          >
+            <TrainerActions
               {...{
                 params,
                 selectedRowId,
@@ -115,20 +178,19 @@ const Users = ({ usersData, refetch }) => {
     [rowId, selectedRowId]
   );
 
-  const [search, setSearch] = useState("");
+  const [search,setSearch]=useState('')
 
-  useEffect(() => {
-    const filtered = usersData.data.message.filter((item) => {
-      return item.username.toLowerCase().includes(search.toLowerCase());
-    });
+  useEffect(()=>{
+    
+    const filtered = trainersData.data.trainers.filter((trainer)=>{
+      return trainer.name.toLowerCase().includes(search.toLowerCase())
+    })
+    setActiveTrainers(filtered)
 
-    setActiveUsers(filtered);
-  }, [search]);
-
-  const [pageSize, setPageSize] = useState(5);
+  },[search])
 
   return (
-    <div className="">
+    <div>
       <Box
         sx={{
           height: "600",
@@ -144,12 +206,13 @@ const Users = ({ usersData, refetch }) => {
             mb: 3,
           }}
         >
-          Manage Users
+          Manage Trainers
         </Typography>
-        <SearchInput {...{ search, setSearch }} />
+
+<SearchInput {...{search,setSearch}} />
         <DataGrid
           columns={columns}
-          rows={activeUsers}
+          rows={activeTrainers}
           pageSizeOptions={[5, 10, 25]}
           initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
           sx={{
@@ -171,4 +234,4 @@ const Users = ({ usersData, refetch }) => {
   );
 };
 
-export default Users;
+export default AdminTrainers;

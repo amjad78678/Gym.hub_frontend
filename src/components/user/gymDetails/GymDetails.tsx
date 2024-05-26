@@ -1,10 +1,6 @@
 import { Box, Button, Rating } from "@mui/material";
 import React, { useState } from "react";
 import { Carousel, Col, Container, Row } from "react-bootstrap";
-import StarIcon from "@mui/icons-material/Star";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { addToCart, fetchGymDetails, isReviewPossible } from "@/api/user";
@@ -15,7 +11,15 @@ import { useNavigate } from "react-router-dom";
 import ReactDOM from "react-dom";
 import CalenderDatePicker from "@/components/user/gymDetails/CalenderDatePicker";
 import Backdrop from "@/pages/common/Backdrop";
-import { CheckCircle, Star } from "@mui/icons-material";
+import {
+  CheckCircle,
+  Star,
+  Edit,
+  CallOutlined as CallOutlinedIcon,
+  MailOutline as MailOutlineIcon,
+  LocationOn as LocationOnIcon,
+  Star as StarIcon,
+} from "@mui/icons-material";
 import dayjs from "dayjs";
 
 const GymDetails = ({ handleShowReview, gymReviews }) => {
@@ -100,7 +104,7 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
       };
       addCartMutation(data);
     } else if (alignment === "Yearly") {
-      const data = {
+      const data = { 
         gymId: gymId,
         date: new Date(),
         expiryDate: new Date(
@@ -122,7 +126,6 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
         <Container>
           <Row>
             <Col lg={6}>
-           
               {/* For Large Screens */}
               <Row className="d-none d-lg-flex">
                 <Col lg={3}>
@@ -299,19 +302,21 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
                         Gym ratings ({gymReviews?.data.reviews.length})
                       </h2>
 
-                      {isPossible?.data.isPossible &&
-                        gymReviews?.data.isUserReviewed && (
-                          <>
-                            <button
-                              onClick={handleShowReview}
-                              className="btn group mt-[-10px] mb-2 border-yellow-500 flex items-center bg-transparent p-2 px-6 text-xl font-thin tracking-widest text-white"
-                            >
-                              <span className="relative text-center  pb-1 text-white after:transition-transform after:duration-500 after:ease-out after:absolute after:bottom-0 after:left-0 after:block after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-blue-500 after:content-[''] after:group-hover:origin-bottom-left after:group-hover:scale-x-100">
-                                Edit Review
-                              </span>
-                            </button>
-                          </>
-                        )}
+                      {gymReviews?.data.isUserReviewed && (
+                        <>
+                          <button
+                            onClick={handleShowReview}
+                            className="btn group mt-[-10px] mb-2 border-yellow-500 flex items-center bg-transparent p-2 px-6 text-xl font-thin tracking-widest text-white"
+                          >
+                            <span className="hidden lg:block relative text-center  pb-1 text-white after:transition-transform after:duration-500 after:ease-out after:absolute after:bottom-0 after:left-0 after:block after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-blue-500 after:content-[''] after:group-hover:origin-bottom-left after:group-hover:scale-x-100">
+                              Edit Review
+                            </span>
+                            <span>
+                              <Edit />
+                            </span>
+                          </button>
+                        </>
+                      )}
 
                       {isPossible?.data.isPossible &&
                         !gymReviews?.data.isUserReviewed && (

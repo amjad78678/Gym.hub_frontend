@@ -7,7 +7,7 @@ import {
 } from "react";
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
-import { RootState } from "../store";
+import { RootState } from "../../redux/store";
 const ENDPOINT = import.meta.env.VITE_SOCKET_ENDPOINT;
 
 interface SocketProviderProps {
