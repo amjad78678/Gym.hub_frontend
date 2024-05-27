@@ -35,7 +35,8 @@ const PersonalTrainerPage = () => {
 
   return (
     <div className="bg-black text-white">
-      <Navbar />
+            <Navbar {...{fixed: true}}/>
+
       {<PersonalTrainer {...{ trainerData, handleBookNow, modalOpen, handleModal,bookingTrainer,setBookingTrainer }} />}
     </div>
   );

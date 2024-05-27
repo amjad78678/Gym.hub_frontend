@@ -23,7 +23,7 @@ const GymDetailsPage = () => {
   return (
     <>
       <div className="bg-black min-h-screen text-white">
-        <Navbar />
+        <Navbar {...{fixed: true}}/>
         <GymDetails {...{handleShowReview,gymReviews}} />
       </div>
 

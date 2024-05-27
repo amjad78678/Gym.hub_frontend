@@ -55,14 +55,14 @@ const Workouts = ({ workoutList }) => {
                 {workoutDetails.data.details.map((detail, index) => (
                   <div
                     key={index}
-                    className="sm:flex flex-col items-center  border-b-2 border-b-slate-200"
+                    className="sm:flex flex-col items-center cursor-pointer  border-b-2 border-b-slate-200"
                   >
                     <Tooltip title={detail.name}>
-                    <h1 className="text-start text-xl font-bold mb-2 line-clamp-2 cursor-pointer">
-                      {detail.name.length > 34
-                        ? detail.name.substring(0, 35) + "..."
-                        : detail.name}
-                    </h1>
+                      <h1 className="text-start text-xl font-bold mb-2 line-clamp-2 cursor-pointer">
+                        {detail.name.length > 34
+                          ? detail.name.substring(0, 35) + "..."
+                          : detail.name}
+                      </h1>
                     </Tooltip>
 
                     <img

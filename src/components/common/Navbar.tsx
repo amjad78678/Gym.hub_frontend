@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { userLogout } from "@/api/user";
 import { setUserLogout } from "@/redux/slices/authSlice";
+import useScroll from "@/utils/hooks/useScroll";
 
 interface iState {
   auth: {
@@ -46,12 +47,14 @@ function Navbar({fixed}) {
     handleLogout();
   };
 
+  const isScrolled = useScroll()
+
 const position = fixed ? 'fixed' : 'static';
   return (
     <div className="relative z-10">
       <AppBar
         sx={{
-          backgroundColor: "rgba(0,0,1, 0.3)",
+          backgroundColor:  isScrolled ? "rgba(0, 0, 1, 0.8)" : "rgba(0, 0, 1, 0.3)",
           boxShadow: "none",
           position: `${position}`, 
           top: 0,

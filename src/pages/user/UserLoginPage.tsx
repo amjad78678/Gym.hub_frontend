@@ -35,7 +35,8 @@ const UserLoginPage = () => {
   return (
     <>
     <div>
-        <Navbar/>
+    <Navbar {...{fixed: true}}/>
+
         <UserLogin showForgotEmail={forgotEmailHandler} />
     </div>
       {showForgotEmail && (

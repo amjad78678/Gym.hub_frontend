@@ -17,7 +17,8 @@ const UserRegisterPage = () => {
 
   return (
     <>
-    <Navbar/>
+        <Navbar {...{fixed: true}}/>
+
       <div className="relative z-0">
         <UserRegister setShowOtp={otpHandler} />
       </div>

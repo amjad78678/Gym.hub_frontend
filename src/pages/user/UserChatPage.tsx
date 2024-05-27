@@ -5,7 +5,7 @@ import React from "react";
 const UserChatPage = () => {
   return (
     <div className="bg-black ">
-      <Navbar />
+      <Navbar {...{ fixed: true }} />
       <UserChat />
     </div>
   );

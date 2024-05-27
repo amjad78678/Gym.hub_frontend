@@ -19,7 +19,8 @@ const UserProfilePage = () => {
   return !isLoading && userDetails && (
    
        <div className='min-h-[800px] bg-black'>
-       <Navbar/>
+              <Navbar {...{fixed: true}}/>
+
        <ProfileTop userData={userDetails} {...{refetch}}/>
        </div>
    

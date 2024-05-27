@@ -5,11 +5,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const PaymentSuccess = () => {
   const navigate = useNavigate();
-  const location= useLocation();
+  const location = useLocation();
   return (
     <div className="bg-black text-white">
-      <Navbar />
-      
+      <Navbar {...{ fixed: true }} />
       <Container
         sx={{
           height: "100vh",
@@ -57,57 +56,73 @@ const PaymentSuccess = () => {
           paddingTop={4}
           paddingBottom={2}
         >
-
           {location.pathname === "/success/checkout" && (
             <>
-               <Button
-            variant="outlined"
-            className="book_room_btn"
-            sx={{ width: "20%", p: 1, borderRadius: 0 }}
-            color="inherit"
-            onClick={() => navigate(`/book-gym`)}
-          >
-            <span>Book Gyms</span>
-          </Button>
-          <Button
-            variant="outlined"
-            className="book_room_btn"
-            sx={{ width: "20%", p: 1, borderRadius: 0 }}
-            color="inherit"
-            onClick={() => navigate(`/profile/subscriptions`)}
-          >
-            <span>My Bookings</span>
-          </Button>
-            
+              <Button
+                variant="outlined"
+                className="book_room_btn"
+                sx={{ width: "20%", p: 1, borderRadius: 0 }}
+                color="inherit"
+                onClick={() => navigate(`/book-gym`)}
+              >
+                <span>Book Gyms</span>
+              </Button>
+              <Button
+                variant="outlined"
+                className="book_room_btn"
+                sx={{ width: "20%", p: 1, borderRadius: 0 }}
+                color="inherit"
+                onClick={() => navigate(`/profile/subscriptions`)}
+              >
+                <span>My Bookings</span>
+              </Button>
             </>
           )}
-
 
           {location.pathname === "/success/book_trainer" && (
-            
             <>
-               <Button
-            variant="outlined"
-            className="book_room_btn"
-            sx={{ width: "20%", p: 1, borderRadius: 0 }}
-            color="inherit"
-            onClick={() => navigate(`/personal-trainer`)}
-          >
-            <span>Book Trainers</span>
-          </Button>
-          <Button
-            variant="outlined"
-            className="book_room_btn"
-            sx={{ width: "20%", p: 1, borderRadius: 0 }}
-            color="inherit"
-            onClick={() => navigate(`/profile/trainers`)} 
-          >
-            <span>My Trainers</span>
-          </Button>
-            
+              <Button
+                variant="outlined"
+                className="book_room_btn"
+                sx={{ width: "20%", p: 1, borderRadius: 0 }}
+                color="inherit"
+                onClick={() => navigate(`/personal-trainer`)}
+              >
+                <span>Book Trainers</span>
+              </Button>
+              <Button
+                variant="outlined"
+                className="book_room_btn"
+                sx={{ width: "20%", p: 1, borderRadius: 0 }}
+                color="inherit"
+                onClick={() => navigate(`/profile/trainers`)}
+              >
+                <span>My Trainers</span>
+              </Button>
             </>
           )}
-       
+          {location.pathname === "/success/add_money" && (
+            <>
+              <Button
+                variant="outlined"
+                className="book_room_btn"
+                sx={{ width: "20%", p: 1, borderRadius: 0 }}
+                color="inherit"
+                onClick={() => navigate(`/`)}
+              >
+                <span>Go Home</span>
+              </Button>
+              <Button
+                variant="outlined"
+                className="book_room_btn"
+                sx={{ width: "20%", p: 1, borderRadius: 0 }}
+                color="inherit"
+                onClick={() => navigate(`/profile/subscriptions`)}
+              >
+                <span>My Profile</span>
+              </Button>
+            </>
+          )}
         </Stack>
       </Container>
     </div>

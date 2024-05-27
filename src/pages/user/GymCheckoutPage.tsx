@@ -30,7 +30,7 @@ const GymCheckoutPage = () => {
     !isLoading &&
     checkout && (
       <div className="bg-black text-white">
-        <Navbar />
+        <Navbar {...{fixed: true}}/>
 
         <GymCheckout {...{ checkoutData, handleShowCoupon, userWallet }} />
 

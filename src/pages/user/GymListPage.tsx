@@ -6,7 +6,7 @@ const GymListPage = () => {
   return (
     <div className='bg-black'>
         
-        <Navbar/>
+        <Navbar {...{fixed: true}}/>
         <GymList/>
 
         
