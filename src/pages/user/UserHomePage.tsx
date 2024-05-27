@@ -1,17 +1,14 @@
-import Navbar from '@/components/common/Navbar'
-import UserHome from '@/components/user/home/UserHome'
-import React from 'react'
+import Navbar from "@/components/common/Navbar";
+import UserHome from "@/components/user/home/UserHome";
 
 const UserHomePage = () => {
+  const fixed = true
   return (
-    <div className='bg-black text-white'>
-  
-        <Navbar />
-
-        <UserHome />
-
+    <div className="text-white">
+      <Navbar {...{fixed}} />
+      <UserHome />
     </div>
-  )
-}
+  );
+};
 
-export default UserHomePage
+export default UserHomePage;

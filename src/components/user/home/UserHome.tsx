@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchGymList } from "@/api/user";
 import FaqSection from "./FaqSection";
 import MySliderBanner from "./MySliderBanner";
+import Footer from "@/components/common/Footer";
 
 const UserHome = () => {
   const [gymList, setGymList] = useState([]);
@@ -21,18 +22,25 @@ const UserHome = () => {
 
   return (
     <>
-      <MySliderBanner />
-      <Container>
-        <Row>
-          <Col xs={12}>
-            <h1 className="text-2xl font-bold mt-4 mb-10">EXPLORE OUR GYMS</h1>
+      <div className="absolute inset-0 text-white bg-black">
+        <MySliderBanner />
+        <div className="bg-black">
+          <Container>
+            <Row>
+              <Col xs={12}>
+                <h1 className="text-2xl font-bold mt-4 mb-10">
+                  EXPLORE OUR GYMS
+                </h1>
 
-            <CarousalGyms loading={isLoading} gyms={gymList} />
+                <CarousalGyms loading={isLoading} gyms={gymList} />
 
-            <FaqSection />
-          </Col>
-        </Row>
-      </Container>
+                <FaqSection />
+              </Col>
+            </Row>
+          </Container>
+          <Footer />
+        </div>
+      </div>
     </>
   );
 };

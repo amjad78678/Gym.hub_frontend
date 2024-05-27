@@ -25,7 +25,7 @@ interface iState {
     };
   };
 }
-function Navbar() {
+function Navbar({fixed}) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { uLoggedIn } = useSelector((state: iState) => state.auth);
@@ -46,14 +46,18 @@ function Navbar() {
     handleLogout();
   };
 
+const position = fixed ? 'fixed' : 'static';
   return (
     <div className="relative z-10">
       <AppBar
-        sx={{  backgroundColor: {
-          xs: "transparent", 
-          lg: "black" 
-        },boxShadow: "none" }}
-        position="static"
+        sx={{
+          backgroundColor: "rgba(0,0,1, 0.3)",
+          boxShadow: "none",
+          position: `${position}`, 
+          top: 0,
+          width: '100%',
+          zIndex: 1300,
+        }}
       >
         <Container className="bg-transparent p-2 border-none">
           <Toolbar disableGutters>
@@ -129,14 +133,13 @@ function Navbar() {
         </Container>
         {status === "pending" && <Loader />}
       </AppBar>
-
       {dropMenu && (
         <div
           className="absolute left-1/2 z-full w-screen max-w-md -translate-x-1/2 transform"
           style={{ display: "block" }}
         >
           <div className="overflow-hidden rounded-sm shadow-lg">
-            <div className="relative grid gap-2 bg-black text-gray-200 px-4 py-4 sm:gap-8 sm:p-8 mx-4 ">
+            <div className="relative grid gap-2 bg-black text-gray-200 px-4 py-4 sm:gap-8 sm:p-8  ">
               <Link to="/">
                 <p className="font-bold text-lg font-serif">Home</p>
               </Link>

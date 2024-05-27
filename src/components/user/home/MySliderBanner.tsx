@@ -17,7 +17,6 @@ const MySliderBanner = () => {
     autoplay: true,
     autoplaySpeed: 4000,
   };
-  const defaultImage = "/bannerImg1.jpg";
   const [activeBanners, setActiveBanners] = useState([]);
   const { isLoading, data: bannerData } = useQuery({
     queryKey: ["userBannerShowData"],
@@ -35,7 +34,7 @@ const MySliderBanner = () => {
   return !isLoading && (
     <Slider {...settings}>
       {activeBanners.map((banner) => (
-        <div>
+        <div >
         <div
           className="bg-no-repeat bg-cover bg-center flex items-center justify-center w-full"
           style={{

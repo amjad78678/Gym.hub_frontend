@@ -99,11 +99,10 @@ const ProfileTop = ({ userData, refetch }) => {
 
   return (
     <>
-      <div className="absolute inset-0 lg:bg-black text-white">
+      <div className="absolute inset-0 text-white">
         <div style={divStyle} className="h-24 lg:h-52 relative">
           <div className="absolute inset-0 bg-black opacity-50"></div>
         </div>
-
         <Container>
           <div className="lg:flex lg:flex-row lg:justify-between  flex flex-col items-center">
             <div className="relative lg:mr-4 lg:mb-0 lg:mt-0 mt-[-40px]">
@@ -193,33 +192,33 @@ const ProfileTop = ({ userData, refetch }) => {
                     </div>
                     {dropMenu && (
                       <div className="block lg:hidden">
-                      <div className="bg-black flex flex-col justify-center items-center text-white">
-                        <ul className="text-center">
-                          <Link to={"/profile/subscriptions"}>
-                            {" "}
-                            <li onClick={handleOpenDropMenu} className="my-2">
-                              Subscriptions
-                            </li>
-                          </Link>
-                          <Link to={"/profile/trainers"}>
-                            <li onClick={handleOpenDropMenu} className="my-2">
-                              Trainers
-                            </li>
-                          </Link>
-                          <Link to={"/profile/edit_profile"}>
-                            {" "}
-                            <li onClick={handleOpenDropMenu} className="my-2">
-                              Edit Profile
-                            </li>
-                          </Link>
-                          <Link to={"/profile/wallet_history"}>
-                            {" "}
-                            <li onClick={handleOpenDropMenu} className="my-2">
-                              Wallet History
-                            </li>
-                          </Link>
-                        </ul>
-                      </div>
+                        <div className="bg-black flex flex-col justify-center items-center text-white">
+                          <ul className="text-center">
+                            <Link to={"/profile/subscriptions"}>
+                              {" "}
+                              <li onClick={handleOpenDropMenu} className="my-2">
+                                Subscriptions
+                              </li>
+                            </Link>
+                            <Link to={"/profile/trainers"}>
+                              <li onClick={handleOpenDropMenu} className="my-2">
+                                Trainers
+                              </li>
+                            </Link>
+                            <Link to={"/profile/edit_profile"}>
+                              {" "}
+                              <li onClick={handleOpenDropMenu} className="my-2">
+                                Edit Profile
+                              </li>
+                            </Link>
+                            <Link to={"/profile/wallet_history"}>
+                              {" "}
+                              <li onClick={handleOpenDropMenu} className="my-2">
+                                Wallet History
+                              </li>
+                            </Link>
+                          </ul>
+                        </div>
                       </div>
                     )}
                     <div className="py-1 my-2 bg-gray-800 h-[300px] overflow-y-scroll no-scrollbar w-full border border-gray-300 rounded shadow-lg text-center z-50">
