@@ -68,7 +68,7 @@ const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
             const formData = new FormData();
             formData.append("name", values.name);
             formData.append("gender", values.gender);
-            formData.append("age", values.age);
+            formData.append("age", values.age); 
             formData.append("experience", values.experience);
             formData.append("achievements", values.achievements);
             formData.append("monthlyFee", values.monthlyFee);

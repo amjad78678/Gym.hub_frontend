@@ -170,7 +170,7 @@ const [search,setSearch]=useState('')
   );
   const [pageSize, setPageSize] = useState(5);
 
-  return !isLoading && (
+  return !isLoading && subscriptions ? (
     <div className="">
       <Box
         sx={{
@@ -214,7 +214,7 @@ const [search,setSearch]=useState('')
         />
       </Box>
     </div>
-  );
+  ): (<div>Loading...</div>);
 };
 
 export default AdminSubscriptions;

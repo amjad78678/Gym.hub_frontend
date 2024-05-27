@@ -13,6 +13,9 @@ const adminRoutes={
     fetchGymWithId:(id: string)=>`/fetch_gym_with_id/${id}`,
     fetchTrainers:'/fetch_trainers',
     updateTrainer: `/update_trainer`,
+    addBanner: 'add_banner',
+    fetchBanners: 'fetch_banners',
+    updateBanner: 'update_banner',
 
 }
 

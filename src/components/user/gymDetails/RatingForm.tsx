@@ -39,7 +39,7 @@ const RatingForm = ({ showReview, handleShowReview, gymId, userReview ,refetchGy
   const {mutate: updateRatingMutate} = useMutation({
     mutationFn: updateRating,
     onSuccess: (res) => {
-      if (res) {
+      if (res) { 
         toast.success(res.data.message);
         handleShowReview();
         refetchGymReviews();

@@ -159,3 +159,33 @@ export const updateTrainer = async (data: any) => {
     return errorHandle(err);
   }
 };
+
+export const addBanner = async (data: any)=>{
+ try {
+  const response = await Api.post(adminRoutes.addBanner,data)
+  return response
+ } catch (error) {
+  const err: Error = error as Error;
+  return errorHandle(err);
+ }
+}
+
+export const fetchBanners = async () => {
+  try {
+    const response = await Api.get(adminRoutes.fetchBanners);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
+
+export const updateBanner = async (data: any) => {
+  try {
+    const response = await Api.put(adminRoutes.updateBanner,data)
+    return response
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}

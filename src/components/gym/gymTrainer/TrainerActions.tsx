@@ -68,7 +68,6 @@ const TrainerActions = ({
     }).then(async (result) => {
       if (result.isConfirmed) {
         trainerUpdateMutation({ _id: row._id, isDeleted: true });
-
         toast.success("Trainer deleted successfully");
       }
     });

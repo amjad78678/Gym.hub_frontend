@@ -21,23 +21,18 @@ const UserHome = () => {
 
   return (
     <>
-    <div className="">
+      <MySliderBanner />
+      <Container>
+        <Row>
+          <Col xs={12}>
+            <h1 className="text-2xl font-bold mt-4 mb-10">EXPLORE OUR GYMS</h1>
 
-          </div>
-    <Container>
-      <Row>
-          <MySliderBanner/>
-      
-        <Col xs={12}>
-          <h1 className="text-2xl font-bold mt-4 mb-10">EXPLORE OUR GYMS</h1>
+            <CarousalGyms loading={isLoading} gyms={gymList} />
 
-          <CarousalGyms loading={isLoading} gyms={gymList} />
-
-          <FaqSection />
-        </Col>
-      </Row>
-    </Container>
-
+            <FaqSection />
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 };

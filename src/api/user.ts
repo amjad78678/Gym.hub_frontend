@@ -399,3 +399,13 @@ export const getWorkoutDetails = async ({
     return errorHandle(err);
   }
 };
+
+export const fetchBannersData = async ()=>{
+  try {
+    const response = await Api.get(userRoutes.getBanners)
+    return response
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}

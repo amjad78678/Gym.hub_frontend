@@ -32,7 +32,8 @@ const userRoutes={
     userReviewed: (gymId: string)=> `/user_reviewed/${gymId}`,
     updateRating: '/update_rating',
     getWorkoutsBodyList: '/workouts_body_list',
-    getWorkoutDetails: (bodyPart: string | null)=> `/exercises/${bodyPart}`
+    getWorkoutDetails: (bodyPart: string | null)=> `/exercises/${bodyPart}`,
+    getBanners: '/fetch_banners'
 
 
 }   
