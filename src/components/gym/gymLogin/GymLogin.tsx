@@ -154,7 +154,7 @@ const GymLogin = ({showForgotEmail}) => {
               </div>
             </div>
           </div>
-          <div className="h-full w-full flex justify-center items-center">
+          <div className="hidden lg:flex h-full w-full  justify-center items-center">
             <img
               className="mx-auto h-3/4 w-3/4 rounded-md object-cover"
               src={gymlogin}

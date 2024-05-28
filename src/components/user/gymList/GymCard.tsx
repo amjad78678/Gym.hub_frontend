@@ -1,22 +1,10 @@
-// import axios from "axios";
 import React, { useEffect, useState } from "react";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
-// const API_KEY = import.meta.env.GOOGLE_API_KEY
 
 const GymCard = ({ gym }) => {
-  // const [streetAddress, setStreetAddress] = useState("");
 
-  // useEffect(() => {
-  //   axios
-  //     .get(
-  //       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${gym.location.coordinates[1]},${gym.location.coordinates[0]}&key=${API_KEY}`
-  //     )
-  //     .then((res) => {
-  //       setStreetAddress(res.data.results[0].formatted_address);
-  //     });
-  // }, []);
 
   return (
     <div className="bg-black">

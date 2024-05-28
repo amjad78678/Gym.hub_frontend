@@ -1,7 +1,6 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-
 import Button from "@mui/material/Button";
 import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,7 +25,7 @@ interface iState {
     };
   };
 }
-function Navbar({fixed}) {
+function Navbar({ fixed }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { uLoggedIn } = useSelector((state: iState) => state.auth);
@@ -47,18 +46,21 @@ function Navbar({fixed}) {
     handleLogout();
   };
 
-  const isScrolled = useScroll()
+  const isScrolled = useScroll();
 
-const position = fixed ? 'fixed' : 'static';
+  const position = fixed ? "fixed" : "static";
   return (
     <div className="relative z-10">
       <AppBar
         sx={{
-          backgroundColor:  isScrolled ? "rgba(0, 0, 1, 0.8)" : "rgba(0, 0, 1, 0.3)",
+          backgroundColor: isScrolled
+            ? "rgba(0, 0, 1, 0.8)"
+            : "rgba(0, 0, 1, 0.3)",
+          transition: isScrolled ? "all 0.3s ease" : "none",
           boxShadow: "none",
-          position: `${position}`, 
+          position: `${position}`,
           top: 0,
-          width: '100%',
+          width: "100%",
           zIndex: 1300,
         }}
       >

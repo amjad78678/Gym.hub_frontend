@@ -15,6 +15,9 @@ import UserProfilePage from "@/pages/user/UserProfilePage";
 import PersonalTrainerPage from "@/pages/user/PersonalTrainerPage";
 import UserChatPage from "@/pages/user/UserChatPage";
 import WorkoutsPage from "@/pages/user/WorkoutsPage";
+import GymListSkeleton from "@/components/user/skeletons/GymListSkeleton";
+import HomeSkeleton from "@/components/user/skeletons/HomeSkeleton";
+import CheckoutSkeleton from "@/components/user/skeletons/CheckoutSkeleton";
 
 const UserRoutes = () => {
   return (
@@ -33,6 +36,7 @@ const UserRoutes = () => {
         <Route path="personal-trainer/*" element={<PersonalTrainerPage/>}/>
         <Route path="chat/:userId/:trainerId" element={<UserChatPage/>}/>
         <Route path="workouts" element={<WorkoutsPage/>} />
+        <Route path="testi" element={<CheckoutSkeleton/>}/>
       </Route> 
       <Route element={<UserProtect />}></Route>
     </Routes>

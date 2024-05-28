@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 
 const Message = ({ sender, text, userId, selectedTrainer }) => {
-  const { userDetails } = useSelector((state) => state.auth);
+  const { userDetails } = useSelector((state: RootState) => state.auth);
   const isSenderYou = sender === userId;
   const senderImage = isSenderYou
     ? userDetails.profilePic
@@ -12,16 +12,12 @@ const Message = ({ sender, text, userId, selectedTrainer }) => {
     ? "bg-blue-600 text-white rounded-br-none"
     : "bg-gray-300 text-gray-600 rounded-bl-none";
 
-  const messageEndRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (messageEndRef.current) {
-        messageEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [sender, text]);
+
+
 
   return (
-    <div className="chat-message" ref={messageEndRef}>
+    <div className="chat-message" >
       <div className={`flex items-end ${isSenderYou ? "justify-end" : ""}`}>
         <img
           src={senderImage}

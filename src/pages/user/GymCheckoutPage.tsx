@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 
 const GymCheckoutPage = () => {
-  const [checkoutData, setCheckoutData] = useState({});
   const [couponData, setCouponData] = useState({});
   const [userWallet, setUserWallet] = useState(0);
   const [showCoupon, setShowCoupon] = useState(false);
@@ -16,7 +15,6 @@ const GymCheckoutPage = () => {
   });
 
   useEffect(() => {
-    setCheckoutData(checkout?.data.message);
     setCouponData(checkout?.data.coupons);
     setUserWallet(checkout?.data.userWallet);
   }, [checkout]);
@@ -27,18 +25,15 @@ const GymCheckoutPage = () => {
   };
 
   return (
-    !isLoading &&
-    checkout && (
-      <div className="bg-black text-white">
-        <Navbar {...{fixed: true}}/>
+    <div className="bg-black text-white">
+      <Navbar {...{ fixed: true }} />
 
-        <GymCheckout {...{ checkoutData, handleShowCoupon, userWallet }} />
+      <GymCheckout {...{ isLoading,checkoutData: checkout?.data.message, handleShowCoupon, userWallet }} />
 
-        {showCoupon && couponData && (
-          <Coupon {...{ handleShowCoupon, showCoupon, coupons: couponData }} />
-        )}
-      </div>
-    )
+      {showCoupon && couponData && (
+        <Coupon {...{ handleShowCoupon, showCoupon, coupons: couponData }} />
+      )}
+    </div>
   );
 };
 

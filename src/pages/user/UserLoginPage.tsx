@@ -34,8 +34,8 @@ const UserLoginPage = () => {
 
   return (
     <>
-    <div>
-    <Navbar {...{fixed: true}}/>
+    <div className='bg-black'>
+    <Navbar {...{fixed: false}}/>
 
         <UserLogin showForgotEmail={forgotEmailHandler} />
     </div>

@@ -1,9 +1,10 @@
 import {
   AddOutlined,
+  ArrowDropDown,
   EmailOutlined,
   WalletOutlined,
 } from "@mui/icons-material";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import ProfileSubscriptions from "./gymSubscription/ProfileSubscriptions";
@@ -14,7 +15,7 @@ import { userLogout } from "@/api/user";
 import { setUserLogout } from "@/redux/slices/authSlice";
 import { useDispatch } from "react-redux";
 import AddMoneyModal from "./AddMoneyModal";
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import ProfileWalletHistory from "./walletHistory/ProfileWalletHistory";
 
 const ProfileTop = ({ userData, refetch }) => {
@@ -32,7 +33,7 @@ const ProfileTop = ({ userData, refetch }) => {
     backgroundPosition: "center",
   };
 
-  const { status, mutate: handleLogout } = useMutation({
+  const { mutate: handleLogout } = useMutation({
     mutationFn: userLogout,
     onSuccess: (res) => {
       console.log(res);
@@ -188,7 +189,11 @@ const ProfileTop = ({ userData, refetch }) => {
                       onClick={handleOpenDropMenu}
                       className="cursor-pointer bg-black text-yellow-200 lg:text-white lg-text-white rounded p-2  shadow focus:outline-none text-center"
                     >
-                      <p className="uppercase">{selected}</p>
+                      <p className="block lg:hidden uppercase">
+                        {selected}
+                        <ArrowDropDown sx={{ fontSize: "35px", pb: "4px" }} />
+                      </p>
+                      <p className="hidden lg:block uppercase">{selected}</p>
                     </div>
                     {dropMenu && (
                       <div className="block lg:hidden">

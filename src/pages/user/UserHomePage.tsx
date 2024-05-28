@@ -7,7 +7,7 @@ const UserHomePage = () => {
     <div className="text-white">
         <Navbar {...{fixed: true}}/>
 
-      <UserHome />
+        <UserHome />
     </div>
   );
 };

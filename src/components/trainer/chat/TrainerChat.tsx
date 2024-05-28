@@ -1,26 +1,28 @@
-import Loader from "@/components/common/Loader";
-import { Box, Container, FormControl, IconButton, Input } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
+import { IconButton } from "@mui/material";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import ChatInput from "./ChatInput";
 import ChatSideBar from "./ChatSideBar";
-import { fetchTrainerChats, fetchUserData } from "@/api/trainer";
-import { useQuery } from "@tanstack/react-query";
+import {
+  fetchTrainerChats,
+  fetchUserData,
+  trainerChatCreate,
+} from "@/api/trainer";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { AddIcCall, CheckCircle, VideoCall } from "@mui/icons-material";
+import { CheckCircle, VideoCall } from "@mui/icons-material";
 import iMessageType from "@/interfaces/iMessageType";
 import { useSocket } from "@/utils/context/socketContext";
-import { Socket } from "socket.io-client";
 import { RootState } from "@/redux/store";
 
 const TrainerChat = () => {
   const [selectedChat, setSelectedChat] = useState(null);
-  const socket: Socket = useSocket();
+  const socket = useSocket();
   const { trainerDetails } = useSelector((state: RootState) => state.auth);
   const trainerName = trainerDetails?.name.replaceAll(" ", "");
-  
   const [messages, setMessages] = useState<iMessageType[]>([]);
   const [socketConnected, setSocketConnected] = useState(false);
+  const [newMessage, setNewMessage] = useState("");
 
   const { isLoading, data: messageData } = useQuery({
     queryKey: [
@@ -47,24 +49,109 @@ const TrainerChat = () => {
   useEffect(() => {
     if (socket) {
       socket.on("connect", () => setSocketConnected(true));
-      socket.on("disconnect", () => setSocketConnected(false));
-      socket.on("message", (message: iMessageType) => {
-        setMessages((prevMessages) => [...prevMessages, message]);
-      });
-    }
+      socket.on("message", (message) => {
+        setMessages((prevMessages) => {
+          const existingIndex = prevMessages.findIndex(
+            (m) =>
+              m.sender === message.sender &&
+              m.receiver === message.receiver &&
+              m.content === message.content
+          );
 
-    return () => {
-      if (socket) {
+          if (existingIndex === -1) {
+            return [
+              ...prevMessages,
+              {
+                sender: message.sender,
+                receiver: message.receiver,
+                content: message.content,
+              },
+            ];
+          } else {
+            return prevMessages;
+          }
+        });
+      });
+
+      socket.emit("add_user", trainerDetails.trainerId);
+
+      return () => {
         socket.off("connect");
-        socket.off("disconnect");
         socket.off("message");
-      }
-    };
-  }, [socket]);
+      };
+    }
+  }, [socket, trainerDetails.trainerId]);
+
+
+
+  useEffect(() => {
+    if (socket) {
+      const handleConnect = () => setSocketConnected(true);
+      const handleMessage = (message) => {
+        // Your message handling logic...
+      };
+
+      socket.on("connect", handleConnect);
+      socket.on("message", handleMessage);
+
+      // Emit join event when the component mounts
+      socket.emit('add_user', userDetails.userId);
+
+      // Cleanup function to remove event listeners and reset state
+      return () => {
+        socket.off("connect", handleConnect);
+        socket.off("message", handleMessage);
+        setMessages([]); // Reset messages on cleanup
+      };
+    }
+  }, [socket, userDetails.userId]); // Depend on socket and userId to re-run effect
 
   const handleJoinRoom = useCallback(() => {
     window.open(`/call/${trainerName}`, "_blank", "noopener,noreferrer");
   }, [trainerName]);
+
+  const { mutate: trainerChatCreateMutate } = useMutation({
+    mutationFn: trainerChatCreate,
+    onSuccess: (res) => {
+      console.log("Message sent successfully", res.data);
+    },
+  });
+
+  const handleSendMessage = () => {
+    if (newMessage.trim() !== "") {
+      socket.emit("stop_typing", { typeTo: selectedChat.userId });
+      socket.emit("send_message", {
+        sender: trainerDetails.trainerId,
+        receiver: selectedChat.userId,
+        content: newMessage,
+      });
+
+      // Do not update the state directly here
+      trainerChatCreateMutate({
+        sender: trainerDetails.trainerId,
+        receiver: selectedChat.userId,
+        content: newMessage,
+      });
+
+      setNewMessage("");
+    }
+  };
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+
+
+
+
+
+  
 
   return (
     <div className="grid sm:grid-cols-12">
@@ -72,19 +159,27 @@ const TrainerChat = () => {
         <ChatSideBar {...{ selectedChat, setSelectedChat }} />
       </div>
 
-      {selectedChat && messageData && !isLoading && !userDataLoading && messages ? (
+      {selectedChat &&
+      messageData &&
+      !isLoading &&
+      !userDataLoading &&
+      messages ? (
         <div className={`sm:col-span-9 ${selectedChat ? "block" : "hidden"}`}>
           <div className="flex-1 p-2 bg-gray-200 sm:p-6 justify-between flex flex-col h-screen rounded-md">
             <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
               <div className="relative flex items-center space-x-4">
                 <div className="relative">
-                  <span className={`absolute ${socketConnected ? 'text-green-500' : 'text-red-500'} right-0 bottom-0`}>
+                  <span
+                    className={`absolute ${
+                      socketConnected ? "text-green-500" : "text-red-500"
+                    } right-0 bottom-0`}
+                  >
                     <svg width="20" height="20">
                       <circle cx="8" cy="8" r="8" fill="currentColor"></circle>
                     </svg>
                   </span>
                   <img
-                    src={userData?.data.user.profilePic}
+                    src={userData?.data.user.profilePic.imageUrl}
                     alt="profileImg"
                     className="w-10 sm:w-16 h-10 sm:h-16 rounded-full"
                   />
@@ -120,9 +215,17 @@ const TrainerChat = () => {
                   {...{ setSocketConnected }}
                 />
               ))}
+              <div ref={messagesEndRef} />
             </div>
             <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
-              <ChatInput {...{ selectedChat }} />
+              <ChatInput
+                {...{
+                  selectedChat,
+                  handleSendMessage,
+                  newMessage,
+                  setNewMessage,
+                }}
+              />
             </div>
           </div>
         </div>

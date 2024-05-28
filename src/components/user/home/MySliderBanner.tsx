@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { ar } from "date-fns/locale";
 import { useQuery } from "@tanstack/react-query";
 import { fetchBannersData } from "@/api/user";
+import HomeSkeleton from "../skeletons/HomeSkeleton";
 
 const MySliderBanner = () => {
   const settings = {
@@ -31,7 +32,7 @@ const MySliderBanner = () => {
     }
   }, [bannerData]);
 
-  return !isLoading && (
+  return isLoading ? <HomeSkeleton/> : (
     <Slider {...settings}>
       {activeBanners.map((banner) => (
         <div >

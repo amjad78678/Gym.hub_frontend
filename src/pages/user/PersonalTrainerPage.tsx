@@ -4,9 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchTrainers } from "@/api/user";
 import Loader from "@/components/common/Loader";
 import { useState } from "react";
+import GymListSkeleton from "@/components/user/skeletons/GymListSkeleton";
 
 const PersonalTrainerPage = () => {
-
   const [modalOpen, setModalOpen] = useState(false);
   const [bookingTrainer, setBookingTrainer] = useState(null);
 
@@ -19,25 +19,27 @@ const PersonalTrainerPage = () => {
     handleModal();
   };
 
-  const {
-    isLoading,
-    data: trainerData,
-    error,
-  } = useQuery({
+  const { isLoading, data: trainerData } = useQuery({
     queryKey: ["trainer"],
     queryFn: fetchTrainers,
   });
 
-
-
-  if (isLoading) return <Loader />;
-  if (error) return <div>An error occurred: {error.message}</div>;
-
-  return (
+  return isLoading && !trainerData ? (
+    <GymListSkeleton />
+  ) : (
     <div className="bg-black text-white">
-            <Navbar {...{fixed: true}}/>
+      <Navbar {...{ fixed: true }} />
 
-      {<PersonalTrainer {...{ trainerData, handleBookNow, modalOpen, handleModal,bookingTrainer,setBookingTrainer }} />}
+      <PersonalTrainer
+        {...{
+          trainerData,
+          handleBookNow,
+          modalOpen,
+          handleModal,
+          bookingTrainer,
+          setBookingTrainer,
+        }}
+      />
     </div>
   );
 };

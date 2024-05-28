@@ -24,8 +24,7 @@ import {
 import Loader from "@/components/common/Loader";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
-
+const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 interface UserType {
   setShowOtp: () => void;
@@ -95,50 +94,42 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
         setStreetAddress(res.data.results[0].formatted_address);
       });
   }, [lat, long]);
-  
 
   const handleSubmitAllDetails = () => {
-
-    if(streetAddress){
+    if (streetAddress) {
       const formData = new FormData();
-      formData.append('gymName', details.gymName);
-      formData.append('email', details.email);
-      formData.append('contactNumber', details.contactNumber); 
-      formData.append('state', details.state);
-      formData.append('city', details.city);
-      formData.append('pincode', details.pincode);
-      formData.append('dailyFee', details.dailyFee);
-      formData.append('monthlyFee', details.monthlyFee);
-      formData.append('yearlyFee', details.yearlyFee);
-      formData.append('description', details.description);
-      formData.append('businessId', details.businessId);
-      formData.append('password', details.password);
-      formData.append('confirmPassword', details.confirmPassword);
-      formData.append('address', streetAddress);
-    
+      formData.append("gymName", details.gymName);
+      formData.append("email", details.email);
+      formData.append("contactNumber", details.contactNumber);
+      formData.append("state", details.state);
+      formData.append("city", details.city);
+      formData.append("pincode", details.pincode);
+      formData.append("dailyFee", details.dailyFee);
+      formData.append("monthlyFee", details.monthlyFee);
+      formData.append("yearlyFee", details.yearlyFee);
+      formData.append("description", details.description);
+      formData.append("businessId", details.businessId);
+      formData.append("password", details.password);
+      formData.append("confirmPassword", details.confirmPassword);
+      formData.append("address", streetAddress);
+
       // Append images to formData
       images.forEach((image) => {
         formData.append(`images`, image);
       });
-    
+
       // Append location data
-      formData.append('long', long.toString());
-      formData.append('lat', lat.toString());
-  
-  
-  
+      formData.append("long", long.toString());
+      formData.append("lat", lat.toString());
+
       gymRegisterMutate(formData);
-
     }
-
   };
 
   const { status: registerStatus, mutate: gymRegisterMutate } = useMutation({
     mutationFn: gymRegister,
     onSuccess: (res) => {
-
       if (res) {
-
         if (res.data.status) {
           dispatch(setLatitude(0));
           dispatch(setLongitude(0));
@@ -146,12 +137,8 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
           dispatch(setImages([]));
           setShowOtp();
           toast.success(res.data.message);
-  
         }
       }
-
-
-   
     },
   });
 
@@ -184,8 +171,6 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
     { label: "Details", completed: false },
     { label: "Images", completed: false },
   ]);
-
-  //handles the complete of each stepper
   useEffect(() => {
     if (long || lat) {
       if (!steps[0].completed) setComplete(0, true);
@@ -196,16 +181,16 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
 
   useEffect(() => {
     if (
-      (details?.gymName?.length > 0 && details?.email?.length > 0,
-      details?.contactNumber > 0 && details?.state?.length > 0,
-      details?.city?.length > 0 && details?.pincode?.length > 0,
+      details?.gymName?.length > 0 &&
+      details?.email?.length > 0 &&
+      details?.contactNumber > 0 &&
       details?.businessId?.length > 0 &&
-        details?.password?.length > 0 &&
-        details?.confirmPassword?.length > 0 &&
-        details?.description?.length > 0 &&
-        details.dailyFee > 0 &&
-        details.monthlyFee > 0 &&
-        details.yearlyFee > 0)
+      details?.password?.length > 0 &&
+      details?.confirmPassword?.length > 0 &&
+      details?.description?.length > 0 &&
+      details.dailyFee > 0 &&
+      details.monthlyFee > 0 &&
+      details.yearlyFee > 0
     ) {
       if (!steps[1].completed) setComplete(1, true);
     } else {

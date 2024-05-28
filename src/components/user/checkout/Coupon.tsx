@@ -48,7 +48,32 @@ const Coupon = ({ handleShowCoupon, showCoupon, coupons }) => {
             <Divider sx={{ width: "100%", height: 1, bgcolor: "#777" }} />
             <br />
 
-            {coupons.map((coupon) => (
+            {coupons.length===0?(
+                <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '100%',
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: 2,
+                  boxShadow: 3,
+                  padding: 4,
+                  mb: 2,
+                  textAlign: 'center',
+                }}
+              >
+                <Typography variant="h5" color="primary" gutterBottom>
+                  No Coupons Available
+                </Typography>
+                <Typography variant="body1" color="textSecondary">
+                  Currently, there are no coupons available at the gym.
+                  Please check back later for exciting offers!
+                </Typography>
+              </Box>
+
+            ): coupons.map((coupon) => (
               <Box
                 sx={{
                   mb: 2,
@@ -75,7 +100,7 @@ const Coupon = ({ handleShowCoupon, showCoupon, coupons }) => {
                     alignItems: "center",
                   }}
                 >
-                  <Tooltip title="AMJAS">
+                  <Tooltip title={coupon.name}>
                     <Button
                       sx={{
                         bgcolor: "black",

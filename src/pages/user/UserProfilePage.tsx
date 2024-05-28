@@ -1,6 +1,7 @@
 import { fetchUserDetails } from '@/api/user'
 import Navbar from '@/components/common/Navbar'
 import ProfileTop from '@/components/user/profile/ProfileTop'
+import ProfileSkeleton from '@/components/user/skeletons/ProfileSkeleton'
 import { useQuery } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
 
@@ -12,16 +13,13 @@ const UserProfilePage = () => {
     queryKey:['profile'],
     queryFn: fetchUserDetails,
   })
-  useEffect(()=>{
-   setUserDetails(userData?.data)
-  },[userData])
 
-  return !isLoading && userDetails && (
+
+  return isLoading && !userData ? <ProfileSkeleton/> : (
    
        <div className='min-h-[800px] bg-black'>
-              <Navbar {...{fixed: true}}/>
-
-       <ProfileTop userData={userDetails} {...{refetch}}/>
+       <Navbar {...{fixed: true}}/>
+       <ProfileTop userData={userData?.data} {...{refetch}}/>
        </div>
    
   )

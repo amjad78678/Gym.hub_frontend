@@ -27,7 +27,6 @@ const ProfileEditProfile = ({ selected, setSelected, refetch, userData }) => {
 
   console.log("iam userdaata", userData);
   return (
-    userData && (
       <Formik
         initialValues={{
           username: userData.username,
@@ -171,7 +170,7 @@ const ProfileEditProfile = ({ selected, setSelected, refetch, userData }) => {
         )}
       </Formik>
     )
-  );
+
 };
 
 export default ProfileEditProfile;

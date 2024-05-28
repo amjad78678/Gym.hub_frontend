@@ -104,7 +104,7 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
       };
       addCartMutation(data);
     } else if (alignment === "Yearly") {
-      const data = { 
+      const data = {
         gymId: gymId,
         date: new Date(),
         expiryDate: new Date(
@@ -158,7 +158,7 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
                     {gymDetailsData?.data.message.images.map((image, index) => (
                       <Carousel.Item key={index}>
                         <img
-                          className="d-block w-100"
+                          className="d-block w-100 mb-4"
                           src={image.imageUrl}
                           alt=""
                         />
@@ -170,9 +170,10 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
             </Col>
 
             <Col lg={6}>
-              <h1 className="text-2xl font-serif mt-4 lg:mt-0">
+              <h1 className="text-2xl font-serif">
                 {gymDetailsData?.data.message.gymName}
               </h1>
+
               <Box
                 sx={{
                   width: 200,
@@ -213,7 +214,7 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
 
               <ToggleButtonGroup
                 color="success"
-                sx={{ backgroundColor: "white", my: 3 }}
+                sx={{ backgroundColor: "white", my: 2 }}
                 value={alignment}
                 exclusive
                 onChange={handleChange}
@@ -346,13 +347,12 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
                                 fontSize="inherit"
                               />
                             </span>{" "}
-                            <p className="ms-1 mt-1 font-mono font-semibold">
+                            <p className="ms-1 mt-1 font-mono font-semibold lg:flex">
                               <span className="hidden lg:block">
-                                {" "}
                                 Certified Buyer
                               </span>
-                              <span>
-                                {dayjs(review.createdAt).format("DD MMM YY")}
+                              <span className="lg:ms-2">
+                                - {dayjs(review.createdAt).format("DD MMM YY")}
                               </span>
                             </p>
                           </div>

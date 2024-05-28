@@ -3,10 +3,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { setImages } from "@/redux/slices/appSlice";
 import { useDispatch } from "react-redux";
-import axios from "axios";
-import { useMutation } from "@tanstack/react-query";
-import Loader from "@/components/common/Loader";
-
 
 const AddGymImages = () => {
   const dispatch = useDispatch();
@@ -71,12 +67,12 @@ const AddGymImages = () => {
 
       {files.map((fileObject, index) => (
         <div
-          className="w-1/2 "
+          className="w-full lg:w-1/2 "
           key={index}
           style={{ position: "relative", display: "inline-block" }}
         >
           <img
-            className="p-5 w-[600px] h-[400px]"
+            className="p-5 lg:w-[600px] lg:h-[400px]"
             src={URL.createObjectURL(fileObject)}
             alt="images"
           />
@@ -102,7 +98,6 @@ const AddGymImages = () => {
         </div>
       ))}
 
-{/* {uploadStatus === "pending" && <Loader />} */}
     </div>
   );
 };

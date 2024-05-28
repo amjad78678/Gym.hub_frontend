@@ -7,6 +7,7 @@ import { fetchNearGymList } from "@/api/user";
 import { Slider, useMediaQuery } from "@mui/material";
 import LocationInput from "./LocationInput";
 import SearchBar from "./SearchBar";
+import GymListSkeleton from "../skeletons/GymListSkeleton";
 
 const GymList = () => {
   const [filteredItems, setFilteredItems] = useState([]);
@@ -71,52 +72,51 @@ const GymList = () => {
     setFilteredItems(filtered);
   }, [search, sliderValue]);
 
-
-  return (
-    !isLoading && (
-      <div className="text-white min-h-screen">
-       <Container> 
-          <Row>
-            <Col md={4} lg={3}>
+  return isLoading && !filteredItems ? (
+    <GymListSkeleton />
+  ) : (
+    <div className="text-white min-h-screen">
+      <Container>
+        <Row>
+          <Col md={4} lg={3}>
+            <div>
+              <SearchBar searchHandler={searchHandler} />
               <div>
-                <SearchBar searchHandler={searchHandler} />
-                <div>
-                  <span className=" text-xl">
-                    <span>Filters</span>{" "}
-                    <FilterListOutlinedIcon
-                      sx={{ color: "white", float: "right", fontSize: "27px" }}
-                    />
-                  </span>
+                <span className=" text-xl">
+                  <span>Filters</span>{" "}
+                  <FilterListOutlinedIcon
+                    sx={{ color: "white", float: "right", fontSize: "27px" }}
+                  />
+                </span>
 
-                  <div className="">
-                    <LocationInput setLocationData={setLocation} />
-                    <h1 className="text-lg mt-4 mb-2">Price</h1>
-                    {maxPrice > 0 && (
-                      <Slider
-                        sx={{ color: "white"}}
-                        valueLabelDisplay="auto"
-                        defaultValue={maxPrice}
-                        max={maxPrice}
-                        onChange={handleSliderChange}
-                      />
-                    )}
-                  </div>
+                <div className="">
+                  <LocationInput setLocationData={setLocation} />
+                  <h1 className="text-lg mt-4 mb-2">Price</h1>
+                  {maxPrice > 0 && (
+                    <Slider
+                      sx={{ color: "white" }}
+                      valueLabelDisplay="auto"
+                      defaultValue={maxPrice}
+                      max={maxPrice}
+                      onChange={handleSliderChange}
+                    />
+                  )}
                 </div>
               </div>
-            </Col>
-            <Col
-              lg={9}
-              md={8}
-              className=" rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
-            >
-              {filteredItems?.map((gym) => {
-                return !gym.isDeleted && <GymCard key={gym._id} gym={gym} />;
-              })}
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    )
+            </div>
+          </Col>
+          <Col
+            lg={9}
+            md={8}
+            className=" rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
+          >
+            {filteredItems?.map((gym) => {
+              return !gym.isDeleted && <GymCard key={gym._id} gym={gym} />;
+            })}
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 

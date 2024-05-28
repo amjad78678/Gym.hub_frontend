@@ -5,10 +5,10 @@ import ChooseLogin from "../../components/common/ChooseLogin";
 
 const LoginPage = () => {
   return (
-    <>
-      <Navbar/>
+    <div className="bg-black">
+      <Navbar {...{ fixed: false }} />
       <ChooseLogin/>
-    </>
+    </div>
 
   );
 };

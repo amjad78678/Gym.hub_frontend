@@ -5,13 +5,20 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate } from "react-router-dom";
+import CheckoutSkeleton from "../skeletons/CheckoutSkeleton";
 const STRIPE_PK = import.meta.env.VITE_STRIPE_PK;
 
-const GymCheckout = ({ checkoutData, handleShowCoupon, userWallet }) => {
+const GymCheckout = ({
+  isLoading,
+  checkoutData,
+  handleShowCoupon,
+  userWallet,
+}) => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [couponApplied, setCouponApplied] = useState(false);
   const [coupon, setCoupon] = useState("");
-  const navigate=useNavigate()
+  const [couponDiscount,setCouponDiscount]=useState(0);
+  const navigate = useNavigate();
 
   const { status, mutate: createSubscription } = useMutation({
     mutationFn: addNewSubscription,
@@ -29,9 +36,8 @@ const GymCheckout = ({ checkoutData, handleShowCoupon, userWallet }) => {
       } else {
         if (res && res.data) {
           toast.success(res.data.message);
-          navigate('/success')
+          navigate("/success");
         }
-       
       }
     },
   });
@@ -66,8 +72,9 @@ const GymCheckout = ({ checkoutData, handleShowCoupon, userWallet }) => {
         toast.success("Coupon Applied");
         setCouponApplied(true);
         setCoupon(res?.data?.coupon?.name);
+        setCouponDiscount(res?.data?.coupon?.discount);
         checkoutData.totalPrice =
-          checkoutData.totalPrice - res?.data?.coupon?.discount;
+        checkoutData.totalPrice - res?.data?.coupon?.discount;
       }
     },
   });
@@ -86,9 +93,19 @@ const GymCheckout = ({ checkoutData, handleShowCoupon, userWallet }) => {
     applyCouponMutate(obj);
   };
 
-  return (
-    checkoutData && (
-      <div>
+  const handleRemoveCoupon = () => {
+    setCouponApplied(false);
+    setCoupon('');
+    checkoutData.totalPrice =
+    checkoutData.totalPrice + couponDiscount;
+    setCouponDiscount(0);
+    if (paymentMethod === "wallet") setPaymentMethod('');
+};
+
+  return isLoading && !checkoutData ? (
+    <CheckoutSkeleton />
+  ) : (
+    <div>
       <h1 className="text-2xl sm:text-3xl font-bold text-white pt-2 text-center">
         Confirm your subscription and pay
       </h1>
@@ -102,8 +119,12 @@ const GymCheckout = ({ checkoutData, handleShowCoupon, userWallet }) => {
               <h1 className="text-xl font-semibold tracking-wider mb-2">
                 {checkoutData?.gymId?.gymName}
               </h1>
-              <h1 className="mb-1">Time: {dayjs(checkoutData.createdAt).format("hh:mm A")}</h1>
-              <h1>Date: {dayjs(checkoutData.createdAt).format("DD MMM YYYY")}</h1>
+              <h1 className="mb-1">
+                Time: {dayjs(checkoutData.createdAt).format("hh:mm A")}
+              </h1>
+              <h1>
+                Date: {dayjs(checkoutData.createdAt).format("DD MMM YYYY")}
+              </h1>
             </div>
           </div>
           <div className="mt-10">
@@ -111,38 +132,39 @@ const GymCheckout = ({ checkoutData, handleShowCoupon, userWallet }) => {
               ORDER SUMMARY
             </h1>
             <div className="overflow-x-auto w-full">
-  <table className="min-w-full border-collapse">
-    <thead>
-      <tr className="bg-gray-900">
-        <th className="text-left py-2 px-4">ITEM</th>
-        <th className="py-2 px-4">AMOUNT</th>
-        <th className="py-2 px-4">JOINING DATE</th>
-        <th className="py-2 px-4">EXPIRY DATE</th>
-        <th className="text-right py-2 px-4">TOTAL</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr className="bg-gray-800">
-        <td className="py-4 px-4">
-          <h1 className="text-lg">
-            {checkoutData.subscriptionType} Subscription
-          </h1>
-        </td>
-        <td className="align-top py-4 px-4 font-bold">₹{checkoutData.amount}</td>
-        <td className="align-top py-4 px-4 font-bold">
-          {dayjs(checkoutData.date).format("DD MMM YYYY")}
-        </td>
-        <td className="align-top py-4 px-4 font-bold">
-          {dayjs(checkoutData.expiryDate).format("DD MMM YYYY")}
-        </td>
-        <td className="align-top text-right py-4 px-4 font-bold">
-          ₹{checkoutData.totalPrice}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
- 
+              <table className="min-w-full border-collapse">
+                <thead>
+                  <tr className="bg-gray-900">
+                    <th className="text-left py-2 px-4">ITEM</th>
+                    <th className="py-2 px-4">AMOUNT</th>
+                    <th className="py-2 px-4">JOINING DATE</th>
+                    <th className="py-2 px-4">EXPIRY DATE</th>
+                    <th className="text-right py-2 px-4">TOTAL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="bg-gray-800">
+                    <td className="py-4 px-4">
+                      <h1 className="text-lg">
+                        {checkoutData.subscriptionType} Subscription
+                      </h1>
+                    </td>
+                    <td className="align-top py-4 px-4 font-bold">
+                      ₹{checkoutData.amount}
+                    </td>
+                    <td className="align-top py-4 px-4 font-bold">
+                      {dayjs(checkoutData.date).format("DD MMM YYYY")}
+                    </td>
+                    <td className="align-top py-4 px-4 font-bold">
+                      {dayjs(checkoutData.expiryDate).format("DD MMM YYYY")}
+                    </td>
+                    <td className="align-top text-right py-4 px-4 font-bold">
+                      ₹{checkoutData.totalPrice}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div className="mt-10">
             <h1 className="sm:text-lg font-semibold border-b border-b-gray-700 border-dotted my-5">
@@ -161,12 +183,21 @@ const GymCheckout = ({ checkoutData, handleShowCoupon, userWallet }) => {
                   />
                 </div>
                 <div>
-                  <button
-                    className="bg-yellow-400 px-4 py-2 hover:bg-yellow-500 text-white"
-                    onClick={handleCouponApply}
-                  >
-                    Apply
-                  </button>
+                  {couponApplied ? (
+                    <button
+                      className="bg-red-500 px-3 py-2.5 hover:bg-red-600 text-white"
+                      onClick={handleRemoveCoupon}
+                    >
+                      Remove
+                    </button>
+                  ) : (
+                    <button
+                      className="bg-yellow-400 px-3 py-2.5 hover:bg-yellow-500 text-white"
+                      onClick={handleCouponApply}
+                    >
+                      Apply
+                    </button>
+                  )}
                 </div>
               </div>
               <div
@@ -175,7 +206,7 @@ const GymCheckout = ({ checkoutData, handleShowCoupon, userWallet }) => {
               >
                 <p
                   onClick={handleShowCoupon}
-                  className="text-blue-700 font-semibold"
+                  className="text-blue-500 font-semibold font-mono"
                 >
                   find coupons
                 </p>
@@ -215,8 +246,6 @@ const GymCheckout = ({ checkoutData, handleShowCoupon, userWallet }) => {
         </div>
       </div>
     </div>
-    
-    )
   );
 };
 

@@ -14,8 +14,8 @@ const GymRegisterPage = () => {
     setShowOtp(!showOtp);
   };
   return (
-    <>
-    <Navbar/>
+    <div className='bg-black'>
+    <Navbar {...{fixed: false}}/>
     <div className='bg-black'>
         <GymRegister setShowOtp={otpHandler}/>
     </div>
@@ -35,7 +35,7 @@ const GymRegisterPage = () => {
     )}
   </>
 )}
-</>
+</div>
   )
 }
 

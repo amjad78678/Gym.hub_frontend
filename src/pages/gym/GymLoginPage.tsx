@@ -29,8 +29,8 @@ const GymLoginPage = () => {
   }
 
   return (
-    <>
-    <Navbar/>
+    <div className='bg-black'>
+    <Navbar {...{fixed: false}}/>
     <div>
         <GymLogin showForgotEmail={forgotEmailHandler}/>
     </div>
@@ -70,7 +70,7 @@ const GymLoginPage = () => {
       {showChangePassword && (
         <ChangePassword userType="gym"  closeModal={changePasswordHandler}   />
       )}
-    </>
+    </div>
 
 
   )

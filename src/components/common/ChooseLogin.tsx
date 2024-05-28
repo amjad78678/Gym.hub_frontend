@@ -24,7 +24,7 @@ const navigate=useNavigate()
       
       <Container>
         <Row>
-          <Col xs={6} className="text-center">
+          <Col lg={6} className="text-center">
             <h1 className="text-center text-4xl pt-5 font-semibold">
               For Gym Companies
             </h1>
@@ -49,7 +49,7 @@ const navigate=useNavigate()
             </Button></Link>
           </Col>
 
-          <Col xs={6} className="text-center">
+          <Col lg={6} className="text-center">
             <h1 className="text-center text-4xl pt-5 font-semibold">
               For Gym Users
             </h1>

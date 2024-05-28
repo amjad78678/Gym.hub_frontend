@@ -7,6 +7,7 @@ import { fetchGymList } from "@/api/user";
 import FaqSection from "./FaqSection";
 import MySliderBanner from "./MySliderBanner";
 import Footer from "@/components/common/Footer";
+import HomeSkeleton from "../skeletons/HomeSkeleton";
 
 const UserHome = () => {
   const [gymList, setGymList] = useState([]);
@@ -20,7 +21,7 @@ const UserHome = () => {
     setGymList(gymsQuery?.data.message);
   }, [gymsQuery]);
 
-  return (
+  return isLoading ? <HomeSkeleton/> : (
     <>
       <div className="absolute inset-0 text-white bg-black">
         <MySliderBanner />

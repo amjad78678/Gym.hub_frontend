@@ -32,10 +32,7 @@ const SubscriptionModal = ({ handleModal, modalOpen, trainer,setBookingTrainer }
 })
 
 
-console.log('irainer  in modal ',trainer)
   const submitPlan = (plan: string) => {
-
-
     const obj={
      trainerId: trainer._id,
      bookingType: plan,
@@ -61,8 +58,8 @@ console.log('irainer  in modal ',trainer)
   return (
     <Dialog open={modalOpen} onClose={handleModal}>
     <ClickAwayListener onClickAway={clickAwayHandler}>
-      <div className="flex flex-col lg:flex-row p-4 space-y-4 lg:space-y-0 lg:space-x-4">
-        <div className="w-full max-w-sm mx-auto p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+      <div className="flex flex-col lg:flex-row p-4 space-y-4 lg:space-y-0 lg:space-x-4 lg:gap-4">
+        <div className=" w-full max-w-sm mx-auto p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
           <h5 className="mb-4 text-xl font-medium text-gray-500 dark:text-gray-400">
             Basic plan
           </h5>

@@ -5,40 +5,26 @@ import { useMutation } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
-import {useLottie} from "lottie-react";
+import { useLottie } from "lottie-react";
 import animationData from "../../../assets/animations/typing.json";
 
-const ChatInput = ({ selectedChat }) => {
-  const [newMessage, setNewMessage] = useState("");
+const ChatInput = ({ selectedChat,handleSendMessage,newMessage,setNewMessage }) => {
   const socket: Socket = useSocket();
-  const { trainerDetails } = useSelector((state: RootState) => state.auth);
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const { status, mutate: trainerChatCreateMutate } = useMutation({
-    mutationFn: trainerChatCreate,
-    onSuccess: (res) => {
-      console.log("iam success", res.data);
-    },
-  });
+
+
 
   useEffect(() => {
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop_typing", () => setIsTyping(false));
-  }, []);
-  console.log("selectedChat", selectedChat);
-  const handleSendMessage = () => {
-    if (newMessage.trim() !== "") {
-      socket.emit("stop_typing", { typeTo: selectedChat.userId });
-      const obj = {
-        content: newMessage,
-        receiver: selectedChat.userId,
-        sender: trainerDetails.trainerId,
-      };
-      trainerChatCreateMutate(obj);
-      socket.emit("send_message", obj);
-      setNewMessage("");
-    }
-  };
+
+    // Clean up the event listeners on component unmount
+    return () => {
+      socket.off("typing");
+      socket.off("stop_typing");
+    };
+  }, [socket]);
 
 
 
@@ -58,6 +44,7 @@ const ChatInput = ({ selectedChat }) => {
 
     const lastTypingTime = new Date().getTime();
     const timerLength = 2000;
+
     setTimeout(() => {
       const timeNow = new Date().getTime();
       const timeDiff = timeNow - lastTypingTime;
@@ -67,20 +54,22 @@ const ChatInput = ({ selectedChat }) => {
       }
     }, timerLength);
   };
+
   const defaultOptions = {
     loop: true,
     autoplay: true,
     animationData: animationData,
-    style: { width: 80,marginLeft:0 },
+    style: { width: 80, marginLeft: 0 },
   };
 
-  const View = useLottie(defaultOptions);
+  const lottieObj = useLottie(defaultOptions);
+  const { View } = lottieObj;
 
   return (
     <>
       {isTyping && (
         <div>
-          {View}
+         {View}
         </div>
       )}
       <div className="flex items-center space-x-2">

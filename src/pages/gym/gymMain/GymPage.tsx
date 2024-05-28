@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
-import Navbar from "@/components/gym/common/Navbar";
 import { Outlet } from "react-router-dom";
 import { ThemeProvider, createTheme } from '@mui/material';
+import GymNavbar from "@/components/gym/common/GymNavbar";
 
 
 const GymPage = () => {
@@ -15,7 +15,7 @@ const GymPage = () => {
   return (
     <div className="bg-black">
       <ThemeProvider theme={darkTheme}>
-        <Navbar />
+        <GymNavbar />
         <Outlet />
       </ThemeProvider>
     </div>

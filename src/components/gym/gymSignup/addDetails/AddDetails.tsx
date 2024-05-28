@@ -1,13 +1,13 @@
 import { useFormik } from "formik";
 import React from "react";
-import { Col, Container,  Form, Row } from "react-bootstrap";
+import { Col, Container, Form, Row } from "react-bootstrap";
 import { GymSignupValidation } from "../../../../validation/GymSignupValidation";
 import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from "@/redux/slices/appSlice";
 
 const AddDetails = () => {
   const dispatch = useDispatch();
-  const {details} = useSelector((state) => state.app);
+  const { details } = useSelector((state) => state.app);
 
   const initialValues = {
     gymName: details.gymName,
@@ -37,7 +37,7 @@ const AddDetails = () => {
     <Container className="min-h-[320px] text-white">
       <form action="">
         <Row>
-          <Col xs={6}>
+          <Col lg={6}>
             <div className="my-3">
               <h1>Gym name</h1>
               <input
@@ -53,7 +53,6 @@ const AddDetails = () => {
                     );
                   }
                 }}
-
                 autoComplete="off"
                 onBlur={handleBlur}
                 value={values.gymName}
@@ -108,8 +107,8 @@ const AddDetails = () => {
               )}
             </div>
 
-       <Row>
-              <Col xs={6}>
+            <Row>
+              <Col lg={6}>
                 <div className="mt-1">
                   <h1>Password</h1>
                   <input
@@ -119,7 +118,7 @@ const AddDetails = () => {
                     onChange={(e) => {
                       handleChange(e);
 
-                      if (!errors.password ) {
+                      if (!errors.password) {
                         dispatch(
                           setDetails({ ...values, password: e.target.value })
                         );
@@ -134,7 +133,7 @@ const AddDetails = () => {
                   )}
                 </div>
               </Col>
-              <Col xs={6}>
+              <Col lg={6}>
                 <div className="mt-1">
                   <h1>Confirm Password</h1>
                   <input
@@ -163,122 +162,37 @@ const AddDetails = () => {
                 </div>
               </Col>
             </Row>
-  
           </Col>
-          <Col xs={6}>
-            <Row>
-              <Col xs={6}>
-                <div className="my-3">
-                  <h1>State</h1>
-                  <input
-                    type="text"
-                    name="state"
-                    className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
-                    onChange={(e) => {
-                      handleChange(e);
+          <Col lg={6}>
+            
+              <div className="my-3">
+                <h1>Businesss id</h1>
+                <input
+                  type="text"
+                  name="businessId"
+                  className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
+                  onChange={(e) => {
+                    handleChange(e);
 
-                      if (!errors.state) {
-                        dispatch(
-                          setDetails({ ...values, state: e.target.value })
-                        );
-                      }
-                    }}
-                    autoComplete="off"
-                    onBlur={handleBlur}
-                    value={values.state}
-                  />
-                  {errors.state && (
-                    <small className="text-red-500">{errors.state}</small>
-                  )}
-                </div>
-              </Col>
-              <Col xs={6}>
-                <div className="my-3">
-                  <h1>City</h1>
-                  <input
-                    type="text"
-                    name="city"
-                    className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
-                    onChange={(e) => {
-                      handleChange(e);
+                    if (!errors.businessId) {
+                      dispatch(
+                        setDetails({ ...values, businessId: e.target.value })
+                      );
+                    }
+                  }}
+                  autoComplete="off"
+                  onBlur={handleBlur}
+                  value={values.businessId}
+                />
+                {errors.businessId && (
+                  <small className="text-red-500">{errors.businessId}</small>
+                )}
+              </div>
+     
 
-                      if (!errors.city) {
-                        dispatch(
-                          setDetails({ ...values, city: e.target.value })
-                        );
-                      }
-                    }}
-                    autoComplete="off"
-                    onBlur={handleBlur}
-                    value={values.city}
-                  />
-                  {errors.city && (
-                    <small className="text-red-500">{errors.city}</small>
-                  )}
-                </div>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col xs={6}>
+            <Row className="my-3">
+              <Col xs={6} lg={4}>
                 <div className="">
-                  <h1>Pincode</h1>
-                  <input
-                    type="text"
-                    name="pincode"
-                    className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
-                    onChange={(e) => {
-                      handleChange(e);
-
-                      if (!errors.pincode) {
-                        dispatch(
-                          setDetails({ ...values, pincode: e.target.value })
-                        );
-                      }
-                    }}
-                    autoComplete="off"
-                    onBlur={handleBlur}
-                    value={values.pincode}
-                  />
-                  {errors.pincode && (
-                    <small className="text-red-500">{errors.pincode}</small>
-                  )}
-                </div>
-              </Col>
-              <Col xs={6}>
-                <div className="">
-                  <h1>Businesss id</h1>
-                  <input
-                    type="text"
-                    name="businessId"
-                    className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
-                    onChange={(e) => {
-                      handleChange(e);
-
-                      if (!errors.businessId) {
-                        dispatch(
-                          setDetails({ ...values, businessId: e.target.value })
-                        );
-                      }
-                    }}
-                    autoComplete="off"
-                    onBlur={handleBlur}
-                    value={values.businessId}
-                  />
-                  {errors.businessId && (
-                    <small className="text-red-500">{errors.businessId}</small>
-                  )}
-                </div>
-              </Col>
-            </Row>
-
-
-
-<Row className="my-3"> 
-  <Col xs={4}>
-
-  
-  <div className="">
                   <h1>Daily fee</h1>
                   <input
                     type="text"
@@ -301,13 +215,9 @@ const AddDetails = () => {
                     <small className="text-red-500">{errors.dailyFee}</small>
                   )}
                 </div>
-
-  
-  </Col>
-  <Col xs={4}>
-
-  
-  <div className="">
+              </Col>
+              <Col xs={6} lg={4}>
+                <div className="">
                   <h1>Monthly fee</h1>
                   <input
                     type="text"
@@ -330,13 +240,9 @@ const AddDetails = () => {
                     <small className="text-red-500">{errors.monthlyFee}</small>
                   )}
                 </div>
-
-  
-  </Col>
-  <Col xs={4}>
-
-  
-  <div className="">
+              </Col>
+              <Col xs={12} lg={4}>
+                <div className="">
                   <h1>Yearly fee</h1>
                   <input
                     type="text"
@@ -359,44 +265,34 @@ const AddDetails = () => {
                     <small className="text-red-500">{errors.yearlyFee}</small>
                   )}
                 </div>
+              </Col>
+            </Row>
 
-  
-  </Col>
-</Row>
+            <div>
+              <h1 className="my-3">Description</h1>
 
+              <Form.Control
+                className="bg-black text-white border border-white"
+                as="textarea"
+                name="description"
+                value={values.description}
+                autoComplete="off"
+                onBlur={handleBlur}
+                onChange={(e) => {
+                  handleChange(e);
 
-
-
-     
-
-
-<div>
-      <h1 className="my-3">Description</h1>
-
-   
-        <Form.Control
-          className="bg-black text-white border border-white"
-          as="textarea"
-          name="description"
-          value={values.description}
-          autoComplete="off"
-          onBlur={handleBlur}
-          onChange={(e) => {
-            handleChange(e);
-
-            if (!errors.description) {
-              dispatch(
-                setDetails({ ...values, description: e.target.value })
-              );
-            }
-          }}
-          placeholder="Leave a comment here"
-          style={{ height: '100px' }}
-        />
-            {errors.description && (
-                    <small className="text-red-500">{errors.description}</small>
-                  )}
-   
+                  if (!errors.description) {
+                    dispatch(
+                      setDetails({ ...values, description: e.target.value })
+                    );
+                  }
+                }}
+                placeholder="Leave a comment here"
+                style={{ height: "120px" }}
+              />
+              {errors.description && (
+                <small className="text-red-500">{errors.description}</small>
+              )}
             </div>
           </Col>
         </Row>

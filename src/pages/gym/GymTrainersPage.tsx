@@ -1,7 +1,6 @@
 import { fetchTrainers } from "@/api/gym";
-import AddTrainerModal from "@/components/gym/gymTrainer/AddTrainerModal";
 import EditTrainerModal from "@/components/gym/gymTrainer/EditTrainerModal";
-import NoTrainersComponent from "@/components/gym/gymTrainer/NoTrainersComponent";
+import AddTrainerModal from "@/components/gym/gymTrainer/AddTrainerModal";
 import Trainers from "@/components/gym/gymTrainer/Trainers";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";

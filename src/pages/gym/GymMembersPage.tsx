@@ -1,13 +1,9 @@
+import GymMemberships from '@/components/gym/gymMembers/GymMemberships'
 import React from 'react'
 
 const GymMembersPage = () => {
   return (
-    <div>
-
-
-
-    GymMembers page
-        </div>
+  <GymMemberships/>
   )
 }
 

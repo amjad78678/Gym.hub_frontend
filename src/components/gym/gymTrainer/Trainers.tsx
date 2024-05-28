@@ -3,15 +3,13 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Avatar, Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
-import { useQuery } from "@tanstack/react-query";
 import { grey } from "@mui/material/colors";
 import dayjs from "dayjs";
 import TrainerActions from './TrainerActions';
-import { fetchTrainers } from '@/api/gym';
 import NoTrainersComponent from './NoTrainersComponent';
-import AddTrainerModal from './AddTrainerModal';
 
-const Trainers = ({open,setOpen,editOpen,setEditOpen,trainers,refetch,setSelectedRow}) => {
+
+const Trainers = ({setOpen,setEditOpen,trainers,refetch,setSelectedRow}) => {
 
 
     console.log('trainers',trainers)

@@ -1,29 +1,29 @@
-import Loader from "@/components/common/Loader";
-import { Box, Container, FormControl, IconButton, Input } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Container } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import ChatInput from "./ChatInput";
-import { useNavigate, useParams } from "react-router-dom";
-import { AddIcCall, CheckCircle, PhoneCallback } from "@mui/icons-material";
+import { useParams } from "react-router-dom";
+import { CheckCircle } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTrainerData, fetchUserChatMessages } from "@/api/user";
-import { Socket, io } from "socket.io-client";
+import { Socket } from "socket.io-client";
 import { useSocket } from "@/utils/context/socketContext";
 import iMessageType from "@/interfaces/iMessageType";
-import VideoCall from "@mui/icons-material/VideoCall";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { userChatCreate } from "@/api/user";
+import { useMutation } from "@tanstack/react-query";
 
 const UserChat = () => {
   const { userId, trainerId } = useParams();
   const [socketConnected, setSocketConnected] = useState(false);
-  const {userDetails} = useSelector((state: RootState) => state.auth)
-  const userName = userDetails?.name.replaceAll(" ","")
+  const { userDetails } = useSelector((state: RootState) => state.auth);
+  const userName = userDetails?.name.replaceAll(" ", "");
   const [messages, setMessages] = useState<iMessageType[]>([]);
-  const navigate = useNavigate();
   const socket: Socket = useSocket();
+  const [newMessage, setNewMessage] = useState("");
 
-  const { isLoading, data: userChat } = useQuery({
+  const { isLoading, data: userChat,refetch } = useQuery({
     queryKey: ["userChatMessages", userId ?? null, trainerId ?? null],
     queryFn: fetchUserChatMessages,
   });
@@ -39,22 +39,85 @@ const UserChat = () => {
     }
   }, [userChat]);
 
+
   useEffect(() => {
-    console.log("i am socket connecting");
-    socket.on("connected", () => setSocketConnected(true));
-    socket.emit("add_user", userId);
-    socket.emit("chat_started", { to: trainerId });
-  }, []);
+    if (socket) {
+      const handleConnect = () => setSocketConnected(true);
+      const handleMessage = (message) => {
+        // Your message handling logic...
+        // Prevent adding duplicate messages
+        const existingIndex = messages.findIndex(
+          (m) =>
+            m.sender === message.sender &&
+            m.receiver === message.receiver &&
+            m.content === message.content
+        );
+        if (existingIndex === -1) {
+          setMessages((prevMessages) => [
+           ...prevMessages,
+            {
+              sender: message.sender,
+              receiver: message.receiver,
+              content: message.content,
+            },
+          ]);
+        }
+      };
 
-  useEffect(()=>{
+      socket.on("connect", handleConnect);
+      socket.on("message", handleMessage);
 
-    socket.on("message",(message: iMessageType)=>{
+      // Emit join event when the component mounts
+      socket.emit('add_user', userDetails.userId);
 
-      setMessages([...messages,message])
+      // Cleanup function to remove event listeners and reset state
+      return () => {
+        socket.off("connect", handleConnect);
+        socket.off("message", handleMessage);
+      };
+    }
+  }, [socket, userDetails.userId]); 
 
-    })
 
-  },[socket,messages])
+  const { status, mutate: userChatCreateMutate } = useMutation({
+    mutationFn: userChatCreate,
+    onSuccess: (res) => {
+      console.log("iam success", res.data);
+    },
+  });
+
+  const handleSendMessage = () => {
+    if (newMessage.trim()!== "") {
+
+      socket.emit("stop_typing", { typeTo: trainerId });
+      socket.emit("send_message", {
+        sender: userId,
+        receiver: trainerId,
+        content: newMessage,
+      });
+
+
+      userChatCreateMutate({
+        sender: userDetails.userId,
+        receiver: trainerId,
+        content: newMessage,
+      })
+       
+        setNewMessage("");
+  
+    }
+  };
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   return (
     !isLoading &&
@@ -65,7 +128,11 @@ const UserChat = () => {
           <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
             <div className="relative flex items-center space-x-4">
               <div className="relative">
-                <span className={`absolute ${socketConnected ? "text-green-500" : "text-red-500"}  right-0 bottom-0`}>
+                <span
+                  className={`absolute ${
+                    socketConnected ? "text-green-500" : "text-red-500"
+                  }  right-0 bottom-0`}
+                >
                   <svg width="20" height="20">
                     <circle cx="8" cy="8" r="8" fill="currentColor"></circle>
                   </svg>
@@ -100,9 +167,18 @@ const UserChat = () => {
                 selectedTrainer={trainerData?.data.trainer}
               />
             ))}
+            <div ref={messagesEndRef} />
           </div>
           <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
-            <ChatInput {...{ userId, trainerId }} />
+            <ChatInput
+              {...{
+                userId,
+                trainerId,
+                handleSendMessage,
+                setNewMessage,
+                newMessage,
+              }}
+            />
           </div>
         </div>
       </Container>
