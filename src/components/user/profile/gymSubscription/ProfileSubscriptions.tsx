@@ -17,15 +17,11 @@ const ProfileSubscriptions = ({ selected, setSelected }) => {
     queryFn: fetchSubscriptions,
   });
 
-  // useEffect(() => {
-  //   setSubs(subscriptionData?.data.subscriptions);
-  // }, [subscriptionData]);
-
   console.log("iam subscriptionData", subscriptionData);
 
 
 
-  return !isLoading && subscriptionData ? (
+  return !isLoading && subscriptionData?.data.subscriptions > 0 ? (
     <>
       {subscriptionData?.data?.subscriptions?.map((sub) => (
         <SubscriptionCard sub={sub} />

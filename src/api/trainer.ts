@@ -154,4 +154,15 @@ export const fetchUserData = async ({
     const err: Error = error as Error;
     return errorHandle(err);
   }
+
+
 };
+export const fetchTrainertrainerBookings = async()=>{
+  try {
+    const response = await Api.get(trainerRoutes.fetchSubscriptions)
+    return response
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}

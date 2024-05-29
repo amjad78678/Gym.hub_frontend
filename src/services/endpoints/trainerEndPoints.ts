@@ -9,6 +9,7 @@ const trainerRoutes = {
   trainerChatCreate: "/chat/create",
   fetchTrainerChats:({trainerId,receiverId}: {trainerId:string|null,receiverId:string|null})=>`/chat/trainer_chat_data/${trainerId}/${receiverId} `,
   fetchUserData:(id: string)=>`/user_details/${id}`,
+  fetchSubscriptions: "/fetch_subscriptions",
 };
 
 export default trainerRoutes;

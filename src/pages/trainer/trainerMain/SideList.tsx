@@ -17,26 +17,23 @@ import InboxIcon from "@mui/icons-material/Inbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { CSSObject, Theme, styled } from "@mui/material/styles";
 import {
-  CardMembershipOutlined,
   Dashboard,
-  FitnessCenterOutlined,
-  GroupOutlined,
+  Groups3Outlined,
   Logout,
-  SportsKabaddiOutlined,
-  ViewCarouselOutlined,
 } from "@mui/icons-material";
 import { useMemo, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { adminLogout } from "@/api/admin";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { setAdminLogout, setTrainerLogout } from "@/redux/slices/authSlice";
+import { setTrainerLogout } from "@/redux/slices/authSlice";
 import TrainerDashboardPage from "../TrainerDashboardPage";
 import { trainerLogout } from "@/api/trainer";
 import TrainerChatPage from "../TrainerChatPage";
 import ChatIcon from "@mui/icons-material/Chat";
 import TrainerCallPage from "../TrainerCallPage";
+import TrainerTrainee from "@/components/trainer/trainee/TrainerTrainee";
+import TrainerTraineePage from "../TrainerTraineePage";
 
 const drawerWidth = 240;
 
@@ -102,7 +99,14 @@ const SideList = ({ open, setOpen }) => {
         component: <TrainerDashboardPage {...{ setSelectedLink, link: "" }} />,
       },
       {
-        title: "Chat with students",
+        title: "Trainees",
+        icon: < Groups3Outlined/>,
+        link: "trainees",
+        component: <TrainerTraineePage {...{ setSelectedLink, link: "trainees" }} />,
+
+      },
+      {
+        title: "Chat",
         icon: <ChatIcon />,
         link: "chat",
         component: <TrainerChatPage />,

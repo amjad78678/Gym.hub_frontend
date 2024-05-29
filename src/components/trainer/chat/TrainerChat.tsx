@@ -10,7 +10,7 @@ import {
 } from "@/api/trainer";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { CheckCircle, VideoCall } from "@mui/icons-material";
+import { CheckCircle, VideoCall, WhatsApp } from "@mui/icons-material";
 import iMessageType from "@/interfaces/iMessageType";
 import { useSocket } from "@/utils/context/socketContext";
 import { RootState } from "@/redux/store";
@@ -78,7 +78,7 @@ const TrainerChat = () => {
   });
 
   const handleSendMessage = () => {
-    console.log("iam in send message 222222222222222222222222222222222222");
+
     if (newMessage.trim() !== "") {
       socket.emit("stop_typing", { typeTo: selectedChat.userId });
 
@@ -193,8 +193,11 @@ const TrainerChat = () => {
           </div>
         </div>
       ) : (
-        <div className="sm:col-span-9 flex justify-center items-center">
+        <div className="sm:col-span-9 flex justify-center items-center text-black bg-gray-300">
+          <div className="flex flex-col">
+            <WhatsApp sx={{ width: 150, height: 150,mx:"auto",mb:2 }} />
           <h1 className="text-4xl">You have not selected any messages yet!</h1>
+          </div>
         </div>
       )}
     </div>

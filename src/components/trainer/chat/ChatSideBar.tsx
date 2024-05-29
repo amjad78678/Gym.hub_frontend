@@ -26,7 +26,6 @@ const ChatSideBar = ({ selectedChat, setSelectedChat }) => {
           (msg) => msg.sender.username === username
         ).sender._id,
       }));
-
       setUsersList(uniqueUsers);
     }
   }, [messagesData]);
