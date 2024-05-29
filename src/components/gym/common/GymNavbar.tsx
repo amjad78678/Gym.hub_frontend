@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -54,7 +53,6 @@ function GymNavbar() {
 
   return (
     <>
-
       <Container className="bg-black">
         <Toolbar disableGutters>
           <img className="w-28" src="/removebg.png" alt="" />
@@ -84,16 +82,16 @@ function GymNavbar() {
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">Members</Typography>
               </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Subscriptions</Typography>
-              </MenuItem>
+
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">Trainers</Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">Coupons</Typography>
               </MenuItem>
-           
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">Subscriptions</Typography>
+              </MenuItem>
             </Menu>
           </Box>
 
@@ -119,42 +117,42 @@ function GymNavbar() {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-              Members
+                Subscriptions
+              </Button>
+            </Link>
+    
+            <Link to={"/gym/trainers"}>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                Trainers
+              </Button>
+            </Link>
+            <Link to={"/gym/coupons"}>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                Coupons
               </Button>
             </Link>
             <Link to={"/gym/subscriptions"}>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-         Subscriptions
-            </Button>
-            </Link>
-            <Link to={"/gym/trainers"}>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-         Trainers
-            </Button>
-            </Link>
-            <Link to={"/gym/coupons"}>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-         Coupons
-            </Button>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+               Plans
+              </Button>
             </Link>
           </Box>
 
-            <HomeOutlined
-              onClick={() => {
-                gymLogoutMutate();
-              }}
-              sx={{ fontSize: 33,color: "white", cursor: "pointer" }}
-            />
-       
+          <HomeOutlined
+            onClick={() => {
+              gymLogoutMutate();
+            }}
+            sx={{ fontSize: 33, color: "white", cursor: "pointer" }}
+          />
         </Toolbar>
       </Container>
       {status === "pending" && <Loader />}

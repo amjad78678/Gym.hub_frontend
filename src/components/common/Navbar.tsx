@@ -54,7 +54,7 @@ function Navbar({ fixed }) {
       <AppBar
         sx={{
           backgroundColor: isScrolled
-            ? "rgba(0, 0, 1, 0.8)"
+            ? "rgba(0, 0, 1, 0.9)"
             : "rgba(0, 0, 1, 0.3)",
           transition: isScrolled ? "all 0.3s ease" : "none",
           boxShadow: "none",
@@ -140,7 +140,7 @@ function Navbar({ fixed }) {
       </AppBar>
       {dropMenu && (
         <div
-          className="absolute left-1/2 z-full w-screen max-w-md -translate-x-1/2 transform"
+          className="fixed block lg:hidden left-1/2 z-full w-screen max-w-md -translate-x-1/2 transform"
           style={{ display: "block" }}
         >
           <div className="overflow-hidden rounded-sm shadow-lg">

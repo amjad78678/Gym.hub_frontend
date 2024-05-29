@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { userChatCreate } from "@/api/user";
 import { useMutation } from "@tanstack/react-query";
+import debounce from "@/utils/miscillenious/debounce";
 
 const UserChat = () => {
   const { userId, trainerId } = useParams();
@@ -23,61 +24,42 @@ const UserChat = () => {
   const socket: Socket = useSocket();
   const [newMessage, setNewMessage] = useState("");
 
-  const { isLoading, data: userChat,refetch } = useQuery({
+  useEffect(() => {
+    if (socket) {
+      const handleConnect = () => setSocketConnected(true);
+      const debouncedHandleMessage = debounce((data) => {
+        console.log("Received message:", data);
+        setMessages((prevMessages) => [...prevMessages, data]);
+      }, 300);
+
+      socket.on("connect", handleConnect);
+      socket.on("message", debouncedHandleMessage);
+
+      return () => {
+        socket.off("connect", handleConnect);
+        socket.off("message", debouncedHandleMessage);
+      };
+    }
+  }, [socket]);
+
+  const {
+    isLoading,
+    data: userChat,
+    refetch,
+  } = useQuery({
     queryKey: ["userChatMessages", userId ?? null, trainerId ?? null],
     queryFn: fetchUserChatMessages,
   });
-
-  const { isLoading: trainerDataLoading, data: trainerData } = useQuery({
-    queryKey: ["userTrainerData", trainerId ?? null],
-    queryFn: fetchTrainerData,
-  });
-
   useEffect(() => {
     if (userChat) {
       setMessages(userChat.data.conversations);
     }
+    console.log("iam calling the first setMessages");
   }, [userChat]);
-
-
-  useEffect(() => {
-    if (socket) {
-      const handleConnect = () => setSocketConnected(true);
-      const handleMessage = (message) => {
-        // Your message handling logic...
-        // Prevent adding duplicate messages
-        const existingIndex = messages.findIndex(
-          (m) =>
-            m.sender === message.sender &&
-            m.receiver === message.receiver &&
-            m.content === message.content
-        );
-        if (existingIndex === -1) {
-          setMessages((prevMessages) => [
-           ...prevMessages,
-            {
-              sender: message.sender,
-              receiver: message.receiver,
-              content: message.content,
-            },
-          ]);
-        }
-      };
-
-      socket.on("connect", handleConnect);
-      socket.on("message", handleMessage);
-
-      // Emit join event when the component mounts
-      socket.emit('add_user', userDetails.userId);
-
-      // Cleanup function to remove event listeners and reset state
-      return () => {
-        socket.off("connect", handleConnect);
-        socket.off("message", handleMessage);
-      };
-    }
-  }, [socket, userDetails.userId]); 
-
+  const { isLoading: trainerDataLoading, data: trainerData } = useQuery({
+    queryKey: ["userTrainerData", trainerId ?? null],
+    queryFn: fetchTrainerData,
+  });
 
   const { status, mutate: userChatCreateMutate } = useMutation({
     mutationFn: userChatCreate,
@@ -87,8 +69,7 @@ const UserChat = () => {
   });
 
   const handleSendMessage = () => {
-    if (newMessage.trim()!== "") {
-
+    if (newMessage.trim() !== "") {
       socket.emit("stop_typing", { typeTo: trainerId });
       socket.emit("send_message", {
         sender: userId,
@@ -96,15 +77,24 @@ const UserChat = () => {
         content: newMessage,
       });
 
-
       userChatCreateMutate({
         sender: userDetails.userId,
         receiver: trainerId,
         content: newMessage,
-      })
-       
-        setNewMessage("");
-  
+      });
+
+      if (trainerId) {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            sender: userDetails.userId,
+            receiver: trainerId,
+            content: newMessage,
+          },
+        ]);
+      }
+
+      setNewMessage("");
     }
   };
 

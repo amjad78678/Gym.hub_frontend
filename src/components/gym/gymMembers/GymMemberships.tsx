@@ -189,7 +189,7 @@ const [search,setSearch]=useState('')
             color: "white",
           }}
         >
-          All Memberships
+          All Subscriptions
         </Typography>
 
         <SearchInput {...{search,setSearch}} />

@@ -14,6 +14,7 @@ import { CheckCircle, VideoCall } from "@mui/icons-material";
 import iMessageType from "@/interfaces/iMessageType";
 import { useSocket } from "@/utils/context/socketContext";
 import { RootState } from "@/redux/store";
+import debounce from "@/utils/miscillenious/debounce";
 
 const TrainerChat = () => {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -34,6 +35,25 @@ const TrainerChat = () => {
     enabled: !!selectedChat,
   });
 
+  useEffect(() => {
+    if (socket) {
+      const handleConnect = () => setSocketConnected(true);
+
+      const debounceHandleMessage = debounce((data) => {
+        console.log("Received message:", data);
+        setMessages((prevMessages) => [...prevMessages, data]);
+      }, 300);
+
+      socket.on("connect", handleConnect);
+      socket.on("message", debounceHandleMessage);
+
+      return () => {
+        socket.off("connect", handleConnect);
+        socket.off("message", debounceHandleMessage);
+      };
+    }
+  }, [socket]);
+
   const { isLoading: userDataLoading, data: userData } = useQuery({
     queryKey: ["trainerUserData", selectedChat?.userId],
     queryFn: fetchUserData,
@@ -45,66 +65,6 @@ const TrainerChat = () => {
       setMessages(messageData.data.conversations);
     }
   }, [messageData]);
-
-  useEffect(() => {
-    if (socket) {
-      socket.on("connect", () => setSocketConnected(true));
-      socket.on("message", (message) => {
-        setMessages((prevMessages) => {
-          const existingIndex = prevMessages.findIndex(
-            (m) =>
-              m.sender === message.sender &&
-              m.receiver === message.receiver &&
-              m.content === message.content
-          );
-
-          if (existingIndex === -1) {
-            return [
-              ...prevMessages,
-              {
-                sender: message.sender,
-                receiver: message.receiver,
-                content: message.content,
-              },
-            ];
-          } else {
-            return prevMessages;
-          }
-        });
-      });
-
-      socket.emit("add_user", trainerDetails.trainerId);
-
-      return () => {
-        socket.off("connect");
-        socket.off("message");
-      };
-    }
-  }, [socket, trainerDetails.trainerId]);
-
-
-
-  useEffect(() => {
-    if (socket) {
-      const handleConnect = () => setSocketConnected(true);
-      const handleMessage = (message) => {
-        // Your message handling logic...
-      };
-
-      socket.on("connect", handleConnect);
-      socket.on("message", handleMessage);
-
-      // Emit join event when the component mounts
-      socket.emit('add_user', userDetails.userId);
-
-      // Cleanup function to remove event listeners and reset state
-      return () => {
-        socket.off("connect", handleConnect);
-        socket.off("message", handleMessage);
-        setMessages([]); // Reset messages on cleanup
-      };
-    }
-  }, [socket, userDetails.userId]); // Depend on socket and userId to re-run effect
 
   const handleJoinRoom = useCallback(() => {
     window.open(`/call/${trainerName}`, "_blank", "noopener,noreferrer");
@@ -118,20 +78,30 @@ const TrainerChat = () => {
   });
 
   const handleSendMessage = () => {
+    console.log("iam in send message 222222222222222222222222222222222222");
     if (newMessage.trim() !== "") {
       socket.emit("stop_typing", { typeTo: selectedChat.userId });
+
       socket.emit("send_message", {
         sender: trainerDetails.trainerId,
         receiver: selectedChat.userId,
         content: newMessage,
       });
 
-      // Do not update the state directly here
       trainerChatCreateMutate({
         sender: trainerDetails.trainerId,
         receiver: selectedChat.userId,
         content: newMessage,
       });
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          sender: trainerDetails.trainerId,
+          receiver: selectedChat.userId,
+          content: newMessage,
+        },
+      ]);
 
       setNewMessage("");
     }
@@ -145,13 +115,6 @@ const TrainerChat = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-
-
-
-
-
-  
 
   return (
     <div className="grid sm:grid-cols-12">

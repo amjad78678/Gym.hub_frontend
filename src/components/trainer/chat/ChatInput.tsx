@@ -82,8 +82,8 @@ const ChatInput = ({ selectedChat,handleSendMessage,newMessage,setNewMessage }) 
           className="flex-grow text-black rounded-l-md border-2 border-gray-300 p-2"
         />
         <button
-          onClick={handleSendMessage}
           className="bg-blue-500 text-white rounded-r-md p-2"
+          onClick={handleSendMessage}
         >
           Send
         </button>
