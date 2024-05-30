@@ -15,7 +15,6 @@ const GymPage = () => {
   return (
     <div className="bg-black">
       <ThemeProvider theme={darkTheme}>
-        <GymNavbar />
         <Outlet />
       </ThemeProvider>
     </div>

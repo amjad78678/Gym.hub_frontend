@@ -267,3 +267,13 @@ export const updateCoupon = async (data) => {
   }
 }
 
+export const fetchGymData = async ()=>{
+  try {
+    const response = await Api.get(gymRoutes.fetchGymData);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
+

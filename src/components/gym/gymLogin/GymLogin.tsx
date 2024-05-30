@@ -58,7 +58,7 @@ const GymLogin = ({showForgotEmail}) => {
         navigate("/gym/dashboard");
         const data = {
           name: res.data.gym.gymName,
-          location: res.data.gym.location,
+          gymImage: res.data.gym.images[0].imageUrl,
           token: res.data.token,
         };
         dispatch(setGymLogin(data));

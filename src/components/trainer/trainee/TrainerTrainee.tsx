@@ -72,17 +72,6 @@ const columns = useMemo(
       ),
     },
     {
-      field: "email",
-      headerName: "Email",
-      width: 220,
-      headerAlign: "center",
-      renderCell: (params) => (
-        <Box display="flex" justifyContent="center" width="100%">
-          {params.row.userId.email}
-        </Box>
-      ),
-    },
-    {
       field: "bookingDate",
       headerName: "Booking Date",
       width: 160,

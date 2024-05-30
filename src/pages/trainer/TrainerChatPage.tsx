@@ -7,14 +7,9 @@ import { useSelector } from "react-redux";
 const TrainerChatPage = () => {
   const { trainerDetails } = useSelector((state: RootState) => state.auth);
   const socket = useSocket();
-
-
   useEffect(() => {
-    if (socket) {
-      console.log("Emitting add_user for", trainerDetails.trainerId);
-      socket.emit("add_user", trainerDetails.trainerId);
-    }
-  }, [socket, trainerDetails]);
+    socket.emit("add_user", trainerDetails.trainerId);
+  },[])
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -23,7 +18,7 @@ const TrainerChatPage = () => {
         console.log(
           "Trainer is back to the chat page, re-emitting add_user event"
         );
-      }  
+      }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);

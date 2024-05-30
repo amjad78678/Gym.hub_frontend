@@ -6,7 +6,6 @@ const UserHomePage = () => {
   return (
     <div className="text-white">
         <Navbar {...{fixed: true}}/>
-
         <UserHome />
     </div>
   );

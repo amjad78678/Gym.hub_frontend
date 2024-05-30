@@ -31,7 +31,7 @@ const UserChat = () => {
         console.log("Received message:", data);
         setMessages((prevMessages) => [...prevMessages, data]);
       }, 300);
-
+ 
       socket.on("connect", handleConnect);
       socket.on("message", debouncedHandleMessage);
 

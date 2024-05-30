@@ -16,7 +16,6 @@ const ChatInput = ({ userId, trainerId, handleSendMessage, setNewMessage,newMess
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop_typing", () => setIsTyping(false));
 
-    // Clean up the event listeners on component unmount
     return () => {
       socket.off("typing");
       socket.off("stop_typing");

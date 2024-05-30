@@ -10,11 +10,9 @@ const UserChatPage = () => {
   const socket = useSocket();
 
   useEffect(() => {
-    if (socket) {
-      console.log("Emitting add_user for", userDetails.userId);
-      socket.emit("add_user", userDetails.userId);
-    }
-  }, [socket, userDetails]);
+    socket.emit("add_user", userDetails.userId);
+  },[])
+
 
   useEffect(() => {
     const handleVisibilityChange = () => {

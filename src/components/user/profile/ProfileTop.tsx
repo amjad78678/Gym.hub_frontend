@@ -98,7 +98,7 @@ const ProfileTop = ({ userData, refetch }) => {
     setDropMenu((prevDropMenu) => !prevDropMenu);
   };
 
-  return (
+  return ( 
     <>
       <div className="absolute inset-0 text-white">
         <div style={divStyle} className="h-24 lg:h-52 relative">

@@ -15,6 +15,7 @@ import iMessageType from "@/interfaces/iMessageType";
 import { useSocket } from "@/utils/context/socketContext";
 import { RootState } from "@/redux/store";
 import debounce from "@/utils/miscillenious/debounce";
+import { useNavigate } from "react-router-dom";
 
 const TrainerChat = () => {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -24,6 +25,7 @@ const TrainerChat = () => {
   const [messages, setMessages] = useState<iMessageType[]>([]);
   const [socketConnected, setSocketConnected] = useState(false);
   const [newMessage, setNewMessage] = useState("");
+  const navigate = useNavigate();
 
   const { isLoading, data: messageData } = useQuery({
     queryKey: [
@@ -38,7 +40,6 @@ const TrainerChat = () => {
   useEffect(() => {
     if (socket) {
       const handleConnect = () => setSocketConnected(true);
-
       const debounceHandleMessage = debounce((data) => {
         console.log("Received message:", data);
         setMessages((prevMessages) => [...prevMessages, data]);
@@ -48,7 +49,7 @@ const TrainerChat = () => {
       socket.on("message", debounceHandleMessage);
 
       return () => {
-        socket.off("connect", handleConnect);
+        socket.off("connect", handleConnect); 
         socket.off("message", debounceHandleMessage);
       };
     }
@@ -66,9 +67,9 @@ const TrainerChat = () => {
     }
   }, [messageData]);
 
-  const handleJoinRoom = useCallback(() => {
+  const handleJoinRoom = () => {
     window.open(`/call/${trainerName}`, "_blank", "noopener,noreferrer");
-  }, [trainerName]);
+  }
 
   const { mutate: trainerChatCreateMutate } = useMutation({
     mutationFn: trainerChatCreate,
@@ -81,7 +82,6 @@ const TrainerChat = () => {
 
     if (newMessage.trim() !== "") {
       socket.emit("stop_typing", { typeTo: selectedChat.userId });
-
       socket.emit("send_message", {
         sender: trainerDetails.trainerId,
         receiver: selectedChat.userId,

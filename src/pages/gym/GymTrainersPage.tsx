@@ -5,6 +5,7 @@ import Trainers from "@/components/gym/gymTrainer/Trainers";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
+import GymNavbar from "@/components/gym/common/GymNavbar";
 
 const GymTrainersPage = () => {
 
@@ -29,14 +30,15 @@ console.log('selectedRow',selectedRow)
 
  
   return (
-    <>
+    <div className="bg-black">
+    <GymNavbar {...{fixed: false}} />
    <Container>
      <Trainers {...{open,setOpen,setSelectedRow,editOpen,setEditOpen,trainers,refetch}}/>
 
    </Container>
    {open && <AddTrainerModal {...{open,setOpen,refetch}}/>}
    {editOpen && <EditTrainerModal {...{editOpen,selectedRow,setEditOpen,refetch}}/>}
-   </>
+   </div>
 
   );
 };

@@ -18,7 +18,7 @@ const gymRoutes = {
     fetchCoupons:`/fetch_coupons`,
     addCoupon:'/add_coupon',
     updateCoupon:`/update_coupon`,
-   
+    fetchGymData:`/fetch_gym_data`
 
 }
 

@@ -1,4 +1,5 @@
 import { fetchCoupons } from '@/api/gym'
+import GymNavbar from '@/components/gym/common/GymNavbar'
 import AddCouponModal from '@/components/gym/gymCoupon/AddCouponModal'
 import EditCouponModal from '@/components/gym/gymCoupon/EditCouponModal'
 import GymCoupon from '@/components/gym/gymCoupon/GymCoupon'
@@ -30,6 +31,7 @@ console.log('selectedRow',selectedRow)
 
   return (
     <>
+      <GymNavbar {...{fixed: false}}/>
     <div>
         <GymCoupon {...{open,setOpen,setSelectedRow,editOpen,setEditOpen,coupons,refetch}} />
     </div>

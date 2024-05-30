@@ -46,7 +46,7 @@ function Navbar({ fixed }) {
     handleLogout();
   };
 
-  const isScrolled = useScroll();
+  const isScrolled = useScroll(); 
 
   const position = fixed ? "fixed" : "static";
   return (
@@ -54,7 +54,7 @@ function Navbar({ fixed }) {
       <AppBar
         sx={{
           backgroundColor: isScrolled
-            ? "rgba(0, 0, 1, 0.9)"
+            ? "rgba(0, 0, 1, 0.9)" 
             : "rgba(0, 0, 1, 0.3)",
           transition: isScrolled ? "all 0.3s ease" : "none",
           boxShadow: "none",

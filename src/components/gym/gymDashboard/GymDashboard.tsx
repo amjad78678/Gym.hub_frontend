@@ -3,15 +3,16 @@ import { Col, Container, Row } from "react-bootstrap";
 
 const GymDashboard = () => {
   return (
-    <>
+    <div className="">
       <Container>
         <Row>
-          <Col xs={12}></Col>
+          <Col xs={12}>
+      <img className="" src="/banner.png" alt="" />
+
+          </Col>
         </Row>
       </Container>
-
-      <img className="" src="/gymDash.jpg" alt="" />
-    </>
+    </div>
   );
 };
 
