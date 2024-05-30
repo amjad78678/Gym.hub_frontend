@@ -6,7 +6,10 @@ import { RootState } from "@/redux/store";
 
 const VedioCall = () => {
   const { userDetails } = useSelector((state: RootState) => state.auth);
-  const { roomId } = useParams();
+  const { senderId, recieverId } = useParams();
+  const uniqueId =
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15);
 
   const myMeeting = async (element: HTMLDivElement) => {
     if (!element) {
@@ -18,20 +21,14 @@ const VedioCall = () => {
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appID,
       serverSecret,
-      roomId as string,
-      userDetails.userId,
+      senderId + recieverId,
+      uniqueId,
       userDetails.name
     );
 
     const zegoCloud = ZegoUIKitPrebuilt.create(kitToken);
     zegoCloud.joinRoom({
       container: element,
-      sharedLinks: [
-        {
-          name: "Copy Link",
-          url: `http://localhost:5000/call/${roomId}`,
-        },
-      ],
       scenario: {
         mode: ZegoUIKitPrebuilt.OneONoneCall,
       },

@@ -15,8 +15,6 @@ import UserProfilePage from "@/pages/user/UserProfilePage";
 import PersonalTrainerPage from "@/pages/user/PersonalTrainerPage";
 import UserChatPage from "@/pages/user/UserChatPage";
 import WorkoutsPage from "@/pages/user/WorkoutsPage";
-import GymListSkeleton from "@/components/user/skeletons/GymListSkeleton";
-import HomeSkeleton from "@/components/user/skeletons/HomeSkeleton";
 import CheckoutSkeleton from "@/components/user/skeletons/CheckoutSkeleton";
 
 const UserRoutes = () => {

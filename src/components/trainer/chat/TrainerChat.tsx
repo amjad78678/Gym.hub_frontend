@@ -67,8 +67,12 @@ const TrainerChat = () => {
     }
   }, [messageData]);
 
-  const handleJoinRoom = () => {
-    window.open(`/call/${trainerName}`, "_blank", "noopener,noreferrer");
+  // const handleJoinRoom = () => {
+  //   window.open(`/call/${trainerName}`, "_blank", "noopener,noreferrer");
+  // }
+  const handleVedioCall = () =>{
+    socket.emit("call:start", { sender: trainerDetails.trainerId, receiver: selectedChat.userId });
+    navigate(`/call/${trainerDetails.trainerId}/${selectedChat.userId}`);
   }
 
   const { mutate: trainerChatCreateMutate } = useMutation({
@@ -160,7 +164,7 @@ const TrainerChat = () => {
                 </div>
               </div>
               <div className="flex items-center space-x-2 mr-4 mb-2">
-                <IconButton onClick={handleJoinRoom}>
+                <IconButton onClick={handleVedioCall}>
                   <VideoCall sx={{ width: 50, height: 50, color: "green" }} />
                 </IconButton>
               </div>

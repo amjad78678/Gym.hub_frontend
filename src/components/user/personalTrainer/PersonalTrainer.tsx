@@ -12,6 +12,7 @@ const PersonalTrainer = ({
   modalOpen,
   bookingTrainer,
   setBookingTrainer,
+  scrollContainerRef,
 }) => {
   const maxPrice = Math.max(
     ...trainerData.data.trainers.map((trainer: any) => trainer.monthlyFee)
@@ -76,6 +77,7 @@ const PersonalTrainer = ({
           <Col
             lg={9}
             md={8}
+            ref={scrollContainerRef}
             className=" rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
           >
             {filteredItems.map((trainer) => (

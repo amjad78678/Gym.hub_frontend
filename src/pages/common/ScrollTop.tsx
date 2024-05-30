@@ -6,7 +6,7 @@ const ScrollTop = () => {
 
 
     useEffect(() => {
-      if (!pathname.startsWith('/profile/')) {
+      if (!pathname.startsWith('/personal-trainer')) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }, [pathname]);

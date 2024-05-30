@@ -2,7 +2,7 @@ import { Container } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import ChatInput from "./ChatInput";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { CheckCircle } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTrainerData, fetchUserChatMessages } from "@/api/user";
@@ -23,7 +23,7 @@ const UserChat = () => {
   const [messages, setMessages] = useState<iMessageType[]>([]);
   const socket: Socket = useSocket();
   const [newMessage, setNewMessage] = useState("");
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (socket) {
       const handleConnect = () => setSocketConnected(true);
@@ -31,9 +31,12 @@ const UserChat = () => {
         console.log("Received message:", data);
         setMessages((prevMessages) => [...prevMessages, data]);
       }, 300);
- 
+
       socket.on("connect", handleConnect);
       socket.on("message", debouncedHandleMessage);
+      socket.on("call:start", (sender) => {
+        navigate(`/call/${sender}/${userDetails.userId}`);
+      });
 
       return () => {
         socket.off("connect", handleConnect);

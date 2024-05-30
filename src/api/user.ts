@@ -248,9 +248,13 @@ export const fetchSubscriptions = async () => {
   }
 };
 
-export const fetchTrainers = async () => {
+export const fetchTrainers =  async ({
+  queryKey,
+}: QueryFunctionContext<[string, string | null]>) => {
   try {
-    const response = await Api.get(userRoutes.fetchTrainers);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, page] = queryKey;
+    const response = await Api.get(userRoutes.fetchTrainers(page));
     return response;
   } catch (error) {
     const err: Error = error as Error;
@@ -400,12 +404,12 @@ export const getWorkoutDetails = async ({
   }
 };
 
-export const fetchBannersData = async ()=>{
+export const fetchBannersData = async () => {
   try {
-    const response = await Api.get(userRoutes.getBanners)
-    return response
+    const response = await Api.get(userRoutes.getBanners);
+    return response;
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
   }
-}
+};
