@@ -9,13 +9,11 @@ import TrainerCallPage from "@/pages/trainer/TrainerCallPage";
 const AppRouter = () => {
   return (
     <Routes>
-      
       <Route path="/*" element={<UserRoutes />} />
       <Route path="/gym/*" element={<GymRoutes />} />
       <Route path="/admin/*" element={<AdminRoutes />} />
       <Route path="/trainer/*" element={<TrainerRoutes />} />
       <Route path="/call/:senderId/:recieverId" element={<TrainerCallPage/>} />
-
     </Routes>
   );
 };

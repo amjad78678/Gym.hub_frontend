@@ -4,6 +4,7 @@ import SearchBar from "../gymList/SearchBar";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import { Slider } from "@mui/material";
 import TrainerCard from "./TrainerCard";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const PersonalTrainer = ({
   trainerData,
@@ -12,23 +13,29 @@ const PersonalTrainer = ({
   modalOpen,
   bookingTrainer,
   setBookingTrainer,
-  scrollContainerRef,
+  fetchMoreData,
+  fullResult,
 }) => {
   const maxPrice = Math.max(
-    ...trainerData.data.trainers.map((trainer: any) => trainer.monthlyFee)
+    ...trainerData.map((trainer: any) => trainer?.monthlyFee)
   );
   const [sliderValue, setSliderValue] = useState(maxPrice);
   const [searchValue, setSearchValue] = useState("");
-  const [filteredItems, setFilteredItems] = useState(trainerData.data.trainers);
+  const [filteredItems, setFilteredItems] = useState([]);
+
+  useEffect(() => {
+    if(trainerData){ 
+      setFilteredItems(trainerData)
+    }
+  },[trainerData])
+  console.log("iam trainer data", trainerData);
+  console.log("iam filtered items", filteredItems);
   const searchHandler = (value: string) => {
     setSearchValue(value);
   };
 
-  console.log("i am largest price", maxPrice);
-  console.log("iam filtered Items", filteredItems);
-
   useEffect(() => {
-    const filtered = trainerData.data.trainers.filter((trainer) => {
+    const filtered = trainerData.filter((trainer) => {
       const trainerName = trainer.name;
       const isSearchMatch = trainerName
         .toLowerCase()
@@ -45,7 +52,7 @@ const PersonalTrainer = ({
     setSliderValue(newValue);
   };
 
-  return (
+  return trainerData && (
     <>
       <Container>
         <Row>
@@ -74,28 +81,34 @@ const PersonalTrainer = ({
               </div>
             </div>
           </Col>
+
           <Col
             lg={9}
             md={8}
-            ref={scrollContainerRef}
             className=" rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
           >
-            {filteredItems.map((trainer) => (
-              <>
-                {console.log("iam trainer each", trainer)}
-                <TrainerCard
-                  key={trainer._id}
-                  {...{
-                    trainer,
-                    handleModal,
-                    modalOpen,
-                    handleBookNow,
-                    bookingTrainer,
-                    setBookingTrainer,
-                  }}
-                />
-              </>
-            ))}
+            <InfiniteScroll
+              dataLength={filteredItems.length}
+              next={fetchMoreData}
+              hasMore={trainerData && trainerData.length < fullResult}
+              loader={<h4>Loading...</h4>}
+            >
+              {filteredItems.map((trainer) => (
+                <>
+                  <TrainerCard
+                    key={trainer._id}
+                    {...{
+                      trainer,
+                      handleModal,
+                      modalOpen,
+                      handleBookNow,
+                      bookingTrainer,
+                      setBookingTrainer,
+                    }}
+                  />
+                </>
+              ))}
+            </InfiniteScroll>
           </Col>
         </Row>
       </Container>

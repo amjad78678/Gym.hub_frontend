@@ -3,16 +3,14 @@ import Navbar from "@/components/common/Navbar";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTrainers } from "@/api/user";
 import Loader from "@/components/common/Loader";
-import { useEffect, useRef, useState, RefObject, useCallback } from "react";
+import { useEffect,useState } from "react";
 import GymListSkeleton from "@/components/user/skeletons/GymListSkeleton";
 
 const PersonalTrainerPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [bookingTrainer, setBookingTrainer] = useState(null);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const scrollContainerRef: RefObject<HTMLElement> = useRef(null);
-  const [trainer, setTrainer] = useState<any>([]);
+  const [trainers, setTrainers] = useState<any>([]);
 
   const handleModal = () => {
     setModalOpen(!modalOpen);
@@ -31,63 +29,42 @@ const PersonalTrainerPage = () => {
     queryKey: ["trainer", page],
     queryFn: fetchTrainers,
   });
-
-
-  console.log('iam trainerpage set',trainer)
+  console.log("iam trainerpage set", trainers);
 
   useEffect(() => {
-    if (!isLoading && !isError) {
-      setLoading(false);
+    if (trainerData) {
+      setTrainers((prevTrainers) => [...prevTrainers, ...trainerData?.data.trainers]);
     }
-  }, [isLoading, isError]);
-
-  const handleInfiniteScroll = useCallback(async () => {
-    if (!loading && scrollContainerRef.current) {
-      const { scrollTop, clientHeight, scrollHeight } =
-        scrollContainerRef.current;
-
-      console.log("Scrolling", scrollTop, clientHeight, scrollHeight);
-      if (scrollTop + clientHeight + 1 >= scrollHeight) {
-        console.log("Reached bottom of div, load more");
-        setLoading(true);
-        setPage((prevPage) => prevPage + 1);
-      }
-    }
-  }, [loading, scrollContainerRef]);
+  }, [trainerData]);
 
   useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.addEventListener(
-        "scroll",
-        handleInfiniteScroll
-      );
-    }
+    setTrainers([]);
+    setPage(1);
+  },[])
 
-    return () => {
-      if (scrollContainerRef.current) {
-        scrollContainerRef.current.removeEventListener(
-          "scroll",
-          handleInfiniteScroll
-        );
-      }
-    };
-  }, [handleInfiniteScroll]);
+  const fetchMoreData = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
 
-  return isLoading && !trainerData ? (
+
+
+
+  return isLoading && trainers?.length===0 ? (
     <GymListSkeleton />
-  ) : ( 
+  ) : (
     <div className="bg-black text-white">
       <Navbar {...{ fixed: true }} />
 
       <PersonalTrainer
         {...{
-          trainerData,
+          trainerData: trainers,
           handleBookNow,
           modalOpen,
           handleModal,
           bookingTrainer,
           setBookingTrainer,
-          scrollContainerRef,
+          fetchMoreData,
+          fullResult: trainerData?.data?.fullResult,
         }}
       />
     </div>
