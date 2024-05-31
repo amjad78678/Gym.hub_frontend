@@ -20,9 +20,9 @@ const GymList = () => {
     data: gymData,
     refetch,
   } = useQuery({
-    queryKey: ["gymsListUserSide"],
-    queryFn: async () => {
-      return await fetchNearGymList({
+    queryKey: ["gymsListUserSide", page],
+    queryFn: () => {
+      return fetchNearGymList({
         latitude: location.latitude,
         longitude: location.longitude,
         page: page,
@@ -37,20 +37,22 @@ const GymList = () => {
       setFilteredItems((prev) => {
         // Ensure prev is an array before spreading its contents
         const prevArray = Array.isArray(prev) ? prev : [];
-        return [...prevArray, ...gymData.data.message];
-      });
 
+        // Create a new array with unique items by checking if the gym._id already exists in prevArray
+        const uniqueGyms = [
+          ...prevArray,
+          ...gymData.data.message.filter(
+            (gym) => !prevArray.some((item) => item._id === gym._id)
+          ),
+        ];
+
+        return uniqueGyms;
+      });
       setMaxPrice(
         Math.max(...gymData.data.message.map((gym) => gym.subscriptions.Daily))
       );
     }
   }, [gymData]);
-
-  // useEffect(() => {
-  //   if (location.latitude !== null && location.longitude !== null) {
-  //       refetch();
-  //   }
-  // }, [location]);
 
   const [search, setSearch] = useState("");
   const searchHandler = (val: string) => {
@@ -81,14 +83,18 @@ const GymList = () => {
   console.log("fetch gym data", gymData);
 
   const fetchMoreData = () => {
+    console.log("fetch more data", page);
     setPage((prevPage) => prevPage + 1);
-    refetch();
   };
 
-  if (!filteredItems) return;
-  if (isLoading) return <GymListSkeleton />;
+  console.log("gymData", gymData?.data.total);
+  console.log("itemslength", filteredItems?.length);
 
+  if (!gymData && !filteredItems && filteredItems?.length < 1)
+    return <GymListSkeleton />;
   return (
+    !isLoading &&
+    filteredItems && (
       <div className="text-white min-h-screen">
         <Container>
           <Row>
@@ -127,7 +133,7 @@ const GymList = () => {
               <InfiniteScroll
                 dataLength={filteredItems.length}
                 next={fetchMoreData}
-                hasMore={true}
+                hasMore={gymData && filteredItems?.length < gymData?.data.total}
                 loader={
                   <h1 className="text-white text-xl">Loading..........</h1>
                 }
@@ -137,7 +143,7 @@ const GymList = () => {
                   </p>
                 }
               >
-                {filteredItems.map((gym) => {
+                {filteredItems?.map((gym) => {
                   return !gym.isDeleted && <GymCard key={gym._id} gym={gym} />;
                 })}
               </InfiniteScroll>
@@ -146,6 +152,7 @@ const GymList = () => {
         </Container>
       </div>
     )
+  );
 };
 
 export default GymList;

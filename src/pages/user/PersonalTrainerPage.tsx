@@ -49,8 +49,8 @@ const PersonalTrainerPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  if(trainers.length < 1 || isLoading || isError ) return <GymListSkeleton/>
-  return  (
+  if(!trainerData && !trainers && trainers?.length < 1  ) return <GymListSkeleton/>
+  return !isLoading && (
     <div className="bg-black text-white">
       <Navbar {...{ fixed: true }} />
       <PersonalTrainer 
