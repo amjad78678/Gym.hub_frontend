@@ -13,7 +13,7 @@ import { SocketProvider } from "./utils/context/socketContext.tsx";
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+   <>
     <Toaster position="top-right" reverseOrder={false} />
     <GoogleOAuthProvider clientId="517088487962-381ms18c3e4okdi43c1sbf8komek0ekb.apps.googleusercontent.com">
       <Provider store={store}>
@@ -24,5 +24,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </SocketProvider>
       </Provider>
     </GoogleOAuthProvider>
-  </React.StrictMode>
+    </>
 );

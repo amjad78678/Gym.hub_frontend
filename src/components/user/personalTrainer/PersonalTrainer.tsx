@@ -5,8 +5,6 @@ import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import { Slider } from "@mui/material";
 import TrainerCard from "./TrainerCard";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Trainers from "@/components/gym/gymTrainer/Trainers";
-import GymListSkeleton from "../skeletons/GymListSkeleton";
 
 const PersonalTrainer = ({
   trainerData,
@@ -14,24 +12,24 @@ const PersonalTrainer = ({
   handleModal,
   modalOpen,
   bookingTrainer,
-  setBookingTrainer, 
+  setBookingTrainer,
   fetchMoreData,
   fullResult,
 }) => {
   const [searchValue, setSearchValue] = useState("");
-  const [filteredItems, setFilteredItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState<any[]>([]);
   const [maxPrice, setMaxPrice] = useState(0);
   useEffect(() => {
-    if (trainerData) {
+    console.log("iam trainer data", trainerData);
+    
+    if (trainerData && trainerData.length > 0) {
       setFilteredItems(trainerData);
-
-      setMaxPrice(
-        Math.max(...trainerData.map((trainer) => trainer.monthlyFee))
-      );
+      setMaxPrice(Math.max(...trainerData.map((trainer: any) => trainer.monthlyFee)));
     }
+  
+    console.log("iam filtered items", filteredItems);
   }, [trainerData]);
-  console.log("iam trainer data", trainerData);
-  console.log("iam filtered items", filteredItems);
+
   const [sliderValue, setSliderValue] = useState(maxPrice);
   const searchHandler = (value: string) => {
     setSearchValue(value);
@@ -54,11 +52,8 @@ const PersonalTrainer = ({
   const handleSliderChange = (event: Event, newValue: number) => {
     setSliderValue(newValue);
   };
-
-  return (
-    trainerData &&
-    filteredItems &&
-    maxPrice > 0 && (
+  if (maxPrice < 1) return;
+  return  filteredItems && (
       <>
         <Container>
           <Row>
@@ -97,7 +92,7 @@ const PersonalTrainer = ({
                 dataLength={filteredItems.length}
                 next={fetchMoreData}
                 hasMore={trainerData && trainerData.length < fullResult}
-                loader={<GymListSkeleton />}
+                loader={<h1>Loading...</h1>}
               >
                 {filteredItems.map((trainer) => (
                   <>
@@ -120,7 +115,6 @@ const PersonalTrainer = ({
         </Container>
       </>
     )
-  );
 };
 
 export default PersonalTrainer;

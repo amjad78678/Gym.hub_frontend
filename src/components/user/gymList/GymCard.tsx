@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 
 const GymCard = ({ gym }) => {
 
-
-  return (
+  return  (
     <div className="bg-black">
       <div className="flex flex-col my-4">
         <div className="relative bg-black flex flex-col md:flex-row md:space-x-5  md:space-y-0 rounded-xl shadow-lg p-3 max-w-xs md:max-w-3xl mx-auto border border-white">

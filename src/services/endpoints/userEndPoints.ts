@@ -5,7 +5,7 @@ const userRoutes={
     userOtpResend:'/resend_otp',
     userLogin:'/login',
     userLogout:'/logout',
-    fetchNearGymList:(latitude: number,longitude: number)=>`/gym_list?latitude=${latitude}&longitude=${longitude}`,
+    fetchNearGymList:(latitude: number,longitude: number,page: number)=>`/gym_list?latitude=${latitude}&longitude=${longitude}&page=${page}`,
     fetchGymList: '/gym_list_normal',
     fetchGymDetails:(id: string)=>`/gym_details/${id}`,
     forgotPassword:'/forgot_password',

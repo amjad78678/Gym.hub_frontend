@@ -26,7 +26,7 @@ const PersonalTrainerPage = () => {
     data: trainerData,
     isError,
   } = useQuery({
-    queryKey: ["trainer", page],
+    queryKey: ["trainerPageTrainerList", page],
     queryFn: fetchTrainers,
   });
   console.log("iam trainerpage set", trainers);
@@ -49,8 +49,8 @@ const PersonalTrainerPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  if(!trainers.length) return <GymListSkeleton/>
-  return (
+  if(trainers.length < 1 || isLoading || isError ) return <GymListSkeleton/>
+  return  (
     <div className="bg-black text-white">
       <Navbar {...{ fixed: true }} />
       <PersonalTrainer 
@@ -63,7 +63,6 @@ const PersonalTrainerPage = () => {
           setBookingTrainer,
           fetchMoreData,
           fullResult: trainerData?.data?.fullResult,
-
         }}
       />
     </div>

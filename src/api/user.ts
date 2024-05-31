@@ -104,10 +104,10 @@ export const userLogout = async () => {
   }
 };
 
-export const fetchNearGymList = async ({ latitude, longitude }) => {
+export const fetchNearGymList = async ({ latitude, longitude,page }) => {
   try {
     const response = await Api.get(
-      userRoutes.fetchNearGymList(latitude, longitude)
+      userRoutes.fetchNearGymList(latitude, longitude,page)
     );
     return response;
   } catch (error) {
