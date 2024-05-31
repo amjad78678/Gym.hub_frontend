@@ -11,7 +11,7 @@ const GymListPage = () => {
 
         
     </div>
-  )
+  ) 
 }
 
 export default GymListPage

@@ -3,11 +3,13 @@ import { Col, Container, Row } from "react-bootstrap";
 import GymCard from "./GymCard";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import { useQuery } from "@tanstack/react-query";
-import { fetchNearGymList } from "@/api/user";
-import { Slider, useMediaQuery } from "@mui/material";
+import { fetchNearGymList } from "@/api/user"; 
+import { Slider } from "@mui/material";
 import LocationInput from "./LocationInput";
 import SearchBar from "./SearchBar";
 import GymListSkeleton from "../skeletons/GymListSkeleton";
+import InfiniteScroll from "react-infinite-scroll-component";
+
 
 const GymList = () => {
   const [filteredItems, setFilteredItems] = useState([]);
@@ -28,7 +30,7 @@ const GymList = () => {
       }
     },
     enabled: location.latitude !== null && location.longitude !== null,
-  }); 
+  });
 
   const [maxPrice, setMaxPrice] = useState(0);
   useEffect(() => {
@@ -110,9 +112,16 @@ const GymList = () => {
             md={8}
             className=" rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
           >
-            {filteredItems?.map((gym) => {
-              return !gym.isDeleted && <GymCard key={gym._id} gym={gym} />;
-            })}
+            <InfiniteScroll
+              dataLength={filteredItems.length}
+              next={fetchMoreData}
+              hasMore={trainerData && trainerData.length < fullResult}
+              loader={<GymListSkeleton />}
+            >
+              {filteredItems?.map((gym) => {
+                return !gym.isDeleted && <GymCard key={gym._id} gym={gym} />;
+              })}
+            </InfiniteScroll>
           </Col>
         </Row>
       </Container>

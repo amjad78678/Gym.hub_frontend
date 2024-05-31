@@ -14,7 +14,7 @@ const PersonalTrainer = ({
   handleModal,
   modalOpen,
   bookingTrainer,
-  setBookingTrainer,
+  setBookingTrainer, 
   fetchMoreData,
   fullResult,
 }) => {

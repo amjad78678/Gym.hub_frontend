@@ -53,7 +53,7 @@ const PersonalTrainerPage = () => {
   return (
     <div className="bg-black text-white">
       <Navbar {...{ fixed: true }} />
-      <PersonalTrainer
+      <PersonalTrainer 
         {...{
           trainerData: trainers,
           handleBookNow,
