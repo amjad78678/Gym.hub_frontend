@@ -28,7 +28,7 @@ const GymList = () => {
       }
     },
     enabled: location.latitude !== null && location.longitude !== null,
-  });
+  }); 
 
   const [maxPrice, setMaxPrice] = useState(0);
   useEffect(() => {

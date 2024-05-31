@@ -5,6 +5,8 @@ import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import { Slider } from "@mui/material";
 import TrainerCard from "./TrainerCard";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Trainers from "@/components/gym/gymTrainer/Trainers";
+import GymListSkeleton from "../skeletons/GymListSkeleton";
 
 const PersonalTrainer = ({
   trainerData,
@@ -16,20 +18,21 @@ const PersonalTrainer = ({
   fetchMoreData,
   fullResult,
 }) => {
-  const maxPrice = Math.max(
-    ...trainerData.map((trainer: any) => trainer?.monthlyFee)
-  );
-  const [sliderValue, setSliderValue] = useState(maxPrice);
   const [searchValue, setSearchValue] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
-
+  const [maxPrice, setMaxPrice] = useState(0);
   useEffect(() => {
-    if(trainerData){ 
-      setFilteredItems(trainerData)
+    if (trainerData) {
+      setFilteredItems(trainerData);
+
+      setMaxPrice(
+        Math.max(...trainerData.map((trainer) => trainer.monthlyFee))
+      );
     }
-  },[trainerData])
+  }, [trainerData]);
   console.log("iam trainer data", trainerData);
   console.log("iam filtered items", filteredItems);
+  const [sliderValue, setSliderValue] = useState(maxPrice);
   const searchHandler = (value: string) => {
     setSearchValue(value);
   };
@@ -52,67 +55,71 @@ const PersonalTrainer = ({
     setSliderValue(newValue);
   };
 
-  return trainerData && (
-    <>
-      <Container>
-        <Row>
-          <Col md={4} lg={3}>
-            <div>
-              <SearchBar searchHandler={searchHandler} />
+  return (
+    trainerData &&
+    filteredItems &&
+    maxPrice > 0 && (
+      <>
+        <Container>
+          <Row>
+            <Col md={4} lg={3}>
               <div>
-                <span className="text-xl">
-                  <span>Filters</span>{" "}
-                  <FilterListOutlinedIcon
-                    sx={{ color: "white", float: "right", fontSize: "27px" }}
-                  />
-                </span>
+                <SearchBar searchHandler={searchHandler} />
+                <div>
+                  <span className="text-xl">
+                    <span>Filters</span>{" "}
+                    <FilterListOutlinedIcon
+                      sx={{ color: "white", float: "right", fontSize: "27px" }}
+                    />
+                  </span>
 
-                <div className="">
-                  <h1 className=" text-lg mt-4 mb-2">Price</h1>
-                  <Slider
-                    aria-label="Small steps"
-                    sx={{ color: "white", ml: 0, mr: 6 }}
-                    valueLabelDisplay="auto"
-                    defaultValue={maxPrice}
-                    max={maxPrice}
-                    onChange={handleSliderChange}
-                  />
+                  <div className="">
+                    <h1 className=" text-lg mt-4 mb-2">Price</h1>
+                    <Slider
+                      aria-label="Small steps"
+                      sx={{ color: "white", ml: 0, mr: 6 }}
+                      valueLabelDisplay="auto"
+                      defaultValue={maxPrice}
+                      max={maxPrice}
+                      onChange={handleSliderChange}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          </Col>
+            </Col>
 
-          <Col
-            lg={9}
-            md={8}
-            className=" rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
-          >
-            <InfiniteScroll
-              dataLength={filteredItems.length}
-              next={fetchMoreData}
-              hasMore={trainerData && trainerData.length < fullResult}
-              loader={<h4>Loading...</h4>}
+            <Col
+              lg={9}
+              md={8}
+              className=" rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
             >
-              {filteredItems.map((trainer) => (
-                <>
-                  <TrainerCard
-                    key={trainer._id}
-                    {...{
-                      trainer,
-                      handleModal,
-                      modalOpen,
-                      handleBookNow,
-                      bookingTrainer,
-                      setBookingTrainer,
-                    }}
-                  />
-                </>
-              ))}
-            </InfiniteScroll>
-          </Col>
-        </Row>
-      </Container>
-    </>
+              <InfiniteScroll
+                dataLength={filteredItems.length}
+                next={fetchMoreData}
+                hasMore={trainerData && trainerData.length < fullResult}
+                loader={<GymListSkeleton />}
+              >
+                {filteredItems.map((trainer) => (
+                  <>
+                    <TrainerCard
+                      key={trainer._id}
+                      {...{
+                        trainer,
+                        handleModal,
+                        modalOpen,
+                        handleBookNow,
+                        bookingTrainer,
+                        setBookingTrainer,
+                      }}
+                    />
+                  </>
+                ))}
+              </InfiniteScroll>
+            </Col>
+          </Row>
+        </Container>
+      </>
+    )
   );
 };
 
