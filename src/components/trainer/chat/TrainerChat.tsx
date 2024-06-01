@@ -88,10 +88,12 @@ const TrainerChat = () => {
   const handleSendMessage = () => {
     if (newMessage.trim() !== "") {
       socket.emit("stop_typing", { typeTo: selectedChat.userId });
+      const time = new Date();
       socket.emit("send_message", {
         sender: trainerDetails.trainerId,
         receiver: selectedChat.userId,
         content: newMessage,
+        createdAt: time,
       });
 
       trainerChatCreateMutate({
@@ -142,7 +144,7 @@ const TrainerChat = () => {
       !userDataLoading &&
       messages ? (
         <div className={`sm:col-span-9 ${selectedChat ? "block" : "hidden"}`}>
-          <div className="flex-1 p-2 bg-gray-200 sm:p-6 justify-between flex flex-col h-screen rounded-md">
+          <div className="flex-1 p-2 bg-gray-200 sm:p-6 justify-between flex flex-col h-[700px] rounded-md">
             <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
               <div className="relative flex items-center space-x-4">
                 <div className="relative">
@@ -188,6 +190,7 @@ const TrainerChat = () => {
                   key={index}
                   sender={msg.sender}
                   text={msg.content}
+                  createdAt={msg.createdAt}
                   selectedChat={selectedChat}
                   {...{ setSocketConnected }}
                 />

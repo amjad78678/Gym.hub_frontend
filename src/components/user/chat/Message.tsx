@@ -1,7 +1,8 @@
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
+import {format} from 'timeago.js';
 
-const Message = ({ sender, text, userId, selectedTrainer }) => {
+const Message = ({ sender, text, userId, selectedTrainer,createdAt }) => {
   const { userDetails } = useSelector((state: RootState) => state.auth);
   const isSenderYou = sender === userId;
   const senderImage = isSenderYou
@@ -14,7 +15,7 @@ const Message = ({ sender, text, userId, selectedTrainer }) => {
 
 
 
-
+console.log('ima created date....................',createdAt)
 
   return (
     <div className="chat-message" >
@@ -37,6 +38,9 @@ const Message = ({ sender, text, userId, selectedTrainer }) => {
             >
               {text}
             </span>
+          </div>
+          <div className="text-gray-400">
+            <span>{format(createdAt)}</span>
           </div>
         </div>
       </div>

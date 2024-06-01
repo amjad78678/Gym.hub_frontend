@@ -31,11 +31,13 @@ const UserChat = () => {
         setMessages((prevMessages) => [...prevMessages, data]);
       }, 300);
 
-      socket.on("onlined_users",(onlined_users)=>{
-        const isTrainerOnline = onlined_users.find(user => user.userId === trainerId);
+      socket.on("onlined_users", (onlined_users) => {
+        const isTrainerOnline = onlined_users.find(
+          (user) => user.userId === trainerId
+        );
         if (isTrainerOnline) {
           setSocketConnected(true);
-        }else{
+        } else {
           setSocketConnected(false);
         }
       });
@@ -79,10 +81,13 @@ const UserChat = () => {
   const handleSendMessage = () => {
     if (newMessage.trim() !== "") {
       socket.emit("stop_typing", { typeTo: trainerId });
+      // const lastMessage = messages[messages.length - 1];
+      const time = new Date();
       socket.emit("send_message", {
         sender: userId,
         receiver: trainerId,
         content: newMessage,
+        createdAt: time,
       });
 
       userChatCreateMutate({
@@ -115,14 +120,14 @@ const UserChat = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages,trainerId]);
+  }, [messages, trainerId]);
 
   return (
     !isLoading &&
     userChat &&
     !trainerDataLoading && (
       <Container>
-        <div className="flex-1 p-2 bg-gray-200 sm:p-6 justify-between flex flex-col h-screen rounded-md">
+        <div className="flex-1 p-2 bg-gray-200 sm:p-6 justify-between flex flex-col h-[700px] rounded-md">
           <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
             <div className="relative flex items-center space-x-4">
               <div className="relative">
@@ -160,6 +165,7 @@ const UserChat = () => {
               <Message
                 key={index}
                 sender={msg.sender}
+                createdAt={msg.createdAt}
                 text={msg.content}
                 userId={userId}
                 selectedTrainer={trainerData?.data.trainer}

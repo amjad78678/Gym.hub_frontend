@@ -1,12 +1,15 @@
 import { useSocket } from "@/utils/context/socketContext";
 import React, { useEffect, useState } from "react";
-
+import { EmojiEmotionsOutlined } from "@mui/icons-material";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 const ChatInput = ({ userId, trainerId, handleSendMessage, setNewMessage,newMessage }) => {
   const socket = useSocket();
   const [isTyping, setIsTyping] = useState(false);
   const [typing, setTyping] = useState(false);
-  console.log('isTyping User 333333333333333',isTyping)
+  const [emojiOpen,setEmojiOpen]= useState(false)
+
 
   useEffect(() => {
     socket.on("typedUser", () => setIsTyping(true));
@@ -44,13 +47,25 @@ const ChatInput = ({ userId, trainerId, handleSendMessage, setNewMessage,newMess
         setTyping(false);
       }
     }, timerLength);
+  }; 
+  const handleAddEmoji = (e) => {
+    setEmojiOpen(false)
+    let sym = e.unified.split("-");
+    let codesArray: any = [];
+    sym.forEach((el) => codesArray.push("0x" + el));
+    let emoji = String.fromCodePoint(...codesArray);
+    setNewMessage(newMessage + emoji);
   };
-
 
   return (
     <>
+      {emojiOpen && <div className="ml-8">
+   <Picker data={data} onEmojiSelect={handleAddEmoji}  maxFrequentRows={0} />
+ </div>
+   }
       {isTyping && <div className="text-green-500">typing...</div>}
       <div className="flex items-center space-x-2">
+      <EmojiEmotionsOutlined onClick={()=>setEmojiOpen(!emojiOpen)} className="cursor-pointer text-yellow-500" />
         <input
           type="text"
           value={newMessage}

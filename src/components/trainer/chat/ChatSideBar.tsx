@@ -43,7 +43,7 @@ const ChatSideBar = ({ selectedChat, setSelectedChat }) => {
             color: "black",
             borderRadius: 2,
             borderWidth: "1px",
-            minHeight: "100vh",
+            minHeight: "700px",
           }}
         >
           <Box

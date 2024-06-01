@@ -1,27 +1,30 @@
-
 import { useSocket } from "@/utils/context/socketContext";
+import { EmojiEmotionsOutlined } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
-
-const ChatInput = ({ selectedChat,handleSendMessage,newMessage,setNewMessage }) => {
+const ChatInput = ({
+  selectedChat,
+  handleSendMessage,
+  newMessage,
+  setNewMessage,
+}) => {
   const socket: Socket = useSocket();
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-
+  const [emojiOpen,setEmojiOpen]= useState(false)
 
   useEffect(() => {
     socket.on("typedUser", () => setIsTyping(true));
     socket.on("stopTypedUser", () => setIsTyping(false));
-
 
     return () => {
       socket.off("typing");
       socket.off("stop_typing");
     };
   }, [socket]);
-
-
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -49,18 +52,25 @@ const ChatInput = ({ selectedChat,handleSendMessage,newMessage,setNewMessage }) 
       }
     }, timerLength);
   };
-
-
-
+  const handleAddEmoji = (e) => {
+    setEmojiOpen(false)
+    let sym = e.unified.split("-");
+    let codesArray: any = [];
+    sym.forEach((el) => codesArray.push("0x" + el));
+    let emoji = String.fromCodePoint(...codesArray);
+    setNewMessage(newMessage + emoji);
+  };
 
   return (
     <>
-      {isTyping && (
-        <div className="text-green-500">
-         typing...
-        </div>
-      )}
+   {emojiOpen && <div className="ml-8">
+   <Picker data={data} onEmojiSelect={handleAddEmoji}  maxFrequentRows={0} />
+ </div>
+   } 
+
+      {isTyping && <div className="text-green-500">typing...</div>}
       <div className="flex items-center space-x-2">
+        <EmojiEmotionsOutlined onClick={()=>setEmojiOpen(!emojiOpen)} className="cursor-pointer text-yellow-500" />
         <input
           type="text"
           value={newMessage}
