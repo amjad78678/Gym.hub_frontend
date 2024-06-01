@@ -12,12 +12,11 @@ const ChatInput = ({ selectedChat,handleSendMessage,newMessage,setNewMessage }) 
   const socket: Socket = useSocket();
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-
-
+  console.log('isTyping,,,,,,,,,,,,,,,,,,,,',isTyping)
 
   useEffect(() => {
-    socket.on("typing", () => setIsTyping(true));
-    socket.on("stop_typing", () => setIsTyping(false));
+    socket.on("typedUser", () => setIsTyping(true));
+    socket.on("stopTypedUser", () => setIsTyping(false));
 
 
     return () => {
@@ -68,8 +67,8 @@ const ChatInput = ({ selectedChat,handleSendMessage,newMessage,setNewMessage }) 
   return (
     <>
       {isTyping && (
-        <div>
-         {View}
+        <div className="text-green-500">
+         typing...
         </div>
       )}
       <div className="flex items-center space-x-2">

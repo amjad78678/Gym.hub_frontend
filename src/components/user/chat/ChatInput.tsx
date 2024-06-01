@@ -7,14 +7,11 @@ const ChatInput = ({ userId, trainerId, handleSendMessage, setNewMessage,newMess
   const socket = useSocket();
   const [isTyping, setIsTyping] = useState(false);
   const [typing, setTyping] = useState(false);
+  console.log('isTyping User 333333333333333',isTyping)
 
   useEffect(() => {
-    console.log("typing.....", typing);
-  }, [typing]);
-
-  useEffect(() => {
-    socket.on("typing", () => setIsTyping(true));
-    socket.on("stop_typing", () => setIsTyping(false));
+    socket.on("typedUser", () => setIsTyping(true));
+    socket.on("stopTypedUser", () => setIsTyping(false));
 
     return () => {
       socket.off("typing");
@@ -62,7 +59,7 @@ const ChatInput = ({ userId, trainerId, handleSendMessage, setNewMessage,newMess
 
   return (
     <>
-      {isTyping && <div>{View}</div>}
+      {isTyping && <div className="text-green-500">typing...</div>}
       <div className="flex items-center space-x-2">
         <input
           type="text"
