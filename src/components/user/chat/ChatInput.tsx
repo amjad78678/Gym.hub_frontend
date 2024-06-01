@@ -1,7 +1,6 @@
 import { useSocket } from "@/utils/context/socketContext";
 import React, { useEffect, useState } from "react";
-import animationData from "../../../assets/animations/typing.json";
-import { useLottie } from "lottie-react";
+
 
 const ChatInput = ({ userId, trainerId, handleSendMessage, setNewMessage,newMessage }) => {
   const socket = useSocket();
@@ -47,15 +46,6 @@ const ChatInput = ({ userId, trainerId, handleSendMessage, setNewMessage,newMess
     }, timerLength);
   };
 
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    style: { width: 80, marginLeft: 0 },
-  };
-
-  const lottieObj = useLottie(defaultOptions);
-  const { View } = lottieObj;
 
   return (
     <>

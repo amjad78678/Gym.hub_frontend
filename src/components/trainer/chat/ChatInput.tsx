@@ -1,18 +1,14 @@
-import { trainerChatCreate } from "@/api/trainer";
+
 import { useSocket } from "@/utils/context/socketContext";
-import { RootState } from "@/redux/store";
-import { useMutation } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
-import { useLottie } from "lottie-react";
-import animationData from "../../../assets/animations/typing.json";
+
 
 const ChatInput = ({ selectedChat,handleSendMessage,newMessage,setNewMessage }) => {
   const socket: Socket = useSocket();
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  console.log('isTyping,,,,,,,,,,,,,,,,,,,,',isTyping)
+
 
   useEffect(() => {
     socket.on("typedUser", () => setIsTyping(true));
@@ -54,15 +50,8 @@ const ChatInput = ({ selectedChat,handleSendMessage,newMessage,setNewMessage }) 
     }, timerLength);
   };
 
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    style: { width: 80, marginLeft: 0 },
-  };
 
-  const lottieObj = useLottie(defaultOptions);
-  const { View } = lottieObj;
+
 
   return (
     <>
