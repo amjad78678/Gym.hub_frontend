@@ -25,6 +25,7 @@ const TrainerChat = () => {
   const [messages, setMessages] = useState<iMessageType[]>([]);
   const [socketConnected, setSocketConnected] = useState(false);
   const [newMessage, setNewMessage] = useState("");
+  const [onlinedUsers, setOnlinedUsers] = useState([]);
   const navigate = useNavigate();
 
   const { isLoading, data: messageData } = useQuery({
@@ -39,21 +40,21 @@ const TrainerChat = () => {
 
   useEffect(() => {
     if (socket) {
-      
       const debounceHandleMessage = debounce((data) => {
         console.log("Received message:", data);
         setMessages((prevMessages) => [...prevMessages, data]);
       }, 300);
 
-      socket.on("onlined", ()=>setSocketConnected(true));
-      socket.on("offlined",()=>setSocketConnected(false));
       socket.on("message", debounceHandleMessage);
+      socket.on("onlined_users", (onlined_users) => {
+        setOnlinedUsers(onlined_users);
+      });
 
       return () => {
         socket.off("message", debounceHandleMessage);
       };
     }
-  }, [socket]);
+  }, [socket, selectedChat]);
 
   const { isLoading: userDataLoading, data: userData } = useQuery({
     queryKey: ["trainerUserData", selectedChat?.userId],
@@ -67,10 +68,15 @@ const TrainerChat = () => {
     }
   }, [messageData]);
 
-  const handleVedioCall = () =>{
-    socket.emit("call:start", { sender: trainerDetails.trainerId, receiver: selectedChat.userId });
-    navigate(`/trainer/video_call/${trainerDetails.trainerId}/${selectedChat.userId}`);
-  }
+  const handleVedioCall = () => {
+    socket.emit("call:start", {
+      sender: trainerDetails.trainerId,
+      receiver: selectedChat.userId,
+    });
+    navigate(
+      `/trainer/video_call/${trainerDetails.trainerId}/${selectedChat.userId}`
+    );
+  };
 
   const { mutate: trainerChatCreateMutate } = useMutation({
     mutationFn: trainerChatCreate,
@@ -114,10 +120,13 @@ const TrainerChat = () => {
 
   useEffect(() => {
     scrollToBottom();
-    socket.emit("user_online", selectedChat?.userId);
-  
-    return () => {
-      socket.emit("user_offline", selectedChat?.userId);
+    const isUserOnline = onlinedUsers.find(
+      (user) => user.userId === selectedChat?.userId
+    );
+    if (isUserOnline) {
+      setSocketConnected(true);
+    } else {
+      setSocketConnected(false);
     }
   }, [messages, selectedChat]);
 
@@ -200,8 +209,10 @@ const TrainerChat = () => {
       ) : (
         <div className="sm:col-span-9 flex justify-center items-center text-black bg-gray-300">
           <div className="flex flex-col">
-            <WhatsApp sx={{ width: 150, height: 150,mx:"auto",mb:2 }} />
-          <h1 className="text-4xl">You have not selected any messages yet!</h1>
+            <WhatsApp sx={{ width: 150, height: 150, mx: "auto", mb: 2 }} />
+            <h1 className="text-4xl">
+              You have not selected any messages yet!
+            </h1>
           </div>
         </div>
       )}

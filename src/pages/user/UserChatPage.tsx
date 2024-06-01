@@ -4,19 +4,12 @@ import { RootState } from "@/redux/store";
 import { useSocket } from "@/utils/context/socketContext";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 
 const UserChatPage = () => {
   const { userDetails } = useSelector((state: RootState) => state.auth);
   const socket = useSocket();
-  const { trainerId } = useParams();
   useEffect(() => {
     socket.emit("add_user", userDetails.userId);
-    socket.emit("user_online", trainerId);
-
-    return () => {
-      socket.emit("user_offline", trainerId);
-    };
   }, []);
 
   useEffect(() => {

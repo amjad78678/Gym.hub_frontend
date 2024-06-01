@@ -31,8 +31,14 @@ const UserChat = () => {
         setMessages((prevMessages) => [...prevMessages, data]);
       }, 300);
 
-      socket.on("onlined",()=>setSocketConnected(true));
-      socket.on("offlined",()=>setSocketConnected(false));
+      socket.on("onlined_users",(onlined_users)=>{
+        const isTrainerOnline = onlined_users.find(user => user.userId === trainerId);
+        if (isTrainerOnline) {
+          setSocketConnected(true);
+        }else{
+          setSocketConnected(false);
+        }
+      });
       socket.on("message", debouncedHandleMessage);
       socket.on("call:start", (sender) => {
         navigate(`/video_call/${sender}/${userDetails.userId}`);
@@ -109,7 +115,7 @@ const UserChat = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages,trainerId]);
 
   return (
     !isLoading &&
