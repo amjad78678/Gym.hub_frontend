@@ -26,20 +26,19 @@ const UserChat = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (socket) {
-      const handleConnect = () => setSocketConnected(true);
       const debouncedHandleMessage = debounce((data) => {
         console.log("Received message:", data);
         setMessages((prevMessages) => [...prevMessages, data]);
       }, 300);
 
-      socket.on("connect", handleConnect);
+      socket.on("onlined",()=>setSocketConnected(true));
+      socket.on("offlined",()=>setSocketConnected(false));
       socket.on("message", debouncedHandleMessage);
       socket.on("call:start", (sender) => {
-        navigate(`/call/${sender}/${userDetails.userId}`);
+        navigate(`/video_call/${sender}/${userDetails.userId}`);
       });
 
       return () => {
-        socket.off("connect", handleConnect);
         socket.off("message", debouncedHandleMessage);
       };
     }

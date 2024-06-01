@@ -35,10 +35,8 @@ const GymList = () => {
   useEffect(() => {
     if (gymData && gymData.data && gymData.data.message) {
       setFilteredItems((prev) => {
-        // Ensure prev is an array before spreading its contents
+        
         const prevArray = Array.isArray(prev) ? prev : [];
-
-        // Create a new array with unique items by checking if the gym._id already exists in prevArray
         const uniqueGyms = [
           ...prevArray,
           ...gymData.data.message.filter(

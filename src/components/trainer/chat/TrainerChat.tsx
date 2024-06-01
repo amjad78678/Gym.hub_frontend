@@ -39,17 +39,17 @@ const TrainerChat = () => {
 
   useEffect(() => {
     if (socket) {
-      const handleConnect = () => setSocketConnected(true);
+      
       const debounceHandleMessage = debounce((data) => {
         console.log("Received message:", data);
         setMessages((prevMessages) => [...prevMessages, data]);
       }, 300);
 
-      socket.on("connect", handleConnect);
+      socket.on("onlined", ()=>setSocketConnected(true));
+      socket.on("offlined",()=>setSocketConnected(false));
       socket.on("message", debounceHandleMessage);
 
       return () => {
-        socket.off("connect", handleConnect); 
         socket.off("message", debounceHandleMessage);
       };
     }
@@ -67,12 +67,9 @@ const TrainerChat = () => {
     }
   }, [messageData]);
 
-  // const handleJoinRoom = () => {
-  //   window.open(`/call/${trainerName}`, "_blank", "noopener,noreferrer");
-  // }
   const handleVedioCall = () =>{
     socket.emit("call:start", { sender: trainerDetails.trainerId, receiver: selectedChat.userId });
-    navigate(`/call/${trainerDetails.trainerId}/${selectedChat.userId}`);
+    navigate(`/trainer/video_call/${trainerDetails.trainerId}/${selectedChat.userId}`);
   }
 
   const { mutate: trainerChatCreateMutate } = useMutation({
@@ -83,7 +80,6 @@ const TrainerChat = () => {
   });
 
   const handleSendMessage = () => {
-
     if (newMessage.trim() !== "") {
       socket.emit("stop_typing", { typeTo: selectedChat.userId });
       socket.emit("send_message", {
@@ -118,7 +114,12 @@ const TrainerChat = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+    socket.emit("user_online", selectedChat?.userId);
+  
+    return () => {
+      socket.emit("user_offline", selectedChat?.userId);
+    }
+  }, [messages, selectedChat]);
 
   return (
     <div className="grid sm:grid-cols-12">

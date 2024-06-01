@@ -11,7 +11,6 @@ const ProfileSubscriptions = ({ selected, setSelected }) => {
     refetch();
   }, []);
 
-  // const [subs, setSubs] = useState([]);
   const { isLoading, data: subscriptionData, refetch } = useQuery({
     queryKey: ['subscriptionData'],
     queryFn: fetchSubscriptions,
@@ -21,7 +20,7 @@ const ProfileSubscriptions = ({ selected, setSelected }) => {
 
 
 
-  return !isLoading && subscriptionData?.data.subscriptions > 0 ? (
+  return !isLoading && subscriptionData ? (
     <>
       {subscriptionData?.data?.subscriptions?.map((sub) => (
         <SubscriptionCard sub={sub} />
