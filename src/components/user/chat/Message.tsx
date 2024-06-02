@@ -1,8 +1,8 @@
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
-import {format} from 'timeago.js';
+import { format } from "timeago.js";
 
-const Message = ({ sender, text, userId, selectedTrainer,createdAt }) => {
+const Message = ({ sender, text, userId, selectedTrainer, createdAt }) => {
   const { userDetails } = useSelector((state: RootState) => state.auth);
   const isSenderYou = sender === userId;
   const senderImage = isSenderYou
@@ -13,12 +13,8 @@ const Message = ({ sender, text, userId, selectedTrainer,createdAt }) => {
     ? "bg-blue-600 text-white rounded-br-none"
     : "bg-gray-300 text-gray-600 rounded-bl-none";
 
-
-
-console.log('ima created date....................',createdAt)
-
   return (
-    <div className="chat-message" >
+    <div className="chat-message">
       <div className={`flex items-end ${isSenderYou ? "justify-end" : ""}`}>
         <img
           src={senderImage}
@@ -34,9 +30,13 @@ console.log('ima created date....................',createdAt)
         >
           <div>
             <span
-              className={`px-4 py-2 rounded-lg inline-block ${messageClass}`}
+              className={`${text.startsWith("https://") ? "cursor-pointer " : "px-4 py-2 "} rounded-lg inline-block ${messageClass}`}
             >
-              {text}
+              {text.startsWith("https://") ? (
+                <img className="rounded-lg" src={text} alt="imageFile" />
+              ) : (
+                <span>{text}</span>
+              )}
             </span>
           </div>
           <div className="text-gray-400">

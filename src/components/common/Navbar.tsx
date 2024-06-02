@@ -46,7 +46,7 @@ function Navbar({ fixed }) {
     handleLogout();
   };
 
-  const isScrolled = useScroll(); 
+  const isScrolled = useScroll();
 
   const position = fixed ? "fixed" : "static";
   return (
@@ -54,7 +54,7 @@ function Navbar({ fixed }) {
       <AppBar
         sx={{
           backgroundColor: isScrolled
-            ? "rgba(0, 0, 1, 0.9)" 
+            ? "rgba(0, 0, 1, 0.9)"
             : "rgba(0, 0, 1, 0.3)",
           transition: isScrolled ? "all 0.3s ease" : "none",
           boxShadow: "none",
@@ -163,12 +163,18 @@ function Navbar({ fixed }) {
               <Link to="/profile/subscriptions">
                 <p className="font-bold text-lg font-serif">Profile </p>{" "}
               </Link>
-              <p
-                onClick={logoutHandler}
-                className="font-bold text-lg font-serif btn btn-danger"
-              >
-                Logout
-              </p>
+              {uLoggedIn ? (
+                <p
+                  onClick={logoutHandler}
+                  className="font-bold text-lg font-serif btn btn-danger"
+                >
+                  Logout
+                </p>
+              ) : (
+                <p className="font-bold text-lg font-serif btn btn-danger">
+                  <Link to="/login">Login</Link>
+                </p>
+              )}
             </div>
           </div>
         </div>

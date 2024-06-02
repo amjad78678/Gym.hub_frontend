@@ -16,6 +16,7 @@ import { useSocket } from "@/utils/context/socketContext";
 import { RootState } from "@/redux/store";
 import debounce from "@/utils/miscillenious/debounce";
 import { useNavigate } from "react-router-dom";
+import { fileUploadChat } from "@/api/user";
 
 const TrainerChat = () => {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -26,6 +27,8 @@ const TrainerChat = () => {
   const [socketConnected, setSocketConnected] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [onlinedUsers, setOnlinedUsers] = useState([]);
+  const [file, setFile] = useState<File[]>([]);
+  const [imageSendLoading, setImageSendLoading] = useState(false);
   const navigate = useNavigate();
 
   const { isLoading, data: messageData } = useQuery({
@@ -43,7 +46,7 @@ const TrainerChat = () => {
       const debounceHandleMessage = debounce((data) => {
         console.log("Received message:", data);
         setMessages((prevMessages) => [...prevMessages, data]);
-      }, 300);
+      }, 1200);
 
       socket.on("message", debounceHandleMessage);
       socket.on("onlined_users", (onlined_users) => {
@@ -85,33 +88,74 @@ const TrainerChat = () => {
     },
   });
 
+  const { mutate: fileUploadMutate } = useMutation({
+    mutationFn: fileUploadChat,
+    onSuccess: (res) => {
+      if (res) {
+        console.log("iam success", res.data.messageData);
+        res.data.messageData.map((file: any) => {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              sender: file.sender,
+              receiver: file.receiver,
+              content: file.content,
+            },
+          ]);
+
+          setFile([]);
+          socket.emit("send_message", {
+            sender: file.sender,
+            receiver: file.receiver,
+            content: file.content,
+            createdAt: new Date(),
+          });
+        });
+
+        setImageSendLoading(false);
+      }
+    },
+  });
+
   const handleSendMessage = () => {
-    if (newMessage.trim() !== "") {
-      socket.emit("stop_typing", { typeTo: selectedChat.userId });
-      const time = new Date();
-      socket.emit("send_message", {
-        sender: trainerDetails.trainerId,
-        receiver: selectedChat.userId,
-        content: newMessage,
-        createdAt: time,
+    if (file.length > 0) {
+      setImageSendLoading(true);
+      console.log("iam file length", file.length, file);
+      const formData = new FormData();
+      file.map((fil) => {
+        formData.append("files", fil);
       });
-
-      trainerChatCreateMutate({
-        sender: trainerDetails.trainerId,
-        receiver: selectedChat.userId,
-        content: newMessage,
-      });
-
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
+      formData.append("sender", trainerDetails.trainerId);
+      formData.append("receiver", selectedChat.userId);
+      fileUploadMutate(formData);
+    } else {
+      if (newMessage.trim() !== "") {
+        socket.emit("stop_typing", { typeTo: selectedChat.userId });
+        const time = new Date();
+        socket.emit("send_message", {
           sender: trainerDetails.trainerId,
           receiver: selectedChat.userId,
           content: newMessage,
-        },
-      ]);
+          createdAt: time,
+        });
 
-      setNewMessage("");
+        trainerChatCreateMutate({
+          sender: trainerDetails.trainerId,
+          receiver: selectedChat.userId,
+          content: newMessage,
+        });
+
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            sender: trainerDetails.trainerId,
+            receiver: selectedChat.userId,
+            content: newMessage,
+          },
+        ]);
+
+        setNewMessage("");
+      }
     }
   };
 
@@ -204,6 +248,9 @@ const TrainerChat = () => {
                   handleSendMessage,
                   newMessage,
                   setNewMessage,
+                  file,
+                  setFile,
+                  imageSendLoading,
                 }}
               />
             </div>

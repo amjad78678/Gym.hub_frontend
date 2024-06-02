@@ -413,3 +413,13 @@ export const fetchBannersData = async () => {
     return errorHandle(err);
   }
 };
+
+export const fileUploadChat = async (file: any) =>{
+  try {
+    const response = await Api.post(userRoutes.uploadChatFiles, file);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}

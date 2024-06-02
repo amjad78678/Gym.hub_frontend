@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 const VideoCall = () => {
   const { userDetails } = useSelector((state: RootState) => state.auth);
+  const { trainerDetails } = useSelector((state: RootState) => state.auth);
+  const location = useLocation();
   const { senderId, recieverId } = useParams();
   const uniqueId =
     Math.random().toString(36).substring(2, 15) +
@@ -27,7 +29,9 @@ const VideoCall = () => {
         serverSecret,
         senderId + recieverId,
         uniqueId,
-        userDetails.name
+        location.pathname.startsWith("/trainer")
+          ? trainerDetails.name
+          : userDetails.name
       );
 
       const zegoCloud = ZegoUIKitPrebuilt.create(kitToken);

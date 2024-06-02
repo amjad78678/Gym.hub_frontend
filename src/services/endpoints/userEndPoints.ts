@@ -33,8 +33,8 @@ const userRoutes={
     updateRating: '/update_rating',
     getWorkoutsBodyList: '/workouts_body_list',
     getWorkoutDetails: (bodyPart: string | null)=> `/exercises/${bodyPart}`,
-    getBanners: '/fetch_banners'
-
+    getBanners: '/fetch_banners',
+    uploadChatFiles: '/upload_chat_files'
 
 }   
 

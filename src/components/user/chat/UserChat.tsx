@@ -5,7 +5,11 @@ import ChatInput from "./ChatInput";
 import { useNavigate, useParams } from "react-router-dom";
 import { CheckCircle } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { fetchTrainerData, fetchUserChatMessages } from "@/api/user";
+import {
+  fetchTrainerData,
+  fetchUserChatMessages,
+  fileUploadChat,
+} from "@/api/user";
 import { Socket } from "socket.io-client";
 import { useSocket } from "@/utils/context/socketContext";
 import iMessageType from "@/interfaces/iMessageType";
@@ -23,13 +27,15 @@ const UserChat = () => {
   const [messages, setMessages] = useState<iMessageType[]>([]);
   const socket: Socket = useSocket();
   const [newMessage, setNewMessage] = useState("");
+  const [file, setFile] = useState<File[]>([]);
+  const [imageSendLoading, setImageSendLoading] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     if (socket) {
       const debouncedHandleMessage = debounce((data) => {
         console.log("Received message:", data);
         setMessages((prevMessages) => [...prevMessages, data]);
-      }, 300);
+      }, 1200);
 
       socket.on("onlined_users", (onlined_users) => {
         const isTrainerOnline = onlined_users.find(
@@ -78,36 +84,79 @@ const UserChat = () => {
     },
   });
 
-  const handleSendMessage = () => {
-    if (newMessage.trim() !== "") {
-      socket.emit("stop_typing", { typeTo: trainerId });
-      // const lastMessage = messages[messages.length - 1];
-      const time = new Date();
-      socket.emit("send_message", {
-        sender: userId,
-        receiver: trainerId,
-        content: newMessage,
-        createdAt: time,
-      });
+  const { mutate: fileUploadMutate } = useMutation({
+    mutationFn: fileUploadChat,
+    onSuccess: (res) => {
+      if (res) {
+        console.log("iam success", res.data.messageData);
 
-      userChatCreateMutate({
-        sender: userDetails.userId,
-        receiver: trainerId,
-        content: newMessage,
-      });
+        res.data.messageData.map((file: any) => {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              sender: file.sender,
+              receiver: file.receiver,
+              content: file.content,
+            },
+          ]);
 
-      if (trainerId) {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          {
-            sender: userDetails.userId,
-            receiver: trainerId,
-            content: newMessage,
-          },
-        ]);
+          setFile([]);
+
+          socket.emit("send_message", {
+            sender: file.sender,
+            receiver: file.receiver,
+            content: file.content,
+            createdAt: new Date(),
+          });
+        });
+
+        setImageSendLoading(false);
       }
+    },
+  });
 
-      setNewMessage("");
+  const handleSendMessage = () => {
+    if (file.length > 0) {
+      setImageSendLoading(true);
+      console.log("iam file length", file.length, file);
+      const formData = new FormData();
+      file.map((fil) => {
+        formData.append("files", fil);
+      });
+      formData.append("sender", userId);
+      formData.append("receiver", trainerId);
+      fileUploadMutate(formData);
+    } else {
+      if (newMessage.trim() !== "") {
+        socket.emit("stop_typing", { typeTo: trainerId });
+        // const lastMessage = messages[messages.length - 1];
+        const time = new Date();
+        socket.emit("send_message", {
+          sender: userId,
+          receiver: trainerId,
+          content: newMessage,
+          createdAt: time,
+        });
+
+        userChatCreateMutate({
+          sender: userDetails.userId,
+          receiver: trainerId,
+          content: newMessage,
+        });
+
+        if (trainerId) {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              sender: userDetails.userId,
+              receiver: trainerId,
+              content: newMessage,
+            },
+          ]);
+        }
+
+        setNewMessage("");
+      }
     }
   };
 
@@ -181,6 +230,9 @@ const UserChat = () => {
                 handleSendMessage,
                 setNewMessage,
                 newMessage,
+                file,
+                setFile,
+                imageSendLoading,
               }}
             />
           </div>

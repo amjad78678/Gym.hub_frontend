@@ -30,11 +30,21 @@ const Message = ({ sender, text, selectedChat, createdAt }) => {
             }`}
           >
             <div>
-              <span
-                className={`px-4 py-2 rounded-lg inline-block ${messageClass}`}
-              >
-                {text}
-              </span>
+              <div>
+                <span
+                  className={`${
+                    text.startsWith("https://")
+                      ? "cursor-pointer "
+                      : "px-4 py-2 "
+                  } rounded-lg inline-block ${messageClass}`}
+                >
+                  {text.startsWith("https://") ? (
+                    <img className="rounded-lg" src={text} alt="imageFile" />
+                  ) : (
+                    <span>{text}</span>
+                  )}
+                </span>
+              </div>
               <div className="text-gray-400">
                 <span>{format(createdAt)}</span>
               </div>
