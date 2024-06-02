@@ -34,11 +34,15 @@ const Message = ({ sender, text, selectedChat, createdAt }) => {
                 <span
                   className={`${
                     text.startsWith("https://")
-                      ? "cursor-pointer "
-                      : "px-4 py-2 "
+                      ? "cursor-pointer"
+                      : "px-4 py-2"
                   } rounded-lg inline-block ${messageClass}`}
                 >
-                  {text.startsWith("https://") ? (
+                  {text.endsWith(".mp4") ? (
+                    <video className="rounded-lg" controls>
+                      <source src={text} type="video/mp4" />
+                    </video>
+                  ) : text.startsWith("https://") ? (
                     <img className="rounded-lg" src={text} alt="imageFile" />
                   ) : (
                     <span>{text}</span>

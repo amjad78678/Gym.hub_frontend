@@ -10,7 +10,7 @@ import {
 } from "@/api/trainer";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { CheckCircle, VideoCall, WhatsApp } from "@mui/icons-material";
+import { ArrowBack, CheckCircle, VideoCall, WhatsApp } from "@mui/icons-material";
 import iMessageType from "@/interfaces/iMessageType";
 import { useSocket } from "@/utils/context/socketContext";
 import { RootState } from "@/redux/store";
@@ -43,10 +43,10 @@ const TrainerChat = () => {
 
   useEffect(() => {
     if (socket) {
-      const debounceHandleMessage = debounce((data) => {
+      const debounceHandleMessage = (data: iMessageType) => {
         console.log("Received message:", data);
         setMessages((prevMessages) => [...prevMessages, data]);
-      }, 1200);
+      };
 
       socket.on("message", debounceHandleMessage);
       socket.on("onlined_users", (onlined_users) => {
@@ -93,24 +93,47 @@ const TrainerChat = () => {
     onSuccess: (res) => {
       if (res) {
         console.log("iam success", res.data.messageData);
-        res.data.messageData.map((file: any) => {
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            {
+
+        if (res.data.type === "image") {
+          res.data.messageData.map((file: any) => {
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              {
+                sender: file.sender,
+                receiver: file.receiver,
+                content: file.content,
+                createdAt: new Date(),
+              },
+            ]);
+
+            setFile([]);
+
+            socket.emit("send_message", {
               sender: file.sender,
               receiver: file.receiver,
               content: file.content,
+              createdAt: new Date(),
+            });
+          });
+        } else {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              sender: res.data.messageData.sender,
+              receiver: res.data.messageData.receiver,
+              content: res.data.messageData.content,
             },
           ]);
 
           setFile([]);
+
           socket.emit("send_message", {
-            sender: file.sender,
-            receiver: file.receiver,
-            content: file.content,
+            sender: res.data.messageData.sender,
+            receiver: res.data.messageData.receiver,
+            content: res.data.messageData.content,
             createdAt: new Date(),
           });
-        });
+        }
 
         setImageSendLoading(false);
       }
@@ -191,6 +214,7 @@ const TrainerChat = () => {
           <div className="flex-1 p-2 bg-gray-200 sm:p-6 justify-between flex flex-col h-[700px] rounded-md">
             <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
               <div className="relative flex items-center space-x-4">
+               <span className="block lg:hidden" onClick={() => setSelectedChat(null)}><ArrowBack sx={{ cursor: "pointer",color:"black" }} /></span> 
                 <div className="relative">
                   <span
                     className={`absolute ${
@@ -221,7 +245,7 @@ const TrainerChat = () => {
               </div>
               <div className="flex items-center space-x-2 mr-4 mb-2">
                 <IconButton onClick={handleVedioCall}>
-                  <VideoCall sx={{ width: 50, height: 50, color: "green" }} />
+                  <VideoCall sx={{ width: 50, height: 50, color: "black" }} />
                 </IconButton>
               </div>
             </div>
@@ -257,7 +281,7 @@ const TrainerChat = () => {
           </div>
         </div>
       ) : (
-        <div className="sm:col-span-9 flex justify-center items-center text-black bg-gray-300">
+        <div className="hidden lg:flex lg:col-span-9 justify-center items-center text-black bg-gray-300">
           <div className="flex flex-col">
             <WhatsApp sx={{ width: 150, height: 150, mx: "auto", mb: 2 }} />
             <h1 className="text-4xl">

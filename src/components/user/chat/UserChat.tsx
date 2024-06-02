@@ -24,7 +24,7 @@ const UserChat = () => {
   const [socketConnected, setSocketConnected] = useState(false);
   const { userDetails } = useSelector((state: RootState) => state.auth);
   const userName = userDetails?.name.replaceAll(" ", "");
-  const [messages, setMessages] = useState<iMessageType[]>([]);
+  const [messages, setMessages] = useState<any[]>([]);
   const socket: Socket = useSocket();
   const [newMessage, setNewMessage] = useState("");
   const [file, setFile] = useState<File[]>([]);
@@ -32,10 +32,10 @@ const UserChat = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (socket) {
-      const debouncedHandleMessage = debounce((data) => {
+      const debouncedHandleMessage = (data: iMessageType) => {
         console.log("Received message:", data);
         setMessages((prevMessages) => [...prevMessages, data]);
-      }, 1200);
+      };
 
       socket.on("onlined_users", (onlined_users) => {
         const isTrainerOnline = onlined_users.find(
@@ -90,25 +90,45 @@ const UserChat = () => {
       if (res) {
         console.log("iam success", res.data.messageData);
 
-        res.data.messageData.map((file: any) => {
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            {
+        if (res.data.type === "image") {
+          res.data.messageData.map((file: any) => {
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              {
+                sender: file.sender,
+                receiver: file.receiver,
+                content: file.content,
+              },
+            ]);
+
+            setFile([]);
+
+            socket.emit("send_message", {
               sender: file.sender,
               receiver: file.receiver,
               content: file.content,
+              createdAt: new Date(),
+            });
+          });
+        } else {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              sender: res.data.messageData.sender,
+              receiver: res.data.messageData.receiver,
+              content: res.data.messageData.content,
             },
           ]);
 
           setFile([]);
 
           socket.emit("send_message", {
-            sender: file.sender,
-            receiver: file.receiver,
-            content: file.content,
+            sender: res.data.messageData.sender,
+            receiver: res.data.messageData.receiver,
+            content: res.data.messageData.content,
             createdAt: new Date(),
           });
-        });
+        }
 
         setImageSendLoading(false);
       }
@@ -129,7 +149,6 @@ const UserChat = () => {
     } else {
       if (newMessage.trim() !== "") {
         socket.emit("stop_typing", { typeTo: trainerId });
-        // const lastMessage = messages[messages.length - 1];
         const time = new Date();
         socket.emit("send_message", {
           sender: userId,

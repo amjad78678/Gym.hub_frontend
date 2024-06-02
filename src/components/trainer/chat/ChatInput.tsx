@@ -6,8 +6,11 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import Dropzone from "react-dropzone";
 import { IconButton } from "@mui/material";
-import { RingLoader } from "react-spinners";
+import { ClipLoader, RingLoader } from "react-spinners";
 import toast from "react-hot-toast";
+import { Formik, Field, Form } from "formik";
+import { chatDropZoneValidation } from "@/validation/ChatDropZoneValidation";
+import * as Yup from "yup";
 
 const ChatInput = ({
   selectedChat,
@@ -68,15 +71,6 @@ const ChatInput = ({
     setNewMessage(newMessage + emoji);
   };
 
-  const handleOnDrop = (acceptedFiles) => {
-    if (acceptedFiles.length <= 4) {
-      setFile(acceptedFiles);
-    } else {
-      toast.error("Maximum 4 files allowed");
-      return;
-    }
-  };
-
   const [imagePreviewUrls, setImagePreviewUrls] = useState([]);
   const [mainImageIndex, setMainImageIndex] = useState(0);
 
@@ -103,8 +97,8 @@ const ChatInput = ({
     marginTop: "30px",
     marginBottom: "30px",
   };
-  let [color, setColor] = useState("#53C60C");
 
+  const [color, setColor] = useState("#53C60C");
   return (
     <>
       {emojiOpen && (
@@ -116,45 +110,50 @@ const ChatInput = ({
           />
         </div>
       )}
-
-      {file.length > 0 && (
-        <div
-          className={`relative ml-8 w-2/3  shadow-lg p-2  ${
-            imagePreviewUrls.length !== file.length
-              ? "bg-transparent"
-              : "bg-gray-700 border-2 border-black"
-          } `}
-        >
-          {imagePreviewUrls.length !== file.length ? (
-            <RingLoader
-              color={color}
-              loading={true}
-              cssOverride={override}
-              size={50}
-              aria-label="Loading Spinner"
-              data-testid="loader"
+      {file.length > 0 && imagePreviewUrls.length > 0 ? (
+        <>
+          {file[mainImageIndex]?.type === "video/mp4" ? (
+            <video
+              className="rounded-lg ms-8 h-64 object-cover"
+              controls
+              src={imagePreviewUrls[mainImageIndex]}
             />
           ) : (
-            <>
+            <div className="ms-8 w-64 p-2 border border-black shadow-lg rounded-lg">
               <img
-                className="rounded-lg h-60 w-full object-cover"
+                className="rounded-lg h-64 object-cover"
                 src={imagePreviewUrls[mainImageIndex]}
                 alt=""
               />
-              <div className="bg-gray-700 flex gap-2 mt-2 mx-auto">
-                {imagePreviewUrls.slice(1).map((imageUrl, index) => (
+              <div className="flex  mt-2 mx-auto">
+                {imagePreviewUrls.map((imageUrl, index) => (
                   <img
                     onClick={() => setMainImageIndex(index)}
-                    className="w-1/3 object-cover rounded-xl opacity-70 hover:opacity-100 cursor-pointer"
+                    className={`w-1/4  rounded-xl cursor-pointer ${
+                      index === mainImageIndex
+                        ? "opacity-100"
+                        : "opacity-70 hover:opacity-100"
+                    }`}
                     key={index}
                     src={imageUrl}
                     alt=""
                   />
                 ))}
               </div>
-            </>
+            </div>
           )}
-        </div>
+        </>
+      ) : (
+        imageSendLoading && (
+          <div className="flex items-center justify-center w-full">
+            <ClipLoader
+              color={color}
+              loading={true}
+              cssOverride={override}
+              size={150}
+            />
+          </div>
+        )
       )}
 
       {isTyping && <div className="text-green-500">typing...</div>}
@@ -168,7 +167,9 @@ const ChatInput = ({
           value={newMessage}
           onChange={handleTyping}
           onKeyDown={handleKeyDown}
-          placeholder={`${imageSendLoading ? "Sending files..." : "Type your message..."}`}
+          placeholder={`${
+            imageSendLoading ? "Sending files..." : "Type your message..."
+          }`}
           className={`flex-grow text-black rounded-l-md border-2 p-2 ${
             imageSendLoading ? "bg-gray-100" : "border-gray-300"
           }`}
@@ -176,18 +177,65 @@ const ChatInput = ({
         />
 
         <span>
-          <Dropzone onDrop={handleOnDrop}>
-            {({ getRootProps, getInputProps }) => (
-              <section>
-                <div {...getRootProps()}>
-                  <input accept="image/*, video/*" {...getInputProps()} />
-                  <IconButton sx={{ backgroundColor: "" }}>
-                    <AttachFile sx={{ color: "gray" }} />
-                  </IconButton>
-                </div>
-              </section>
+          <Formik
+            initialValues={{ files: [] }}
+            validationSchema={chatDropZoneValidation}
+            onSubmit={(values) => {
+              console.log("iam value file", values);
+              setFile(values.files);
+            }}
+            validate={(values) => {
+              try {
+                chatDropZoneValidation.validateSync(values, {
+                  abortEarly: false,
+                });
+              } catch (err) {
+                if (err instanceof Yup.ValidationError) {
+                  toast.dismiss();
+                  err.inner.forEach((e) => {
+                    toast.error(e.message);
+                  });
+                }
+              }
+            }}
+          >
+            {({ setFieldValue, errors, touched, submitForm, resetForm }) => (
+              <Form>
+                <Field name="files">
+                  {({ field }) => (
+                    <Dropzone
+                      accept={{
+                        "image/*": [".jpeg", ".png", ".jpg", ".gif"],
+                        "video/*": [".mp4", ".webm", ".mov"],
+                      }}
+                      onDrop={(acceptedFiles) => {
+                        resetForm(); // Reset form state and errors
+                        const newValue = [...acceptedFiles];
+                        setFieldValue("files", newValue, false); // false to avoid validation on change
+                        setTimeout(() => {
+                          submitForm();
+                        }, 0); 
+                      }}
+                    >
+                      {({ getRootProps, getInputProps }) => (
+                        <section>
+                          <div {...getRootProps()}>
+                            <input {...getInputProps()} />
+                            <IconButton sx={{ backgroundColor: "" }}>
+                              <AttachFile sx={{ color: "gray" }} />
+                            </IconButton>
+                          </div>
+                        </section>
+                      )}
+                    </Dropzone>
+                  )}
+                </Field>
+                <button type="submit" style={{ display: "none" }}>
+                  Hidden Submit
+                </button>
+              </Form>
             )}
-          </Dropzone>
+          </Formik>
         </span>
       </div>
     </>

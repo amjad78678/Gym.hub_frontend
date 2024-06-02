@@ -7,7 +7,7 @@ import Dropzone from "react-dropzone";
 import { IconButton } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { fileUploadChat } from "@/api/user";
-import { RingLoader } from "react-spinners";
+import { ClipLoader, RingLoader } from "react-spinners";
 import toast from "react-hot-toast";
 
 const ChatInput = ({
@@ -105,6 +105,7 @@ const ChatInput = ({
     marginTop: "30px",
     marginBottom: "30px",
   };
+
   let [color, setColor] = useState("#53C60C");
   return (
     <>
@@ -118,22 +119,13 @@ const ChatInput = ({
         </div>
       )}
 
-      {file.length > 0 && (
-        <div
-          className={`relative ml-8 w-2/3  shadow-lg p-2  ${
-            imagePreviewUrls.length !== file.length
-              ? "bg-transparent"
-              : "bg-gray-700 border-2 border-black"
-          } `}
-        >
-          {imagePreviewUrls.length !== file.length ? (
-            <RingLoader
-              color={color}
-              loading={true}
-              cssOverride={override}
-              size={50}
-              aria-label="Loading Spinner"
-              data-testid="loader"
+      {file.length > 0 && imagePreviewUrls.length > 0 ? (
+        <>
+          {file[mainImageIndex]?.type === "video/mp4" ? (
+            <video
+              className="rounded-lg ms-8  h-64 object-cover"
+              controls
+              src={imagePreviewUrls[mainImageIndex]}
             />
           ) : (
             <>
@@ -142,11 +134,16 @@ const ChatInput = ({
                 src={imagePreviewUrls[mainImageIndex]}
                 alt=""
               />
+
               <div className="bg-gray-700 flex gap-2 mt-2 mx-auto">
-                {imagePreviewUrls.slice(1).map((imageUrl, index) => (
+                {imagePreviewUrls.map((imageUrl, index) => (
                   <img
                     onClick={() => setMainImageIndex(index)}
-                    className="w-1/3 object-fill h-32 rounded-xl opacity-70 hover:opacity-100 cursor-pointer"
+                    className={`w-1/4 object-fill h-32 rounded-xl cursor-pointer ${
+                      index === mainImageIndex
+                        ? "opacity-100"
+                        : "opacity-70 hover:opacity-100"
+                    }`}
                     key={index}
                     src={imageUrl}
                     alt=""
@@ -155,7 +152,18 @@ const ChatInput = ({
               </div>
             </>
           )}
-        </div>
+        </>
+      ) : (
+        imageSendLoading && (
+          <div className="flex items-center justify-center w-full">
+            <ClipLoader
+              color={color}
+              loading={true}
+              cssOverride={override}
+              size={150}
+            />
+          </div>
+        )
       )}
 
       {isTyping && <div className="text-green-500">typing...</div>}
@@ -169,7 +177,9 @@ const ChatInput = ({
           value={newMessage}
           onChange={handleTypingInput}
           onKeyDown={handleKeyDown}
-          placeholder={`${imageSendLoading ? "Sending files..." : "Type your message..."}`}
+          placeholder={`${
+            imageSendLoading ? "Sending files..." : "Type your message..."
+          }`}
           className={`flex-grow text-black rounded-l-md border-2 p-2 ${
             imageSendLoading ? "bg-gray-100" : "border-gray-300"
           }`}

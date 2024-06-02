@@ -30,9 +30,17 @@ const Message = ({ sender, text, userId, selectedTrainer, createdAt }) => {
         >
           <div>
             <span
-              className={`${text.startsWith("https://") ? "cursor-pointer " : "px-4 py-2 "} rounded-lg inline-block ${messageClass}`}
+              className={`${
+                text.startsWith("https://")
+                  ? "cursor-pointer"
+                  : "px-4 py-2"
+              } rounded-lg inline-block ${messageClass}`}
             >
-              {text.startsWith("https://") ? (
+              {text.endsWith(".mp4") ? (
+                <video className="rounded-lg" controls>
+                  <source src={text} type="video/mp4" />
+                </video>
+              ) : text.startsWith("https://") ? (
                 <img className="rounded-lg" src={text} alt="imageFile" />
               ) : (
                 <span>{text}</span>
