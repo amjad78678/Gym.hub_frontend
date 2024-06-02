@@ -62,7 +62,7 @@ const ProfileEditProfile = ({ selected, setSelected, refetch, userData }) => {
             <div className="lg:w-2/3 w-full flex flex-col justify-center items-center lg:mx-auto  rounded-md">
               <div className="lg:w-2/3 flex flex-col">
                 <img
-                  className="rounded-xl mx-auto object-cover lg:w-1/3"
+                  className="rounded-xl mx-auto object-cover lg:w-2/3"
                   src={
                     image
                       ? URL.createObjectURL(image)
