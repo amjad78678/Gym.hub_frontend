@@ -175,7 +175,7 @@ const ChatInput = ({
           }`}
           disabled={imageSendLoading}
         />
-
+ 
         <span>
           <Formik
             initialValues={{ files: [] }}

@@ -9,6 +9,9 @@ import { useMutation } from "@tanstack/react-query";
 import { fileUploadChat } from "@/api/user";
 import { ClipLoader, RingLoader } from "react-spinners";
 import toast from "react-hot-toast";
+import { Formik, Field, Form } from "formik";
+import { chatDropZoneValidation } from "@/validation/ChatDropZoneValidation";
+import * as Yup from "yup";
 
 const ChatInput = ({
   userId,
@@ -186,18 +189,65 @@ const ChatInput = ({
           disabled={imageSendLoading}
         />
         <span>
-          <Dropzone onDrop={handleOnDrop}>
-            {({ getRootProps, getInputProps }) => (
-              <section>
-                <div {...getRootProps()}>
-                  <input accept="image/*, video/*" {...getInputProps()} />
-                  <IconButton sx={{ backgroundColor: "" }}>
-                    <AttachFile />
-                  </IconButton>
-                </div>
-              </section>
+          <Formik
+            initialValues={{ files: [] }}
+            validationSchema={chatDropZoneValidation}
+            onSubmit={(values) => {
+              console.log("iam value file", values);
+              setFile(values.files);
+            }}
+            validate={(values) => {
+              try {
+                chatDropZoneValidation.validateSync(values, {
+                  abortEarly: false,
+                });
+              } catch (err) {
+                if (err instanceof Yup.ValidationError) {
+                  toast.dismiss();
+                  err.inner.forEach((e) => {
+                    toast.error(e.message);
+                  });
+                }
+              }
+            }}
+          >
+            {({ setFieldValue, errors, touched, submitForm, resetForm }) => (
+              <Form>
+                <Field name="files">
+                  {({ field }) => (
+                    <Dropzone
+                      accept={{
+                        "image/*": [".jpeg", ".png", ".jpg", ".gif"],
+                        "video/*": [".mp4", ".webm", ".mov"],
+                      }}
+                      onDrop={(acceptedFiles) => {
+                        resetForm(); // Reset form state and errors
+                        const newValue = [...acceptedFiles];
+                        setFieldValue("files", newValue, false); // false to avoid validation on change
+                        setTimeout(() => {
+                          submitForm();
+                        }, 0);
+                      }}
+                    >
+                      {({ getRootProps, getInputProps }) => (
+                        <section>
+                          <div {...getRootProps()}>
+                            <input {...getInputProps()} />
+                            <IconButton sx={{ backgroundColor: "" }}>
+                              <AttachFile sx={{ color: "gray" }} />
+                            </IconButton>
+                          </div>
+                        </section>
+                      )}
+                    </Dropzone>
+                  )}
+                </Field>
+                <button type="submit" style={{ display: "none" }}>
+                  Hidden Submit
+                </button>
+              </Form>
             )}
-          </Dropzone>
+          </Formik>
         </span>
       </div>
     </>
