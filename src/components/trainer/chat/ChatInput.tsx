@@ -171,11 +171,11 @@ const ChatInput = ({
             imageSendLoading ? "Sending files..." : "Type your message..."
           }`}
           className={`flex-grow text-black rounded-l-md border-2 p-2 ${
-            imageSendLoading ? "bg-gray-100" : "border-gray-300"
+            imageSendLoading ? "bg-gray-100 placeholder:text-green-500 placeholder:font-bold" : "border-gray-300"
           }`}
           disabled={imageSendLoading}
         />
- 
+
         <span>
           <Formik
             initialValues={{ files: [] }}
@@ -214,7 +214,7 @@ const ChatInput = ({
                         setFieldValue("files", newValue, false); // false to avoid validation on change
                         setTimeout(() => {
                           submitForm();
-                        }, 0); 
+                        }, 0);
                       }}
                     >
                       {({ getRootProps, getInputProps }) => (

@@ -47,7 +47,7 @@ const AdminTrainers = ({trainersData,refetch}) => {
       {
         field: "name",
         headerName: "Name",
-        width: 180,
+        width: 160,
         headerAlign: "center",
         renderCell: (params) => (
           <Box
@@ -64,7 +64,7 @@ const AdminTrainers = ({trainersData,refetch}) => {
       {
         field: "age",
         headerName: "Age",
-        width: 60,
+        width: 40,
         headerAlign: "center",
         renderCell: (params) => (
           <Box
@@ -79,9 +79,26 @@ const AdminTrainers = ({trainersData,refetch}) => {
         ),
       },
       {
+        field: "gymName",
+        headerName: "Gym",
+        width: 100,
+        headerAlign: "center",
+        renderCell: (params) => (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
+          >
+            {params.row.gymId.gymName}
+          </Box>
+        ),
+      },
+      {
         field: "email",
         headerName: "Email",
-        width: 250,
+        width: 230,
         headerAlign: "center",
         renderCell: (params) => (
           <Box
@@ -151,7 +168,7 @@ const AdminTrainers = ({trainersData,refetch}) => {
       {
         field: "actions",
         headerName: "Actions",
-        width: 150,
+        width: 120,
         type: "actions",
         headerAlign: "center",
         renderCell: (params) => (
@@ -194,7 +211,7 @@ const AdminTrainers = ({trainersData,refetch}) => {
       <Box
         sx={{
           height: "600",
-          width: "100%",
+
         }}
       >
         <Typography

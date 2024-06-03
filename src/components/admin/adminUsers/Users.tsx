@@ -60,7 +60,7 @@ const Users = ({ usersData, refetch }) => {
       {
         field: "mobileNumber",
         headerName: "Mobile number",
-        width: 130,
+        width: 150,
         headerAlign: "center",
         renderCell: (params) => (
           <Box display="flex" justifyContent="center" width="100%">
@@ -132,7 +132,6 @@ const Users = ({ usersData, refetch }) => {
       <Box
         sx={{
           height: "600",
-          width: "100%",
         }}
       >
         <Typography

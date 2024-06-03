@@ -21,6 +21,8 @@ import {
   Star as StarIcon,
 } from "@mui/icons-material";
 import dayjs from "dayjs";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const GymDetails = ({ handleShowReview, gymReviews }) => {
   const queryParams = new URLSearchParams(location.search);
@@ -39,9 +41,11 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
   const [currentView, setCurrentView] = useState("description");
   const navigate = useNavigate();
 
+  const { uLoggedIn } = useSelector((state: RootState) => state.auth);
   const { data: isPossible } = useQuery({
     queryKey: ["isReviewPossible", gymId],
     queryFn: isReviewPossible,
+    enabled: uLoggedIn,
   });
 
   const [value, setValue] = useState(4);

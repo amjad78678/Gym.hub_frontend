@@ -122,7 +122,7 @@ const ChatInput = ({
         </div>
       )}
 
-      {file.length > 0 && imagePreviewUrls.length > 0 ? (
+      {file.length > 0 && imagePreviewUrls.length > 0 ? ( 
         <>
           {file[mainImageIndex]?.type === "video/mp4" ? (
             <video
@@ -131,29 +131,28 @@ const ChatInput = ({
               src={imagePreviewUrls[mainImageIndex]}
             />
           ) : (
-            <>
-              <img
-                className="rounded-lg h-64 w-full object-cover"
-                src={imagePreviewUrls[mainImageIndex]}
-                alt=""
-              />
-
-              <div className="bg-gray-700 flex gap-2 mt-2 mx-auto">
-                {imagePreviewUrls.map((imageUrl, index) => (
-                  <img
-                    onClick={() => setMainImageIndex(index)}
-                    className={`w-1/4 object-fill h-32 rounded-xl cursor-pointer ${
-                      index === mainImageIndex
-                        ? "opacity-100"
-                        : "opacity-70 hover:opacity-100"
-                    }`}
-                    key={index}
-                    src={imageUrl}
-                    alt=""
-                  />
-                ))}
-              </div>
-            </>
+            <div className="ms-8 w-64 p-2 border border-black shadow-lg rounded-lg">
+            <img
+              className="rounded-lg h-64 object-cover"
+              src={imagePreviewUrls[mainImageIndex]}
+              alt=""
+            />
+            <div className="flex  mt-2 mx-auto">
+              {imagePreviewUrls.map((imageUrl, index) => (
+                <img
+                  onClick={() => setMainImageIndex(index)}
+                  className={`w-1/4  rounded-xl cursor-pointer ${
+                    index === mainImageIndex
+                      ? "opacity-100"
+                      : "opacity-70 hover:opacity-100"
+                  }`}
+                  key={index}
+                  src={imageUrl}
+                  alt=""
+                />
+              ))}
+            </div>
+          </div>
           )}
         </>
       ) : (
@@ -184,7 +183,7 @@ const ChatInput = ({
             imageSendLoading ? "Sending files..." : "Type your message..."
           }`}
           className={`flex-grow text-black rounded-l-md border-2 p-2 ${
-            imageSendLoading ? "bg-gray-100" : "border-gray-300"
+            imageSendLoading ? "bg-gray-100 placeholder:text-green-500 placeholder:font-bold" : "border-gray-300"
           }`}
           disabled={imageSendLoading}
         />
