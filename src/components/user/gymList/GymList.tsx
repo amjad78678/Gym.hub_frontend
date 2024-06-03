@@ -2,62 +2,28 @@ import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import GymCard from "./GymCard";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
-import { useQuery } from "@tanstack/react-query";
-import { fetchNearGymList } from "@/api/user";
 import { Slider } from "@mui/material";
 import LocationInput from "./LocationInput";
 import SearchBar from "./SearchBar";
-import GymListSkeleton from "../skeletons/GymListSkeleton";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ClipLoader } from "react-spinners";
 
-const GymList = () => {
+const GymList = ({
+  fetchMoreData,
+  gyms,
+  totalGyms,
+  setLocation,
+  isLoadingMore,
+}) => {
   const [filteredItems, setFilteredItems] = useState<any[]>([]);
-  const [location, setLocation] = useState({ latitude: null, longitude: null });
-  const [page, setPage] = useState(1);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-
-  const {
-    isFetching,
-    data: gymData,
-    refetch,
-  } = useQuery({
-    queryKey: ["gymsListUserSide", page],
-    queryFn: () => {
-      return fetchNearGymList({
-        latitude: location.latitude,
-        longitude: location.longitude,
-        page: page,
-      });
-    },
-    enabled: location.latitude !== null && location.longitude !== null,
-  });
-
-  useEffect(() => {
-    if (!isFetching && isLoadingMore) {
-      setIsLoadingMore(false);
-    }
-  }, [isFetching, isLoadingMore]);
-
   const [maxPrice, setMaxPrice] = useState(0);
-  useEffect(() => {
-    if (gymData && gymData.data && gymData.data.message) {
-      setFilteredItems((prev) => {
-        const prevArray = Array.isArray(prev) ? prev : [];
-        const uniqueGyms = [
-          ...prevArray,
-          ...gymData.data.message.filter(
-            (gym) => !prevArray.some((item) => item._id === gym._id)
-          ),
-        ];
 
-        return uniqueGyms;
-      });
-      setMaxPrice(
-        Math.max(...gymData.data.message.map((gym) => gym.subscriptions.Daily))
-      );
+  useEffect(() => {
+    if (gyms) {
+      setFilteredItems(gyms);
+      setMaxPrice(Math.max(...gyms.map((gym) => gym.subscriptions.Daily)));
     }
-  }, [gymData]);
+  }, [gyms]);
 
   const [search, setSearch] = useState("");
   const searchHandler = (val: string) => {
@@ -69,7 +35,7 @@ const GymList = () => {
   };
 
   useEffect(() => {
-    const filtered = gymData?.data?.message.filter((gym) => {
+    const filtered = gyms.filter((gym) => {
       const location = gym.address;
       const gymName = gym.gymName;
 
@@ -84,21 +50,7 @@ const GymList = () => {
     setFilteredItems(filtered);
   }, [search, sliderValue]);
 
-  console.log("iam filtered", filteredItems);
-  console.log("fetch gym data", gymData);
-
-  const fetchMoreData = () => {
-    console.log("fetch more data", page);
-    setIsLoadingMore(true);
-    setPage((prevPage) => prevPage + 1);
-  };
-
-  console.log("gymData", gymData?.data.total);
-  console.log("itemslength", filteredItems?.length);
-  if (maxPrice < 1) return;
-  return isFetching && page === 1 ? (
-    <GymListSkeleton />
-  ) : (
+  return (
     <div className="text-white min-h-screen">
       <Container>
         <Row>
@@ -117,13 +69,15 @@ const GymList = () => {
                   <LocationInput setLocationData={setLocation} />
                   <h1 className="text-lg mt-4 mb-2">Price</h1>
 
-                  <Slider
-                    sx={{ color: "white" }}
-                    valueLabelDisplay="auto"
-                    defaultValue={maxPrice}
-                    max={maxPrice}
-                    onChange={handleSliderChange}
-                  />
+                  {maxPrice < 1 ? null : (
+                    <Slider
+                      sx={{ color: "white" }}
+                      valueLabelDisplay="auto"
+                      defaultValue={maxPrice}
+                      max={maxPrice}
+                      onChange={handleSliderChange}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -136,7 +90,7 @@ const GymList = () => {
             <InfiniteScroll
               dataLength={filteredItems.length}
               next={fetchMoreData}
-              hasMore={gymData && filteredItems?.length < gymData?.data.total}
+              hasMore={gyms && filteredItems?.length < totalGyms}
               loader={
                 isLoadingMore ? (
                   <div className="text-center py-4">

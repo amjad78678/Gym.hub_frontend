@@ -70,7 +70,7 @@ const PersonalTrainerPage = () => {
           setBookingTrainer,
           fetchMoreData,
           fullResult: trainerData?.data?.fullResult,
-          isLoadingMore
+          isLoadingMore,
         }}
       />
     </div>

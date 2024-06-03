@@ -46,6 +46,7 @@ const LocationInput = ({setLocationData}) => {
         const { latitude, longitude } = position.coords;
         setLocation({ latitude, longitude });
         setLocationData({latitude, longitude})
+        console.log('iam setting location', {latitude, longitude})
       },
       (error) => {
         console.error("Error getting location", error);

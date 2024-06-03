@@ -30,8 +30,6 @@ const PersonalTrainer = ({
         Math.max(...trainerData.map((trainer: any) => trainer.monthlyFee))
       );
     }
-
-    console.log("iam filtered items", filteredItems);
   }, [trainerData]);
 
   const [sliderValue, setSliderValue] = useState(maxPrice);
