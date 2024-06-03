@@ -35,7 +35,6 @@ const GymList = () => {
   useEffect(() => {
     if (gymData && gymData.data && gymData.data.message) {
       setFilteredItems((prev) => {
-        
         const prevArray = Array.isArray(prev) ? prev : [];
         const uniqueGyms = [
           ...prevArray,
@@ -89,7 +88,7 @@ const GymList = () => {
   console.log("itemslength", filteredItems?.length);
 
   if (!gymData && !filteredItems && filteredItems?.length < 1)
-    return <GymListSkeleton />;
+  return <GymListSkeleton />;
   return (
     !isLoading &&
     filteredItems && (

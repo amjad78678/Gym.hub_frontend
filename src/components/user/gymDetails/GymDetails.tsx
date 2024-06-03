@@ -21,10 +21,8 @@ import {
   Star as StarIcon,
 } from "@mui/icons-material";
 import dayjs from "dayjs";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 
-const GymDetails = ({ handleShowReview, gymReviews }) => {
+const GymDetails = ({ handleShowReview, gymReviews,isPossible }) => {
   const queryParams = new URLSearchParams(location.search);
   const gymId = queryParams.get("id");
   const [showCalender, setShowCalender] = useState(false);
@@ -41,12 +39,7 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
   const [currentView, setCurrentView] = useState("description");
   const navigate = useNavigate();
 
-  const { uLoggedIn } = useSelector((state: RootState) => state.auth);
-  const { data: isPossible } = useQuery({
-    queryKey: ["isReviewPossible", gymId],
-    queryFn: isReviewPossible,
-    enabled: uLoggedIn,
-  });
+
 
   const [value, setValue] = useState(4);
 
@@ -307,7 +300,7 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
                         Gym ratings ({gymReviews?.data.reviews.length})
                       </h2>
 
-                      {gymReviews?.data.isUserReviewed && (
+                      {isPossible?.data.isUserReviewed && (
                         <>
                           <button
                             onClick={handleShowReview}
@@ -324,7 +317,7 @@ const GymDetails = ({ handleShowReview, gymReviews }) => {
                       )}
 
                       {isPossible?.data.isPossible &&
-                        !gymReviews?.data.isUserReviewed && (
+                        !isPossible?.data.isUserReviewed && (
                           <>
                             <button
                               onClick={handleShowReview}

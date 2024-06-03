@@ -21,12 +21,14 @@ const PersonalTrainer = ({
   const [maxPrice, setMaxPrice] = useState(0);
   useEffect(() => {
     console.log("iam trainer data", trainerData);
-    
+
     if (trainerData && trainerData.length > 0) {
       setFilteredItems(trainerData);
-      setMaxPrice(Math.max(...trainerData.map((trainer: any) => trainer.monthlyFee)));
+      setMaxPrice(
+        Math.max(...trainerData.map((trainer: any) => trainer.monthlyFee))
+      );
     }
-  
+
     console.log("iam filtered items", filteredItems);
   }, [trainerData]);
 
@@ -53,7 +55,8 @@ const PersonalTrainer = ({
     setSliderValue(newValue);
   };
   if (maxPrice < 1) return;
-  return  filteredItems && (
+  return (
+    filteredItems && (
       <>
         <Container>
           <Row>
@@ -115,6 +118,7 @@ const PersonalTrainer = ({
         </Container>
       </>
     )
+  );
 };
 
 export default PersonalTrainer;

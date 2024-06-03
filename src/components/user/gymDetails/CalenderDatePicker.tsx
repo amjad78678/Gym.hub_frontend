@@ -14,6 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import { addToCart } from "@/api/user";
 import toast from "react-hot-toast";
 import useWindowSize from "@/utils/hooks/useWindowSize";
+import { RootState } from "@/redux/store";
 
 const CalenderDatePicker: React.FC<{
   isOpen: boolean;
@@ -21,6 +22,7 @@ const CalenderDatePicker: React.FC<{
 }> = ({ isOpen, onToggle, subscriptionType, gymDetailsData }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { uLoggedIn } = useSelector((state: RootState) => state.auth);
 
   const [dateRange, setDateRangeState] = useState([
     {
@@ -72,20 +74,25 @@ const CalenderDatePicker: React.FC<{
   };
 
   const handlePurchase = () => {
-    const daysDifference = endDate.diff(startDate, "day");
-    const data = {
-      gymId: gymDetailsData._id,
-      date: startDate,
-      expiryDate: endDate,
-      subscriptionType: subscriptionType,
-      amount: gymDetailsData?.subscriptions.Daily,
-      totalPrice:
-        daysDifference == 0
-          ? gymDetailsData?.subscriptions.Daily
-          : gymDetailsData?.subscriptions.Daily * daysDifference,
-    };
+    if (uLoggedIn) {
+      const daysDifference = endDate.diff(startDate, "day");
+      const data = {
+        gymId: gymDetailsData._id,
+        date: startDate,
+        expiryDate: endDate,
+        subscriptionType: subscriptionType,
+        amount: gymDetailsData?.subscriptions.Daily,
+        totalPrice:
+          daysDifference == 0
+            ? gymDetailsData?.subscriptions.Daily
+            : gymDetailsData?.subscriptions.Daily * daysDifference,
+      };
 
-    addCartMutation(data);
+      addCartMutation(data);
+    } else {
+      toast.error("Please login first before proceeding");
+      navigate("/user-login");
+    }
   };
   const { width } = useWindowSize();
   const isLargeScreen = width >= 1024;

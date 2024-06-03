@@ -1,24 +1,19 @@
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 
 interface iErrorResponse {
   message: string;
 }
 const errorHandle = (error: Error | AxiosError) => {
- 
   const axiosError = error as AxiosError;
 
   if (axiosError.response?.data) {
     const errorResponse = axiosError.response.data as iErrorResponse;
 
-    if(errorResponse.message.includes("Not authorized")){
-     
-      toast.error("Please Login Again");
-      
-    }else if (errorResponse.message) {
-      
-       toast.error(errorResponse.message);
+    if (errorResponse.message.includes("Not authorized")) {
+      toast.error("Please login before proceeding");
+    } else if (errorResponse.message) {
+      toast.error(errorResponse.message);
     } else {
       console.log("Error response has no message");
     }
