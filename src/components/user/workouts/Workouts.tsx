@@ -12,6 +12,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import GymListSkeleton from "../skeletons/GymListSkeleton";
 
 const Workouts = ({ workoutList }) => {
   const [part, setPart] = useState("back");
@@ -62,7 +63,6 @@ const Workouts = ({ workoutList }) => {
                       color: "white",
                     }}
                   >
-          
                     <Select
                       labelId="demo-multiple-name-label"
                       id="demo-multiple-name"
@@ -104,7 +104,7 @@ const Workouts = ({ workoutList }) => {
         {workoutDetails ? (
           <>
             <div className="sm:col-span-9 max-h-[500px] overflow-y-scroll no-scrollbar p-4">
-              <h1 className="text-4xl font-bold text-center mb-10 font-serif underline">
+              <h1 className="text-5xl font-bold text-center mb-10 font-serif underline">
                 {part}
               </h1>
 
@@ -144,7 +144,14 @@ const Workouts = ({ workoutList }) => {
             </div>
           </>
         ) : (
-          <h1 className="text-3xl">Loading...</h1>
+          <div className="sm:col-span-9 ">
+            <div className="grid sm:grid-cols-2 sm:gap-2">
+              <Skeleton width={300} height={300} />
+              <Skeleton width={300} height={300} />
+              <Skeleton width={300} height={300} />
+              <Skeleton width={300} height={300} />#
+            </div>
+          </div>
         )}
       </div>
     </Container>
