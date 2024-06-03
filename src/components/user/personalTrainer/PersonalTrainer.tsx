@@ -5,6 +5,7 @@ import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import { Slider } from "@mui/material";
 import TrainerCard from "./TrainerCard";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { ClipLoader } from "react-spinners";
 
 const PersonalTrainer = ({
   trainerData,
@@ -15,13 +16,14 @@ const PersonalTrainer = ({
   setBookingTrainer,
   fetchMoreData,
   fullResult,
+  isLoadingMore,
 }) => {
   const [searchValue, setSearchValue] = useState("");
   const [filteredItems, setFilteredItems] = useState<any[]>([]);
   const [maxPrice, setMaxPrice] = useState(0);
+
   useEffect(() => {
     console.log("iam trainer data", trainerData);
-
     if (trainerData && trainerData.length > 0) {
       setFilteredItems(trainerData);
       setMaxPrice(
@@ -95,7 +97,18 @@ const PersonalTrainer = ({
                 dataLength={filteredItems.length}
                 next={fetchMoreData}
                 hasMore={trainerData && trainerData.length < fullResult}
-                loader={<h1>Loading...</h1>}
+                loader={
+                  isLoadingMore ? (
+                    <div className="text-center py-4">
+                      <ClipLoader color="white" />
+                    </div>
+                  ) : null
+                }
+                endMessage={
+                  <p style={{ textAlign: "center" }}>
+                    <b>Yay! You have seen it all</b>
+                  </p>
+                }
               >
                 {filteredItems.map((trainer) => (
                   <>

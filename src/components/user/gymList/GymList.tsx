@@ -9,14 +9,16 @@ import LocationInput from "./LocationInput";
 import SearchBar from "./SearchBar";
 import GymListSkeleton from "../skeletons/GymListSkeleton";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { ClipLoader } from "react-spinners";
 
 const GymList = () => {
   const [filteredItems, setFilteredItems] = useState<any[]>([]);
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [page, setPage] = useState(1);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const {
-    isLoading,
+    isFetching,
     data: gymData,
     refetch,
   } = useQuery({
@@ -30,6 +32,12 @@ const GymList = () => {
     },
     enabled: location.latitude !== null && location.longitude !== null,
   });
+
+  useEffect(() => {
+    if (!isFetching && isLoadingMore) {
+      setIsLoadingMore(false);
+    }
+  }, [isFetching, isLoadingMore]);
 
   const [maxPrice, setMaxPrice] = useState(0);
   useEffect(() => {
@@ -81,74 +89,75 @@ const GymList = () => {
 
   const fetchMoreData = () => {
     console.log("fetch more data", page);
+    setIsLoadingMore(true);
     setPage((prevPage) => prevPage + 1);
   };
 
   console.log("gymData", gymData?.data.total);
   console.log("itemslength", filteredItems?.length);
-
-  if (!gymData && !filteredItems && filteredItems?.length < 1)
-  return <GymListSkeleton />;
-  return (
-    !isLoading &&
-    filteredItems && (
-      <div className="text-white min-h-screen">
-        <Container>
-          <Row>
-            <Col md={4} lg={3}>
+  if (maxPrice < 1) return;
+  return isFetching && page === 1 ? (
+    <GymListSkeleton />
+  ) : (
+    <div className="text-white min-h-screen">
+      <Container>
+        <Row>
+          <Col md={4} lg={3}>
+            <div>
+              <SearchBar searchHandler={searchHandler} />
               <div>
-                <SearchBar searchHandler={searchHandler} />
-                <div>
-                  <span className=" text-xl">
-                    <span>Filters</span>{" "}
-                    <FilterListOutlinedIcon
-                      sx={{ color: "white", float: "right", fontSize: "27px" }}
-                    />
-                  </span>
+                <span className=" text-xl">
+                  <span>Filters</span>{" "}
+                  <FilterListOutlinedIcon
+                    sx={{ color: "white", float: "right", fontSize: "27px" }}
+                  />
+                </span>
 
-                  <div className="">
-                    <LocationInput setLocationData={setLocation} />
-                    <h1 className="text-lg mt-4 mb-2">Price</h1>
-                    {maxPrice > 0 && (
-                      <Slider
-                        sx={{ color: "white" }}
-                        valueLabelDisplay="auto"
-                        defaultValue={maxPrice}
-                        max={maxPrice}
-                        onChange={handleSliderChange}
-                      />
-                    )}
-                  </div>
+                <div className="">
+                  <LocationInput setLocationData={setLocation} />
+                  <h1 className="text-lg mt-4 mb-2">Price</h1>
+
+                  <Slider
+                    sx={{ color: "white" }}
+                    valueLabelDisplay="auto"
+                    defaultValue={maxPrice}
+                    max={maxPrice}
+                    onChange={handleSliderChange}
+                  />
                 </div>
               </div>
-            </Col>
-            <Col
-              lg={9}
-              md={8}
-              className=" rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
+            </div>
+          </Col>
+          <Col
+            lg={9}
+            md={8}
+            className=" rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
+          >
+            <InfiniteScroll
+              dataLength={filteredItems.length}
+              next={fetchMoreData}
+              hasMore={gymData && filteredItems?.length < gymData?.data.total}
+              loader={
+                isLoadingMore ? (
+                  <div className="text-center py-4">
+                    <ClipLoader color="white" />
+                  </div>
+                ) : null
+              }
+              endMessage={
+                <p style={{ textAlign: "center" }}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              }
             >
-              <InfiniteScroll
-                dataLength={filteredItems.length}
-                next={fetchMoreData}
-                hasMore={gymData && filteredItems?.length < gymData?.data.total}
-                loader={
-                  <h1 className="text-white text-xl">Loading..........</h1>
-                }
-                endMessage={
-                  <p style={{ textAlign: "center" }}>
-                    <b>Yay! You have seen it all</b>
-                  </p>
-                }
-              >
-                {filteredItems?.map((gym) => {
-                  return !gym.isDeleted && <GymCard key={gym._id} gym={gym} />;
-                })}
-              </InfiniteScroll>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    )
+              {filteredItems?.map((gym) => {
+                return !gym.isDeleted && <GymCard key={gym._id} gym={gym} />;
+              })}
+            </InfiniteScroll>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 

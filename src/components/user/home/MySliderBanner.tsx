@@ -35,7 +35,7 @@ const MySliderBanner = () => {
   return isLoading ? <HomeSkeleton/> : (
     <Slider {...settings}>
       {activeBanners.map((banner) => (
-        <div >
+        <div key={banner._id}>
         <div
           className="bg-no-repeat bg-cover bg-center flex items-center justify-center w-full"
           style={{
