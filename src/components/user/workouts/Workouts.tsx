@@ -6,9 +6,14 @@ import { useQuery } from "@tanstack/react-query";
 import { getWorkoutDetails } from "@/api/user";
 import { Tooltip } from "@mui/material";
 import Skeleton from "react-loading-skeleton";
+import { Theme, useTheme } from "@mui/material/styles";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 const Workouts = ({ workoutList }) => {
-  const searchHandler = () => {};
   const [part, setPart] = useState("back");
   const { isLoading, data: workoutDetails } = useQuery({
     queryKey: ["bodyPartWorkoutDetails", part],
@@ -17,7 +22,13 @@ const Workouts = ({ workoutList }) => {
 
   console.log("workoutDetails", workoutDetails);
   const [gifLoading, setGifLoading] = useState(true);
-
+  const handleChange = (event: SelectChangeEvent<typeof part>) => {
+    const {
+      target: { value },
+    } = event;
+    console.log(value);
+    setPart(value);
+  };
   return (
     <Container>
       <div className="grid sm:grid-cols-12">
@@ -31,16 +42,60 @@ const Workouts = ({ workoutList }) => {
             </span>
 
             <div className="my-4">
-              <div className=" rounded-lg border border-gray-200 w-full  text-sm font-medium">
+              <div className="rounded-lg border border-gray-200 w-full  text-sm font-medium">
                 {workoutList.map((workout) => (
-                  <p
-                    onClick={() => setPart(workout)}
-                    key={workout}
-                    className="block px-4 py-2.5 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 cursor-pointer"
-                  >
-                    {workout.toUpperCase()}
-                  </p>
+                  <>
+                    <p
+                      onClick={() => setPart(workout)}
+                      key={workout}
+                      className="hidden lg:block px-4 py-2.5 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 cursor-pointer"
+                    >
+                      {workout.toUpperCase()}
+                    </p>
+                  </>
                 ))}
+                <div className="block lg:hidden">
+                  <FormControl
+                    sx={{
+                      width: 300,
+                      backgroundColor: "black",
+                      color: "white",
+                    }}
+                  >
+          
+                    <Select
+                      labelId="demo-multiple-name-label"
+                      id="demo-multiple-name"
+                      value={part}
+                      onChange={handleChange}
+                      sx={{
+                        color: "white",
+                        "& .MuiSelect-icon": {
+                          color: "white",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          border: "none",
+                        },
+                        fontSize: "20px",
+                      }}
+                      input={<OutlinedInput label="Name" />}
+                      MenuProps={{
+                        PaperProps: {
+                          style: {
+                            maxHeight: 48 * 4.5 + 8,
+                            width: 250,
+                          },
+                        },
+                      }}
+                    >
+                      {workoutList.map((workout) => (
+                        <MenuItem key={workout} value={workout}>
+                          {workout}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
               </div>
             </div>
           </div>
