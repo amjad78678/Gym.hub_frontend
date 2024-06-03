@@ -160,16 +160,19 @@ function Navbar({ fixed }) {
                 {" "}
                 <p className="font-bold text-lg font-serif">Workouts</p>
               </Link>
-              <Link to="/profile/subscriptions">
-                <p className="font-bold text-lg font-serif">Profile </p>{" "}
-              </Link>
+
               {uLoggedIn ? (
-                <p
-                  onClick={logoutHandler}
-                  className="font-bold text-lg font-serif btn btn-danger"
-                >
-                  Logout
-                </p>
+                <>
+                  <Link to="/profile/subscriptions">
+                    <p className="font-bold text-lg font-serif">Profile </p>{" "}
+                  </Link>
+                  <p
+                    onClick={logoutHandler}
+                    className="font-bold text-lg font-serif btn btn-danger"
+                  >
+                    Logout
+                  </p>
+                </>
               ) : (
                 <p className="font-bold text-lg font-serif btn btn-danger">
                   <Link to="/login">Login</Link>

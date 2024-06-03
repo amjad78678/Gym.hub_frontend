@@ -5,6 +5,7 @@ import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import { useQuery } from "@tanstack/react-query";
 import { getWorkoutDetails } from "@/api/user";
 import { Tooltip } from "@mui/material";
+import Skeleton from "react-loading-skeleton";
 
 const Workouts = ({ workoutList }) => {
   const searchHandler = () => {};
@@ -15,6 +16,7 @@ const Workouts = ({ workoutList }) => {
   });
 
   console.log("workoutDetails", workoutDetails);
+  const [gifLoading, setGifLoading] = useState(true);
 
   return (
     <Container>
@@ -65,11 +67,16 @@ const Workouts = ({ workoutList }) => {
                       </h1>
                     </Tooltip>
 
-                    <img
-                      src={detail.gifUrl}
-                      alt="workout"
-                      className="w-full h-auto"
-                    />
+                    <div>
+                      {gifLoading && <Skeleton width={300} height={300} />}
+                      <img
+                        src={detail.gifUrl}
+                        alt="workout"
+                        className="w-full h-auto"
+                        style={{ display: isLoading ? "none" : "block" }}
+                        onLoad={() => setGifLoading(false)}
+                      />
+                    </div>
                     <div className="text-center mb-4">
                       <p className="my-2  font-semibold">
                         Equipment : {detail.equipment}
