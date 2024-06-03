@@ -5,7 +5,7 @@ import React from 'react'
 const GymMembersPage = () => {
   return (
     <>
-    <GymNavbar {...{fixed: false}}/>
+   <GymNavbar {...{fixed: false}}/>
   <GymMemberships/>
   </>
   )

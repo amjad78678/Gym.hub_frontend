@@ -32,60 +32,64 @@ const GymProfile = ({ gym }) => {
     },
   });
 
+  console.log("aim gym", gym);
+
   return (
-    <div>
-      <div style={divStyle} className="h-40 lg:h-52 relative">
+    gym && (
+      <div>
+        <div style={divStyle} className="h-40 lg:h-52 relative">
+          <Container>
+            <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+            <div className="flex justify-between items-center">
+              <div className="z-10 my-20">
+                <h1
+                  className="text-white text-3xl xs:text-5xl sm:text-6xl md:text-7xl font-semibold whitespace-normal max-w-screen-sm font-serif"
+                  style={{ textShadow: "1px 1px 1px #000000" }}
+                >
+                  {gym[0].gymName}
+                </h1>
+              </div>
+              <div className="z-10">
+                <Button onClick={() => gymLogoutMutate()} variant="danger">
+                  Logout
+                </Button>
+              </div>
+            </div>
+          </Container>
+        </div>
+
         <Container>
-          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-          <div className="flex justify-between items-center">
-            <div className="z-10 my-20">
-              <h1
-                className="text-white text-3xl xs:text-5xl sm:text-6xl md:text-7xl font-semibold whitespace-normal max-w-screen-sm font-serif"
-                style={{ textShadow: "1px 1px 1px #000000" }}
-              >
-                {gym.gymName}
-              </h1>
-            </div>
-            <div className="z-10">
-              <Button onClick={() => gymLogoutMutate()} variant="danger">
-                Logout
-              </Button>
-            </div>
+          <div className="font-semibold my-2  h-10 shadow-2xl text-white bg-black rounded-sm w-full flex justify-center items-center gap-4">
+            <h1
+              className="cursor-pointer hover:underline"
+              onClick={() => setToggle("myGym")}
+            >
+              MY GYM
+            </h1>
+            <h1>|</h1>
+            <h1
+              className="cursor-pointer hover:underline"
+              onClick={() => setToggle("editGym")}
+            >
+              EDIT
+            </h1>
           </div>
         </Container>
-      </div>
-
-      <Container>
-        <div className="font-semibold my-2  h-10 shadow-2xl text-white bg-black rounded-sm w-full flex justify-center items-center gap-4">
-          <h1
-            className="cursor-pointer hover:underline"
-            onClick={() => setToggle("myGym")}
-          >
-            MY GYM
-          </h1>
-          <h1>|</h1>
-          <h1
-            className="cursor-pointer hover:underline"
-            onClick={() => setToggle("editGym")}
-          >
-            EDIT
-          </h1>
+        <div className="px-5 py-2">
+          {toggle === "editGym" ? (
+            <EditGym />
+          ) : (
+            <>
+              <div>{gym.description}</div>
+              <h1 className="text-lg font-semibold my-2">
+                <LocationOn />
+                <span className="font-mono">{gym[0].address}</span>
+              </h1>
+            </>
+          )}
         </div>
-      </Container>
-      <div className="px-5 py-2">
-        {toggle === "editGym" ? (
-          <EditGym />
-        ) : (
-          <>
-            <div>{gym.description}.</div>
-            <h1 className="text-lg font-semibold my-2">
-              <LocationOn />
-              <span className="font-mono">{gym.address}</span>
-            </h1>
-          </>
-        )}
       </div>
-    </div>
+    )
   );
 };
 

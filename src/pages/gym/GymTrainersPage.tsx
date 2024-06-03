@@ -6,40 +6,57 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import GymNavbar from "@/components/gym/common/GymNavbar";
+import Loader from "@/components/common/Loader";
 
 const GymTrainersPage = () => {
+  const [open, setOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const {
+    isLoading,
+    data: trainersData,
+    refetch,
+  } = useQuery({
+    queryKey: ["trainers"],
+    queryFn: fetchTrainers,
+  });
 
-const [open,setOpen]=useState(false)
-const [editOpen,setEditOpen]=useState(false)
-const [selectedRow, setSelectedRow] = useState(null);
-const { data: trainersData,refetch } = useQuery({
-  queryKey: ["trainers"],
-  queryFn: fetchTrainers,
-});
+  const [trainers, setTrainers] = useState([]);
 
-const [trainers, setTrainers] = useState([]);
+  useEffect(() => {
+    if (trainersData) {
+      setTrainers(trainersData.data.message);
+    }
+  }, [trainersData]);
 
-useEffect(() => {
-  if (trainersData) {
-    setTrainers(trainersData.data.message);
-  }
-}, [trainersData]);
+  console.log(trainers);
+  console.log("selectedRow", selectedRow);
 
-console.log(trainers);
-console.log('selectedRow',selectedRow)
-
- 
-  return (
+  return isLoading && !trainers ? (
+    <Loader />
+  ) : (
     <div className="bg-black">
-    <GymNavbar {...{fixed: false}} />
-   <Container>
-     <Trainers {...{open,setOpen,setSelectedRow,editOpen,setEditOpen,trainers,refetch}}/>
-
-   </Container>
-   {open && <AddTrainerModal {...{open,setOpen,refetch}}/>}
-   {editOpen && <EditTrainerModal {...{editOpen,selectedRow,setEditOpen,refetch}}/>}
-   </div>
-
+      <GymNavbar {...{ fixed: false }} />
+      <Container>
+        <Trainers
+          {...{
+            open,
+            setOpen,
+            setSelectedRow,
+            editOpen,
+            setEditOpen,
+            trainers,
+            refetch,
+          }}
+        />
+      </Container>
+      {open && <AddTrainerModal {...{ open, setOpen, refetch }} />}
+      {editOpen && (
+        <EditTrainerModal
+          {...{ editOpen, selectedRow, setEditOpen, refetch }}
+        />
+      )}
+    </div>
   );
 };
 

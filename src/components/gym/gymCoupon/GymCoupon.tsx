@@ -12,6 +12,7 @@ import AddTrainerModal from "./AddTrainerModal";
 import CouponActions from "./CouponActions";
 import NoCouponComponent from "./NoCouponComponent";
 import SearchInput from "@/components/admin/common/SearchInput";
+import Loader from "@/components/common/Loader";
 
 const GymCoupon = ({
   setOpen,
@@ -19,6 +20,7 @@ const GymCoupon = ({
   coupons,
   refetch,
   setSelectedRow,
+  isLoading,
 }) => {
   const [activeCoupons, setActiveCoupons] = useState([]);
   useEffect(() => {
@@ -102,7 +104,11 @@ const GymCoupon = ({
     setActiveCoupons(filtered);
   }, [search]);
 
-  return coupons && coupons.length > 0 ? (
+  return isLoading && !coupons ? (
+    <Loader />
+  ) : coupons.length < 1 ? (
+    <NoCouponComponent {...{ setOpen }} />
+  ) : (
     <Container>
       <div className="">
         <Box
@@ -153,8 +159,6 @@ const GymCoupon = ({
         </Box>
       </div>
     </Container>
-  ) : (
-    <NoCouponComponent {...{ setOpen }} />
   );
 };
 

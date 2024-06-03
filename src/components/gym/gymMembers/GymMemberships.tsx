@@ -8,6 +8,7 @@ import { grey } from "@mui/material/colors";
 import dayjs from "dayjs";
 import SearchInput from "@/components/admin/common/SearchInput";
 import { Container } from "react-bootstrap";
+import Loader from "@/components/common/Loader";
 
 const GymMemberships = () => {
   const {
@@ -25,19 +26,23 @@ const GymMemberships = () => {
 
   console.log("iamrowId", rowId);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (subscriptionData) {
       setSubscriptions(subscriptionData.data.subscriptions);
     }
   }, [subscriptionData]);
 
-const [search,setSearch]=useState('')
-  useEffect(()=>{
-    const filtered = subscriptionData?.data.subscriptions.filter((subscription)=>{
-      return subscription.userId.username.toLowerCase().includes(search.toLowerCase())
-    })
-    setSubscriptions(filtered)
-  },[search])
+  const [search, setSearch] = useState("");
+  useEffect(() => {
+    const filtered = subscriptionData?.data.subscriptions.filter(
+      (subscription) => {
+        return subscription.userId.username
+          .toLowerCase()
+          .includes(search.toLowerCase());
+      }
+    );
+    setSubscriptions(filtered);
+  }, [search]);
 
   const columns = useMemo(
     () => [
@@ -52,11 +57,11 @@ const [search,setSearch]=useState('')
             justifyContent="center"
             alignItems="center"
             width="100%"
-            height="100%" 
+            height="100%"
           >
             <Avatar
               src={params.row.userId.profilePic.imageUrl}
-              style={{ width: "50px", height: "50px" }} 
+              style={{ width: "50px", height: "50px" }}
             />
           </Box>
         ),
@@ -157,7 +162,12 @@ const [search,setSearch]=useState('')
         headerAlign: "center",
         width: 120,
         renderCell: (params) => (
-          <Box display="flex" justifyContent="center" items="center" width="100%">
+          <Box
+            display="flex"
+            justifyContent="center"
+            items="center"
+            width="100%"
+          >
             <img
               src={params.row.qrCode}
               alt="qrCode"
@@ -171,53 +181,55 @@ const [search,setSearch]=useState('')
   );
   const [pageSize, setPageSize] = useState(5);
 
-  return !isLoading && subscriptions ? (
+  return isLoading && !subscriptions ? (
+    <Loader />
+  ) : (
     <Container>
-    <div className="">
-      <Box
-        sx={{
-          width: "100%",
-        }}
-      >
-        <Typography
-          variant="h3"
-          component="h3"
+      <div className="">
+        <Box
           sx={{
-            textAlign: "center",
-            mt: 3,
-            mb: 3,
-            color: "white",
+            width: "100%",
           }}
         >
-          All Subscriptions
-        </Typography>
+          <Typography
+            variant="h3"
+            component="h3"
+            sx={{
+              textAlign: "center",
+              mt: 3,
+              mb: 3,
+              color: "white",
+            }}
+          >
+            All Subscriptions
+          </Typography>
 
-        <SearchInput {...{search,setSearch}} />
+          <SearchInput {...{ search, setSearch }} />
 
-        <DataGrid
-          columns={columns}
-          rows={subscriptions}
-          pageSizeOptions={[5, 10, 25]}
-          rowHeight={100}
-          initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
-          sx={{
-            [`& .${gridClasses.row}`]: {
-              bgcolor: (theme) =>
-                theme.palette.mode === "light" ? grey[200] : grey[900],
-            },
-          }}
-          getRowId={(row) => row._id}
-          getRowSpacing={(params) => ({
-            top: params.isFirstVisible ? 0 : 5,
-            bottom: params.isLastVisible ? 0 : 5,
-          })}
-          onCellEditStop={(params) => setSelectedRowId(params.id.toString())}
-          onCellEditStart={(params) => setRowId(params.id.toString())}
-        />
-      </Box>
-    </div>
+          <DataGrid
+            columns={columns}
+            rows={subscriptions}
+            pageSizeOptions={[5, 10, 25]}
+            rowHeight={100}
+            initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
+            sx={{
+              [`& .${gridClasses.row}`]: {
+                bgcolor: (theme) =>
+                  theme.palette.mode === "light" ? grey[200] : grey[900],
+              },
+            }}
+            getRowId={(row) => row._id}
+            getRowSpacing={(params) => ({
+              top: params.isFirstVisible ? 0 : 5,
+              bottom: params.isLastVisible ? 0 : 5,
+            })}
+            onCellEditStop={(params) => setSelectedRowId(params.id.toString())}
+            onCellEditStart={(params) => setRowId(params.id.toString())}
+          />
+        </Box>
+      </div>
     </Container>
-  ): (<div>Loading...</div>);
+  );
 };
 
 export default GymMemberships;

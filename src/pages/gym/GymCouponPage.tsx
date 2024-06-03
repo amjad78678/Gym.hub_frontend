@@ -11,7 +11,7 @@ const GymCouponPage = () => {
 const [open,setOpen]=useState(false)
 const [editOpen,setEditOpen]=useState(false)
 const [selectedRow, setSelectedRow] = useState(null);
-const { data: couponsData,refetch } = useQuery({
+const {isLoading, data: couponsData,refetch } = useQuery({
   queryKey: ["coupons"],
   queryFn: fetchCoupons,
 });
@@ -33,7 +33,7 @@ console.log('selectedRow',selectedRow)
     <>
       <GymNavbar {...{fixed: false}}/>
     <div>
-        <GymCoupon {...{open,setOpen,setSelectedRow,editOpen,setEditOpen,coupons,refetch}} />
+        <GymCoupon {...{open,setOpen,setSelectedRow,editOpen,setEditOpen,coupons,refetch,isLoading}} />
     </div>
    {open && <AddCouponModal {...{open,setOpen,refetch}}/>}
    {editOpen && <EditCouponModal {...{editOpen,selectedRow,setEditOpen,refetch}}/>}

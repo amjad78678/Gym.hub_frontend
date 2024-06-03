@@ -12,19 +12,22 @@ import ModalSubscriptionEdit from "./ModalSubscriptionEdit";
 import { useQuery } from "@tanstack/react-query";
 import { fetchGymSubscription } from "@/api/gym";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "@/components/common/Loader";
 
 const GymSubscription = () => {
   const [open, setOpen] = useState(false);
-  const [editingSubscription, setEditingSubscription] = useState<string[] | null>(null);
-  const {gymDetails}=useSelector((state)=>state.auth)
+  const [editingSubscription, setEditingSubscription] = useState<
+    string[] | null
+  >(null);
+  const { gymDetails } = useSelector((state) => state.auth);
 
-  const functionopenpopup = (subscriptionDetails: string[]|null) => {
+  const functionopenpopup = (subscriptionDetails: string[] | null) => {
     setEditingSubscription(subscriptionDetails);
     setOpen(!open);
   };
 
   const {
- 
+    isLoading,
     data: gymSubscriptionData,
     refetch,
   } = useQuery({
@@ -32,37 +35,30 @@ const GymSubscription = () => {
     queryFn: fetchGymSubscription,
   });
 
-  const [subs,setSubs]=useState([])
-  console.log('iam data',gymSubscriptionData)
+  const [subs, setSubs] = useState([]);
+  console.log("iam data", gymSubscriptionData);
 
-
-
-  
   useEffect(() => {
     if (gymSubscriptionData) {
-      
-       setSubs(gymSubscriptionData.data[0].subscriptions);
+      setSubs(gymSubscriptionData.data[0].subscriptions);
     }
-  
-   }, [gymSubscriptionData]); 
-   
+  }, [gymSubscriptionData]);
 
-   const subsArray = Object.entries(subs).map(([key, value]) => ({
+  const subsArray = Object.entries(subs).map(([key, value]) => ({
     subscription: key,
     amount: value,
-   }));
+  }));
 
-
-  return (
+  return isLoading && !gymSubscriptionData ? (
+    <Loader />
+  ) : (
     <div className="bg-black">
-
       <Container className="text-white">
-      
-      <Typography
+        <Typography
           variant="h3"
           component="h3"
           sx={{
-            textAlign: "center", 
+            textAlign: "center",
             color: "white",
             mt: 3,
             mb: 3,
@@ -75,11 +71,10 @@ const GymSubscription = () => {
           sx={{
             display: "flex",
             justifyContent: "center",
-              
+
             height: "50vh",
           }}
         >
-          
           <TableContainer
             className="absolute mx-auto"
             sx={{ maxHeight: "500px", maxWidth: "70%" }}

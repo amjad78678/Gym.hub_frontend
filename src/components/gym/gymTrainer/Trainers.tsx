@@ -107,7 +107,7 @@ const Trainers = ({
     const filtered = trainers.filter((trainer) => {
       return trainer.name.toLowerCase().includes(search.toLowerCase());
     });
-    setActiveTrainers(filtered)
+    setActiveTrainers(filtered);
   }, [search]);
 
   return trainers.length > 0 ? (
