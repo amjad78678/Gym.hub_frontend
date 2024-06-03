@@ -22,26 +22,18 @@ import {
 } from "@mui/icons-material";
 import dayjs from "dayjs";
 
-const GymDetails = ({ handleShowReview, gymReviews,isPossible }) => {
+const GymDetails = ({
+  handleShowReview,
+  gymReviews,
+  isPossible,
+  gymDetailsData,
+  isLoading,
+}) => {
   const queryParams = new URLSearchParams(location.search);
   const gymId = queryParams.get("id");
   const [showCalender, setShowCalender] = useState(false);
-
-  const {
-    isLoading,
-    data: gymDetailsData,
-    refetch,
-  } = useQuery({
-    queryKey: ["gymDetails", gymId],
-    queryFn: fetchGymDetails,
-  });
-
   const [currentView, setCurrentView] = useState("description");
   const navigate = useNavigate();
-
-
-
-  const [value, setValue] = useState(4);
 
   const labels = {
     0.5: "Useless",
@@ -96,8 +88,8 @@ const GymDetails = ({ handleShowReview, gymReviews,isPossible }) => {
         date: new Date(),
         expiryDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
         subscriptionType: alignment,
-        amount: gymDetailsData?.data.message.subscriptions.Monthly,
-        totalPrice: gymDetailsData?.data.message.subscriptions.Monthly,
+        amount: gymDetailsData?.data.message[0].subscriptions.Monthly,
+        totalPrice: gymDetailsData?.data.message[0].subscriptions.Monthly,
       };
       addCartMutation(data);
     } else if (alignment === "Yearly") {
@@ -108,14 +100,15 @@ const GymDetails = ({ handleShowReview, gymReviews,isPossible }) => {
           new Date().setFullYear(new Date().getFullYear() + 1)
         ),
         subscriptionType: alignment,
-        amount: gymDetailsData?.data.message.subscriptions.Yearly,
-        totalPrice: gymDetailsData?.data.message.subscriptions.Yearly,
+        amount: gymDetailsData?.data.message[0].subscriptions.Yearly,
+        totalPrice: gymDetailsData?.data.message[0].subscriptions.Yearly,
       };
       addCartMutation(data);
     }
   };
+  console.log("gymDetails", gymDetailsData);
 
-  return isLoading ? (
+  return isLoading && !gymDetailsData ? (
     <Loader />
   ) : (
     <>
@@ -126,22 +119,24 @@ const GymDetails = ({ handleShowReview, gymReviews,isPossible }) => {
               {/* For Large Screens */}
               <Row className="d-none d-lg-flex">
                 <Col lg={3}>
-                  {gymDetailsData?.data.message.images.map((image, index) => (
-                    <img
-                      key={index}
-                      className="mb-3 rounded-lg cursor-pointer hover:scale-105 transition-transform duration-200"
-                      src={image.imageUrl}
-                      alt=""
-                      onMouseEnter={() => handleImageHover(index)}
-                    />
-                  ))}
+                  {gymDetailsData?.data.message[0].images?.map(
+                    (image, index) => (
+                      <img
+                        key={index}
+                        className="mb-3 rounded-lg cursor-pointer hover:scale-105 transition-transform duration-200"
+                        src={image.imageUrl}
+                        alt=""
+                        onMouseEnter={() => handleImageHover(index)}
+                      />
+                    )
+                  )}
                 </Col>
 
                 <Col lg={9}>
                   <img
                     className="rounded-lg w-full h-full object-cover"
                     src={
-                      gymDetailsData?.data.message.images[mainImageIndex]
+                      gymDetailsData?.data.message[0].images[mainImageIndex]
                         .imageUrl
                     }
                     alt=""
@@ -152,15 +147,17 @@ const GymDetails = ({ handleShowReview, gymReviews,isPossible }) => {
               <Row className="d-lg-none">
                 <Col xs={12}>
                   <Carousel indicators={false}>
-                    {gymDetailsData?.data.message.images.map((image, index) => (
-                      <Carousel.Item key={index}>
-                        <img
-                          className="d-block w-100 mb-4"
-                          src={image.imageUrl}
-                          alt=""
-                        />
-                      </Carousel.Item>
-                    ))}
+                    {gymDetailsData?.data.message[0].images.map(
+                      (image, index) => (
+                        <Carousel.Item key={index}>
+                          <img
+                            className="d-block w-100 mb-4"
+                            src={image.imageUrl}
+                            alt=""
+                          />
+                        </Carousel.Item>
+                      )
+                    )}
                   </Carousel>
                 </Col>
               </Row>
@@ -168,7 +165,7 @@ const GymDetails = ({ handleShowReview, gymReviews,isPossible }) => {
 
             <Col lg={6}>
               <h1 className="text-2xl font-serif">
-                {gymDetailsData?.data.message.gymName}
+                {gymDetailsData?.data.message[0].gymName}
               </h1>
 
               <Box
@@ -178,19 +175,31 @@ const GymDetails = ({ handleShowReview, gymReviews,isPossible }) => {
                   alignItems: "center",
                 }}
               >
-                <Rating
-                  name="hover-feedback"
-                  value={value}
-                  precision={0.5}
-                  getLabelText={getLabelText}
-                  emptyIcon={
-                    <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
-                  }
-                  readOnly
-                />
-                {value !== null && <Box sx={{ ml: 2 }}>{labels[value]}</Box>}
+                {gymDetailsData?.data.message[0].averageRating > 0 && (
+                  <>
+                    <Rating
+                      name="hover-feedback"
+                      value={gymDetailsData?.data.message[0].averageRating}
+                      precision={0.5}
+                      getLabelText={() =>
+                        getLabelText(
+                          gymDetailsData?.data.message[0].averageRating
+                        )
+                      }
+                      emptyIcon={
+                        <StarIcon
+                          style={{ opacity: 0.55 }}
+                          fontSize="inherit"
+                        />
+                      }
+                      readOnly
+                    />
+                    <Box sx={{ ml: 2 }}>
+                      {labels[gymDetailsData?.data.message[0].averageRating]}
+                    </Box>
+                  </>
+                )}
               </Box>
-
               <p className="my-3 text-sm">
                 {" "}
                 This fitness membership is perfect for any occasion. Crafted to
@@ -199,14 +208,14 @@ const GymDetails = ({ handleShowReview, gymReviews,isPossible }) => {
               </p>
 
               <p className="text-white text-sm font-mono my-2">
-                <LocationOnIcon /> {gymDetailsData?.data.message?.address}
+                <LocationOnIcon /> {gymDetailsData?.data.message[0]?.address}
               </p>
               <p className="text-white text-sm font-mono my-2">
-                <MailOutlineIcon /> {gymDetailsData?.data.message?.email}
+                <MailOutlineIcon /> {gymDetailsData?.data.message[0]?.email}
               </p>
               <p className="text-white text-sm font-mono my-2">
                 <CallOutlinedIcon />{" "}
-                {gymDetailsData?.data.message?.contactNumber}
+                {gymDetailsData?.data.message[0]?.contactNumber}
               </p>
 
               <ToggleButtonGroup
@@ -290,7 +299,7 @@ const GymDetails = ({ handleShowReview, gymReviews,isPossible }) => {
                     </h2>
 
                     <p className="text-gray-300">
-                      {gymDetailsData?.data.message.description}
+                      {gymDetailsData?.data.message[0].description}
                     </p>
                   </div>
                 ) : (
@@ -402,7 +411,7 @@ const GymDetails = ({ handleShowReview, gymReviews,isPossible }) => {
                 isOpen={showCalender}
                 onToggle={() => setShowCalender(!showCalender)}
                 {...{
-                  gymDetailsData: gymDetailsData?.data.message,
+                  gymDetailsData: gymDetailsData?.data.message[0],
                   subscriptionType: alignment,
                 }}
               />

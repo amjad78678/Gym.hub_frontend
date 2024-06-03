@@ -14,10 +14,17 @@ import Transition from "../checkout/Transition";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { addRatingGym, updateRating, userReviewed } from "@/api/user";
+import { useMutation } from "@tanstack/react-query";
+import { addRatingGym, updateRating } from "@/api/user";
 
-const RatingForm = ({ showReview, handleShowReview, gymId, userReview ,refetchGymReviews}) => {
+const RatingForm = ({
+  showReview,
+  handleShowReview,
+  gymId,
+  userReview,
+  refetchGymReviews,
+  refetchGymDetails,
+}) => {
   const [rating, setRating] = useState(0);
 
   const handleStarClick = (index) => {
@@ -31,26 +38,25 @@ const RatingForm = ({ showReview, handleShowReview, gymId, userReview ,refetchGy
         toast.success(res.data.message);
         handleShowReview();
         refetchGymReviews();
-
       }
     },
   });
 
-  const {mutate: updateRatingMutate} = useMutation({
+  const { mutate: updateRatingMutate } = useMutation({
     mutationFn: updateRating,
     onSuccess: (res) => {
-      if (res) { 
+      if (res) {
         toast.success(res.data.message);
         handleShowReview();
         refetchGymReviews();
+        refetchGymDetails();
       }
     },
-
-  })
+  });
 
   const [currentRating, setCurrentRating] = useState(userReview?.rating);
   const handleReviewedStarClick = (newRating) => {
-    setCurrentRating(newRating + 1); 
+    setCurrentRating(newRating + 1);
   };
 
   return (
@@ -74,7 +80,12 @@ const RatingForm = ({ showReview, handleShowReview, gymId, userReview ,refetchGy
           onSubmit={(values: any) => {
             console.log("iam values from formik", values);
             if (currentRating > 0) {
-              updateRatingMutate({ ...values, rating: currentRating, gymId, userReviewId: userReview._id });
+              updateRatingMutate({
+                ...values,
+                rating: currentRating,
+                gymId,
+                userReviewId: userReview._id,
+              });
             } else {
               toast.error("Please select rating");
             }
@@ -100,7 +111,7 @@ const RatingForm = ({ showReview, handleShowReview, gymId, userReview ,refetchGy
                           <Star
                             fontSize="large"
                             className={`${
-                              index<currentRating
+                              index < currentRating
                                 ? "text-yellow-500"
                                 : "text-gray-400"
                             }`}

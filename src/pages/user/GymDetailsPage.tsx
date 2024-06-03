@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import GymDetails from "@/components/user/gymDetails/GymDetails";
 import Navbar from "@/components/common/Navbar";
 import RatingForm from "@/components/user/gymDetails/RatingForm";
-import { fetchGymReviews, isReviewPossible } from "@/api/user";
+import { fetchGymDetails, fetchGymReviews, isReviewPossible } from "@/api/user";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -27,25 +27,46 @@ const GymDetailsPage = () => {
   const handleShowReview = () => {
     setShowReview(!showReview);
   };
-  return (
-    <>
-      <div className="bg-black min-h-screen text-white">
-        <Navbar {...{ fixed: true }} />
-        <GymDetails {...{ handleShowReview, gymReviews, isPossible }} />
-      </div>
 
-      {showReview && (
-        <RatingForm
-          {...{
-            showReview,
-            handleShowReview,
-            gymId,
-            userReview: gymReviews?.data.isUserReviewed,
-            refetchGymReviews,
-          }}
-        />
-      )}
-    </>
+  const {
+    isLoading,
+    data: gymDetailsData,
+    refetch: refetchGymDetails,
+  } = useQuery({
+    queryKey: ["gymDetails", gymId],
+    queryFn: fetchGymDetails,
+  });
+
+  return (
+    !isLoading && (
+      <>
+        <div className="bg-black min-h-screen text-white">
+          <Navbar {...{ fixed: true }} />
+          <GymDetails
+            {...{
+              handleShowReview,
+              gymReviews,
+              isPossible,
+              gymDetailsData,
+              isLoading,
+            }}
+          />
+        </div>
+
+        {showReview && (
+          <RatingForm
+            {...{
+              showReview,
+              handleShowReview,
+              gymId,
+              userReview: isPossible?.data.isUserReviewed,
+              refetchGymReviews,
+              refetchGymDetails
+            }}
+          />
+        )}
+      </>
+    )
   );
 };
 
