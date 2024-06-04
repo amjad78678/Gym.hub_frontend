@@ -16,6 +16,7 @@ const adminRoutes={
     addBanner: 'add_banner',
     fetchBanners: 'fetch_banners',
     updateBanner: 'update_banner',
+    recentlyAddedUsers: 'recently_users'
 
 }
 

@@ -7,7 +7,7 @@ import Loader from "@/components/common/Loader";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { Button, Typography } from "@mui/material";
+import { Button, Tooltip, Typography } from "@mui/material";
 import toast from "react-hot-toast";
 import { blockAdminAction, deleteGym } from "@/api/admin";
 import { Link } from "react-router-dom";
@@ -26,7 +26,6 @@ const Gym = () => {
   });
 
   console.log("gyms", gyms);
-
   const [gymList, setGymList] = useState([]);
   console.log("iamgyms", gymList);
 
@@ -91,7 +90,7 @@ const Gym = () => {
           id: gymId,
         });
 
-        if (response.data.status) {
+        if (response && response.data.success) {
           toast.success(response?.data.message);
           refetch();
         }
@@ -135,7 +134,7 @@ const Gym = () => {
           id: gymId,
         });
 
-        if (response.data.status) {
+        if (response && response.data.success) {
           toast.success(response?.data.message);
           refetch();
         }
@@ -146,210 +145,229 @@ const Gym = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-
-      setGymList(
-        gyms?.data?.message.filter((gym) =>
-          gym?.gymName.toLowerCase().includes(search.toLowerCase())
-        )
-      );
+    setGymList(
+      gyms?.data?.message.filter((gym) =>
+        gym?.gymName.toLowerCase().includes(search.toLowerCase())
+      )
+    );
   }, [search]);
 
-  return !isLoading && (
-    <>
-      <Typography
-        variant="h3"
-        component="h3"
-        className="font-bold pt-4  text-center tracking-tight text-gray-200"
-      >
-        Gyms
-      </Typography>
-      <SearchInput {...{ search, setSearch }} />
-      <div className="mt-4 mx-2 bg-black">
-        <div className="w-full overflow-hidden rounded-lg shadow-xs">
-          <div className="w-full overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="text-xs font-semibold tracking-wide text-left text-gray-400 uppercase border-b dark:border-gray-700  dark:text-gray-400 dark:bg-gray-800">
-                  <th className="px-4 py-3">Image</th>
-                  <th className="px-4 py-3">Gym name</th>
-                  <th className="px-4 py-3">Location</th>
-                  <th className="px-4 py-3">Details</th>
-                  <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3 ">Action</th>
-                </tr>
-              </thead>
-              <tbody className=" divide-y dark:divide-gray-700 ">
-                {/* Repeat the following block for each row */}
+  return (
+    !isLoading && (
+      <>
+        <Typography
+          variant="h3"
+          component="h3"
+          className="font-bold pt-4  text-center tracking-tight text-gray-200"
+        >
+          Gyms
+        </Typography>
+        <SearchInput {...{ search, setSearch }} />
+        <div className="mt-4 mx-2 bg-black">
+          <div className="w-full overflow-hidden rounded-lg shadow-xs">
+            <div className="w-full overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="text-xs font-semibold tracking-wide text-left text-gray-400 uppercase border-b dark:border-gray-700  dark:text-gray-400 dark:bg-gray-800">
+                    <th className="px-4 py-3">Image</th>
+                    <th className="px-4 py-3">Gym name</th>
+                    <th className="px-4 py-3">Location</th>
+                    <th className="px-4 py-3">Details</th>
+                    <th className="px-4 py-3">Status</th>
+                    <th className="px-4 py-3 ">Action</th>
+                  </tr>
+                </thead>
+                <tbody className=" divide-y dark:divide-gray-700 ">
+                  {/* Repeat the following block for each row */}
 
-                {gymList?.map(
-                  (gym: any) =>
-                    !gym.isDeleted && (
-                      <tr className=" dark:bg-gray-800  dark:hover:bg-gray-900 text-white">
-                        <td className="px-4 py-3">
-                          <div className="flex items-center">
-                            <div className="relative hidden w-24 h-24 mr-3 rounded-full md:block">
-                              <img
-                                className="object-cover w-full h-full rounded-full"
-                                src={gym.images[0].imageUrl}
-                                alt=""
-                                loading="lazy"
-                              />
-                              <div
-                                className="absolute inset-0 rounded-full shadow-inner"
-                                aria-hidden="true"
-                              ></div>
+                  {gymList?.map(
+                    (gym: any) =>
+                      !gym.isDeleted && (
+                        <tr className=" dark:bg-gray-800  dark:hover:bg-gray-900 text-white">
+                          <td className="px-4 py-3">
+                            <div className="flex items-center">
+                              <div className="relative hidden w-24 h-24 mr-3 rounded-full md:block">
+                                <img
+                                  className="object-cover w-full h-full rounded-full"
+                                  src={gym.images[0].imageUrl}
+                                  alt=""
+                                  loading="lazy"
+                                />
+                                <div
+                                  className="absolute inset-0 rounded-full shadow-inner"
+                                  aria-hidden="true"
+                                ></div>
+                              </div>
+                              <div></div>
                             </div>
-                            <div></div>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3 text-sm">{gym.gymName}</td>
-                        <td className="px-4 py-3 text-sm">
-                          {gym.state}, {gym.city}
-                        </td>
-                        <td className="px-4 py-3 text-sm cursor-pointer hover:underline text-blue-600">
-                          <Link to={`/admin/dashboard/gym/${gym._id}`}>
-                            {" "}
-                            View details{" "}
-                          </Link>
-                        </td>
-                        <td className="px-4 py-3 text-xs">
-                          {gym.isVerified ? (
-                            <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                              {" "}
-                              Approved{" "}
-                            </span>
-                          ) : (
-                            <span className="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full">
-                              {" "}
-                              Pending{" "}
-                            </span>
-                          )}
-                        </td>
-                        {gym.isVerified ? (
-                          <td>
-                            {gym.isBlocked ? (
-                              <Button
-                                onClick={() => handleBlockAction(gym._id)}
-                                sx={{
-                                  color: "white",
-                                  backgroundColor: "green",
-                                  "&:hover": {
-                                    backgroundColor: "#4caf50",
-                                    color: "white",
-                                  },
-                                }}
-                              >
-                                Unblock
-                              </Button>
-                            ) : (
-                              <Button
-                                onClick={() => handleBlockAction(gym._id)}
-                                sx={{
-                                  color: "white",
-                                  backgroundColor: "red",
-                                  "&:hover": {
-                                    backgroundColor: "#cf5557",
-                                    color: "white",
-                                  },
-                                }}
-                              >
-                                Block
-                              </Button>
-                            )}
-
-                            <DeleteOutlineOutlinedIcon
-                              onClick={() => handleDelete(gym._id)}
-                              sx={{ color: "red", fontSize: "35px" }}
-                              className="ms-2 cursor-pointer"
-                            />
                           </td>
-                        ) : (
+                          <td className="px-4 py-3 text-sm">{gym.gymName}</td>
+                          <td className="px-4 py-3 text-sm">
+                            <Tooltip title={gym.address}>
+                              <span className="cursor-pointer hover:underline">
+                                {gym.address.substring(0, 25) + "..."}
+                              </span>
+                            </Tooltip>
+                          </td>
+                          <td className="px-4 py-3 text-sm cursor-pointer hover:underline text-blue-600">
+                            <Link to={`/admin/dashboard/gym/${gym._id}`}>
+                              {" "}
+                              View details{" "}
+                            </Link>
+                          </td>
                           <td className="px-4 py-3 text-xs">
-                            <span
-                              onClick={() => handleReject(gym._id)}
-                              className="px-1 cursor-pointer py-1 me-2 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100"
-                            >
-                              <CancelOutlinedIcon />
-                            </span>
-                            <span
-                              onClick={() => handleApproval(gym._id)}
-                              className="px-1 cursor-pointer py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"
-                            >
-                              <TaskAltOutlinedIcon />
-                            </span>
+                            {gym.isVerified ? (
+                              <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                                {" "}
+                                Approved{" "}
+                              </span>
+                            ) : gym.isRejected ? (
+                              <span className="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100">
+                                Rejected
+                              </span>
+                            ) : (
+                              <span className="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full">
+                                {" "}
+                                Pending{" "}
+                              </span>
+                            )}
                           </td>
-                        )}
-                      </tr>
-                    )
-                )}
+                          {gym.isVerified ? (
+                            <td>
+                              {gym.isBlocked ? (
+                                <Button
+                                  onClick={() => handleBlockAction(gym._id)}
+                                  sx={{
+                                    color: "white",
+                                    backgroundColor: "green",
+                                    "&:hover": {
+                                      backgroundColor: "#4caf50",
+                                      color: "white",
+                                    },
+                                  }}
+                                >
+                                  Unblock
+                                </Button>
+                              ) : (
+                                <Button
+                                  onClick={() => handleBlockAction(gym._id)}
+                                  sx={{
+                                    color: "white",
+                                    backgroundColor: "red",
+                                    "&:hover": {
+                                      backgroundColor: "#cf5557",
+                                      color: "white",
+                                    },
+                                  }}
+                                >
+                                  Block
+                                </Button>
+                              )}
 
-                {/* End of row block */}
-                {/* Repeat the row block for each row */}
-              </tbody>
-            </table>
-          </div>
-          <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-400 uppercase border-t dark:border-gray-700  sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
-            <span className="flex items-center col-span-3">
-              {" "}
-              Showing 21-30 of 100{" "}
-            </span>
-            <span className="col-span-2"></span>
-            {/* Pagination */}
-            <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-              <nav aria-label="Table navigation">
-                <ul className="inline-flex items-center">
-                  <li>
-                    <button
-                      className="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
-                      aria-label="Previous"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        className="w-4 h-4 fill-current"
-                        viewBox="0 0 20 20"
+                              <DeleteOutlineOutlinedIcon
+                                onClick={() => handleDelete(gym._id)}
+                                sx={{ color: "red", fontSize: "35px" }}
+                                className="ms-2 cursor-pointer"
+                              />
+                            </td>
+                          ) : gym.isRejected ? (
+                            <>
+                              <td>
+                                <DeleteOutlineOutlinedIcon
+                                  onClick={() => handleDelete(gym._id)}
+                                  sx={{ color: "red", fontSize: "35px" }}
+                                  className="ms-2 cursor-pointer"
+                                />
+                              </td>
+                            </>
+                          ) : (
+                            <td className="px-4 py-3 text-xs">
+                              <span
+                                onClick={() => handleReject(gym._id)}
+                                className="px-1 cursor-pointer py-1 me-2 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100"
+                              >
+                                <CancelOutlinedIcon />
+                              </span>
+                              <span
+                                onClick={() => handleApproval(gym._id)}
+                                className="px-1 cursor-pointer py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"
+                              >
+                                <TaskAltOutlinedIcon />
+                              </span>
+                            </td>
+                          )}
+                        </tr>
+                      )
+                  )}
+
+                  {/* End of row block */}
+                  {/* Repeat the row block for each row */}
+                </tbody>
+              </table>
+            </div>
+            <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-400 uppercase border-t dark:border-gray-700  sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+              <span className="flex items-center col-span-3">
+                {" "}
+                Showing 21-30 of 100{" "}
+              </span>
+              <span className="col-span-2"></span>
+              {/* Pagination */}
+              <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+                <nav aria-label="Table navigation">
+                  <ul className="inline-flex items-center">
+                    <li>
+                      <button
+                        className="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
+                        aria-label="Previous"
                       >
-                        <path
-                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                          clip-rule="evenodd"
-                          fill-rule="evenodd"
-                        ></path>
-                      </svg>
-                    </button>
-                  </li>
-                  {/* Repeat the following block for each page number */}
-                  <li>
-                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                      1
-                    </button>
-                  </li>
-                  {/* End of page number block */}
-                  {/* Repeat the page number block for each page number */}
-                  <li>
-                    <button
-                      className="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
-                      aria-label="Next"
-                    >
-                      <svg
-                        className="w-4 h-4 fill-current"
-                        aria-hidden="true"
-                        viewBox="0 0 20 20"
+                        <svg
+                          aria-hidden="true"
+                          className="w-4 h-4 fill-current"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                            clip-rule="evenodd"
+                            fill-rule="evenodd"
+                          ></path>
+                        </svg>
+                      </button>
+                    </li>
+                    {/* Repeat the following block for each page number */}
+                    <li>
+                      <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                        1
+                      </button>
+                    </li>
+                    {/* End of page number block */}
+                    {/* Repeat the page number block for each page number */}
+                    <li>
+                      <button
+                        className="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
+                        aria-label="Next"
                       >
-                        <path
-                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                          clip-rule="evenodd"
-                          fill-rule="evenodd"
-                        ></path>
-                      </svg>
-                    </button>
-                  </li>
-                </ul>
-              </nav>
-            </span>
+                        <svg
+                          className="w-4 h-4 fill-current"
+                          aria-hidden="true"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"
+                            fill-rule="evenodd"
+                          ></path>
+                        </svg>
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </span>
+            </div>
           </div>
+          {status === "pending" && <Loader />}
         </div>
-        {status === "pending" && <Loader />}
-      </div>
-    </>
+      </>
+    )
   );
 };
 

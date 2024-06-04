@@ -189,3 +189,13 @@ export const updateBanner = async (data: any) => {
     return errorHandle(err);
   }
 }
+
+export const recentlyAddedUsers = async () => {
+  try {
+    const response = await Api.get(adminRoutes.recentlyAddedUsers);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}

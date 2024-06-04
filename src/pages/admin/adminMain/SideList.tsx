@@ -12,11 +12,19 @@ import {
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { Box } from "@mui/system";
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import InboxIcon from '@mui/icons-material/Inbox';
-import MailIcon from '@mui/icons-material/Mail';
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import InboxIcon from "@mui/icons-material/Inbox";
+import MailIcon from "@mui/icons-material/Mail";
 import { CSSObject, Theme, styled } from "@mui/material/styles";
-import { CardMembershipOutlined, Dashboard, FitnessCenterOutlined, GroupOutlined, Logout, SportsKabaddiOutlined, ViewCarouselOutlined } from "@mui/icons-material";
+import {
+  CardMembershipOutlined,
+  Dashboard,
+  FitnessCenterOutlined,
+  GroupOutlined,
+  Logout,
+  SportsKabaddiOutlined,
+  ViewCarouselOutlined,
+} from "@mui/icons-material";
 import { useMemo, useState } from "react";
 import AdminDashboardPage from "../AdminDashboardPage";
 import AdminGymPage from "../AdminGymPage";
@@ -81,50 +89,92 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-
-
-
 const SideList = ({ open, setOpen }) => {
- 
-  const dispatch=useDispatch()
-  const [selectedLink,setSelectedLink]=useState("")
+  const dispatch = useDispatch();
+  const [selectedLink, setSelectedLink] = useState("");
 
+  const list = useMemo(
+    () => [
+      {
+        title: "Dashboard",
+        icon: <Dashboard />,
+        link: "",
+        component: <AdminDashboardPage {...{ setSelectedLink, link: "" }} />,
+      },
+      {
+        title: "Gyms",
+        icon: <FitnessCenterOutlined />,
+        link: "gyms",
+        component: <AdminGymPage {...{ setSelectedLink, link: "gyms" }} />,
+      },
+      {
+        title: "Users",
+        icon: <GroupOutlined />,
+        link: "users",
+        component: <AdminUsersPage {...{ setSelectedLink, link: "users" }} />,
+      },
+      {
+        title: "Subscriptions",
+        icon: <CardMembershipOutlined />,
+        link: "subscription_plans",
+        component: (
+          <AdminSubscriptionPlans
+            {...{ setSelectedLink, link: "subscription_plans" }}
+          />
+        ),
+      },
+      {
+        title: "Trainers",
+        icon: <SportsKabaddiOutlined />,
+        link: "trainer_plans",
+        component: (
+          <AdminTrainerPlans {...{ setSelectedLink, link: "trainer_plans" }} />
+        ),
+      },
+      {
+        title: "Banners",
+        icon: <ViewCarouselOutlined />,
+        link: "banners",
+        component: (
+          <AdminBannerPage {...{ setSelectedLink, link: "banners" }} />
+        ),
+      },
+    ],
+    []
+  );
 
+  const { mutate } = useMutation({
+    mutationFn: adminLogout,
+    onSuccess: (res) => {
+      toast.success(res.data.message);
+      dispatch(setAdminLogout());
+      navigate("/admin");
+    },
+  });
 
-  const list = useMemo(()=>[
-    {title: "Dashboard",icon: <Dashboard/> ,link: "",component: <AdminDashboardPage {...{setSelectedLink, link: ''}}/>},
-    {title: "Gyms",icon: <FitnessCenterOutlined/> ,link: "gyms",component: <AdminGymPage {...{setSelectedLink, link: 'gyms'}}/>},
-    {title: "Users",icon: <GroupOutlined/> ,link: "users",component: <AdminUsersPage {...{setSelectedLink, link: 'users'}}/>},
-    {title: "Subscriptions",icon: <CardMembershipOutlined/> ,link: "subscription_plans",component: <AdminSubscriptionPlans {...{setSelectedLink, link: 'subscription_plans'}}/>},
-    {title: "Trainers",icon: <SportsKabaddiOutlined/> ,link: "trainer_plans",component: <AdminTrainerPlans {...{setSelectedLink, link: 'trainer_plans'}}/>},
-    {title: "Banners",icon: <ViewCarouselOutlined/> ,link: "banners",component: <AdminBannerPage {...{setSelectedLink, link: 'banners'}}/>},
-],[])
+  const handleLogout = () => {
+    console.log("logout");
+    mutate();
+  };
 
-const {mutate}=useMutation({
-  mutationFn: adminLogout,
-  onSuccess:(res)=>{
-    toast.success(res.data.message)
-    dispatch(setAdminLogout())
-    navigate('/admin')
-
-
-  }
-})
-
-const handleLogout = () => {
-  console.log("logout");
-  mutate();
-
-};
-
-const navigate=useNavigate()
-
-
-
+  const navigate = useNavigate();
 
   return (
     <>
-      <Drawer variant="permanent" open={open}>
+      <Drawer
+        variant="permanent"
+        open={open}
+        sx={{
+          "& .MuiDrawer-paper": {
+            overflowY: "scroll",
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          },
+        }}
+      >
         <DrawerHeader>
           <IconButton onClick={() => setOpen(false)}>
             <ChevronLeftIcon />
@@ -132,7 +182,7 @@ const navigate=useNavigate()
         </DrawerHeader>
         <Divider />
 
-        <List >
+        <List>
           {list.map((item) => (
             <ListItem key={item.title} disablePadding sx={{ display: "block" }}>
               <ListItemButton
@@ -142,7 +192,7 @@ const navigate=useNavigate()
                   px: 2.5,
                 }}
                 onClick={() => navigate(item.link)}
-                selected={selectedLink===item.link}
+                selected={selectedLink === item.link}
               >
                 <ListItemIcon
                   sx={{
@@ -151,11 +201,12 @@ const navigate=useNavigate()
                     justifyContent: "center",
                   }}
                 >
-                {item.icon}
-
+                  {item.icon}
                 </ListItemIcon>
-                <ListItemText primary={item.title} sx={{ opacity: open ? 1 : 0 }} />
-
+                <ListItemText
+                  primary={item.title}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
@@ -181,18 +232,14 @@ const navigate=useNavigate()
           </Tooltip>
         </Box>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3,overflowX:"hidden" }}>
         <DrawerHeader />
-
-    <Routes>
-
-  {list.map((item)=> (
-    <Route key={item.title} path={item.link} element={item.component} />
-  ))}
-    <Route path="gym/:id" element={<AdminGymDetailsPage/>} />
-
-
-    </Routes>
+        <Routes>
+          {list.map((item) => (
+            <Route key={item.title} path={item.link} element={item.component} />
+          ))}
+          <Route path="gym/:id" element={<AdminGymDetailsPage />} />
+        </Routes>
       </Box>
     </>
   );

@@ -156,6 +156,7 @@ const Users = ({ usersData, refetch }) => {
               bgcolor: (theme) =>
                 theme.palette.mode === "light" ? grey[200] : grey[900],
             },
+            width: "100%",
           }}
           getRowId={(row) => row._id}
           getRowSpacing={(params) => ({
