@@ -17,11 +17,15 @@ const GymList = ({
 }) => {
   const [filteredItems, setFilteredItems] = useState<any[]>([]);
   const [maxPrice, setMaxPrice] = useState(0);
-
+  const [sliderValue, setSliderValue] = useState(maxPrice);
   useEffect(() => {
-    if (gyms) {
+    if (gyms && gyms.length > 0) {
+      const maxDailyPrice = Math.max(
+        ...gyms.map((gym) => gym.subscriptions.Daily)
+      );
+      setMaxPrice(maxDailyPrice);
+      setSliderValue(maxDailyPrice);
       setFilteredItems(gyms);
-      setMaxPrice(Math.max(...gyms.map((gym) => gym.subscriptions.Daily)));
     }
   }, [gyms]);
 
@@ -29,7 +33,6 @@ const GymList = ({
   const searchHandler = (val: string) => {
     setSearch(val);
   };
-  const [sliderValue, setSliderValue] = useState(maxPrice);
   const handleSliderChange = (event: Event, newValue: number) => {
     setSliderValue(newValue as number);
   };
@@ -50,8 +53,10 @@ const GymList = ({
     setFilteredItems(filtered);
   }, [search, sliderValue]);
 
+  console.log("iam filtered items in gymlist", filteredItems);
+
   return (
-    <div className="text-white min-h-screen">
+    <>
       <Container>
         <Row>
           <Col md={4} lg={3}>
@@ -67,16 +72,19 @@ const GymList = ({
 
                 <div className="">
                   <LocationInput setLocationData={setLocation} />
-                  <h1 className="text-lg mt-4 mb-2">Price</h1>
+                  <h1 className="text-lg mt-2">Price</h1>
 
                   {maxPrice < 1 ? null : (
-                    <Slider
-                      sx={{ color: "white" }}
-                      valueLabelDisplay="auto"
-                      defaultValue={maxPrice}
-                      max={maxPrice}
-                      onChange={handleSliderChange}
-                    />
+                    <>
+                      <h1 className="text-lg mb-2 text-white">Price</h1>
+                      <Slider
+                        sx={{ color: "white" }}
+                        valueLabelDisplay="auto"
+                        defaultValue={maxPrice}
+                        max={maxPrice}
+                        onChange={handleSliderChange}
+                      />
+                    </>
                   )}
                 </div>
               </div>
@@ -85,12 +93,14 @@ const GymList = ({
           <Col
             lg={9}
             md={8}
-            className=" rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
+            id="scrollableDiv"
+            className="rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
           >
             <InfiniteScroll
               dataLength={filteredItems.length}
               next={fetchMoreData}
               hasMore={gyms && filteredItems?.length < totalGyms}
+              scrollableTarget="scrollableDiv"
               loader={
                 isLoadingMore ? (
                   <div className="text-center py-4">
@@ -100,18 +110,24 @@ const GymList = ({
               }
               endMessage={
                 <p style={{ textAlign: "center" }}>
-                  <b>Yay! You have seen it all</b>
+                  <b className="text-white">Yay! You have seen it all</b>
                 </p>
               }
             >
-              {filteredItems?.map((gym) => {
-                return !gym.isDeleted && <GymCard key={gym._id} gym={gym} />;
-              })}
+              {filteredItems?.map(
+                (gym) =>
+                  !gym.isDeleted &&
+                  !gym.isBlocked && (
+                    <>
+                      <GymCard key={gym._id} gym={gym} />
+                    </>
+                  )
+              )}
             </InfiniteScroll>
           </Col>
         </Row>
       </Container>
-    </div>
+    </>
   );
 };
 

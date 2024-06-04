@@ -55,6 +55,7 @@ const GymListPage = () => {
     }
   }, [isFetching, isLoadingMore]);
 
+  console.log('iam in gymlistpage', filteredItems)
   return isFetching && page === 1 ? (
     <GymListSkeleton />
   ) : (
