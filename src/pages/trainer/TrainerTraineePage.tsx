@@ -1,12 +1,15 @@
-import TrainerTrainee from '@/components/trainer/trainee/TrainerTrainee'
-import React from 'react'
+import TrainerTrainee from "@/components/trainer/trainee/TrainerTrainee";
+import React, { useEffect } from "react";
 
-const TrainerTraineePage = ({setSelectedLink, link}) => {
+const TrainerTraineePage = ({ setSelectedLink, link }) => {
+  useEffect(() => {
+    setSelectedLink(link);
+  }, []);
   return (
     <div>
-        <TrainerTrainee/>
+      <TrainerTrainee />
     </div>
-  )
-}
+  );
+};
 
-export default TrainerTraineePage
+export default TrainerTraineePage;

@@ -3,7 +3,7 @@ import {
   Divider,
   IconButton,
   List,
-  ListItem,
+  ListItem, 
   ListItemButton,
   ListItemIcon,
   ListItemText,
@@ -18,6 +18,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import { CSSObject, Theme, styled } from "@mui/material/styles";
 import {
   Dashboard,
+  EditNote,
   Groups3Outlined,
   Logout,
 } from "@mui/icons-material";
@@ -34,6 +35,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import TrainerCallPage from "../TrainerCallPage";
 import TrainerTrainee from "@/components/trainer/trainee/TrainerTrainee";
 import TrainerTraineePage from "../TrainerTraineePage";
+import TrainerProfilePage from "../TrainerProfilePage";
 
 const drawerWidth = 240;
 
@@ -106,11 +108,18 @@ const SideList = ({ open, setOpen }) => {
 
       },
       {
-        title: "Chat",
-        icon: <ChatIcon />,
-        link: "chat",
-        component: <TrainerChatPage />,
+        title: "Edit Profile",
+        icon: <EditNote />,
+        link: "profile",
+        component: <TrainerProfilePage {...{ setSelectedLink, link: "profile" }} />
       },
+      {
+        title: "Chat",
+        icon: <ChatIcon  />,
+        link: "chat",
+        component: <TrainerChatPage {...{ setSelectedLink, link: "chat" }} />,
+      },
+    
     ],
     []
   );
@@ -135,7 +144,18 @@ const SideList = ({ open, setOpen }) => {
 
   return (
     <>
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent"
+        sx={{
+          "& .MuiDrawer-paper": {
+            overflowY: "scroll",
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          },
+        }}
+      open={open}>
         <DrawerHeader>
           <IconButton onClick={() => setOpen(false)}>
             <ChevronLeftIcon />

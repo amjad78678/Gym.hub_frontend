@@ -1,132 +1,127 @@
-import { fetchTrainertrainerBookings } from '@/api/trainer'
-import SearchInput from '@/components/admin/common/SearchInput'
-import { Avatar, Box, Typography } from '@mui/material'
-import { grey } from '@mui/material/colors'
-import { DataGrid, gridClasses } from '@mui/x-data-grid'
-import { useQuery } from '@tanstack/react-query'
-import dayjs from 'dayjs'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Container } from 'react-bootstrap'
+import { fetchTrainertrainerBookings } from "@/api/trainer";
+import SearchInput from "@/components/admin/common/SearchInput";
+import { Avatar, Box, Typography } from "@mui/material";
+import { grey } from "@mui/material/colors";
+import { DataGrid, gridClasses } from "@mui/x-data-grid";
+import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import React, { useEffect, useMemo, useState } from "react";
+import { Container } from "react-bootstrap";
 
 const TrainerTrainee = () => {
-const [search,setSearch]=useState('')
+  const [search, setSearch] = useState("");
 
-  const {isLoading,data: trainerBookings}=useQuery({
-    queryKey: ['fetchTrainerAlltrainerBookings'],
+  const { isLoading, data: trainerBookings } = useQuery({
+    queryKey: ["fetchTrainerAlltrainerBookings"],
     queryFn: fetchTrainertrainerBookings,
+  });
+  console.log("iam trainerBookings", trainerBookings);
+  const [rowId, setRowId] = useState<string>("");
+  const [selectedRowId, setSelectedRowId] = useState<string>("");
+  const [filteredTrainees, setFilteredTrainees] = useState([]);
 
-  })
-  console.log('iam trainerBookings',trainerBookings)
-  const [rowId,setRowId]=useState<string>('')
-  const [selectedRowId,setSelectedRowId]=useState<string>('')
-  const [filteredTrainees,setFilteredTrainees] = useState([])
-
-
-  useEffect(()=>{
-    if(trainerBookings){
-      setFilteredTrainees(trainerBookings?.data.trainees)
+  useEffect(() => {
+    if (trainerBookings) {
+      setFilteredTrainees(trainerBookings?.data.trainees);
     }
-  },[trainerBookings])
+  }, [trainerBookings]);
 
-  useEffect(()=>{
+  useEffect(() => {
+    const filtered = trainerBookings?.data.trainees.filter((trainee) => {
+      return trainee.userId.username
+        .toLowerCase()
+        .includes(search.toLowerCase());
+    });
 
-    const filtered = trainerBookings?.data.trainees.filter((trainee)=>{
-      return trainee.userId.username.toLowerCase().includes(search.toLowerCase())
-    })
+    setFilteredTrainees(filtered);
+  }, [search]);
 
-    setFilteredTrainees(filtered)
-  },[search])
-
-
-const columns = useMemo(
-  () => [
-    {
-      field: "profilePic",
-      headerName: "Avatar",
-      width: 80,
-      headerAlign: "center",
-      renderCell: (params) => (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          width="100%"
-          height="100%" 
-        >
-          <Avatar
-            src={params.row.userId.profilePic.imageUrl}
-            style={{ width: "50px", height: "50px" }} 
-          />
-        </Box>
-      ),
-    },
-    {
-      field: "name",
-      headerName: "Name",
-      width: 220,
-      headerAlign: "center",
-      renderCell: (params) => (
-        <Box display="flex" justifyContent="center" width="100%">
-          {params.row.userId.username}
-        </Box>
-      ),
-    },
-    {
-      field: "bookingDate",
-      headerName: "Booking Date",
-      width: 160,
-      headerAlign: "center",
-      renderCell: (params) => (
-        <Box display="flex" justifyContent="center" width="100%">
-          {dayjs(params.row.bookingDate).format("DD/MM/YYYY")}
-        </Box>
-      ),
-    },
-    {
-      field: "expiryDate",
-      headerName: "Expiry Date",
-      width: 160,
-      headerAlign: "center",
-      renderCell: (params) => (
-        <Box display="flex" justifyContent="center" width="100%">
-          {dayjs(params.row.expiryDate).format("DD/MM/YYYY")}
-        </Box>
-      ),
-    },
-    {
-      field: "bookingType",
-      headerName: "Booking Type",
-      width: 160,
-      headerAlign: "center",
-      renderCell: (params) => (
-        <Box display="flex" justifyContent="center" width="100%">
-          {params.row.bookingType}
-        </Box>
-      ),
-    },
-    {
-      field: "amount",
-      headerName: "Paid",
-      width: 160,
-      headerAlign: "center",
-      renderCell: (params) => (
-        <Box display="flex" justifyContent="center" width="100%">
-          ₹{params.row.amount}
-        </Box>
-      ),
-    },
-
-
-  ],
-  [rowId, selectedRowId]
-);
-return !isLoading && filteredTrainees ? (
-<Container>
+  const columns = useMemo(
+    () => [
+      {
+        field: "profilePic",
+        headerName: "Avatar",
+        width: 80,
+        headerAlign: "center",
+        renderCell: (params) => (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
+          >
+            <Avatar
+              src={params.row.userId.profilePic.imageUrl}
+              style={{ width: "50px", height: "50px" }}
+            />
+          </Box>
+        ),
+      },
+      {
+        field: "name",
+        headerName: "Name",
+        width: 220,
+        headerAlign: "center",
+        renderCell: (params) => (
+          <Box display="flex" justifyContent="center" width="100%">
+            {params.row.userId.username}
+          </Box>
+        ),
+      },
+      {
+        field: "bookingDate",
+        headerName: "Booking Date",
+        width: 160,
+        headerAlign: "center",
+        renderCell: (params) => (
+          <Box display="flex" justifyContent="center" width="100%">
+            {dayjs(params.row.bookingDate).format("DD/MM/YYYY")}
+          </Box>
+        ),
+      },
+      {
+        field: "expiryDate",
+        headerName: "Expiry Date",
+        width: 160,
+        headerAlign: "center",
+        renderCell: (params) => (
+          <Box display="flex" justifyContent="center" width="100%">
+            {dayjs(params.row.expiryDate).format("DD/MM/YYYY")}
+          </Box>
+        ),
+      },
+      {
+        field: "bookingType",
+        headerName: "Booking Type",
+        width: 160,
+        headerAlign: "center",
+        renderCell: (params) => (
+          <Box display="flex" justifyContent="center" width="100%">
+            {params.row.bookingType}
+          </Box>
+        ),
+      },
+      {
+        field: "amount",
+        headerName: "Paid",
+        width: 160,
+        headerAlign: "center",
+        renderCell: (params) => (
+          <Box display="flex" justifyContent="center" width="100%">
+            ₹{params.row.amount}
+          </Box>
+        ),
+      },
+    ],
+    [rowId, selectedRowId]
+  );
+  return !isLoading && filteredTrainees ? (
     <div className="">
       <Box
         sx={{
           width: "90%",
-          mx: 'auto'
+          mx: "auto",
         }}
       >
         <Typography
@@ -142,7 +137,7 @@ return !isLoading && filteredTrainees ? (
           All Trainees
         </Typography>
 
-        <SearchInput {...{search,setSearch}} />
+        <SearchInput {...{ search, setSearch }} />
 
         <DataGrid
           columns={columns}
@@ -166,8 +161,9 @@ return !isLoading && filteredTrainees ? (
         />
       </Box>
     </div>
-    </Container>
-  ): <h1>Loading...</h1>
-}
+  ) : (
+    <h1>Loading...</h1>
+  );
+};
 
-export default TrainerTrainee
+export default TrainerTrainee;

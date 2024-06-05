@@ -96,7 +96,7 @@ const SideList = ({ open, setOpen }) => {
   const list = useMemo(
     () => [
       {
-        title: "Dashboard",
+        title: "Dashboard", 
         icon: <Dashboard />,
         link: "",
         component: <AdminDashboardPage {...{ setSelectedLink, link: "" }} />,

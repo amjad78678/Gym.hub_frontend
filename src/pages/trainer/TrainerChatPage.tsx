@@ -4,10 +4,11 @@ import { useSocket } from "@/utils/context/socketContext";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-const TrainerChatPage = () => {
+const TrainerChatPage = ({ setSelectedLink, link}) => {
   const { trainerDetails } = useSelector((state: RootState) => state.auth);
   const socket = useSocket();
   useEffect(() => {
+    setSelectedLink(link);
     socket.emit("add_user", trainerDetails.trainerId);
   },[])
 

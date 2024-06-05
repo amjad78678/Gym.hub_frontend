@@ -166,3 +166,22 @@ export const fetchTrainertrainerBookings = async()=>{
     return errorHandle(err);
   }
 }
+export const fetchTrainerData = async()=>{
+  try {
+    const response = await Api.get(trainerRoutes.fetchTrainerData)
+    return response
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
+
+export const editProfile = async(data: any)=>{
+  try {
+    const response = await Api.put(trainerRoutes.editProfile,data)
+    return response
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
