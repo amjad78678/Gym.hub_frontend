@@ -4,6 +4,7 @@ import { TrainerEditProfileValidation } from "@/validation/TrainerEditProfileVal
 import { useMutation } from "@tanstack/react-query";
 import { editProfile } from "@/api/trainer";
 import toast from "react-hot-toast";
+import { BeatLoader } from "react-spinners";
 
 const TrainerEditProfile = ({ trainerData, refetch }) => {
   const [previewImage, setPreviewImage] = useState(trainerData.image.imageUrl);
@@ -24,7 +25,7 @@ const TrainerEditProfile = ({ trainerData, refetch }) => {
     setPreviewImage(URL.createObjectURL(file));
   };
 
-  const { mutate: editProfileMutate } = useMutation({
+  const { isPending, mutate: editProfileMutate } = useMutation({
     mutationFn: editProfile,
     onSuccess: (res) => {
       if (res) {
@@ -66,7 +67,7 @@ const TrainerEditProfile = ({ trainerData, refetch }) => {
             }
           }}
         >
-          {({ handleSubmit, setFieldValue }) => (
+          {({ handleSubmit, setFieldValue, isSubmitting }) => (
             <Form onSubmit={handleSubmit} className="mt-6">
               <div className="mb-4">
                 <img
@@ -236,9 +237,19 @@ const TrainerEditProfile = ({ trainerData, refetch }) => {
 
               <button
                 type="submit"
-                className="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-gray-800 shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none"
+                disabled={isPending}
+                className={`w-full py-3 mt-6 font-medium tracking-widest text-white uppercase ${
+                  isPending
+                    ? "bg-gray-600 cursor-not-allowed opacity-75"
+                    : "bg-gray-700 hover:bg-gray-900 hover:shadow-none"
+                } relative flex justify-center rounded-md items-center shadow-lg focus:outline-none`}
               >
-                Update Profile
+                <span>{isPending ? "Updating..." : "Update Profile"}</span>
+                {isPending && (
+                  <span className="absolute right-4">
+                    <BeatLoader size={8} color="#ffffff" />
+                  </span>
+                )}
               </button>
             </Form>
           )}

@@ -10,6 +10,7 @@ import {
   TextField,
   IconButton,
   Stack,
+  CircularProgress,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMutation } from "@tanstack/react-query";
@@ -17,11 +18,12 @@ import { addBanner, updateBanner } from "@/api/admin";
 import { AddBannerValidation } from "@/validation/AddBannerValidation";
 import toast from "react-hot-toast";
 import { EditBannerValidation } from "@/validation/EditBannerValidation";
+import { BeatLoader } from "react-spinners";
 
 const AddBannerModal = ({ open, setOpen, refetch, modalType, selected }) => {
   console.log("iam selected...............", selected);
   const [image, setImage] = useState<File | null>(null);
-  const { mutate } = useMutation({
+  const { isPending: isPendingAdd, mutate } = useMutation({
     mutationFn: addBanner,
     onSuccess: (res) => {
       if (res) {
@@ -34,24 +36,24 @@ const AddBannerModal = ({ open, setOpen, refetch, modalType, selected }) => {
     },
   });
 
-  const {mutate: editBannerMutate}=useMutation({
+  const { isPending: isPendingEdit, mutate: editBannerMutate } = useMutation({
     mutationFn: updateBanner,
     onSuccess: (res) => {
-      if(res){
-        if(res?.data.success){
-          toast.success(res?.data.message)
-          setOpen(false)
-          refetch()
+      if (res) {
+        if (res?.data.success) {
+          toast.success(res?.data.message);
+          setOpen(false);
+          refetch();
         }
       }
-    }
-  })
+    },
+  });
 
   return (
     <div>
       <Dialog open={open} fullWidth maxWidth="md">
         <DialogTitle>
-         {modalType === "add" ? "ADD BANNER" : "EDIT BANNER"} 
+          {modalType === "add" ? "ADD BANNER" : "EDIT BANNER"}
           <IconButton onClick={() => setOpen(false)} style={{ float: "right" }}>
             <CloseIcon color="primary" />
           </IconButton>
@@ -134,7 +136,7 @@ const AddBannerModal = ({ open, setOpen, refetch, modalType, selected }) => {
                   <Button
                     type="submit"
                     color="primary"
-                    disabled={isSubmitting}
+                    disabled={isPendingAdd}
                     sx={{ width: "50%", mx: "auto" }}
                   >
                     ADD BANNER
@@ -153,7 +155,7 @@ const AddBannerModal = ({ open, setOpen, refetch, modalType, selected }) => {
             validationSchema={EditBannerValidation}
             onSubmit={(values, { setSubmitting }) => {
               console.log("valuesany", values);
-              const formData = new FormData(); 
+              const formData = new FormData();
               formData.append("title", values.title);
               formData.append("description", values.description);
               formData.append("bannerImage", image);
@@ -225,10 +227,15 @@ const AddBannerModal = ({ open, setOpen, refetch, modalType, selected }) => {
                   <Button
                     type="submit"
                     color="primary"
-                    disabled={isSubmitting}
-                    sx={{ width: "50%", mx: "auto" }}
+                    disabled={isPendingEdit}
+                    sx={{ width: "50%", mx: "auto", position: "relative" }}
                   >
-                    EDIT BANNER
+                    <span>
+                      {isPendingEdit ? "Updating..." : "Update Banner"}
+                    </span>
+                    {isPendingEdit && (
+                   <CircularProgress size={20} className="absolute right-4" />
+                    )}
                   </Button>
                 </DialogActions>
               </Form>

@@ -185,3 +185,13 @@ export const editProfile = async(data: any)=>{
     return errorHandle(err);
   }
 }
+
+export const fetchDashboard = async()=>{
+  try {
+    const response = await Api.get(trainerRoutes.fetchDashboard)
+    return response
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}

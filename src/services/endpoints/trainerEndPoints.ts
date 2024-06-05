@@ -12,6 +12,7 @@ const trainerRoutes = {
   fetchSubscriptions: "/fetch_subscriptions",
   fetchTrainerData: "/fetch_trainer_data",
   editProfile: "/edit_profile",
+  fetchDashboard: "/fetch_dashboard",
 };
 
 export default trainerRoutes;
