@@ -136,12 +136,14 @@ const Dashboard = ({ dashboard }) => {
           }}
         />
       </Box>
-      <div className="grid sm:grid-cols-12 py-4">
-        <div className="sm:col-span-9 text-white h-[50%] border-b sm:border-r sm:border-b-0 border-dotted border-gray-400">
-          <h1 className="text-2xl font-bold p-2  underline">Sales Statistics</h1>
-          <StreamChart {...{ data:dummy }} />
+      <div className="grid sm:grid-cols-12 py-4 h-[90%]">
+        <div className="sm:col-span-9 text-white h-[90%]  border-b sm:border-r sm:border-b-0 border-dotted border-gray-400">
+          <h1 className="text-2xl font-bold p-2  underline">
+            Sales Statistics
+          </h1>
+          <StreamChart {...{ data: dummy }} />
         </div>
-        <div className="sm:col-span-3 p-2">
+        <div className="sm:col-span-3 p-2 overflow-y-scroll no-scrollbar">
           <Box>
             <Typography
               sx={{ color: "white", textAlign: "center" }}
@@ -173,34 +175,82 @@ const Dashboard = ({ dashboard }) => {
             </List>
           </Box>
           <Divider sx={{ my: 2, opacity: 0.7 }} />
+        </div>
+      </div>
+      <div className="grid sm:grid-cols-12">second list 2</div>
 
+      <div className="grid sm:grid-cols-12">
+        <div className="sm:col-span-9 border-r border-opacity-30 border-dotted p-2">
           <Box>
-            <Typography
-              sx={{ color: "white", textAlign: "center" }}
-              variant="h6"
-            >
+            <Typography sx={{ color: "white" }} variant="h6">
               Recently added Gyms
             </Typography>
             <List>
               {dashboard?.recGym?.map((gym) => (
                 <Box key={gym._id}>
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar alt={gym.gymName} src={gym.images[0].imageUrl} />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={gym.gymName}
-                      secondary={`Time Created : ${dayjs(
-                        gym.createdAt
-                      ).fromNow()}`}
-                    />
-                  </ListItem>
-
+                  <Box
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar
+                          sx={{ width: 64, height: 64 }}
+                          alt={gym.gymName}
+                          src={gym.images[0].imageUrl}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        sx={{ ml: 2 }}
+                        primary={gym.gymName}
+                        secondary={
+                          <div>
+                            <div className="font-mono font-semibold">
+                              {gym.email}.
+                            </div>
+                            <div className="text-xs">{gym.address}.</div>
+                          </div>
+                        }
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        sx={{ textAlign: "right" }}
+                        secondary={`Time Created : ${dayjs(
+                          gym.createdAt
+                        ).format("DD/MM/YYYY hh:mm A")}`}
+                      />
+                    </ListItem>
+                  </Box>
                   <Divider variant="inset" component="li" />
                 </Box>
               ))}
             </List>
           </Box>
+        </div>
+        <div className="sm:col-span-3 px-4">
+          <Typography sx={{ color: "white", textAlign: "center" }} variant="h6">
+            {" "}
+            Recently added Trainers
+          </Typography>
+          <List>
+            {dashboard?.recentlyTrainers?.map((trainer) => (
+              <Box key={trainer._id}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar alt={trainer.name} src={trainer.image.imageUrl} />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={trainer.name}
+                    secondary={`Time Created : ${dayjs(
+                      trainer.createdAt
+                    ).format("DD/MM/YYYY hh:mm A")}`}
+                  />
+                </ListItem>
+
+                <Divider variant="inset" component="li" />
+              </Box>
+            ))}
+          </List>
         </div>
       </div>
     </div>
