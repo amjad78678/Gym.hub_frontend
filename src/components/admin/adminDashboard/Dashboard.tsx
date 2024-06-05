@@ -12,89 +12,74 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Paper,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { MouseEvent, useState } from "react";
 import StatusCount from "./StatusCount";
 import dayjs from "dayjs";
-import StreamChart from "./StreamChart";
+import PieChartPayment from "./PieChartPayment";
+import RadialBarChart from "./RadialBarChart";
+import LineChartSales from "./LineChartSales";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 const Dashboard = ({ dashboard }) => {
-  const dummy = [
+  const [alignment, setAlignment] = useState("monthly");
+
+  const handleChange = (
+    event: MouseEvent<HTMLElement>,
+    newAlignment: string
+  ) => {
+    setAlignment(newAlignment);
+  };
+
+  const salesInMonthly = [
     {
-      Raoul: 68,
-      Josiane: 115,
-      Marcel: 18,
-      René: 68,
-      Paul: 136,
-      Jacques: 59,
+      id: "Subscription Sales",
+      color: "hsl(16, 70%, 50%)",
+      data: dashboard.subscriptionMonthlySales,
     },
     {
-      Raoul: 79,
-      Josiane: 106,
-      Marcel: 155,
-      René: 51,
-      Paul: 21,
-      Jacques: 69,
-    },
-    {
-      Raoul: 61,
-      Josiane: 62,
-      Marcel: 172,
-      René: 97,
-      Paul: 92,
-      Jacques: 87,
-    },
-    {
-      Raoul: 82,
-      Josiane: 39,
-      Marcel: 132,
-      René: 134,
-      Paul: 119,
-      Jacques: 139,
-    },
-    {
-      Raoul: 101,
-      Josiane: 10,
-      Marcel: 110,
-      René: 46,
-      Paul: 115,
-      Jacques: 94,
-    },
-    {
-      Raoul: 130,
-      Josiane: 179,
-      Marcel: 94,
-      René: 124,
-      Paul: 25,
-      Jacques: 46,
-    },
-    {
-      Raoul: 88,
-      Josiane: 196,
-      Marcel: 93,
-      René: 65,
-      Paul: 146,
-      Jacques: 193,
-    },
-    {
-      Raoul: 196,
-      Josiane: 99,
-      Marcel: 24,
-      René: 17,
-      Paul: 20,
-      Jacques: 166,
-    },
-    {
-      Raoul: 181,
-      Josiane: 46,
-      Marcel: 71,
-      René: 102,
-      Paul: 24,
-      Jacques: 131,
+      id: "Trainer Sales",
+      color: "hsl(55, 70%, 50%)",
+      data: dashboard.trainerMonthlySales,
     },
   ];
+  const salesInYearly = [
+    {
+      id: "Subscription Sales",
+      color: "hsl(16, 70%, 50%)",
+      data: dashboard.subscriptionYearlySales,
+    },
+    {
+      id: "Trainer Sales",
+      color: "hsl(55, 70%, 50%)",
+      data: dashboard.trainerYearlySales,
+    },
+  ];
+
+  const bookingStats = [
+    {
+      id: "Subscription Bookings",
+      data: [
+        {
+          x: "Subscription Bookings",
+          y: dashboard.bookingStats.subscriptionBookingCount,
+        },
+      ],
+    },
+    {
+      id: "Trainer Bookings",
+      data: [
+        {
+          x: "Trainer Bookings",
+          y: dashboard.bookingStats.trainerBookingCount,
+        },
+      ],
+    },
+  ];
+
+  console.log("paymentCountData", dashboard);
   return (
     <div className="p-2">
       <Box
@@ -136,14 +121,33 @@ const Dashboard = ({ dashboard }) => {
           }}
         />
       </Box>
-      <div className="grid sm:grid-cols-12 py-4 h-[90%]">
-        <div className="sm:col-span-9 text-white h-[90%]  border-b sm:border-r sm:border-b-0 border-dotted border-gray-400">
-          <h1 className="text-2xl font-bold p-2  underline">
-            Sales Statistics
-          </h1>
-          <StreamChart {...{ data: dummy }} />
+      <div className="grid sm:grid-cols-12 my-5 ">
+        <div className="sm:col-span-9 text-white p-2  border-b sm:border-r sm:border-b-0 border-dotted border-gray-400">
+          <h1 className=" text-2xl font-serif">Sales Statistics</h1>
+          <div className="relative">
+            <div className="absolute top-0 right-28 z-10">
+              <ToggleButtonGroup
+                color="secondary"
+                value={alignment}
+                exclusive
+                onChange={handleChange}
+                aria-label="Platform"
+              >
+                <ToggleButton value="monthly">Monthly</ToggleButton>
+                <ToggleButton value="yearly">Yearly</ToggleButton>
+              </ToggleButtonGroup>
+            </div>
+            <div className="h-[400px]">
+              <LineChartSales
+                {...{
+                  data:
+                    alignment === "monthly" ? salesInMonthly : salesInYearly,alignment
+                }}
+              />
+            </div>
+          </div>
         </div>
-        <div className="sm:col-span-3 p-2 overflow-y-scroll no-scrollbar">
+        <div className="sm:col-span-3 p-2 overflow-y-scroll no-scrollbar ">
           <Box>
             <Typography
               sx={{ color: "white", textAlign: "center" }}
@@ -177,9 +181,21 @@ const Dashboard = ({ dashboard }) => {
           <Divider sx={{ my: 2, opacity: 0.7 }} />
         </div>
       </div>
-      <div className="grid sm:grid-cols-12">second list 2</div>
+      <div className="grid sm:grid-cols-12 my-5 px-2">
+        {dashboard.paymentCounts && (
+          <div className="sm:col-span-6 h-[300px]">
+            <h1 className="text-2xl font-serif ">Payment Method</h1>
+            <PieChartPayment {...{ payments: dashboard.paymentCounts }} />
+          </div>
+        )}
 
-      <div className="grid sm:grid-cols-12">
+        <div className="sm:col-span-6 h-[300px]">
+          <h1 className="text-2xl font-serif">Booking Stats</h1>
+          <RadialBarChart {...{ data: bookingStats }} />
+        </div>
+      </div>
+
+      <div className="grid sm:grid-cols-12 my-5">
         <div className="sm:col-span-9 border-r border-opacity-30 border-dotted p-2">
           <Box>
             <Typography sx={{ color: "white" }} variant="h6">
@@ -227,7 +243,7 @@ const Dashboard = ({ dashboard }) => {
             </List>
           </Box>
         </div>
-        <div className="sm:col-span-3 px-4">
+        <div className="sm:col-span-3 p-2">
           <Typography sx={{ color: "white", textAlign: "center" }} variant="h6">
             {" "}
             Recently added Trainers

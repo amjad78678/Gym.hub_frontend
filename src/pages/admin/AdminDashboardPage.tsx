@@ -1,5 +1,6 @@
 import { recentlyAddedUsers } from '@/api/admin'
 import Dashboard from '@/components/admin/adminDashboard/Dashboard'
+import Loader from '@/components/common/Loader'
 import { useQuery } from '@tanstack/react-query'
 import React, { useEffect } from 'react'
 
@@ -9,18 +10,14 @@ const AdminDashboardPage = ({setSelectedLink,link}) => {
     setSelectedLink(link)
   },[])
 
-  const {data: recentlyUsers}=useQuery({
+  const {isLoading,data: recentlyUsers}=useQuery({
     queryKey:["recentlyAddedUsers"],
     queryFn: recentlyAddedUsers
   })
   
-  return (
+  return isLoading && !recentlyUsers?.data ? (<Loader/>): (
     <div>
-  
      <Dashboard {...{dashboard:recentlyUsers?.data}} />
-
-
-      
     </div>
   )
 }
