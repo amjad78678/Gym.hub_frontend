@@ -146,7 +146,7 @@ const LineChartSales = ({ data, alignment }) => {
       }}
       enableGridX={true}
       enableGridY={false}
-      colors={{ scheme: "nivo" }}
+      colors={{ scheme: "paired" }}
       pointSize={10}
       pointColor={{ theme: "background" }}
       pointBorderWidth={2}

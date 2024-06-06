@@ -3,7 +3,7 @@ import {
   Divider,
   IconButton,
   List,
-  ListItem, 
+  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
@@ -24,12 +24,12 @@ import {
 } from "@mui/icons-material";
 import { useMemo, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { setTrainerLogout } from "@/redux/slices/authSlice";
 import TrainerDashboardPage from "../TrainerDashboardPage";
-import { trainerLogout } from "@/api/trainer";
+import { fetchTrainerData, trainerLogout } from "@/api/trainer";
 import TrainerChatPage from "../TrainerChatPage";
 import ChatIcon from "@mui/icons-material/Chat";
 import TrainerCallPage from "../TrainerCallPage";
@@ -88,9 +88,14 @@ const Drawer = styled(MuiDrawer, {
 
 const SideList = ({ open, setOpen }) => {
   const dispatch = useDispatch();
-  const { trainerDetails } = useSelector((state: any) => state.auth);
-
+  const { refetch: refetchTrainer, data: trainerDetails } = useQuery({
+    queryKey: ["trainerDataforTrainerSide"],
+    queryFn: fetchTrainerData,
+  });
+  
+  
   const [selectedLink, setSelectedLink] = useState("");
+  console.log('iam tr detis',trainerDetails)
 
   const list = useMemo(
     () => [
@@ -102,24 +107,26 @@ const SideList = ({ open, setOpen }) => {
       },
       {
         title: "Trainees",
-        icon: < Groups3Outlined/>,
+        icon: <Groups3Outlined />,
         link: "trainees",
-        component: <TrainerTraineePage {...{ setSelectedLink, link: "trainees" }} />,
-
+        component: (
+          <TrainerTraineePage {...{ setSelectedLink, link: "trainees" }} />
+        ),
       },
       {
         title: "Edit Profile",
         icon: <EditNote />,
         link: "profile",
-        component: <TrainerProfilePage {...{ setSelectedLink, link: "profile" }} />
+        component: (
+          <TrainerProfilePage {...{ setSelectedLink, link: "profile",refetchTrainer,trainer: trainerDetails }} />
+        ),
       },
       {
         title: "Chat",
-        icon: <ChatIcon  />,
+        icon: <ChatIcon />,
         link: "chat",
         component: <TrainerChatPage {...{ setSelectedLink, link: "chat" }} />,
       },
-    
     ],
     []
   );
@@ -142,9 +149,10 @@ const SideList = ({ open, setOpen }) => {
 
   const navigate = useNavigate();
 
-  return (
+  return trainerDetails && (
     <>
-      <Drawer variant="permanent"
+      <Drawer
+        variant="permanent"
         sx={{
           "& .MuiDrawer-paper": {
             overflowY: "scroll",
@@ -155,7 +163,8 @@ const SideList = ({ open, setOpen }) => {
             msOverflowStyle: "none",
           },
         }}
-      open={open}>
+        open={open}
+      >
         <DrawerHeader>
           <IconButton onClick={() => setOpen(false)}>
             <ChevronLeftIcon />
@@ -205,7 +214,7 @@ const SideList = ({ open, setOpen }) => {
         >
           <Tooltip title="Profile">
             <Avatar
-              src={trainerDetails?.image}
+              src={trainerDetails?.data.trainer.image.imageUrl}
               {...(open && { sx: { width: 70, height: 70 } })}
             />
           </Tooltip>
@@ -213,7 +222,7 @@ const SideList = ({ open, setOpen }) => {
 
         <Box sx={{ textAlign: "center" }}>
           {open ? (
-            <Typography variant="h6">{trainerDetails?.name}</Typography>
+            <Typography variant="h6">{trainerDetails?.data.trainer.name}</Typography>
           ) : null}
           <Typography variant="body2">TRAINER</Typography>
           <Tooltip title="Logout" sx={{ mt: 1 }}>
@@ -229,7 +238,7 @@ const SideList = ({ open, setOpen }) => {
         <Routes>
           {list.map((item) => (
             <Route key={item.title} path={item.link} element={item.component} />
-          ))} 
+          ))}
           <Route path="/call/:roomId" element={<TrainerCallPage />} />
         </Routes>
       </Box>

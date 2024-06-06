@@ -20,6 +20,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useFormik } from "formik";
 import { AddCouponValidation } from "@/validation/AddCouponValidation";
 import dayjs from "dayjs";
+import { BeatLoader } from "react-spinners";
 
 const AddCouponModal = ({ open, setOpen, refetch }) => {
   const formik = useFormik({
@@ -38,7 +39,7 @@ const AddCouponModal = ({ open, setOpen, refetch }) => {
     },
   });
 
-  const { status: mutStatus, mutate } = useMutation({
+  const {isPending, status: mutStatus, mutate } = useMutation({
     mutationFn: addCoupon,
     onSuccess: (res) => {
       if (res) {
@@ -161,11 +162,18 @@ const AddCouponModal = ({ open, setOpen, refetch }) => {
           </DialogContent>
           <DialogActions>
             <Button
+              className="relative"
               color="primary"
+              disabled={isPending}
               type="submit"
               sx={{ width: "50%", mx: "auto" }}
             >
-              Add Coupon
+               <span>{isPending ? "Adding..." : "Add Coupon"}</span>
+              {isPending && (
+                <span className="absolute right-4">
+                  <BeatLoader />
+                </span>
+              )}
             </Button>
           </DialogActions>
         </form>

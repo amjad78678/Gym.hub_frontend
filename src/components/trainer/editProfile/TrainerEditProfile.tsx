@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { editProfile } from "@/api/trainer";
 import toast from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
+import Loader from "@/components/common/Loader";
 
 const TrainerEditProfile = ({ trainerData, refetch }) => {
   const [previewImage, setPreviewImage] = useState(trainerData.image.imageUrl);

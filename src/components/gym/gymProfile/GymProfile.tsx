@@ -16,7 +16,7 @@ const GymProfile = ({ gym }) => {
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState("");
   const divStyle = {
-    backgroundImage: `url("${gymDetails?.gymImage}")`,
+    backgroundImage: `url("${gym[0].images[1].imageUrl}")`,
     backgroundSize: "cover",
     backgroundPosition: "center",
   };
@@ -87,7 +87,10 @@ const GymProfile = ({ gym }) => {
               </h1>
             </>
           )}
+
         </div>
+
+       
       </div>
     )
   );

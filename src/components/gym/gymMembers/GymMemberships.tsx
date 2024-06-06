@@ -10,16 +10,7 @@ import SearchInput from "@/components/admin/common/SearchInput";
 import { Container } from "react-bootstrap";
 import Loader from "@/components/common/Loader";
 
-const GymMemberships = () => {
-  const {
-    isLoading,
-    data: subscriptionData,
-    refetch,
-  } = useQuery({
-    queryKey: ["subscriptionData"],
-    queryFn: fetchSubscriptions,
-  });
-
+const GymMemberships = ({ subscriptionData }) => {
   const [subscriptions, setSubscriptions] = useState([]);
   const [rowId, setRowId] = useState<string>("");
   const [selectedRowId, setSelectedRowId] = useState<string>("");
@@ -92,7 +83,7 @@ const GymMemberships = () => {
         field: "date",
         headerName: "Start Date",
         headerAlign: "center",
-        width: 100,
+        width: 120,
         renderCell: (params) => (
           <Box display="flex" justifyContent="center" width="100%">
             {dayjs(params.row.date).format("DD/MM/YYYY")}
@@ -103,7 +94,7 @@ const GymMemberships = () => {
         field: "expiryDate",
         headerName: "Expiry Date",
         headerAlign: "center",
-        width: 100,
+        width: 120,
         renderCell: (params) => (
           <Box display="flex" justifyContent="center" width="100%">
             {dayjs(params.row.expiryDate).format("DD/MM/YYYY")}
@@ -134,17 +125,7 @@ const GymMemberships = () => {
           </Box>
         ),
       },
-      {
-        field: "gymName",
-        headerName: "Gym",
-        headerAlign: "center",
-        width: 100,
-        renderCell: (params) => (
-          <Box display="flex" justifyContent="center" width="100%">
-            {params.row.gymId.gymName}
-          </Box>
-        ),
-      },
+
       {
         field: "payment",
         headerName: "Payment",
@@ -181,9 +162,7 @@ const GymMemberships = () => {
   );
   const [pageSize, setPageSize] = useState(5);
 
-  return isLoading && !subscriptions ? (
-    <Loader />
-  ) : (
+  return (
     <Container>
       <div className="">
         <Box

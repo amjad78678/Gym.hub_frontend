@@ -1,34 +1,21 @@
 import { fetchTrainerData } from "@/api/trainer";
+import Loader from "@/components/common/Loader";
 import TrainerEditProfile from "@/components/trainer/editProfile/TrainerEditProfile";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 
 
 
-const TrainerProfilePage = ({ setSelectedLink, link }) => {
+const TrainerProfilePage = ({ setSelectedLink, link,refetchTrainer,trainer }) => {
   useEffect(() => {
     setSelectedLink(link);
   }, [setSelectedLink, link]);
 
-  const {
-    isLoading,
-    error,
-    data: trainer,
-    refetch
-  } = useQuery({
-    queryKey: ["fetchTrainerDataFromTrainerProfile"],
-    queryFn: fetchTrainerData,
-  });
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   console.log('trinaer',trainer)
 
-  return (
+  return !trainer ? (<Loader/>) : (
     <div>
-      <TrainerEditProfile trainerData={trainer?.data?.trainer} refetch={refetch} />
+      <TrainerEditProfile trainerData={trainer?.data?.trainer} refetch={refetchTrainer} />
     </div>
   );
 };

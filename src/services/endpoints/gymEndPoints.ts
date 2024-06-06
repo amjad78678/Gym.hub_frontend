@@ -17,6 +17,7 @@ const gymRoutes = {
   addCoupon: "/add_coupon",
   updateCoupon: `/update_coupon`,
   fetchGymData: `/fetch_gym_data`,
+  fetchBookedMemberships: 'booked_memberships'
 };
 
 export default gymRoutes;

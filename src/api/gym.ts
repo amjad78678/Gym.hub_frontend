@@ -277,3 +277,12 @@ export const fetchGymData = async ()=>{
   }
 }
 
+export const fetchGymMembershipsBooked = async()=>{
+  try {
+    const response = await Api.get(gymRoutes.fetchBookedMemberships)
+    return response
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}

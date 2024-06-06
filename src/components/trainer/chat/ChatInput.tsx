@@ -39,6 +39,7 @@ const ChatInput = ({
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       handleSendMessage();
+      setEmojiOpen(false);
     }
   };
 
@@ -63,7 +64,6 @@ const ChatInput = ({
     }, timerLength);
   };
   const handleAddEmoji = (e) => {
-    setEmojiOpen(false);
     let sym = e.unified.split("-");
     let codesArray: any = [];
     sym.forEach((el) => codesArray.push("0x" + el));
@@ -171,7 +171,9 @@ const ChatInput = ({
             imageSendLoading ? "Sending files..." : "Type your message..."
           }`}
           className={`flex-grow text-black rounded-l-md border-2 p-2 ${
-            imageSendLoading ? "bg-gray-100 placeholder:text-green-500 placeholder:font-bold" : "border-gray-300"
+            imageSendLoading
+              ? "bg-gray-100 placeholder:text-green-500 placeholder:font-bold"
+              : "border-gray-300"
           }`}
           disabled={imageSendLoading}
         />

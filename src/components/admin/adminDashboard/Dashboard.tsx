@@ -175,7 +175,7 @@ const Dashboard = ({ dashboard }) => {
 
                   <Divider variant="inset" component="li" />
                 </Box>
-              ))}
+              ))} 
             </List>
           </Box>
           <Divider sx={{ my: 2, opacity: 0.7 }} />
