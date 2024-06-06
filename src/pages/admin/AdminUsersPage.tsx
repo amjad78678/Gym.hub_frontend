@@ -1,5 +1,6 @@
 import { fetchUsers } from '@/api/admin'
 import Users from '@/components/admin/adminUsers/Users'
+import Loader from '@/components/common/Loader'
 import { useQuery } from '@tanstack/react-query'
 import React, { useEffect } from 'react'
 
@@ -11,8 +12,8 @@ const AdminUsersPage = ({setSelectedLink,link}) => {
     queryKey: ["usersData"],
     queryFn: fetchUsers,
   });
-  return !isLoading && (
-    <div >< Users {...{usersData,refetch}}/></div>
+  return isLoading || !usersData ? <Loader /> : (
+    <div >< Users {...{usersData,refetch,isLoading}}/></div>
   )
 }
 

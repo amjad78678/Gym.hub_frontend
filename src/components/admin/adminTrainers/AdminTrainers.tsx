@@ -9,8 +9,6 @@ import { fetchTrainers } from "@/api/admin";
 import SearchInput from "../common/SearchInput";
 
 const AdminTrainers = ({trainersData,refetch}) => {
-
-
   const [rowId, setRowId] = useState<string>("");
   const [selectedRowId, setSelectedRowId] = useState<string>("");
   const [activeTrainers, setActiveTrainers] = useState([]);

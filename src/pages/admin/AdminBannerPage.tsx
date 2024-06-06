@@ -1,5 +1,6 @@
 import { fetchBanners } from "@/api/admin";
 import AdminBanner from "@/components/admin/adminBanner/AdminBanner";
+import Loader from "@/components/common/Loader";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 
@@ -25,14 +26,12 @@ const AdminBannerPage = ({ setSelectedLink, link }) => {
     }
   }, [bannerData]);
 
-  return (
-    !isLoading &&
-    activeBanners && (
+  return (isLoading || !bannerData) ? <Loader /> : (
       <div>
         <AdminBanner {...{ bannerData: activeBanners, refetch }} />
       </div>
     )
-  );
+ 
 };
 
 export default AdminBannerPage;

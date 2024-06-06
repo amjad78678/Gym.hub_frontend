@@ -6,6 +6,7 @@ import { grey } from "@mui/material/colors";
 import dayjs from "dayjs";
 import UsersActions from "./UsersActions";
 import SearchInput from "../common/SearchInput";
+import Loader from "@/components/common/Loader";
 
 const Users = ({ usersData, refetch }) => {
   const [rowId, setRowId] = useState<string>("");

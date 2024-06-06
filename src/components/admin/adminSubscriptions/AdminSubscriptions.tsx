@@ -7,6 +7,7 @@ import { fetchSubscriptions, fetchUsers } from "@/api/admin";
 import { grey } from "@mui/material/colors";
 import dayjs from "dayjs";
 import SearchInput from "../common/SearchInput";
+import Loader from "@/components/common/Loader";
 
 const AdminSubscriptions = () => {
   const {
@@ -214,7 +215,7 @@ const [search,setSearch]=useState('')
         />
       </Box>
     </div>
-  ): (<div>Loading...</div>);
+  ): (<Loader/>);
 };
 
 export default AdminSubscriptions;
