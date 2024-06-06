@@ -12,7 +12,7 @@ const GymProfilePage = () => {
   });
 
   console.log(myGymData?.data.gymData);
-  return isLoading && !myGymData ? (
+  return isLoading || !myGymData ? (
     <Loader />
   ) : (
     <div className="text-white">

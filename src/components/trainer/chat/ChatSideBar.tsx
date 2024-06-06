@@ -3,6 +3,7 @@ import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import iTrainerUsersChat from "@/interfaces/iTrainerUsersChat";
+import Loader from "@/components/common/Loader";
 
 const ChatSideBar = ({ selectedChat, setSelectedChat }) => {
   const { isLoading, data: messagesData } = useQuery({
@@ -33,7 +34,7 @@ const ChatSideBar = ({ selectedChat, setSelectedChat }) => {
   return (
     !isLoading &&
     messagesData &&
-    usersList && (
+    usersList ? (
       <div className={`${selectedChat ? "hidden" : "block"} sm:block`}>
         <Box
           sx={{
@@ -101,7 +102,7 @@ const ChatSideBar = ({ selectedChat, setSelectedChat }) => {
           </Box>
         </Box>
       </div>
-    )
+    ):(<Loader/>)
   );
 };
 

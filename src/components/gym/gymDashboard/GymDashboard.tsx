@@ -140,7 +140,11 @@ const GymDashboard = ({ gym, dashboard }) => {
             <div className="p-2 overflow-y-scroll no-scrollbar w-2/3 mx-auto">
               <Box>
                 <Typography
-                  sx={{ color: "white", textAlign: "center",fontFamily:"cursive" }}
+                  sx={{
+                    color: "white",
+                    textAlign: "center",
+                    fontFamily: "cursive",
+                  }}
                   variant="h5"
                 >
                   Recently booked Users

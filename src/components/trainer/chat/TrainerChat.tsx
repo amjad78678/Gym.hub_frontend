@@ -10,13 +10,19 @@ import {
 } from "@/api/trainer";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { ArrowBack, CheckCircle, VideoCall, WhatsApp } from "@mui/icons-material";
+import {
+  ArrowBack,
+  CheckCircle,
+  VideoCall,
+  WhatsApp,
+} from "@mui/icons-material";
 import iMessageType from "@/interfaces/iMessageType";
 import { useSocket } from "@/utils/context/socketContext";
 import { RootState } from "@/redux/store";
 import debounce from "@/utils/miscillenious/debounce";
 import { useNavigate } from "react-router-dom";
 import { fileUploadChat } from "@/api/user";
+import Loader from "@/components/common/Loader";
 
 const TrainerChat = () => {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -214,7 +220,12 @@ const TrainerChat = () => {
           <div className="flex-1 p-2 bg-gray-200 sm:p-6 justify-between flex flex-col h-[700px] rounded-md">
             <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
               <div className="relative flex items-center space-x-4">
-               <span className="block lg:hidden" onClick={() => setSelectedChat(null)}><ArrowBack sx={{ cursor: "pointer",color:"black" }} /></span> 
+                <span
+                  className="block lg:hidden"
+                  onClick={() => setSelectedChat(null)}
+                >
+                  <ArrowBack sx={{ cursor: "pointer", color: "black" }} />
+                </span>
                 <div className="relative">
                   <span
                     className={`absolute ${

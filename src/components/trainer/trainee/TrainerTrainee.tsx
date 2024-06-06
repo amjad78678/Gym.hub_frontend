@@ -1,5 +1,6 @@
 import { fetchTrainertrainerBookings } from "@/api/trainer";
 import SearchInput from "@/components/admin/common/SearchInput";
+import Loader from "@/components/common/Loader";
 import { Avatar, Box, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
@@ -162,7 +163,7 @@ const TrainerTrainee = () => {
       </Box>
     </div>
   ) : (
-    <h1>Loading...</h1>
+   <Loader/>
   );
 };
 
