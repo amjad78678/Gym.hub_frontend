@@ -106,9 +106,8 @@ const GymDetails = ({
       addCartMutation(data);
     }
   };
-  console.log("gymDetails", gymDetailsData);
 
-  return isLoading && !gymDetailsData ? (
+  return (isLoading || !gymDetailsData) ? (
     <Loader />
   ) : (
     <>
