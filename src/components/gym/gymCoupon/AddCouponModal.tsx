@@ -162,15 +162,16 @@ const AddCouponModal = ({ open, setOpen, refetch }) => {
           </DialogContent>
           <DialogActions>
             <Button
-              className="relative"
+              className="relative w-9/12"
               color="primary"
               disabled={isPending}
+              variant="contained"
               type="submit"
-              sx={{ width: "50%", mx: "auto" }}
+              sx={{ mx: "auto" }}
             >
                <span>{isPending ? "Adding..." : "Add Coupon"}</span>
               {isPending && (
-                <span className="absolute right-4">
+                <span className="absolute right-4 top-2">
                   <BeatLoader />
                 </span>
               )}

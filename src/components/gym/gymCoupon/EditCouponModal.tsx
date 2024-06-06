@@ -32,18 +32,22 @@ const EditCouponModal = ({ editOpen, setEditOpen, selectedRow, refetch }) => {
       startingDate: selectedRow?.startingDate,
       endingDate: selectedRow?.endingDate,
     },
-    validationSchema: AddCouponValidation, 
+    validationSchema: AddCouponValidation,
     onSubmit: (values) => {
       console.log("iam values from formik", values);
       const obj = {
         ...values,
         couponId: selectedRow?._id,
-      }
+      };
       mutate(obj);
     },
   });
 
-  const { isPending,status: mutStatus, mutate } = useMutation({
+  const {
+    isPending,
+    status: mutStatus,
+    mutate,
+  } = useMutation({
     mutationFn: updateCoupon,
     onSuccess: (res) => {
       if (res) {
@@ -55,18 +59,17 @@ const EditCouponModal = ({ editOpen, setEditOpen, selectedRow, refetch }) => {
   });
 
   const today = dayjs();
-  const tomorrow = dayjs().add(1, 'day');
+  const tomorrow = dayjs().add(1, "day");
 
   return (
     <div>
-      <Dialog
-        open={editOpen}
-        fullWidth
-        maxWidth="xs"
-      >
+      <Dialog open={editOpen} fullWidth maxWidth="xs">
         <DialogTitle>
           Edit Coupon{" "}
-          <IconButton onClick={() => setEditOpen(false)} style={{ float: "right" }}>
+          <IconButton
+            onClick={() => setEditOpen(false)}
+            style={{ float: "right" }}
+          >
             <CloseIcon color="primary"></CloseIcon>
           </IconButton>{" "}
         </DialogTitle>
@@ -168,15 +171,16 @@ const EditCouponModal = ({ editOpen, setEditOpen, selectedRow, refetch }) => {
           </DialogContent>
           <DialogActions>
             <Button
-            className="relative"
+              className="relative w-9/12"
               color="primary"
-              type="submit"
               disabled={isPending}
-              sx={{ width: "50%", mx: "auto" }}
+              variant="contained"
+              type="submit"
+              sx={{ mx: "auto" }}
             >
               <span>{isPending ? "Updating..." : "Update"}</span>
               {isPending && (
-                <span className="absolute right-4">
+                <span className="absolute right-4 top-2">
                   <BeatLoader />
                 </span>
               )}

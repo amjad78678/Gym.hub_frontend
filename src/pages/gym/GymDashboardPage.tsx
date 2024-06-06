@@ -1,24 +1,36 @@
-import React from 'react'
-import GymDashboard from '@/components/gym/gymDashboard/GymDashboard'
-import GymNavbar from '@/components/gym/common/GymNavbar'
-import { useQuery } from '@tanstack/react-query'
-import { fetchGymData } from '@/api/gym'
-import Loader from '@/components/common/Loader'
-
+import React from "react";
+import GymDashboard from "@/components/gym/gymDashboard/GymDashboard";
+import GymNavbar from "@/components/gym/common/GymNavbar";
+import { useQuery } from "@tanstack/react-query";
+import { fetchDashboardDetails, fetchGymData } from "@/api/gym";
+import Loader from "@/components/common/Loader";
+import Skeleton from "react-loading-skeleton";
+import { Container } from "react-bootstrap";
 
 const GymDashboardPage = () => {
-
   const { isLoading, data: myGymData } = useQuery({
     queryKey: ["gymSideDashboardData"],
     queryFn: fetchGymData,
   });
 
-  return isLoading && !myGymData ? <Loader /> : (
-    <div >
-      <GymNavbar {...{fixed: true}}/>
-      <GymDashboard {...{gym: myGymData?.data.gymData}} />
-    </div>
-  )
-}
+  const { isLoading: isLoadingDetails, data: dashboardDetails } = useQuery({
+    queryKey: ["gymDashboardDetails"],
+    queryFn: fetchDashboardDetails,
+  });
 
-export default GymDashboardPage
+  console.log("dashboardDetails", dashboardDetails);
+
+  return  (isLoading || isLoadingDetails || !dashboardDetails || !myGymData) ? (
+    <>
+      <GymNavbar {...{ fixed: true }} />
+      <Skeleton height={500} count={2} />
+    </>
+  ) : (
+    <div>
+      <GymNavbar {...{ fixed: true }} />
+      <GymDashboard {...{ gym: myGymData?.data.gymData, dashboard: dashboardDetails?.data }} />
+    </div>
+  );
+};
+
+export default GymDashboardPage;

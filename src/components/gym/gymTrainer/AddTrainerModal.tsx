@@ -20,9 +20,14 @@ import toast from "react-hot-toast";
 import CloseIcon from "@mui/icons-material/Close";
 import Loader from "@/components/common/Loader";
 import { AddTrainerValidation } from "@/validation/AddTrainerValidation";
+import { BeatLoader } from "react-spinners";
 
 const AddTrainerModal = ({ open, setOpen, refetch }) => {
-  const { status: mutStatus, mutate } = useMutation({
+  const {
+    isPending,
+    status: mutStatus,
+    mutate,
+  } = useMutation({
     mutationFn: addTrainer,
     onSuccess: (res) => {
       if (res) {
@@ -228,12 +233,20 @@ const AddTrainerModal = ({ open, setOpen, refetch }) => {
                 </Stack>
               </DialogContent>
               <DialogActions>
-                <Button
+              <Button
                   type="submit"
                   color="primary"
-                  sx={{ width: "50%", mx: "auto" }}
+                  disabled={isPending}
+                  className="relative w-9/12"
+                  variant="contained"
+                  sx={{  mx: "auto" }}
                 >
-                  Add Trainer
+                  <span>{isPending ? "Adding..." : "Add Trainer"}</span>
+                  {isPending && (
+                    <span className="absolute right-4 top-2">
+                      <BeatLoader />
+                    </span>
+                  )}
                 </Button>
               </DialogActions>
             </Form>

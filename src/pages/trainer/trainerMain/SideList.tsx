@@ -88,7 +88,7 @@ const Drawer = styled(MuiDrawer, {
 
 const SideList = ({ open, setOpen }) => {
   const dispatch = useDispatch();
-  const { refetch: refetchTrainer, data: trainerDetails } = useQuery({
+  const { isLoading, refetch: refetchTrainer, data: trainerDetails } = useQuery({
     queryKey: ["trainerDataforTrainerSide"],
     queryFn: fetchTrainerData,
   });
@@ -118,7 +118,7 @@ const SideList = ({ open, setOpen }) => {
         icon: <EditNote />,
         link: "profile",
         component: (
-          <TrainerProfilePage {...{ setSelectedLink, link: "profile",refetchTrainer,trainer: trainerDetails }} />
+          <TrainerProfilePage {...{ setSelectedLink, link: "profile",refetchTrainer, isLoading, data: trainerDetails }} />
         ),
       },
       {

@@ -20,10 +20,15 @@ import toast from "react-hot-toast";
 import Loader from "@/components/common/Loader";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { EditTrainerValidation } from "@/validation/EditTrainerValidation";
+import { BeatLoader } from "react-spinners";
 
 const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
   const [image, setImage] = useState<File | null>(null);
-  const { status: mutStatus, mutate } = useMutation({
+  const {
+    isPending,
+    status: mutStatus,
+    mutate,
+  } = useMutation({
     mutationFn: updateTrainer,
     onSuccess: (res) => {
       if (res) {
@@ -59,16 +64,15 @@ const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
             gender: selectedRow.gender,
             experience: selectedRow.experience,
             achievements: selectedRow.achievements,
-            monthlyFee: selectedRow.monthlyFee, 
+            monthlyFee: selectedRow.monthlyFee,
             yearlyFee: selectedRow.yearlyFee,
           }}
           validationSchema={EditTrainerValidation}
           onSubmit={(values) => {
-
             const formData = new FormData();
             formData.append("name", values.name);
             formData.append("gender", values.gender);
-            formData.append("age", values.age); 
+            formData.append("age", values.age);
             formData.append("experience", values.experience);
             formData.append("achievements", values.achievements);
             formData.append("monthlyFee", values.monthlyFee);
@@ -82,20 +86,19 @@ const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
             }
           }}
         >
-          {({
-            setFieldValue,
-            handleSubmit,
-            values,
-            handleChange,
-          }) => (
+          {({ setFieldValue, handleSubmit, values, handleChange }) => (
             <Form onSubmit={handleSubmit}>
               <DialogContent>
                 <Stack spacing={2} margin={2}>
-                <img
-                  className="rounded-xl mx-auto object-cover w-1/2"
-                  src={image? URL.createObjectURL(image) : selectedRow.image.imageUrl}
-                  alt="Selected"
-                />
+                  <img
+                    className="rounded-xl mx-auto object-cover w-1/2"
+                    src={
+                      image
+                        ? URL.createObjectURL(image)
+                        : selectedRow.image.imageUrl
+                    }
+                    alt="Selected"
+                  />
                   <TextField
                     label="Image"
                     name="imageUrl"
@@ -107,7 +110,7 @@ const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
                       }
                     }}
                     variant="outlined"
-                  /> 
+                  />
                   <ErrorMessage name="imageUrl">
                     {(msg) => <div style={{ color: "red" }}>{msg}</div>}
                   </ErrorMessage>
@@ -199,9 +202,17 @@ const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
                 <Button
                   type="submit"
                   color="primary"
-                  sx={{ width: "50%", mx: "auto" }}
+                  disabled={isPending}
+                  className="relative w-9/12"
+                  variant="contained"
+                  sx={{  mx: "auto" }}
                 >
-                  Edit Trainer
+                  <span>{isPending ? "Updating..." : "Update"}</span>
+                  {isPending && (
+                    <span className="absolute right-4 top-2">
+                      <BeatLoader />
+                    </span>
+                  )}
                 </Button>
               </DialogActions>
             </Form>
