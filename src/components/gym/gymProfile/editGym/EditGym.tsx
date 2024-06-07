@@ -128,7 +128,7 @@ const EditGym: React.FC<UserType> = ({ gym }) => {
         <Box>
           {
             {
-              0: <EditLocation {...{ gym, setLatitude, setLongitude,latitude,longitude }} />,
+              0: <EditLocation {...{ gym, setLatitude, setLongitude,latitude,longitude,isPending,handleSubmitEditDetails }} />,
               1: (
                 <EditGymDetails
                   {...{ gym, setDetails, handleSubmitEditDetails, isPending }}

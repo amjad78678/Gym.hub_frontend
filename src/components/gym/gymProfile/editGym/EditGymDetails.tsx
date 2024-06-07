@@ -4,6 +4,7 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from "@/redux/slices/appSlice";
 import { GymProfileEditValidation } from "@/validation/GymProfileEditValidation";
+import { BeatLoader } from "react-spinners";
 
 const EditGymDetails = ({
   gym,
@@ -123,10 +124,16 @@ const EditGymDetails = ({
         </Row>
         <div className="flex justify-center">
         <button
+          disabled={isPending}
           type="submit"
           className="relative my-4 px-14 py-1 rounded-lg bg-white text-black hover:bg-slate-600"
         >
           <span>{isPending ? "Saving..." : "Save"}</span>
+          {isPending && (
+            <span className="absolute right-4">
+            <BeatLoader color="black"  size={7} />
+          </span>
+          )}
         </button>
       </div>
       </form>

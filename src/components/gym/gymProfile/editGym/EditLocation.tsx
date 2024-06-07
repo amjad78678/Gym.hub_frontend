@@ -9,6 +9,7 @@ import ReactMapGl, {
 const MAPBOX_API = import.meta.env.VITE_MAPBOX_TOKEN;
 import "mapbox-gl/dist/mapbox-gl.css";
 import EditLocationGeoCoder from "./EditLocationGeoCoder";
+import { BeatLoader } from "react-spinners";
 
 interface iAppState {
   app: {
@@ -17,7 +18,15 @@ interface iAppState {
   };
 }
 
-const EditLocation = ({ gym, setLatitude, setLongitude,latitude,longitude }) => {
+const EditLocation = ({
+  gym,
+  setLatitude,
+  setLongitude,
+  latitude,
+  longitude,
+  isPending,
+  handleSubmitEditDetails,
+}) => {
   const mapRef = useRef();
   return (
     <div>
@@ -60,6 +69,22 @@ const EditLocation = ({ gym, setLatitude, setLongitude,latitude,longitude }) => 
           <EditLocationGeoCoder {...{ setLatitude, setLongitude }} />
         </ReactMapGl>
       </Box>
+
+      <div className="flex justify-center">
+        <button
+          onClick={handleSubmitEditDetails}
+          disabled={isPending}
+          type="submit"
+          className="relative my-4 px-14 py-1 rounded-lg bg-white text-black hover:bg-slate-600"
+        >
+          <span>{isPending ? "Saving..." : "Save"}</span>
+          {isPending && (
+            <span className="absolute right-4">
+              <BeatLoader color="black" size={7} />
+            </span>
+          )}
+        </button>
+      </div>
     </div>
   );
 };
