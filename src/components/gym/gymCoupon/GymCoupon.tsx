@@ -104,7 +104,7 @@ const GymCoupon = ({
     setActiveCoupons(filtered);
   }, [search]);
 
-  return isLoading && !coupons ? (
+  return isLoading || !coupons ? (
     <Loader />
   ) : coupons.length < 1 ? (
     <NoCouponComponent {...{ setOpen }} />

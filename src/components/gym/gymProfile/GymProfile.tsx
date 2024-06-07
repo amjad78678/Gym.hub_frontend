@@ -1,7 +1,13 @@
 import { gymLogout } from "@/api/gym";
 import { setGymLogout } from "@/redux/slices/authSlice";
 import { RootState } from "@/redux/store";
-import { LocationCity, LocationOn } from "@mui/icons-material";
+import {
+  Call,
+  ContactEmergency,
+  Email,
+  LocationCity,
+  LocationOn,
+} from "@mui/icons-material";
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { Button, Container } from "react-bootstrap";
@@ -9,9 +15,9 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import EditGym from "./EditGym";
+import { Typography } from "@mui/material";
 
 const GymProfile = ({ gym }) => {
-  const { gymDetails } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState("");
@@ -80,17 +86,38 @@ const GymProfile = ({ gym }) => {
             <EditGym />
           ) : (
             <>
-              <div>{gym.description}</div>
-              <h1 className="text-lg font-semibold my-2">
+              <h1 className="text-lg font-semibold mt-2">
                 <LocationOn />
-                <span className="font-mono">{gym[0].address}</span>
+                <span className="font-mono ml-2">{gym[0].address}</span>
               </h1>
+              <div>
+                <Call />
+                <span className="text-lg mb-2 ml-2 font-mono font-semibold">
+                  {gym[0].contactNumber}
+                </span>
+              </div>
+              <div>
+                <Email />
+                <span className="text-lg mb-2 ml-2 font-mono font-semibold">
+                  {gym[0].email}
+                </span>
+              </div>
+
+              <div className="mt-10 border border-white rounded-md shadow-lg p-3">
+                <Typography
+                  variant="h6"
+                  component="h6"
+                  sx={{
+                    color: "white",
+                    fontFamily: "cursive",
+                  }}
+                >
+                  {gym[0].description}
+                </Typography>
+              </div>
             </>
           )}
-
         </div>
-
-       
       </div>
     )
   );

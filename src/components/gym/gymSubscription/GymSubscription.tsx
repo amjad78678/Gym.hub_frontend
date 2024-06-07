@@ -49,7 +49,7 @@ const GymSubscription = () => {
     amount: value,
   }));
 
-  return isLoading && !gymSubscriptionData ? (
+  return (isLoading || !gymSubscriptionData) ? (
     <Loader />
   ) : (
     <div className="bg-black">

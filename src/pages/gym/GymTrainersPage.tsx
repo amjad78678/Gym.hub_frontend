@@ -32,8 +32,11 @@ const GymTrainersPage = () => {
   console.log(trainers);
   console.log("selectedRow", selectedRow);
 
-  return isLoading && !trainers ? (
-    <Loader />
+  return isLoading || !trainers ? (
+    <>
+      <GymNavbar {...{ fixed: false }} />
+      <Loader />
+    </>
   ) : (
     <div className="bg-black">
       <GymNavbar {...{ fixed: false }} />

@@ -13,7 +13,10 @@ const GymProfilePage = () => {
 
   console.log(myGymData?.data.gymData);
   return isLoading || !myGymData ? (
-    <Loader />
+    <>
+      <GymNavbar {...{ fixed: true }} />
+      <Loader />
+    </>
   ) : (
     <div className="text-white">
       <GymNavbar {...{ fixed: true }} />
