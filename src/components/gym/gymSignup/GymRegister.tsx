@@ -160,7 +160,7 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
     return true;
   };
 
-  const findUnfinishedSteps = () => {
+  const findUnfinishedSteps = () => { 
     return steps.findIndex((step) => !step.completed);
   };
 

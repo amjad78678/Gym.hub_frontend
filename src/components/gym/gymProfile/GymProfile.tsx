@@ -14,13 +14,13 @@ import { Button, Container } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import EditGym from "./EditGym";
+import EditGym from "./editGym/EditGym";
 import { Typography } from "@mui/material";
 
 const GymProfile = ({ gym }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [toggle, setToggle] = useState("");
+  const [toggle, setToggle] = useState("myGym");
   const divStyle = {
     backgroundImage: `url("${gym[0].images[1].imageUrl}")`,
     backgroundSize: "cover",
@@ -67,14 +67,18 @@ const GymProfile = ({ gym }) => {
         <Container>
           <div className="font-semibold my-2  h-10 shadow-2xl text-white bg-black rounded-sm w-full flex justify-center items-center gap-4">
             <h1
-              className="cursor-pointer hover:underline"
+              className={`cursor-pointer hover:underline ${
+                toggle === "myGym" && "underline"
+              }`}
               onClick={() => setToggle("myGym")}
             >
               MY GYM
             </h1>
             <h1>|</h1>
             <h1
-              className="cursor-pointer hover:underline"
+              className={`cursor-pointer hover:underline ${
+                toggle === "editGym" && "underline"
+              }`}
               onClick={() => setToggle("editGym")}
             >
               EDIT
@@ -83,7 +87,7 @@ const GymProfile = ({ gym }) => {
         </Container>
         <div className="px-5 py-2">
           {toggle === "editGym" ? (
-            <EditGym />
+            <EditGym {...{gym}} />
           ) : (
             <>
               <h1 className="text-lg font-semibold mt-2">
