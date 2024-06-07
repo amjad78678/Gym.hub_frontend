@@ -296,3 +296,15 @@ export const fetchDashboardDetails = async()=>{
     return errorHandle(err);
   }
 }
+
+export const editGymProfile = async (data: any) => { 
+  try {
+    console.log('iam passing to server',data)
+    const response = await Api.put(gymRoutes.editGymProfile, data);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+
+}

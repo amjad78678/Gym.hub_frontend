@@ -17,11 +17,8 @@ interface iAppState {
   };
 }
 
-const EditLocation = ({ gym }) => {
+const EditLocation = ({ gym, setLatitude, setLongitude,latitude,longitude }) => {
   const mapRef = useRef();
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
-
   return (
     <div>
       <Box
@@ -41,8 +38,8 @@ const EditLocation = ({ gym }) => {
           mapStyle="mapbox://styles/mapbox/streets-v11"
         >
           <Marker
-            latitude={gym[0].location.coordinates[1]}
-            longitude={gym[0].location.coordinates[0]}
+            latitude={latitude}
+            longitude={longitude}
             draggable
             onDragEnd={(e) => {
               setLatitude(e.lngLat.lat);

@@ -1,12 +1,16 @@
 import { useFormik } from "formik";
 import React from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { GymSignupValidation } from "../../../../validation/GymSignupValidation";
 import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from "@/redux/slices/appSlice";
+import { GymProfileEditValidation } from "@/validation/GymProfileEditValidation";
 
-const EditGymDetails = ({ gym, setDetails }) => {
-  const dispatch = useDispatch();
+const EditGymDetails = ({
+  gym,
+  setDetails,
+  handleSubmitEditDetails,
+  isPending,
+}) => {
   const initialValues = {
     gymName: gym[0].gymName,
     email: gym[0].email,
@@ -16,21 +20,20 @@ const EditGymDetails = ({ gym, setDetails }) => {
     monthlyFee: gym[0].monthlyFee,
     yearlyFee: gym[0].yearlyFee,
     description: gym[0].description,
-    password: gym[0].password,
-    confirmPassword: gym[0].confirmPassword,
   };
 
-  const { handleChange, handleBlur, values, errors } = useFormik({
+  const { handleChange, handleBlur, values, errors, handleSubmit } = useFormik({
     initialValues: initialValues,
-    validationSchema: GymSignupValidation,
+    validationSchema: GymProfileEditValidation,
     onSubmit: async (values) => {
-      setDetails(values);
+      console.log("submitting", values);
+      handleSubmitEditDetails(values);
     },
   });
 
   return (
     <Container className="min-h-[320px] text-white">
-      <form action="">
+     <form onSubmit={handleSubmit} action="">
         <Row>
           <Col lg={6}>
             <div className="my-3">
@@ -39,15 +42,7 @@ const EditGymDetails = ({ gym, setDetails }) => {
                 type="text"
                 name="gymName"
                 className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
-                onChange={(e) => {
-                  handleChange(e);
-                  console.log(errors);
-                  if (!errors.gymName) {
-                    dispatch(
-                      setDetails({ ...values, gymName: e.target.value })
-                    );
-                  }
-                }}
+                onChange={handleChange}
                 autoComplete="off"
                 onBlur={handleBlur}
                 value={values.gymName}
@@ -60,16 +55,11 @@ const EditGymDetails = ({ gym, setDetails }) => {
             <div className="my-3">
               <h1>Email</h1>
               <input
+                disabled
                 type="text"
                 name="email"
                 className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
-                onChange={(e) => {
-                  handleChange(e);
-
-                  if (!errors.email) {
-                    dispatch(setDetails({ ...values, email: e.target.value }));
-                  }
-                }}
+                onChange={handleChange}
                 autoComplete="off"
                 onBlur={handleBlur}
                 value={values.email}
@@ -84,15 +74,7 @@ const EditGymDetails = ({ gym, setDetails }) => {
                 type="text"
                 name="contactNumber"
                 className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
-                onChange={(e) => {
-                  handleChange(e);
-
-                  if (!errors.contactNumber) {
-                    dispatch(
-                      setDetails({ ...values, contactNumber: e.target.value })
-                    );
-                  }
-                }}
+                onChange={handleChange}
                 autoComplete="off"
                 onBlur={handleBlur}
                 value={values.contactNumber}
@@ -109,15 +91,7 @@ const EditGymDetails = ({ gym, setDetails }) => {
                 type="text"
                 name="businessId"
                 className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
-                onChange={(e) => {
-                  handleChange(e);
-
-                  if (!errors.businessId) {
-                    dispatch(
-                      setDetails({ ...values, businessId: e.target.value })
-                    );
-                  }
-                }}
+                onChange={handleChange}
                 autoComplete="off"
                 onBlur={handleBlur}
                 value={values.businessId}
@@ -137,15 +111,7 @@ const EditGymDetails = ({ gym, setDetails }) => {
                 value={values.description}
                 autoComplete="off"
                 onBlur={handleBlur}
-                onChange={(e) => {
-                  handleChange(e);
-
-                  if (!errors.description) {
-                    dispatch(
-                      setDetails({ ...values, description: e.target.value })
-                    );
-                  }
-                }}
+                onChange={handleChange}
                 placeholder="Leave a comment here"
                 style={{ height: "120px" }}
               />
@@ -155,7 +121,17 @@ const EditGymDetails = ({ gym, setDetails }) => {
             </div>
           </Col>
         </Row>
+        <div className="flex justify-center">
+        <button
+          type="submit"
+          className="relative my-4 px-14 py-1 rounded-lg bg-white text-black hover:bg-slate-600"
+        >
+          <span>{isPending ? "Saving..." : "Save"}</span>
+        </button>
+      </div>
       </form>
+
+    
     </Container>
   );
 };
