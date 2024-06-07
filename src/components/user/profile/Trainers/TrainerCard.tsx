@@ -47,7 +47,7 @@ const TrainerCard = ({ trainer }) => {
           </div>
 
           <h4 className="text-gray-300">
-            {/* Gym Trainer : {trainer.trainerId.gymId.gymName} */}
+            Gym Trainer : {trainer.trainerId.gymId.gymName}
           </h4>
           <h4 className="text-gray-300">Gender : {trainer.trainerId.gender}</h4>
           <h4 className="text-gray-300">Age : {trainer.trainerId.age}</h4>
