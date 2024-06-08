@@ -1,5 +1,10 @@
 import { useSocket } from "@/utils/context/socketContext";
-import { AttachFile, EmojiEmotionsOutlined } from "@mui/icons-material";
+import {
+  AttachFile,
+  Clear,
+  EmojiEmotionsOutlined,
+  Send,
+} from "@mui/icons-material";
 import React, { CSSProperties, useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import data from "@emoji-mart/data";
@@ -92,7 +97,7 @@ const ChatInput = ({
 
   const override: CSSProperties = {
     display: "flex",
-    margin: "0 auto",
+    marginLeft: "40px",
     borderColor: "green",
     marginTop: "30px",
     marginBottom: "30px",
@@ -145,12 +150,12 @@ const ChatInput = ({
         </>
       ) : (
         imageSendLoading && (
-          <div className="flex items-center justify-center w-full">
+          <div className="">
             <ClipLoader
               color={color}
               loading={true}
               cssOverride={override}
-              size={150}
+              size={50}
             />
           </div>
         )
@@ -221,11 +226,52 @@ const ChatInput = ({
                     >
                       {({ getRootProps, getInputProps }) => (
                         <section>
-                          <div {...getRootProps()}>
+                          <div
+                            className={`${
+                              imagePreviewUrls.length > 0 && "hidden"
+                            }`}
+                            {...getRootProps()}
+                          >
                             <input {...getInputProps()} />
                             <IconButton sx={{ backgroundColor: "" }}>
                               <AttachFile sx={{ color: "gray" }} />
                             </IconButton>
+                          </div>
+                          <div className="flex">
+                            <div
+                              className={`${
+                                imagePreviewUrls.length === 0 && "hidden"
+                              }`}
+                            >
+                              <IconButton
+                                sx={{ backgroundColor: "" }}
+                                onClick={() => {
+                                  if (file.length > 0) {
+                                    setFile([]);
+                                    setMainImageIndex(0);
+                                    setImagePreviewUrls([]);
+                                  }
+                                }}
+                              >
+                                <Clear sx={{ color: "gray" }} />
+                              </IconButton>
+                            </div>
+                            <div
+                              className={`${
+                                imagePreviewUrls.length === 0 && "hidden"
+                              }`}
+                            >
+                              <IconButton
+                                sx={{ backgroundColor: "" }}
+                                onClick={() => {
+                                  handleSendMessage();
+                                  setEmojiOpen(false);
+                                  setImagePreviewUrls([]);
+                                }}
+                              >
+                                <Send sx={{ color: "green" }} />
+                              </IconButton>
+                            </div>
                           </div>
                         </section>
                       )}

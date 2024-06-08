@@ -1,13 +1,18 @@
 import { useSocket } from "@/utils/context/socketContext";
 import React, { CSSProperties, useEffect, useState } from "react";
-import { AttachFile, EmojiEmotionsOutlined } from "@mui/icons-material";
+import {
+  AttachFile,
+  Clear,
+  EmojiEmotionsOutlined,
+  Send,
+} from "@mui/icons-material";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import Dropzone from "react-dropzone";
 import { IconButton } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { fileUploadChat } from "@/api/user";
-import { ClipLoader, RingLoader } from "react-spinners";
+import { ClipLoader } from "react-spinners";
 import toast from "react-hot-toast";
 import { Formik, Field, Form } from "formik";
 import { chatDropZoneValidation } from "@/validation/ChatDropZoneValidation";
@@ -28,6 +33,7 @@ const ChatInput = ({
   const [typing, setTyping] = useState(false);
   const [emojiOpen, setEmojiOpen] = useState(false);
 
+  console.log("iam files", file);
   useEffect(() => {
     socket.on("typedUser", () => setIsTyping(true));
     socket.on("stopTypedUser", () => setIsTyping(false));
@@ -41,6 +47,8 @@ const ChatInput = ({
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       handleSendMessage();
+      setEmojiOpen(false);
+      setImagePreviewUrls([]);
     }
   };
 
@@ -65,21 +73,11 @@ const ChatInput = ({
     }, timerLength);
   };
   const handleAddEmoji = (e) => {
-    setEmojiOpen(false);
     let sym = e.unified.split("-");
     let codesArray: any = [];
     sym.forEach((el) => codesArray.push("0x" + el));
     let emoji = String.fromCodePoint(...codesArray);
     setNewMessage(newMessage + emoji);
-  };
-
-  const handleOnDrop = (acceptedFiles) => {
-    if (acceptedFiles.length <= 4) {
-      setFile(acceptedFiles);
-    } else {
-      toast.error("Maximum 4 files allowed");
-      return;
-    }
   };
 
   const [imagePreviewUrls, setImagePreviewUrls] = useState([]);
@@ -103,7 +101,7 @@ const ChatInput = ({
 
   const override: CSSProperties = {
     display: "flex",
-    margin: "0 auto",
+    marginLeft: "40px",
     borderColor: "green",
     marginTop: "30px",
     marginBottom: "30px",
@@ -122,47 +120,47 @@ const ChatInput = ({
         </div>
       )}
 
-      {file.length > 0 && imagePreviewUrls.length > 0 ? ( 
+      {file.length > 0 && imagePreviewUrls.length > 0 ? (
         <>
-          {file[mainImageIndex]?.type === "video/mp4" ? (
+          {file[mainImageIndex].type.startsWith("image/") ? (
+            <div className="ms-8 w-64 p-2 border border-black shadow-lg rounded-lg">
+              <img
+                className="rounded-lg h-64 object-cover"
+                src={imagePreviewUrls[mainImageIndex]}
+                alt=""
+              />
+              <div className="flex  mt-2 mx-auto">
+                {imagePreviewUrls.map((imageUrl, index) => (
+                  <img
+                    onClick={() => setMainImageIndex(index)}
+                    className={`w-1/4  rounded-xl cursor-pointer ${
+                      index === mainImageIndex
+                        ? "opacity-100"
+                        : "opacity-70 hover:opacity-100"
+                    }`}
+                    key={index}
+                    src={imageUrl}
+                    alt=""
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
             <video
               className="rounded-lg ms-8  h-64 object-cover"
               controls
               src={imagePreviewUrls[mainImageIndex]}
             />
-          ) : (
-            <div className="ms-8 w-64 p-2 border border-black shadow-lg rounded-lg">
-            <img
-              className="rounded-lg h-64 object-cover"
-              src={imagePreviewUrls[mainImageIndex]}
-              alt=""
-            />
-            <div className="flex  mt-2 mx-auto">
-              {imagePreviewUrls.map((imageUrl, index) => (
-                <img
-                  onClick={() => setMainImageIndex(index)}
-                  className={`w-1/4  rounded-xl cursor-pointer ${
-                    index === mainImageIndex
-                      ? "opacity-100"
-                      : "opacity-70 hover:opacity-100"
-                  }`}
-                  key={index}
-                  src={imageUrl}
-                  alt=""
-                />
-              ))}
-            </div>
-          </div>
           )}
         </>
       ) : (
         imageSendLoading && (
-          <div className="flex items-center justify-center w-full">
+          <div className="">
             <ClipLoader
               color={color}
               loading={true}
               cssOverride={override}
-              size={150}
+              size={50}
             />
           </div>
         )
@@ -183,7 +181,9 @@ const ChatInput = ({
             imageSendLoading ? "Sending files..." : "Type your message..."
           }`}
           className={`flex-grow text-black rounded-l-md border-2 p-2 ${
-            imageSendLoading ? "bg-gray-100 placeholder:text-green-500 placeholder:font-bold" : "border-gray-300"
+            imageSendLoading
+              ? "bg-gray-100 placeholder:text-green-500 placeholder:font-bold"
+              : "border-gray-300"
           }`}
           disabled={imageSendLoading}
         />
@@ -222,6 +222,7 @@ const ChatInput = ({
                       onDrop={(acceptedFiles) => {
                         resetForm(); // Reset form state and errors
                         const newValue = [...acceptedFiles];
+                        console.log("iam dropped", newValue);
                         setFieldValue("files", newValue, false); // false to avoid validation on change
                         setTimeout(() => {
                           submitForm();
@@ -230,11 +231,52 @@ const ChatInput = ({
                     >
                       {({ getRootProps, getInputProps }) => (
                         <section>
-                          <div {...getRootProps()}>
+                          <div
+                            className={`${
+                              imagePreviewUrls.length > 0 && "hidden"
+                            }`}
+                            {...getRootProps()}
+                          >
                             <input {...getInputProps()} />
                             <IconButton sx={{ backgroundColor: "" }}>
                               <AttachFile sx={{ color: "gray" }} />
                             </IconButton>
+                          </div>
+                          <div className="flex">
+                            <div
+                              className={`${
+                                imagePreviewUrls.length === 0 && "hidden"
+                              }`}
+                            >
+                              <IconButton
+                                sx={{ backgroundColor: "" }}
+                                onClick={() => {
+                                  if (file.length > 0) {
+                                    setFile([]);
+                                    setMainImageIndex(0);
+                                    setImagePreviewUrls([]);
+                                  }
+                                }}
+                              >
+                                <Clear sx={{ color: "gray" }} />
+                              </IconButton>
+                            </div>
+                            <div
+                              className={`${
+                                imagePreviewUrls.length === 0 && "hidden"
+                              }`}
+                            >
+                              <IconButton
+                                sx={{ backgroundColor: "" }}
+                                onClick={() => {
+                                  handleSendMessage();
+                                  setEmojiOpen(false);
+                                  setImagePreviewUrls([]);
+                                }}
+                              >
+                                <Send sx={{ color: "green" }} />
+                              </IconButton>
+                            </div>
                           </div>
                         </section>
                       )}

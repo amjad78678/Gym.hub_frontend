@@ -19,19 +19,13 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { uLoggedIn } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (uLoggedIn) {
+      navigate("/");
+    }
+  }, [navigate, uLoggedIn]);
 
-  const {uLoggedIn}= useSelector((state)=>state.auth)
-  useEffect(()=>{
-
-
-   if(uLoggedIn){
-    navigate('/')
-   }
-
-
-  },[navigate,uLoggedIn])
-
-  
   const gSignup = useGoogleLogin({
     onSuccess: async (response) => {
       try {
@@ -41,10 +35,10 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
 
         console.log(res.data);
 
-        const obj ={
-          imageUrl:res.data.picture,
+        const obj = {
+          imageUrl: res.data.picture,
           public_id: "",
-        }
+        };
 
         const data = {
           username: res.data.name,
@@ -64,7 +58,7 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
               profilePic: response2.data.user.profilePic.imageUrl,
               token: response2.data.token,
             })
-          )
+          );
           navigate("/");
         }
       } catch (error) {
@@ -73,42 +67,39 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
     },
   });
 
-  const { handleSubmit, handleChange, handleBlur, values, errors } =
-    useFormik({
-      initialValues: {
-        username: "",
-        email: "",
-        mobilenumber: "",
-        age: "",
-        password: "",
-        confirmpassword: "",
-        gender: "",
-      },
-      validationSchema: UserSignupValidation,
-      onSubmit: async (values) => {
-        console.log("submitting button");
-        if (values.password && !values.confirmpassword) {
-          toast.error("Please enter confirm password");
-        } else {
-          const res = await signUp({
-            username: values.username,
-            email: values.email,
-            mobileNumber: values.mobilenumber,
-            age: values.age,
-            password: values.password,
-            gender: values.gender,
-          });
+  const { handleSubmit, handleChange, handleBlur, values, errors } = useFormik({
+    initialValues: {
+      username: "",
+      email: "",
+      mobilenumber: "",
+      age: "",
+      password: "",
+      confirmpassword: "",
+      gender: "",
+    },
+    validationSchema: UserSignupValidation,
+    onSubmit: async (values) => {
+      console.log("submitting button");
+      if (values.password && !values.confirmpassword) {
+        toast.error("Please enter confirm password");
+      } else {
+        const res = await signUp({
+          username: values.username,
+          email: values.email,
+          mobileNumber: values.mobilenumber,
+          age: values.age,
+          password: values.password,
+          gender: values.gender,
+        });
 
-          if (res) {
-
-            if(res.data.status){
-              setShowOtp();
-            }
-            
+        if (res) {
+          if (res.data.status) {
+            setShowOtp();
           }
         }
-      },
-    });
+      }
+    },
+  });
 
   return (
     <div>
@@ -203,11 +194,8 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
                   )}
 
                   <div className="flex w-full">
-                    <div className="w-1/2 inline-block">
-                      <label
-                        htmlFor=""
-                        className="text-base font-medium inline"
-                      >
+                    <div className="w-1/2 ">
+                      <label htmlFor="" className="text-base font-medium ">
                         Gender
                       </label>
                       <br />
@@ -225,16 +213,13 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
                         <option value="Others" label="Others" />
                       </select>
                     </div>
-                    <div className="w-1/2 inline">
-                      <label
-                        htmlFor=""
-                        className="text-base font-medium inline"
-                      >
+                    <div className="w-1/2">
+                      <label htmlFor="" className="text-base font-medium">
                         Age
-                      </label> 
+                      </label>
                       <div className="">
                         <input
-                          className="h-10 rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                          className="h-10 rounded-md border border-gray-300 bg-transparent lg:px:3 pl-2 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                           type="text"
                           placeholder="Age"
                           name="age"
@@ -252,68 +237,6 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
                       </div>
                     </div>
                   </div>
-
-                  {/* <div className="flex">
-                    <div className="flex flex-col w-1/3">
-                      <label htmlFor="" className="text-base font-medium">
-                        State
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="State"
-                        className="h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1"
-                        name="state"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.state}
-                      />
-                      {errors.state && touched.state && (
-                        <small className="text-red-500 mt-1">
-                          {errors.state}
-                        </small>
-                      )}
-                    </div>
-
-                    <div className="flex flex-col w-1/3">
-                      <label htmlFor="" className="text-base font-medium">
-                        City
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="City"
-                        className="h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1"
-                        name="city"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.city}
-                      />
-                      {errors.city && touched.city && (
-                        <small className="text-red-500 mt-1">
-                          {errors.city}
-                        </small>
-                      )}
-                    </div>
-
-                    <div className="flex flex-col w-1/3">
-                      <label htmlFor="" className="text-base font-medium">
-                        Pincode
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Pincode"
-                        className="h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1"
-                        name="pincode"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.pincode}
-                      />
-                      {errors.pincode && touched.pincode && (
-                        <small className="text-red-500 mt-1">
-                          {errors.pincode}
-                        </small>
-                      )}
-                    </div>
-                  </div> */}
 
                   <div>
                     <div className="flex items-center justify-between">
@@ -424,7 +347,7 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
               </div>
             </div>
           </div>
-          <div className="h-full w-full">
+          <div className="hidden lg:block h-full w-full">
             <img
               className="mx-auto h-full w-full rounded-md object-cover"
               src={userlogin}

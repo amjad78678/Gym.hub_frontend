@@ -230,7 +230,7 @@ const OtpPage: React.FC<UserType> = ({ userType, closeOtp,showChangePassword }) 
             <div className="text-center mt-4 font-semibold text-sm text-gray-600">
               <div> {`OTP expires in ${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`}</div>
               <div>
-                <button onClick={handleResendOtp} className="ml-2 text-blue-500 hover:underline focus:outline-none">
+                <button disabled={timer > 0} onClick={handleResendOtp} className={`ml-2 ${timer > 0 ? 'text-gray-300' : 'text-blue-500  hover:underline cursor-pointer'} focus:outline-none`}>
                   Resend OTP
                 </button>
               </div>

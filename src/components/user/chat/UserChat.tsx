@@ -151,7 +151,7 @@ const UserChat = () => {
         socket.emit("stop_typing", { typeTo: trainerId });
         const time = new Date();
         socket.emit("send_message", {
-          sender: userId,
+          sender: userId, 
           receiver: trainerId,
           content: newMessage,
           createdAt: time,
