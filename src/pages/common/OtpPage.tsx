@@ -1,7 +1,24 @@
-import { gResendForgotOtp, gVerifyForgotPassword, gymOtpResend, gymOtpVerifyApi } from "@/api/gym";
+import {
+  gResendForgotOtp,
+  gVerifyForgotPassword,
+  gymOtpResend,
+  gymOtpVerifyApi,
+} from "@/api/gym";
 import { tResendForgotOtp, tVerifyForgotPassword } from "@/api/trainer";
-import { resendForgotOtp, userOtpResend, userOtpVerify, verifyForgotPassword } from "@/api/user";
-import React, { ChangeEvent, FormEvent, useEffect, useRef, useState,KeyboardEvent } from "react";
+import {
+  resendForgotOtp,
+  userOtpResend,
+  userOtpVerify,
+  verifyForgotPassword,
+} from "@/api/user";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+  KeyboardEvent,
+} from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -9,71 +26,67 @@ interface UserType {
   userType?: string;
   closeOtp: () => void;
 }
-const OtpPage: React.FC<UserType> = ({ userType, closeOtp,showChangePassword }) => {
-
-  const navigate=useNavigate()
+const OtpPage: React.FC<UserType> = ({
+  userType,
+  closeOtp,
+  showChangePassword,
+}) => {
+  const navigate = useNavigate();
   const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
   const [timer, setTimer] = useState<number>(120); //2minutes in seconds
   const inputRefs = useRef<HTMLInputElement[]>([]);
 
+  const handleResendOtp = async () => {
+    if (userType === "user") {
+      const response = await userOtpResend();
 
-  const handleResendOtp=async ()=>{
-    if(userType==='user'){
-         const response=await userOtpResend()
-
-         if(response){
-            toast.success(response?.data.message)
-            setTimer(120)
-         }
+      if (response) {
+        toast.success(response?.data.message);
+        setTimer(120);
+      }
     }
-    if(userType==='gym'){
-      const response=await gymOtpResend()
+    if (userType === "gym") {
+      const response = await gymOtpResend();
 
-      if(response){
-         toast.success(response?.data.message)
-         setTimer(120)
+      if (response) {
+        toast.success(response?.data.message);
+        setTimer(120);
       }
     }
 
-    if(userType === 'user-forgot-password'){
+    if (userType === "user-forgot-password") {
+      const response = await resendForgotOtp();
 
-      const response=await resendForgotOtp()
-
-      if(response){
-         toast.success(response?.data.message)
-         setTimer(120)
+      if (response) {
+        toast.success(response?.data.message);
+        setTimer(120);
       }
     }
-    if(userType === 'gym-forgot-password'){
+    if (userType === "gym-forgot-password") {
+      const response = await gResendForgotOtp();
 
-      const response=await gResendForgotOtp()
-
-      if(response){
-         toast.success(response?.data.message)
-         setTimer(120)
+      if (response) {
+        toast.success(response?.data.message);
+        setTimer(120);
       }
     }
-    if(userType === 'trainer-forgot-password'){
+    if (userType === "trainer-forgot-password") {
+      const response = await tResendForgotOtp();
 
-      const response=await tResendForgotOtp()
-
-      if(response){
-         toast.success(response?.data.message)
-         setTimer(120)
+      if (response) {
+        toast.success(response?.data.message);
+        setTimer(120);
       }
     }
+  };
 
-  }
-
-
-  useEffect(()=>{
-
+  useEffect(() => {
     const interval = setInterval(() => {
-        setTimer((prevTimer)=>prevTimer>1?prevTimer-1:0)
-    },1000)
+      setTimer((prevTimer) => (prevTimer > 1 ? prevTimer - 1 : 0));
+    }, 1000);
 
     return () => clearInterval(interval);
-  },[])
+  }, []);
   const otpPageClose = () => {
     closeOtp();
   };
@@ -103,72 +116,60 @@ const OtpPage: React.FC<UserType> = ({ userType, closeOtp,showChangePassword }) 
     }
   };
 
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(otp);
 
-  const submitHandler=async (e: FormEvent<HTMLFormElement>)=>{
+    const otpValue = otp.join("");
 
-    e.preventDefault()
-    console.log(otp)
-   
-    const otpValue=otp.join('')
+    console.log(otpValue);
 
-    console.log(otpValue)
+    if (userType === "user") {
+      const response = await userOtpVerify(parseInt(otpValue));
 
-    if(userType ==="user"){
-
-        const response = await userOtpVerify(parseInt(otpValue));
-
-        if(response){
-            toast.success(response?.data.message)
-            navigate('/user-login')
-        }
-
+      if (response) {
+        toast.success(response?.data.message);
+        navigate("/user-login");
+      }
     }
 
-    if(userType ==="gym"){
-
+    if (userType === "gym") {
       const response = await gymOtpVerifyApi(parseInt(otpValue));
 
-      if(response){
-          toast.success(response?.data.message)
-          navigate('/gym/gym-login')
+      if (response) {
+        toast.success(response?.data.message);
+        navigate("/gym/gym-login");
       }
+    }
 
-  }
+    if (userType === "user-forgot-password") {
+      const response = await verifyForgotPassword(parseInt(otpValue));
 
-  if(userType === "user-forgot-password"){
+      if (response) {
+        toast.success(response?.data.message);
+        closeOtp();
+        showChangePassword();
+      }
+    }
+    if (userType === "gym-forgot-password") {
+      const response = await gVerifyForgotPassword(parseInt(otpValue));
 
-   const response = await verifyForgotPassword(parseInt(otpValue));
+      if (response) {
+        toast.success(response?.data.message);
+        closeOtp();
+        showChangePassword();
+      }
+    }
+    if (userType === "trainer-forgot-password") {
+      const response = await tVerifyForgotPassword(parseInt(otpValue));
 
-   if(response){
-    toast.success(response?.data.message)
-    closeOtp()
-    showChangePassword()
-   }
-
-  }
-  if(userType === "gym-forgot-password"){
-
-   const response = await gVerifyForgotPassword(parseInt(otpValue));
-
-   if(response){
-    toast.success(response?.data.message)
-    closeOtp()
-    showChangePassword()
-   }
-
-  }
-  if(userType === "trainer-forgot-password"){
-
-   const response = await tVerifyForgotPassword(parseInt(otpValue));
-
-   if(response){
-    toast.success(response?.data.message)
-    closeOtp()
-    showChangePassword()
-   }
-
-  }
-}
+      if (response) {
+        toast.success(response?.data.message);
+        closeOtp();
+        showChangePassword();
+      }
+    }
+  };
 
   const minutes = Math.floor(timer / 60);
   const seconds = timer % 60;
@@ -228,9 +229,22 @@ const OtpPage: React.FC<UserType> = ({ userType, closeOtp,showChangePassword }) 
               </button>
             </form>
             <div className="text-center mt-4 font-semibold text-sm text-gray-600">
-              <div> {`OTP expires in ${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`}</div>
               <div>
-                <button disabled={timer > 0} onClick={handleResendOtp} className={`ml-2 ${timer > 0 ? 'text-gray-300' : 'text-blue-500  hover:underline cursor-pointer'} focus:outline-none`}>
+                {" "}
+                {`OTP expires in ${minutes}:${
+                  seconds < 10 ? `0${seconds}` : seconds
+                }`}
+              </div>
+              <div>
+                <button
+                  disabled={timer > 0}
+                  onClick={handleResendOtp}
+                  className={`ml-2 ${
+                    timer > 0
+                      ? "text-gray-300"
+                      : "text-blue-500  hover:underline cursor-pointer"
+                  } focus:outline-none`}
+                >
                   Resend OTP
                 </button>
               </div>
@@ -242,4 +256,4 @@ const OtpPage: React.FC<UserType> = ({ userType, closeOtp,showChangePassword }) 
   );
 };
 
-export default OtpPage
+export default OtpPage;

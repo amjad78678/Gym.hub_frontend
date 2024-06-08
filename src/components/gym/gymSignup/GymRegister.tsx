@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   Stack,
   Step,
@@ -126,7 +127,11 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
     }
   };
 
-  const { status: registerStatus, mutate: gymRegisterMutate } = useMutation({
+  const {
+    isPending,
+    status: registerStatus,
+    mutate: gymRegisterMutate,
+  } = useMutation({
     mutationFn: gymRegister,
     onSuccess: (res) => {
       if (res) {
@@ -160,7 +165,7 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
     return true;
   };
 
-  const findUnfinishedSteps = () => { 
+  const findUnfinishedSteps = () => {
     return steps.findIndex((step) => !step.completed);
   };
 
@@ -260,8 +265,19 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
           </Button>
 
           {steps.every((step) => step.completed == true) ? (
-            <Button onClick={handleSubmitAllDetails} color="success">
-              Finish
+            <Button
+              className="relative"
+              disabled={isPending}
+              onClick={handleSubmitAllDetails}
+              color="success"
+            >
+              <span>{isPending ? "Please wait..." : "Register"}</span>
+              {isPending && (
+                <CircularProgress
+                  size={24}
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                />
+              )}
             </Button>
           ) : (
             <Button disabled={checkDisabled()} onClick={handleNext}>
