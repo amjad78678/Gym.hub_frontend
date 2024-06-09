@@ -104,10 +104,10 @@ export const userLogout = async () => {
   }
 };
 
-export const fetchNearGymList = async ({ latitude, longitude, page }) => {
+export const fetchNearGymList = async ({ latitude, longitude, page,search,sliderValue }) => {
   try {
     const response = await Api.get(
-      userRoutes.fetchNearGymList(latitude, longitude,page)
+      userRoutes.fetchNearGymList(latitude, longitude,page,search,sliderValue)
     );
     return response;
   } catch (error) {
@@ -417,6 +417,16 @@ export const fetchBannersData = async () => {
 export const fileUploadChat = async (file: any) =>{
   try {
     const response = await Api.post(userRoutes.uploadChatFiles, file);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
+
+export const fetchMaxPriceGym = async () =>{
+  try {
+    const response = await Api.get(userRoutes.fetchMaxPriceGym)
     return response;
   } catch (error) {
     const err: Error = error as Error;

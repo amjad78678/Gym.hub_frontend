@@ -5,7 +5,7 @@ const userRoutes={
     userOtpResend:'/resend_otp',
     userLogin:'/login',
     userLogout:'/logout',
-    fetchNearGymList:(latitude: number,longitude: number,page: number)=>`/gym_list?latitude=${latitude}&longitude=${longitude}&page=${page}`,
+    fetchNearGymList:(latitude: number,longitude: number,page: number,search: string,sliderValue: number)=>`/gym_list?latitude=${latitude}&longitude=${longitude}&page=${page}&search=${search}&sliderValue=${sliderValue}`,
     fetchGymList: '/gym_list_normal',
     fetchGymDetails:(id: string)=>`/gym_details/${id}`,
     forgotPassword:'/forgot_password',
@@ -34,7 +34,8 @@ const userRoutes={
     getWorkoutsBodyList: '/workouts_body_list',
     getWorkoutDetails: (bodyPart: string | null)=> `/exercises/${bodyPart}`,
     getBanners: '/fetch_banners',
-    uploadChatFiles: '/upload_chat_files'
+    uploadChatFiles: '/upload_chat_files',
+    fetchMaxPriceGym: '/max_price_gym'
 
 }   
 

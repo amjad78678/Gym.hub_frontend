@@ -29,12 +29,12 @@ const EditGymDetails = ({
     onSubmit: async (values) => {
       console.log("submitting", values);
       handleSubmitEditDetails(values);
-    }, 
+    },
   });
 
   return (
     <Container className="min-h-[320px] text-white">
-     <form onSubmit={handleSubmit} action="">
+      <form onSubmit={handleSubmit} action="">
         <Row>
           <Col lg={6}>
             <div className="my-3">
@@ -123,22 +123,20 @@ const EditGymDetails = ({
           </Col>
         </Row>
         <div className="flex justify-center">
-        <button
-          disabled={isPending}
-          type="submit"
-          className="relative my-4 px-14 py-1 rounded-lg bg-white text-black hover:bg-slate-600"
-        >
-          <span>{isPending ? "Saving..." : "Save"}</span>
-          {isPending && (
-            <span className="absolute right-4">
-            <BeatLoader color="black"  size={7} />
-          </span>
-          )}
-        </button>
-      </div>
+          <button
+            disabled={isPending}
+            type="submit"
+            className="relative my-4 px-14 py-1 rounded-lg bg-white text-black hover:bg-slate-600"
+          >
+            <span>{isPending ? "Saving..." : "Save"}</span>
+            {isPending && (
+              <span className="absolute right-4">
+                <BeatLoader color="black" size={7} />
+              </span>
+            )}
+          </button>
+        </div>
       </form>
-
-    
     </Container>
   );
 };
