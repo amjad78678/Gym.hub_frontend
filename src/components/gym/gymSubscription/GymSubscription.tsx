@@ -54,18 +54,20 @@ const GymSubscription = () => {
   ) : (
     <div className="bg-black">
       <Container className="text-white">
-        <Typography
-          variant="h3"
-          component="h3"
-          sx={{
-            textAlign: "center",
-            color: "white",
-            mt: 3,
-            mb: 3,
-          }}
-        >
-          Manage Subscriptions
-        </Typography>
+      <Typography
+            sx={{
+              textAlign: "center",
+              fontSize: {
+                md: 50,
+                xs: 30,
+              },
+              mt: 3,
+              mb: 3,
+              color: "white",
+            }}
+          >
+            Manage Plans
+          </Typography>
 
         <Box
           sx={{

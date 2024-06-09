@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ResponsiveLine } from "@nivo/line";
 
 const LineChartSales = ({ data, alignment }) => {
+  const [margin, setMargin] = useState({ top: 50, right: 110, bottom: 50, left: 60 });
+
+  useEffect(() => {
+      const updateMargins = () => {
+          if (window.innerWidth < 600) {
+              setMargin({ top: 60, right: 20, bottom: 50, left: 40 });
+          } else if (window.innerWidth < 1024) {
+              setMargin({ top: 40, right: 80, bottom: 40, left: 50 });
+          } else {
+              setMargin({ top: 50, right: 110, bottom: 50, left: 60 });
+          }
+      };
+
+      window.addEventListener('resize', updateMargins);
+      updateMargins(); 
+
+      return () => window.removeEventListener('resize', updateMargins);
+  }, []);
   return (
     <ResponsiveLine
       data={data}
@@ -114,7 +132,7 @@ const LineChartSales = ({ data, alignment }) => {
           tableCellValue: {},
         },
       }}
-      margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+      margin={margin}
       xScale={{ type: "point" }}
       yScale={{
         type: "linear",
@@ -156,10 +174,10 @@ const LineChartSales = ({ data, alignment }) => {
       useMesh={true}
       legends={[
         {
-          anchor: "center",
+          anchor: "bottom-left",
           direction: "column",
           justify: false,
-          translateX: 100,
+          translateX: 20,
           translateY: 0,
           itemsSpacing: 0,
           itemDirection: "left-to-right",

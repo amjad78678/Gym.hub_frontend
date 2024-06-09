@@ -118,13 +118,15 @@ const GymCoupon = ({
           }}
         >
           <Typography
-            variant="h3"
-            component="h3"
             sx={{
               textAlign: "center",
-              color: "white",
+              fontSize: {
+                md: 50,
+                xs: 30,
+              },
               mt: 3,
               mb: 3,
+              color: "white",
             }}
           >
             Manage Coupons
@@ -132,7 +134,16 @@ const GymCoupon = ({
 
           <div className="flex justify-between">
             <SearchInput {...{ search, setSearch }} />
-            <Button sx={{ color: "yellow" }} onClick={() => setOpen(true)}>
+            <Button
+              sx={{
+                color: "yellow",
+                fontSize: {
+                  md: 20,
+                  xs: 10,
+                },
+              }}
+              onClick={() => setOpen(true)}
+            >
               Add Coupon
             </Button>
           </div>

@@ -25,7 +25,7 @@ interface iState {
     };
   };
 }
-function GymNavbar({fixed}) {
+function GymNavbar({ fixed }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -42,9 +42,7 @@ function GymNavbar({fixed}) {
     },
   });
 
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
@@ -52,159 +50,157 @@ function GymNavbar({fixed}) {
 
   const isScrolled = useScroll();
 
-  console.log('isscrolling',isScrolled)
+  console.log("isscrolling", isScrolled);
 
-  const position = fixed?"fixed":"static"
+  const position = fixed ? "fixed" : "static";
 
-  const [dropMenu,setDropMenu]=useState(false)
+  const [dropMenu, setDropMenu] = useState(false);
 
-
-  return ( 
+  return (
     <div className="relative z-20">
-    <AppBar
-      sx={{
-        backgroundColor: isScrolled
-          ? "rgba(0, 0, 1, 0.9)" 
-          : "rgba(0, 0, 1, 0.3)",
-        transition: isScrolled ? "all 0.3s ease" : "none",
-        boxShadow: "none",
-        position: `${position}`,
-        top: 0,
-        width: "100%",
-        zIndex: 1300,
-      }}
-    >
-      <Container className="bg-transparent  border-none">
-        <Toolbar disableGutters>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <img className="w-28" src="/removebg.png" alt="GymHub Logo" />
-            </Box>
-
+      <AppBar
+        sx={{
+          backgroundColor: isScrolled
+            ? "rgba(0, 0, 1, 0.9)"
+            : "rgba(0, 0, 1, 0.3)",
+          transition: isScrolled ? "all 0.3s ease" : "none",
+          boxShadow: "none",
+          position: `${position}`,
+          top: 0,
+          width: "100%",
+          zIndex: 1300,
+        }}
+      >
+        <Container className="bg-transparent  border-none">
+          <Toolbar disableGutters>
             <Box
               sx={{
-                flexGrow: 1,
-                display: { xs: "none", md: "flex" },
-                justifyContent: "center",
-              }}
-            >
-                <Link to={"/gym/dashboard"}>
-              {" "}
-              <Button
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Dashboard
-              </Button>
-            </Link>
-            <Link to={"/gym/members"}>
-              {" "}
-              <Button
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Subscriptions
-              </Button>
-            </Link>
-    
-            <Link to={"/gym/trainers"}>
-              <Button
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Trainers
-              </Button>
-            </Link>
-            <Link to={"/gym/coupons"}>
-              <Button
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Coupons
-              </Button>
-            </Link>
-            <Link to={"/gym/subscriptions"}>
-              <Button
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-               Plans
-              </Button>
-            </Link>
-            </Box>
-
-            <Box
-              sx={{
-                display: { xs: "none", md: "flex" },
+                display: "flex",
                 alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
               }}
             >
-               <Link to={"/gym/profile"}> <HomeOutlined
-            sx={{ fontSize: 33, color: "white", cursor: "pointer" }}
-          /></Link>
-            </Box>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <img className="w-28" src="/removebg.png" alt="GymHub Logo" />
+              </Box>
 
-            <GridMenuIcon
-                onClick={()=>setDropMenu(!dropMenu)}
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: { xs: "none", md: "flex" },
+                  justifyContent: "center",
+                }}
+              >
+                <Link to={"/gym/dashboard"}>
+                  {" "}
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    Dashboard
+                  </Button>
+                </Link>
+                <Link to={"/gym/members"}>
+                  {" "}
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    Subscriptions
+                  </Button>
+                </Link>
+
+                <Link to={"/gym/trainers"}>
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    Trainers
+                  </Button>
+                </Link>
+                <Link to={"/gym/coupons"}>
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    Coupons
+                  </Button>
+                </Link>
+                <Link to={"/gym/subscriptions"}>
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    Plans
+                  </Button>
+                </Link>
+              </Box>
+
+              <Box
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  alignItems: "center",
+                }}
+              >
+                <Link to={"/gym/profile"}>
+                  {" "}
+                  <HomeOutlined
+                    sx={{ fontSize: 33, color: "white", cursor: "pointer" }}
+                  />
+                </Link>
+              </Box>
+
+              <GridMenuIcon
+                onClick={() => setDropMenu(!dropMenu)}
                 sx={{
                   display: { xs: "flex", md: "none" },
                   color: "white",
                   ml: 2,
                 }}
               />
-
-
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
-    {dropMenu && (
-      <div
-        className="fixed mt-16 block lg:hidden left-1/2 z-full w-screen max-w-md -translate-x-1/2 transform"
-        style={{ display: "block" }}
-      >
-        <div className="overflow-hidden rounded-sm shadow-lg">
-          <div className=" relative grid gap-2 bg-black text-gray-200 px-4 py-4 sm:gap-8 sm:p-8  ">
-            <Link to="/">
-              <p className="font-bold text-lg font-serif">Dashboard</p>
-            </Link>
-            <Link to="/book-gym">
-              <p className="font-bold text-lg font-serif">Subscriptions</p>
-            </Link>
-            <Link to="/personal-trainer">
-              <p className="font-bold text-lg font-serif">
-                Trainers
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      {dropMenu && (
+        <div
+          className="fixed mt-16 block lg:hidden left-1/2 z-full w-screen max-w-md -translate-x-1/2 transform"
+          style={{ display: "block" }}
+        >
+          <div className="overflow-hidden rounded-sm shadow-lg">
+            <div className=" relative grid gap-2 bg-black text-gray-200 px-4 py-4 sm:gap-8 sm:p-8  ">
+              <Link to="/gym/dashboard">
+                <p className="font-bold text-lg font-serif">Dashboard</p>
+              </Link>
+              <Link to="/gym/members">
+                <p className="font-bold text-lg font-serif">Subscriptions</p>
+              </Link>
+              <Link to="/gym/trainers">
+                <p className="font-bold text-lg font-serif">Trainers</p>
+              </Link>
+              <Link to="/gym/coupons">
+                {" "}
+                <p className="font-bold text-lg font-serif">Coupons</p>
+              </Link>
+              <Link to="/gym/subscriptions">
+                {" "}
+                <p className="font-bold text-lg font-serif">Plans</p>
+              </Link>
+              <Link to="/gym/profile">
+                <p className="font-bold text-lg font-serif">Profile </p>{" "}
+              </Link>
+              <p
+                onClick={() => gymLogoutMutate()}
+                className="font-bold text-lg font-serif btn btn-danger"
+              >
+                Logout
               </p>
-            </Link>
-            <Link to="/workouts">
-              {" "}
-              <p className="font-bold text-lg font-serif">Coupons</p>
-            </Link>
-            <Link to="/workouts">
-              {" "}
-              <p className="font-bold text-lg font-serif">Plans</p>
-            </Link>
-            <Link to="/profile/subscriptions">
-              <p className="font-bold text-lg font-serif">Profile </p>{" "}
-            </Link>
-            <p
-             onClick={() => gymLogoutMutate()}
-              className="font-bold text-lg font-serif btn btn-danger"
-            >
-              Logout
-            </p> 
+            </div>
           </div>
         </div>
-      </div>
-    )}
-  </div>
+      )}
+    </div>
   );
 }
 export default GymNavbar;

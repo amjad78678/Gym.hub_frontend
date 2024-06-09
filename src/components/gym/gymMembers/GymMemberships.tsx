@@ -171,10 +171,12 @@ const GymMemberships = ({ subscriptionData }) => {
           }}
         >
           <Typography
-            variant="h3"
-            component="h3"
             sx={{
               textAlign: "center",
+              fontSize: {
+                md: 50,
+                xs: 30,
+              },
               mt: 3,
               mb: 3,
               color: "white",

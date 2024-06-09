@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import LineChartSales from "@/components/admin/adminDashboard/LineChartSales";
 import StatusCount from "@/components/admin/adminDashboard/StatusCount";
 import { Group, PointOfSale } from "@mui/icons-material";
+import { useTheme } from "@mui/material/styles";
 import {
   Avatar,
   Divider,
@@ -25,7 +26,7 @@ const GymDashboard = ({ gym, dashboard }) => {
     backgroundSize: "cover",
     backgroundPosition: "center",
   };
-
+  const theme = useTheme();
   const [alignment, setAlignment] = useState("monthly");
   const handleChange = (
     event: MouseEvent<HTMLElement>,
@@ -59,7 +60,7 @@ const GymDashboard = ({ gym, dashboard }) => {
             <div className="flex justify-start items-center">
               <div className="z-10 my-20">
                 <h1
-                  className="text-white text-3xl xs:text-5xl sm:text-6xl md:text-7xl font-semibold whitespace-normal max-w-screen-sm font-serif"
+                  className="text-white text-3xl xs:text-5xl sm:text-6xl md:text-7xl font-semibold whitespace-normal max-w-full font-serif"
                   style={{ textShadow: "1px 1px 1px #000000" }}
                 >
                   {gym[0].gymName}
@@ -70,11 +71,13 @@ const GymDashboard = ({ gym, dashboard }) => {
         </div>
         <Container>
           <div>
-            <div className="grid sm:grid-cols-12 py-4 ">
-              <div className="sm:col-span-9 text-white p-2  border-b  sm:border-b-0 border-dotted border-gray-400">
-                <h1 className=" text-3xl font-serif">Sales Statistics</h1>
+            <div className="grid sm:grid-cols-12 py-4">
+              <div className="col-span-12 lg:col-span-9 text-white p-2 border-b sm:border-b-0 border-dotted border-gray-400">
+                <h1 className="text-2xl lg:text-3xl font-serif">
+                  Sales Statistics
+                </h1>
                 <div className="relative">
-                  <div className="absolute top-0 right-28 z-10">
+                  <div className="absolute top-0 right-0 lg:right-28 z-10">
                     <ToggleButtonGroup
                       color="secondary"
                       value={alignment}
@@ -86,7 +89,7 @@ const GymDashboard = ({ gym, dashboard }) => {
                       <ToggleButton value="yearly">Yearly</ToggleButton>
                     </ToggleButtonGroup>
                   </div>
-                  <div className="h-[400px]">
+                  <div className="h-[300px]  lg:h-[400px]">
                     <LineChartSales
                       {...{
                         data:
@@ -99,7 +102,7 @@ const GymDashboard = ({ gym, dashboard }) => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-3 p-2 overflow-y-scroll no-scrollbar ">
+              <div className="col-span-12 lg:col-span-3 p-2 overflow-y-scroll no-scrollbar">
                 <Box>
                   <Box
                     sx={{
@@ -137,13 +140,20 @@ const GymDashboard = ({ gym, dashboard }) => {
               </div>
             </div>
 
-            <div className="p-2 overflow-y-scroll no-scrollbar w-2/3 mx-auto">
+            <div className="p-2 overflow-y-scroll no-scrollbar w-full sm:w-2/3 mx-auto">
               <Box>
                 <Typography
                   sx={{
                     color: "white",
                     textAlign: "center",
+                    mb:{
+                      xs: 2,
+                    },
                     fontFamily: "cursive",
+                    fontSize: {
+                      xs: "1.4rem", // Extra-small devices (phones, 600px and down)
+                      md: "2.5rem", // Medium devices (landscape tablets, 768px and up)
+                    },
                   }}
                   variant="h5"
                 >
@@ -152,7 +162,15 @@ const GymDashboard = ({ gym, dashboard }) => {
                 <List>
                   {dashboard?.recentlyBookedMemberships?.map((user) => (
                     <Box key={user._id}>
-                      <ListItem>
+                      <ListItem
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          [theme.breakpoints.up("sm")]: {
+                            flexDirection: "row",
+                          },
+                        }}
+                      >
                         <ListItemAvatar>
                           <Avatar alt={user.username} src={user.profilePic} />
                         </ListItemAvatar>
@@ -174,7 +192,6 @@ const GymDashboard = ({ gym, dashboard }) => {
                   ))}
                 </List>
               </Box>
-              <Divider sx={{ my: 2, opacity: 0.7 }} />
             </div>
           </div>
         </Container>
