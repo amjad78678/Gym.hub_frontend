@@ -142,5 +142,6 @@ const EditGymDetails = ({
     </Container>
   );
 };
+// nothing
 
 export default EditGymDetails;
