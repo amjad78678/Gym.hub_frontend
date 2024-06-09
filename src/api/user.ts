@@ -248,13 +248,9 @@ export const fetchSubscriptions = async () => {
   }
 };
 
-export const fetchTrainers =  async ({
-  queryKey,
-}: QueryFunctionContext<[string, string | null]>) => {
+export const fetchTrainers =  async ({page,search,sliderValue}) => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, page] = queryKey;
-    const response = await Api.get(userRoutes.fetchTrainers(page));
+    const response = await Api.get(userRoutes.fetchTrainers(page,search,sliderValue));
     return response;
   } catch (error) {
     const err: Error = error as Error;
@@ -427,6 +423,16 @@ export const fileUploadChat = async (file: any) =>{
 export const fetchMaxPriceGym = async () =>{
   try {
     const response = await Api.get(userRoutes.fetchMaxPriceGym)
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
+
+export const fetchMaxPriceTrainer = async () =>{
+  try {
+    const response = await Api.get(userRoutes.fetchMaxPriceTrainer)
     return response;
   } catch (error) {
     const err: Error = error as Error;

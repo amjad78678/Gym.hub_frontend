@@ -12,15 +12,16 @@ const GymListPage = () => {
   const [search, setSearch] = useState("");
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [allGyms, setAllGyms] = useState([]);
-
+  const [sliderValue, setSliderValue] = useState(0);
   const { data: maxPriceData } = useQuery({
-    queryKey: ["maxPrice"],
+    queryKey: ["maxPriceInGymListPage"],
     queryFn: fetchMaxPriceGym,
   });
-
-  const [sliderValue, setSliderValue] = useState(
-    maxPriceData?.data.maxPrice[0].maxPrice
-  );
+  useEffect(() => {
+    if (maxPriceData) {
+      setSliderValue(maxPriceData.data.maxPrice[0].maxPrice);
+    }
+  }, [maxPriceData]);
 
   const {
     isFetching,

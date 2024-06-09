@@ -19,7 +19,7 @@ const userRoutes={
     fetchUserDetails:`/user_details`,
     addMoneyWallet:`/add_money_wallet`,
     fetchSubscriptions:`/fetch_subscriptions`,
-    fetchTrainers:(page: number)=>`/fetch_trainers/${page}`,
+    fetchTrainers:(page: number,search: string,sliderValue: number)=>`/fetch_trainers?page=${page}&search=${search}&sliderValue=${sliderValue}`,
     bookTrainer:`/book_trainer`,
     fetchBookedTrainers:`/fetch_booked_trainers`,
     userChatCreate: '/chat/create',
@@ -35,7 +35,8 @@ const userRoutes={
     getWorkoutDetails: (bodyPart: string | null)=> `/exercises/${bodyPart}`,
     getBanners: '/fetch_banners',
     uploadChatFiles: '/upload_chat_files',
-    fetchMaxPriceGym: '/max_price_gym'
+    fetchMaxPriceGym: '/max_price_gym',
+    fetchMaxPriceTrainer: '/max_price_trainer',
 
 }   
 

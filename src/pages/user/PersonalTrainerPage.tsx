@@ -1,16 +1,29 @@
 import PersonalTrainer from "@/components/user/personalTrainer/PersonalTrainer";
 import Navbar from "@/components/common/Navbar";
 import { useQuery } from "@tanstack/react-query";
-import { fetchTrainers } from "@/api/user";
-import { useEffect, useState } from "react";
+import { fetchMaxPriceTrainer, fetchTrainers } from "@/api/user";
+import { useCallback, useEffect, useState } from "react";
 import GymListSkeleton from "@/components/user/skeletons/GymListSkeleton";
+import debounce from "@/utils/miscillenious/debounce";
 
 const PersonalTrainerPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [bookingTrainer, setBookingTrainer] = useState(null);
   const [page, setPage] = useState(1);
-  const [trainers, setTrainers] = useState<any>([]);
+  const [allTrainers, setAllTrainers] = useState<any>([]);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [search, setSearch] = useState("");
+  const [sliderValue, setSliderValue] = useState(0);
+  const { data: maxPriceData } = useQuery({
+    queryKey: ["maxPriceInPersonalTrainerPage"],
+    queryFn: fetchMaxPriceTrainer,
+  });
+
+  useEffect(() => {
+    if (maxPriceData) {
+      setSliderValue(maxPriceData.data.maxPrice[0].maxPrice);
+    }
+  }, [maxPriceData]);
 
   const handleModal = () => {
     setModalOpen(!modalOpen);
@@ -25,24 +38,41 @@ const PersonalTrainerPage = () => {
     isFetching,
     data: trainerData,
     isError,
+    refetch: refetchImmediately,
   } = useQuery({
     queryKey: ["trainerPageTrainerList", page],
-    queryFn: fetchTrainers,
+    queryFn: () => {
+      return fetchTrainers({
+        page: page,
+        search: search,
+        sliderValue: sliderValue,
+      });
+    },
+    enabled: sliderValue > 0,
   });
-  console.log("iam trainerpage set", trainers);
 
   useEffect(() => {
     if (trainerData) {
-      setTrainers((prevTrainers) => {
-        const newTrainers = trainerData.data.trainers.filter((newTrainer) => {
-          return !prevTrainers.some(
-            (existingTrainer) => existingTrainer._id === newTrainer._id
-          );
-        });
+      setAllTrainers((prevTrainers) => {
+        const trainerIds = new Set(prevTrainers.map((trainer) => trainer._id));
+        const newTrainers = trainerData.data.trainers.filter(
+          (trainer) => !trainerIds.has(trainer._id)
+        );
         return [...prevTrainers, ...newTrainers];
       });
     }
   }, [trainerData]);
+
+  const debouncedRefetch = useCallback(debounce(refetchImmediately, 300), [
+    refetchImmediately,
+  ]);
+
+  // Debounced fetch gyms function
+  useEffect(() => {
+    debouncedRefetch();
+    setAllTrainers([]);
+    setPage(1);
+  }, [search, sliderValue, debouncedRefetch]);
 
   useEffect(() => {
     if (!isFetching && isLoadingMore) {
@@ -55,14 +85,15 @@ const PersonalTrainerPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  return isFetching && page == 1 ? (
+  return isFetching && page == 1 && !search && !sliderValue ? (
     <GymListSkeleton />
   ) : (
     <div className="bg-black text-white">
       <Navbar {...{ fixed: true }} />
       <PersonalTrainer
         {...{
-          trainerData: trainers,
+          allTrainers,
+          trainerData: trainerData?.data.trainers,
           handleBookNow,
           modalOpen,
           handleModal,
@@ -71,6 +102,10 @@ const PersonalTrainerPage = () => {
           fetchMoreData,
           fullResult: trainerData?.data?.fullResult,
           isLoadingMore,
+          setSearch,
+          setSliderValue,
+          sliderValue,
+          maxPrice: maxPriceData?.data.maxPrice[0].maxPrice,
         }}
       />
     </div>
