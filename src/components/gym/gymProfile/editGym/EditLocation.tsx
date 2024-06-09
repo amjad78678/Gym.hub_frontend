@@ -29,7 +29,7 @@ const EditLocation = ({
 }) => {
   const mapRef = useRef();
   return (
-    <div>
+    <div> 
       <Box
         sx={{
           height: 400,
@@ -72,10 +72,10 @@ const EditLocation = ({
 
       <div className="flex justify-center">
         <button
-          onClick={handleSubmitEditDetails}
+          onClick={()=>handleSubmitEditDetails('')}
           disabled={isPending}
           type="submit"
-          className="relative my-4 px-14 py-1 rounded-lg bg-white text-black hover:bg-slate-600"
+          className="relative my-4 px-14 py-1 rounded-lg  text-black bg-white hover:bg-slate-600"
         >
           <span>{isPending ? "Saving..." : "Save"}</span>
           {isPending && (

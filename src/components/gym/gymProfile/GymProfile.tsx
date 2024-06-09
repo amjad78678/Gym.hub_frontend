@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import EditGym from "./editGym/EditGym";
 import { Typography } from "@mui/material";
 
-const GymProfile = ({ gym }) => {
+const GymProfile = ({ gym,refetch }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState("myGym");
@@ -87,7 +87,7 @@ const GymProfile = ({ gym }) => {
         </Container>
         <div className="px-5 py-2">
           {toggle === "editGym" ? (
-            <EditGym {...{gym}} />
+            <EditGym {...{gym,refetch}} />
           ) : (
             <>
               <h1 className="text-lg font-semibold mt-2">

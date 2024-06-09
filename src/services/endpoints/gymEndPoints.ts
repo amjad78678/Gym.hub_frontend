@@ -20,6 +20,7 @@ const gymRoutes = {
   fetchBookedMemberships: 'booked_memberships',
   fetchDashboardDetails: '/fetch_dashboard_details',
   editGymProfile: '/edit_gym_profile',
+  editGymImages: '/edit_gym_images'
 };
 
 export default gymRoutes;

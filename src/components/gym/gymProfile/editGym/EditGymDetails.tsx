@@ -29,7 +29,7 @@ const EditGymDetails = ({
     onSubmit: async (values) => {
       console.log("submitting", values);
       handleSubmitEditDetails(values);
-    },
+    }, 
   });
 
   return (

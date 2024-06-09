@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 const GymProfilePage = () => {
-  const { isLoading, data: myGymData } = useQuery({
+  const { isLoading, data: myGymData,refetch } = useQuery({
     queryKey: ["gymSideProfileData"],
     queryFn: fetchGymData,
   });
@@ -20,7 +20,7 @@ const GymProfilePage = () => {
   ) : (
     <div className="text-white">
       <GymNavbar {...{ fixed: true }} />
-      <GymProfile {...{ gym: myGymData?.data.gymData }} />
+      <GymProfile {...{ gym: myGymData?.data.gymData,refetch }} />
     </div>
   );
 };

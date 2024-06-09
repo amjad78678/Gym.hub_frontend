@@ -60,7 +60,7 @@ interface iRootState {
   };
 }
 
-const EditGym: React.FC<UserType> = ({ gym }) => {
+const EditGym: React.FC<UserType> = ({ gym, refetch }) => {
   const [details, setDetails] = useState({});
   const [latitude, setLatitude] = useState(gym[0].location.coordinates[1]);
   const [longitude, setLongitude] = useState(gym[0].location.coordinates[0]);
@@ -86,6 +86,7 @@ const EditGym: React.FC<UserType> = ({ gym }) => {
     onSuccess: (res) => {
       if (res) {
         if (res?.data.success) {
+          refetch();
           toast.success(res?.data.message);
         }
       }
@@ -128,13 +129,25 @@ const EditGym: React.FC<UserType> = ({ gym }) => {
         <Box>
           {
             {
-              0: <EditLocation {...{ gym, setLatitude, setLongitude,latitude,longitude,isPending,handleSubmitEditDetails }} />,
+              0: (
+                <EditLocation
+                  {...{
+                    gym,
+                    setLatitude,
+                    setLongitude,
+                    latitude,
+                    longitude,
+                    isPending,
+                    handleSubmitEditDetails,
+                  }}
+                />
+              ),
               1: (
                 <EditGymDetails
                   {...{ gym, setDetails, handleSubmitEditDetails, isPending }}
                 />
               ),
-              2: <EditGymImages {...{ gym }} />,
+              2: <EditGymImages {...{ gym, refetch }} />,
             }[activeStep]
           }
         </Box>

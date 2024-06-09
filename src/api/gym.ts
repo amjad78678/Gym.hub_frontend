@@ -308,3 +308,14 @@ export const editGymProfile = async (data: any) => {
   }
 
 }
+
+export const editImageProfile= async (data: any)=>{
+  try {
+   console.log('iam in api',data)
+    const response = await Api.patch(gymRoutes.editGymImages,data)
+    return response
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+}
