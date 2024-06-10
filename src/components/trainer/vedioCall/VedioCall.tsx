@@ -3,6 +3,8 @@ import { useLocation, useParams } from "react-router-dom";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+const ZegoAppId = import.meta.env.VITE_ZEGO_APPID;
+const ZegoServerSecret = import.meta.env.VITE_ZEGO_SERVER_SECRET;
 
 const VideoCall = () => {
   const { userDetails } = useSelector((state: RootState) => state.auth);
@@ -22,8 +24,8 @@ const VideoCall = () => {
         return;
       }
 
-      const appID = 2143839818;
-      const serverSecret = "f57beb8485bc7aa4e1da346693d118a0";
+      const appID = ZegoAppId;
+      const serverSecret = ZegoServerSecret;
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
         appID,
         serverSecret,
