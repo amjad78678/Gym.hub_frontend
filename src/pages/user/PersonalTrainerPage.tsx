@@ -14,6 +14,7 @@ const PersonalTrainerPage = () => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [search, setSearch] = useState("");
   const [sliderValue, setSliderValue] = useState(0);
+  const [experience,setExperience]=useState('All');
   const { data: maxPriceData } = useQuery({
     queryKey: ["maxPriceInPersonalTrainerPage"],
     queryFn: fetchMaxPriceTrainer,
@@ -46,6 +47,7 @@ const PersonalTrainerPage = () => {
         page: page,
         search: search,
         sliderValue: sliderValue,
+        experience: experience
       });
     },
     enabled: sliderValue > 0,
@@ -72,7 +74,7 @@ const PersonalTrainerPage = () => {
     debouncedRefetch();
     setAllTrainers([]);
     setPage(1);
-  }, [search, sliderValue, debouncedRefetch]);
+  }, [search, sliderValue,experience, debouncedRefetch]);
 
   useEffect(() => {
     if (!isFetching && isLoadingMore) {
@@ -106,6 +108,8 @@ const PersonalTrainerPage = () => {
           setSliderValue,
           sliderValue,
           maxPrice: maxPriceData?.data.maxPrice[0].maxPrice,
+          setExperience,
+          experience
         }}
       />
     </div>

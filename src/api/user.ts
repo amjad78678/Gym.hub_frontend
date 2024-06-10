@@ -248,9 +248,9 @@ export const fetchSubscriptions = async () => {
   }
 };
 
-export const fetchTrainers =  async ({page,search,sliderValue}) => {
+export const fetchTrainers =  async ({page,search,sliderValue,experience}) => {
   try {
-    const response = await Api.get(userRoutes.fetchTrainers(page,search,sliderValue));
+    const response = await Api.get(userRoutes.fetchTrainers(page,search,sliderValue,experience));
     return response;
   } catch (error) {
     const err: Error = error as Error;

@@ -19,7 +19,7 @@ const userRoutes={
     fetchUserDetails:`/user_details`,
     addMoneyWallet:`/add_money_wallet`,
     fetchSubscriptions:`/fetch_subscriptions`,
-    fetchTrainers:(page: number,search: string,sliderValue: number)=>`/fetch_trainers?page=${page}&search=${search}&sliderValue=${sliderValue}`,
+    fetchTrainers:(page: number,search: string,sliderValue: number,experience: string)=>`/fetch_trainers?page=${page}&search=${search}&sliderValue=${sliderValue}&experience=${experience}`,
     bookTrainer:`/book_trainer`,
     fetchBookedTrainers:`/fetch_booked_trainers`,
     userChatCreate: '/chat/create',

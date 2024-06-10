@@ -26,8 +26,9 @@ const PersonalTrainer = ({
   setSliderValue,
   sliderValue,
   maxPrice,
+  setExperience,
+  experience
 }) => {
-  const [selected, setSelected] = useState("All");
 
   const searchHandler = (value: string) => {
     setSearch(value);
@@ -36,29 +37,11 @@ const PersonalTrainer = ({
     setSliderValue(newValue);
   };
 
-  // useEffect(() => {
-  //   const filtered = trainerData.filter((trainer) => {
-  //     let isExperienceMatch = false;
-  //     if (selected === "All") {
-  //       isExperienceMatch = true;
-  //     } else if (selected === "1-3 years") {
-  //       isExperienceMatch = trainer.experience >= 1 && trainer.experience <= 3;
-  //     } else if (selected === "3-5 years") {
-  //       isExperienceMatch = trainer.experience > 3 && trainer.experience <= 5;
-  //     } else if (selected === "5+ years") {
-  //       isExperienceMatch = trainer.experience > 5;
-  //     }
-  //     return isSearchMatch && isPriceMatch && isExperienceMatch;
-  //   });
-
-  //   console.log("filtered:", filtered);
-  //   setFilteredItems(filtered);
-  // }, [sliderValue, searchValue, selected]);
 
   const [dropDown, setDropDown] = useState(false);
   const handleChange = (event) => {
     console.log("event name", event.target.name);
-    setSelected(event.target.name);
+    setExperience(event.target.name);
   };
 
   return (
@@ -93,7 +76,7 @@ const PersonalTrainer = ({
                           control={
                             <Checkbox
                               name="All"
-                              checked={selected === "All"}
+                              checked={experience === "All"}
                               onChange={handleChange}
                               sx={{ color: "white" }}
                             />
@@ -104,7 +87,7 @@ const PersonalTrainer = ({
                           control={
                             <Checkbox
                               name="1-3 years"
-                              checked={selected === "1-3 years"}
+                              checked={experience === "1-3 years"}
                               onChange={handleChange}
                               sx={{ color: "white" }}
                             />
@@ -115,7 +98,7 @@ const PersonalTrainer = ({
                           control={
                             <Checkbox
                               name="3-5 years"
-                              checked={selected === "3-5 years"}
+                              checked={experience === "3-5 years"}
                               onChange={handleChange}
                               sx={{ color: "white" }}
                             />
@@ -125,8 +108,8 @@ const PersonalTrainer = ({
                         <FormControlLabel
                           control={
                             <Checkbox
-                              name="5+ years"
-                              checked={selected === "5+ years"}
+                              name="5plus years"
+                              checked={experience === "5plus years"}
                               onChange={handleChange}
                               sx={{ color: "white" }}
                             />
