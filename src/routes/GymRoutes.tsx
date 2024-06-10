@@ -1,20 +1,24 @@
-import Footer from "@/components/common/Footer";
 import GymFooter from "@/components/gym/common/GymFooter";
 import GymProtect from "@/components/gym/common/GymProtect";
-import GymCouponPage from "@/pages/gym/GymCouponPage";
-import GymDashboardPage from "@/pages/gym/GymDashboardPage";
-import GymLoginPage from "@/pages/gym/GymLoginPage";
-import GymMembersPage from "@/pages/gym/GymMembersPage";
-import GymProfilePage from "@/pages/gym/GymProfilePage";
-import GymRegisterPage from "@/pages/gym/GymRegisterPage";
-import GymSubscriptionPage from "@/pages/gym/GymSubscriptionPage";
-import GymTrainersPage from "@/pages/gym/GymTrainersPage";
-import GymPage from "@/pages/gym/gymMain/GymPage";
-import React from "react";
+import LoadingSkeleton from "@/components/user/skeletons/LoadingSkeleton";
+import React, { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
+
+const GymCouponPage = lazy(() => import("@/pages/gym/GymCouponPage"));
+const GymDashboardPage = lazy(() => import("@/pages/gym/GymDashboardPage"));
+const GymLoginPage = lazy(() => import("@/pages/gym/GymLoginPage"));
+const GymMembersPage = lazy(() => import("@/pages/gym/GymMembersPage"));
+const GymProfilePage = lazy(() => import("@/pages/gym/GymProfilePage"));
+const GymRegisterPage = lazy(() => import("@/pages/gym/GymRegisterPage"));
+const GymSubscriptionPage = lazy(() => import("@/pages/gym/GymSubscriptionPage"));
+const GymTrainersPage = lazy(() => import("@/pages/gym/GymTrainersPage"));
+const GymPage = lazy(() => import("@/pages/gym/gymMain/GymPage"));
+
+
 
 const GymRoutes = () => {
   return (
+    <Suspense fallback={<LoadingSkeleton/>}>
     <Routes>
       <Route path="gym-register" element={<GymRegisterPage />} />
       <Route path="gym-login" element={<GymLoginPage />} />
@@ -31,6 +35,7 @@ const GymRoutes = () => {
         </Route>
       </Route>
     </Routes>
+    </Suspense>
   );
 };
 

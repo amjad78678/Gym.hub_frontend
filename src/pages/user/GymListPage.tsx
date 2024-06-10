@@ -8,11 +8,11 @@ import React, { useCallback, useEffect, useState } from "react";
 
 const GymListPage = () => {
   const [location, setLocation] = useState({ latitude: null, longitude: null });
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [page, setPage] = useState<number>(1);
+  const [search, setSearch] = useState<string>("");
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
   const [allGyms, setAllGyms] = useState<any[]>([]);
-  const [sliderValue, setSliderValue] = useState(0);
+  const [sliderValue, setSliderValue] = useState<number>(0);
   const { data: maxPriceData } = useQuery({
     queryKey: ["maxPriceInGymListPage"],
     queryFn: fetchMaxPriceGym,

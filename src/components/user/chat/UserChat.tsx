@@ -151,7 +151,7 @@ const UserChat = () => {
         socket.emit("stop_typing", { typeTo: trainerId });
         const time = new Date();
         socket.emit("send_message", {
-          sender: userId, 
+          sender: userId,
           receiver: trainerId,
           content: newMessage,
           createdAt: time,
@@ -214,7 +214,7 @@ const UserChat = () => {
                   className="w-10 sm:w-16 h-10 sm:h-16 rounded-full"
                 />
               </div>
-              <div className="flex flex-col leading-tight"> 
+              <div className="flex flex-col leading-tight">
                 <div className="text-2xl mt-1 flex items-center">
                   <span className="mr-3">{trainerData?.data.trainer.name}</span>
                 </div>

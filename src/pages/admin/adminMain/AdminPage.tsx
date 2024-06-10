@@ -12,7 +12,6 @@ import { ThemeProvider } from "@emotion/react";
 import { Tooltip } from "@mui/material";
 import { Brightness4Sharp, Brightness7, Home } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 
 const drawerWidth = 240;
 

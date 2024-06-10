@@ -25,20 +25,23 @@ import {
   SportsKabaddiOutlined,
   ViewCarouselOutlined,
 } from "@mui/icons-material";
-import { useMemo, useState } from "react";
-import AdminDashboardPage from "../AdminDashboardPage";
-import AdminGymPage from "../AdminGymPage";
-import AdminUsersPage from "../AdminUsersPage";
-import AdminSubscriptionPlans from "../AdminSubscriptionPlans";
-import AdminTrainerPlans from "../AdminTrainerPlans";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import AdminBannerPage from "../AdminBannerPage";
+import { Suspense, lazy, useMemo, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { adminLogout } from "@/api/admin";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setAdminLogout } from "@/redux/slices/authSlice";
-import AdminGymDetailsPage from "../AdminGymDetailsPage";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import LoadingSkeleton from "@/components/user/skeletons/LoadingSkeleton";
+
+const AdminDashboardPage = lazy(() => import("../AdminDashboardPage"));
+const AdminGymPage = lazy(() => import("../AdminGymPage"));
+const AdminUsersPage = lazy(() => import("../AdminUsersPage"));
+const AdminSubscriptionPlans = lazy(() => import("../AdminSubscriptionPlans"));
+const AdminTrainerPlans = lazy(() => import("../AdminTrainerPlans"));
+const AdminBannerPage = lazy(() => import("../AdminBannerPage"));
+const AdminGymDetailsPage = lazy(() => import("../AdminGymDetailsPage"));
+
 
 const drawerWidth = 240;
 
@@ -234,12 +237,14 @@ const SideList = ({ open, setOpen }) => {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3,overflowX:"hidden" }}>
         <DrawerHeader />
+        <Suspense fallback={<LoadingSkeleton/>}>
         <Routes>
           {list.map((item) => (
             <Route key={item.title} path={item.link} element={item.component} />
           ))}
           <Route path="gym/:id" element={<AdminGymDetailsPage />} />
         </Routes>
+        </Suspense>
       </Box>
     </>
   );
