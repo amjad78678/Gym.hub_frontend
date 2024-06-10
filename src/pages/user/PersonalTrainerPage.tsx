@@ -10,7 +10,7 @@ const PersonalTrainerPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [bookingTrainer, setBookingTrainer] = useState(null);
   const [page, setPage] = useState(1);
-  const [allTrainers, setAllTrainers] = useState<any>([]);
+  const [allTrainers, setAllTrainers] = useState<any[]>([]);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [search, setSearch] = useState("");
   const [sliderValue, setSliderValue] = useState(0);

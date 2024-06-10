@@ -11,7 +11,7 @@ const GymListPage = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [allGyms, setAllGyms] = useState([]);
+  const [allGyms, setAllGyms] = useState<any[]>([]);
   const [sliderValue, setSliderValue] = useState(0);
   const { data: maxPriceData } = useQuery({
     queryKey: ["maxPriceInGymListPage"],
@@ -43,10 +43,10 @@ const GymListPage = () => {
 
   useEffect(() => {
     if (gymData) {
-      setAllGyms((prevGyms) => {
+      setAllGyms((prevGyms: any[]) => {
         const gymIds = new Set(prevGyms.map((gym) => gym._id));
         const newGyms = gymData.data.message.filter(
-          (gym) => !gymIds.has(gym._id)
+          (gym: any) => !gymIds.has(gym._id)
         );
         return [...prevGyms, ...newGyms];
       });
