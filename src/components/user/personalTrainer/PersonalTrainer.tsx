@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import SearchBar from "../gymList/SearchBar";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
@@ -20,7 +20,6 @@ const PersonalTrainer = ({
   bookingTrainer,
   setBookingTrainer,
   fetchMoreData,
-  fullResult,
   isLoadingMore,
   setSearch,
   setSliderValue,
@@ -33,7 +32,7 @@ const PersonalTrainer = ({
   const searchHandler = (value: string) => {
     setSearch(value);
   };
-  const handleSliderChange = (event: Event, newValue: number) => {
+  const handleSliderChange = (event: Event, newValue: number | number[]) => {
     setSliderValue(newValue);
   };
 

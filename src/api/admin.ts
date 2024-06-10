@@ -132,7 +132,7 @@ export const fetchGymWithId = async ({
   try {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, id] = queryKey;
-    const response = await Api.get(adminRoutes.fetchGymWithId(id));
+    const response = await Api.get(adminRoutes.fetchGymWithId(id as string));
     return response;
   } catch (error) {
     const err: Error = error as Error;

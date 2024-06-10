@@ -1,7 +1,6 @@
 import { Button } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import SubscriptionModal from "./SubscriptionModal";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
 const TrainerCard = ({
   trainer,

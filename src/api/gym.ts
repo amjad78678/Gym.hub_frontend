@@ -67,7 +67,7 @@ Api.interceptors.response.use((response)=>{
 Api.interceptors.request.use(
     (config) => {
 
-      const gymDetails = JSON.parse(localStorage.getItem('gymDetails'));
+      const gymDetails = JSON.parse(localStorage.getItem('gymDetails') as string);
       const gymToken = gymDetails?.token; 
 
 

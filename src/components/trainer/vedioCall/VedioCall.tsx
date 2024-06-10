@@ -29,7 +29,7 @@ const VideoCall = () => {
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
         appID,
         serverSecret,
-        senderId + recieverId,
+        (senderId as string) + recieverId,
         uniqueId,
         location.pathname.startsWith("/trainer")
           ? trainerDetails.name

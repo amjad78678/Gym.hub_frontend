@@ -26,7 +26,7 @@ Api.interceptors.response.use(
 
 Api.interceptors.request.use(
   (config) => {
-    const trainerDetails = JSON.parse(localStorage.getItem("trainerDetails"));
+    const trainerDetails = JSON.parse(localStorage.getItem("trainerDetails") as string);
     const trainerToken = trainerDetails?.token;
 
     if (trainerToken) {

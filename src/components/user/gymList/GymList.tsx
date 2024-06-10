@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import React from "react";
 import GymCard from "./GymCard";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import { Slider } from "@mui/material";
@@ -7,6 +6,7 @@ import LocationInput from "./LocationInput";
 import SearchBar from "./SearchBar";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ClipLoader } from "react-spinners";
+import { Col, Container, Row } from "react-bootstrap";
 
 const GymList = ({
   fetchMoreData,
@@ -22,11 +22,10 @@ const GymList = ({
   const searchHandler = (val: string) => {
     setSearch(val);
   };
-  const handleSliderChange = (event: Event, newValue: number) => {
+
+  const handleSliderChange = (event: Event, newValue: number | number[]) => {
     setSliderValue(newValue as number);
   };
-
-
 
   return (
     <>
@@ -34,7 +33,7 @@ const GymList = ({
         <Row>
           <Col md={4} lg={3}>
             <div>
-              <SearchBar searchHandler={searchHandler}/>
+              <SearchBar searchHandler={searchHandler} />
               <div>
                 <span className=" text-xl">
                   <span>Filters</span>{" "}

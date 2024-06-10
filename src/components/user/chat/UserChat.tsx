@@ -18,9 +18,10 @@ import { RootState } from "@/redux/store";
 import { userChatCreate } from "@/api/user";
 import { useMutation } from "@tanstack/react-query";
 import debounce from "@/utils/miscillenious/debounce";
+import Loader from "@/components/common/Loader";
 
 const UserChat = () => {
-  const { userId, trainerId } = useParams();
+  const { userId, trainerId }: any = useParams();
   const [socketConnected, setSocketConnected] = useState(false);
   const { userDetails } = useSelector((state: RootState) => state.auth);
   const userName = userDetails?.name.replaceAll(" ", "");
@@ -79,9 +80,6 @@ const UserChat = () => {
 
   const { status, mutate: userChatCreateMutate } = useMutation({
     mutationFn: userChatCreate,
-    onSuccess: (res) => {
-      console.log("iam success", res.data);
-    },
   });
 
   const { mutate: fileUploadMutate } = useMutation({
@@ -190,10 +188,8 @@ const UserChat = () => {
     scrollToBottom();
   }, [messages, trainerId]);
 
-  return (
-    !isLoading &&
-    userChat &&
-    !trainerDataLoading && (
+  
+  return (isLoading || trainerDataLoading || !UserChat )?(<Loader/>): (
       <Container>
         <div className="flex-1 p-2 bg-gray-200 sm:p-6 justify-between flex flex-col h-[700px] rounded-md">
           <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
@@ -258,7 +254,7 @@ const UserChat = () => {
         </div>
       </Container>
     )
-  );
+
 };
 
 export default UserChat;

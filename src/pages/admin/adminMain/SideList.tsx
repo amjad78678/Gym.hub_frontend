@@ -13,8 +13,6 @@ import {
 import MuiDrawer from "@mui/material/Drawer";
 import { Box } from "@mui/system";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import InboxIcon from "@mui/icons-material/Inbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { CSSObject, Theme, styled } from "@mui/material/styles";
 import {
   CardMembershipOutlined,
@@ -41,7 +39,6 @@ const AdminSubscriptionPlans = lazy(() => import("../AdminSubscriptionPlans"));
 const AdminTrainerPlans = lazy(() => import("../AdminTrainerPlans"));
 const AdminBannerPage = lazy(() => import("../AdminBannerPage"));
 const AdminGymDetailsPage = lazy(() => import("../AdminGymDetailsPage"));
-
 
 const drawerWidth = 240;
 
@@ -99,7 +96,7 @@ const SideList = ({ open, setOpen }) => {
   const list = useMemo(
     () => [
       {
-        title: "Dashboard", 
+        title: "Dashboard",
         icon: <Dashboard />,
         link: "",
         component: <AdminDashboardPage {...{ setSelectedLink, link: "" }} />,
@@ -149,9 +146,11 @@ const SideList = ({ open, setOpen }) => {
   const { mutate } = useMutation({
     mutationFn: adminLogout,
     onSuccess: (res) => {
-      toast.success(res.data.message);
-      dispatch(setAdminLogout());
-      navigate("/admin");
+      if (res) {
+        toast.success(res?.data.message);
+        dispatch(setAdminLogout());
+        navigate("/admin");
+      }
     },
   });
 
@@ -235,15 +234,19 @@ const SideList = ({ open, setOpen }) => {
           </Tooltip>
         </Box>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3,overflowX:"hidden" }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, overflowX: "hidden" }}>
         <DrawerHeader />
-        <Suspense fallback={<LoadingSkeleton/>}>
-        <Routes>
-          {list.map((item) => (
-            <Route key={item.title} path={item.link} element={item.component} />
-          ))}
-          <Route path="gym/:id" element={<AdminGymDetailsPage />} />
-        </Routes>
+        <Suspense fallback={<LoadingSkeleton />}>
+          <Routes>
+            {list.map((item) => (
+              <Route
+                key={item.title}
+                path={item.link}
+                element={item.component}
+              />
+            ))}
+            <Route path="gym/:id" element={<AdminGymDetailsPage />} />
+          </Routes>
         </Suspense>
       </Box>
     </>

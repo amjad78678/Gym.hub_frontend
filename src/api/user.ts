@@ -40,7 +40,7 @@ Api.interceptors.response.use(
 
 Api.interceptors.request.use(
   (config) => {
-    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const userDetails = JSON.parse(localStorage.getItem("userDetails") as string);
     const userToken = userDetails?.token;
 
     if (userToken) {
@@ -334,7 +334,7 @@ export const isReviewPossible = async ({
   try {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, id] = queryKey;
-    const response = await Api.get(userRoutes.isReviewPossible(id));
+    const response = await Api.get(userRoutes.isReviewPossible(id as string));
     return response;
   } catch (error) {
     const err: Error = error as Error;
@@ -358,7 +358,7 @@ export const fetchGymReviews = async ({
   try {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, id] = queryKey;
-    const response = await Api.get(userRoutes.fetchGymReviews(id));
+    const response = await Api.get(userRoutes.fetchGymReviews(id as string));
     return response;
   } catch (error) {
     const err: Error = error as Error;

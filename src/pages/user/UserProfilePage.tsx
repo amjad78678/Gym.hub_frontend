@@ -4,7 +4,7 @@ import ProfileTop from "@/components/user/profile/ProfileTop";
 import ProfileSkeleton from "@/components/user/skeletons/ProfileSkeleton";
 import { RootState } from "@/redux/store";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 

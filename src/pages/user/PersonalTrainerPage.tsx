@@ -38,7 +38,6 @@ const PersonalTrainerPage = () => {
   const {
     isFetching,
     data: trainerData,
-    isError,
     refetch: refetchImmediately,
   } = useQuery({
     queryKey: ["trainerPageTrainerList", page],
