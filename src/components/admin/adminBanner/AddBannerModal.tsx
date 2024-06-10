@@ -71,7 +71,9 @@ const AddBannerModal = ({ open, setOpen, refetch, modalType, selected }) => {
               const formData = new FormData();
               formData.append("title", values.title);
               formData.append("description", values.description);
-              formData.append("bannerImage", image);
+              if (image !== null) {
+                formData.append("bannerImage", image);
+              }
 
               mutate(formData);
               setSubmitting(false);
@@ -234,7 +236,10 @@ const AddBannerModal = ({ open, setOpen, refetch, modalType, selected }) => {
                       {isPendingEdit ? "Updating..." : "Update Banner"}
                     </span>
                     {isPendingEdit && (
-                   <CircularProgress size={20} className="absolute right-4" />
+                      <CircularProgress
+                        size={20}
+                        className="absolute right-4"
+                      />
                     )}
                   </Button>
                 </DialogActions>

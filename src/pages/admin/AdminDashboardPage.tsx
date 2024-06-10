@@ -15,7 +15,7 @@ const AdminDashboardPage = ({setSelectedLink,link}) => {
     queryFn: recentlyAddedUsers
   })
   
-  return isLoading && !recentlyUsers?.data ? (<Loader/>): (
+  return (isLoading || !recentlyUsers) ? (<Loader/>): (
     <div>
      <Dashboard {...{dashboard:recentlyUsers?.data}} />
     </div>
