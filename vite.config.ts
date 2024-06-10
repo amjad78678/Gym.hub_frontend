@@ -8,7 +8,8 @@ export default defineConfig({
     port: 5000,
   },
   build:{
-    chunkSizeWarningLimit:1024*1500
+    chunkSizeWarningLimit:1024*1500,
+    outDir: 'dist',
   },
   resolve: {
     alias: {

@@ -3,13 +3,11 @@ import GymDashboard from "@/components/gym/gymDashboard/GymDashboard";
 import GymNavbar from "@/components/gym/common/GymNavbar";
 import { useQuery } from "@tanstack/react-query";
 import { fetchDashboardDetails, fetchGymData } from "@/api/gym";
-import Loader from "@/components/common/Loader";
 import Skeleton from "react-loading-skeleton";
-import { Container } from "react-bootstrap";
 
 const GymDashboardPage = () => {
   const { isLoading, data: myGymData } = useQuery({
-    queryKey: ["gymSideDashboardData"],
+    queryKey: ["gymSideDashboardGymData"],
     queryFn: fetchGymData,
   });
 
@@ -20,7 +18,7 @@ const GymDashboardPage = () => {
 
   console.log("dashboardDetails", dashboardDetails);
 
-  return  (isLoading || isLoadingDetails || !dashboardDetails || !myGymData) ? (
+  return isLoading || isLoadingDetails || !dashboardDetails || !myGymData ? (
     <>
       <GymNavbar {...{ fixed: true }} />
       <Skeleton height={500} count={2} />
@@ -28,7 +26,9 @@ const GymDashboardPage = () => {
   ) : (
     <div>
       <GymNavbar {...{ fixed: true }} />
-      <GymDashboard {...{ gym: myGymData?.data.gymData, dashboard: dashboardDetails?.data }} />
+      <GymDashboard
+        {...{ gym: myGymData?.data.gymData, dashboard: dashboardDetails?.data }}
+      />
     </div>
   );
 };
