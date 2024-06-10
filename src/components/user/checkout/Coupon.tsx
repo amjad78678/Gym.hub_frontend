@@ -15,7 +15,7 @@ import { Box, Container } from "@mui/system";
 import dayjs from "dayjs";
 import React, { forwardRef } from "react";
 import toast from "react-hot-toast";
-import Transition from "./Transition.tsx";
+import Transition from "./Transition";
 
 const Coupon = ({ handleShowCoupon, showCoupon, coupons }) => {
   const handleCopyCouponCode = (val) => {
@@ -25,7 +25,7 @@ const Coupon = ({ handleShowCoupon, showCoupon, coupons }) => {
   };
   return (
     <>
-      <Navbar />
+      <Navbar {...{ fixed: true }} />
       <div>
         <Dialog
           fullWidth

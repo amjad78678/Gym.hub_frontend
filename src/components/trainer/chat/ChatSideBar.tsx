@@ -11,7 +11,7 @@ const ChatSideBar = ({ selectedChat, setSelectedChat }) => {
     queryFn: fetchALlMessages,
   });
 
-  const [usersList, setUsersList] = useState<iTrainerUsersChat[]>([]);
+  const [usersList, setUsersList] = useState<any[]>([]);
   useEffect(() => {
     if (messagesData) {
       const uniqueUsers = Array.from(
@@ -27,7 +27,7 @@ const ChatSideBar = ({ selectedChat, setSelectedChat }) => {
           (msg) => msg.sender.username === username
         ).sender._id,
       }));
-      setUsersList(uniqueUsers);
+      setUsersList(uniqueUsers); 
     }
   }, [messagesData]);
 

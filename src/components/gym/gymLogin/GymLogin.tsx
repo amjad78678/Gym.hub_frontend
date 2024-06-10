@@ -8,12 +8,13 @@ import { useMutation } from "@tanstack/react-query";
 import { gymLogin } from "@/api/gym";
 import { useDispatch, useSelector } from "react-redux"; 
 import { setGymLogin } from "@/redux/slices/authSlice";
+import { RootState } from "@/redux/store";
 
 const GymLogin = ({showForgotEmail}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { gLoggedIn } = useSelector((state) => state.auth);
+  const { gLoggedIn } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     if (gLoggedIn) {
@@ -89,7 +90,7 @@ const GymLogin = ({showForgotEmail}) => {
                   Create a free account
                 </a>
               </p>
-              <form className="mt-8">
+              <form className="mt-8" onSubmit={submitHandler}>
                 <div className="space-y-5">
                   <div>
                     <label htmlFor="" className="text-base font-medium ">
@@ -135,8 +136,7 @@ const GymLogin = ({showForgotEmail}) => {
                   </div>
                   <div>
                     <button
-                      onClick={submitHandler}
-                      type="button"
+                      type="submit"
                       className="inline-flex w-full items-center justify-center rounded-md bg-red-500 px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-red-700"
                     >
                       Sign in

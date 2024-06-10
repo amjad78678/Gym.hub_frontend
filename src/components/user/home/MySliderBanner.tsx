@@ -27,26 +27,27 @@ const MySliderBanner = () => {
   useEffect(() => {
     if (bannerData) {
       setActiveBanners(
-        bannerData.data.banners.filter((banner) => !banner.isDeleted)
+        bannerData.data.banners.filter((banner: any) => !banner.isDeleted)
       );
     }
   }, [bannerData]);
 
-  return isLoading ? <HomeSkeleton/> : (
+  return isLoading || !bannerData ? (
+    <HomeSkeleton />
+  ) : (
     <Slider {...settings}>
-      {activeBanners.map((banner) => (
+      {activeBanners.map((banner: any) => (
         <div key={banner._id}>
-        <div
-          className="bg-no-repeat bg-cover bg-center flex items-center justify-center w-full"
-          style={{
-            backgroundImage: `url(${banner?.bannerImage?.imageUrl})`,
-            height: "90vh",
-            transition: "background-image 0.5s ease-in-out", // Adjust the height as required
-          }}
-        ></div>
-      </div>
+          <div
+            className="bg-no-repeat bg-cover bg-center flex items-center justify-center w-full"
+            style={{
+              backgroundImage: `url(${banner?.bannerImage?.imageUrl})`,
+              height: "90vh",
+              transition: "background-image 0.5s ease-in-out", // Adjust the height as required
+            }}
+          ></div>
+        </div>
       ))}
-      
     </Slider>
   );
 };

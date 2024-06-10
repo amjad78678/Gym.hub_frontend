@@ -37,7 +37,7 @@ const TrainerTrainee = () => {
     setFilteredTrainees(filtered);
   }, [search]);
 
-  const columns = useMemo(
+  const columns: any = useMemo(
     () => [
       {
         field: "profilePic",
@@ -152,7 +152,7 @@ const TrainerTrainee = () => {
                 theme.palette.mode === "light" ? grey[200] : grey[900],
             },
           }}
-          getRowId={(row) => row._id}
+          getRowId={(row: { _id: string }) => row._id}
           getRowSpacing={(params) => ({
             top: params.isFirstVisible ? 0 : 5,
             bottom: params.isLastVisible ? 0 : 5,

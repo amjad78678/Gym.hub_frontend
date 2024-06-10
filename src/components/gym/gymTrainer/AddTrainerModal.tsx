@@ -80,7 +80,9 @@ const AddTrainerModal = ({ open, setOpen, refetch }) => {
             formData.append("password", values.password);
 
             if (values.imageUrl) {
-              formData.append("imageUrl", image);
+              if (image != null) {
+                formData.append("imageUrl", image);
+              }
             }
 
             mutate(formData);
@@ -108,9 +110,14 @@ const AddTrainerModal = ({ open, setOpen, refetch }) => {
                     name="imageUrl"
                     type="file"
                     onChange={(e) => {
-                      if (e.currentTarget.files && e.currentTarget.files[0]) {
-                        setFieldValue("imageUrl", e.currentTarget.files[0]);
-                        setImage(e.currentTarget.files[0]);
+                      const target = e.currentTarget as HTMLInputElement;
+                      if (
+                        target.type === "file" &&
+                        target.files &&
+                        target.files[0]
+                      ) {
+                        setFieldValue("imageUrl", target.files[0]);
+                        setImage(target.files[0]);
                       }
                     }}
                     variant="outlined"

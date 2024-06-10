@@ -26,9 +26,12 @@ const AdminLogin = () => {
       const {mutate}=useMutation({
         mutationFn: adminLogin,
         onSuccess:(res)=>{
-          toast.success(res.data.message)
-          dispatch(setAdminLogin())
-          navigate('/admin/dashboard')
+          if(res){
+
+            toast.success(res?.data.message)
+            dispatch(setAdminLogin())
+            navigate('/admin/dashboard')
+          }
 
         }
       })

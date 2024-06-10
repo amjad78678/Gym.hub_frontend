@@ -13,13 +13,14 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchGymSubscription } from "@/api/gym";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "@/components/common/Loader";
+import { RootState } from "@/redux/store";
 
 const GymSubscription = () => {
   const [open, setOpen] = useState(false);
   const [editingSubscription, setEditingSubscription] = useState<
     string[] | null
   >(null);
-  const { gymDetails } = useSelector((state) => state.auth);
+  const { gymDetails } = useSelector((state: RootState) => state.auth);
 
   const functionopenpopup = (subscriptionDetails: string[] | null) => {
     setEditingSubscription(subscriptionDetails);

@@ -49,9 +49,9 @@ const EditGymDetails = ({
                 value={values.gymName}
               />
 
-              {errors.gymName && (
-                <small className="text-red-500">{errors.gymName}</small>
-              )}
+             {errors.gymName && typeof errors.gymName === 'string' && (
+               <small className="text-red-500">{errors.gymName}</small>
+             )}
             </div>
             <div className="my-3">
               <h1>Email</h1>
@@ -65,7 +65,7 @@ const EditGymDetails = ({
                 onBlur={handleBlur}
                 value={values.email}
               />
-              {errors.email && (
+              {errors.email && typeof errors.email === 'string' && (
                 <small className="text-red-500">{errors.email}</small>
               )}
             </div>
@@ -80,7 +80,7 @@ const EditGymDetails = ({
                 onBlur={handleBlur}
                 value={values.contactNumber}
               />
-              {errors.contactNumber && (
+              {errors.contactNumber && typeof errors.contactNumber === 'string' && (
                 <small className="text-red-500">{errors.contactNumber}</small>
               )}
             </div>
@@ -97,7 +97,7 @@ const EditGymDetails = ({
                 onBlur={handleBlur}
                 value={values.businessId}
               />
-              {errors.businessId && (
+              {errors.businessId && typeof errors.businessId === 'string' && (
                 <small className="text-red-500">{errors.businessId}</small>
               )}
             </div>
@@ -116,7 +116,7 @@ const EditGymDetails = ({
                 placeholder="Leave a comment here"
                 style={{ height: "120px" }}
               />
-              {errors.description && (
+              {errors.description && typeof errors.description === 'string' && (
                 <small className="text-red-500">{errors.description}</small>
               )}
             </div>

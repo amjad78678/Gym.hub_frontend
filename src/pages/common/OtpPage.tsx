@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 interface UserType {
   userType?: string;
   closeOtp: () => void;
+  showChangePassword: () => void;
 }
 const OtpPage: React.FC<UserType> = ({
   userType,

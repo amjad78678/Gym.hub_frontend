@@ -9,6 +9,7 @@ import { signUp } from "@/api/user";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserDetails, setUserLogin } from "@/redux/slices/authSlice";
+import { RootState } from "@/redux/store";
 
 const G_PASSWORD = import.meta.env.VITE_GOOGLE_PASSWORD;
 
@@ -19,7 +20,7 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { uLoggedIn } = useSelector((state) => state.auth);
+  const { uLoggedIn } = useSelector((state: RootState) => state.auth);
   useEffect(() => {
     if (uLoggedIn) {
       navigate("/");

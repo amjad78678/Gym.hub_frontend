@@ -23,7 +23,7 @@ const AdminTrainers = ({trainersData,refetch}) => {
 
   console.log("iam active trainers", activeTrainers);
 
-  const columns = useMemo(
+  const columns: any = useMemo(
     () => [
       {
         field: "photoUrl",
@@ -236,7 +236,7 @@ const AdminTrainers = ({trainersData,refetch}) => {
                 theme.palette.mode === "light" ? grey[200] : grey[900],
             },
           }}
-          getRowId={(row) => row._id}
+          getRowId={(row: { _id: string }) => row._id}
           getRowSpacing={(params) => ({
             top: params.isFirstVisible ? 0 : 5,
             bottom: params.isLastVisible ? 0 : 5,

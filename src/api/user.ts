@@ -318,7 +318,7 @@ export const fetchTrainerData = async ({
   }
 };
 
-export const editProfile = async (data: iEditProfile) => {
+export const editProfile = async (data: any) => {
   try {
     const response = await Api.post(userRoutes.editProfile, data);
     return response;

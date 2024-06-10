@@ -39,7 +39,7 @@ const [search,setSearch]=useState('')
     setSubscriptions(filtered)
   },[search])
 
-  const columns = useMemo(
+  const columns: any = useMemo(
     () => [
       {
         field: "profilePic",
@@ -157,7 +157,7 @@ const [search,setSearch]=useState('')
         headerAlign: "center",
         width: 120,
         renderCell: (params) => (
-          <Box display="flex" justifyContent="center" items="center" width="100%">
+          <Box display="flex" justifyContent="center" alignItems="center" component="div" width="100%">
             <img
               src={params.row.qrCode}
               alt="qrCode"
@@ -205,7 +205,7 @@ const [search,setSearch]=useState('')
                 theme.palette.mode === "light" ? grey[200] : grey[900],
             },
           }}
-          getRowId={(row) => row._id}
+          getRowId={(row: { _id: string }) => row._id}
           getRowSpacing={(params) => ({
             top: params.isFirstVisible ? 0 : 5,
             bottom: params.isLastVisible ? 0 : 5,

@@ -34,29 +34,25 @@ interface UserType {
 interface GymDetails {
   gymName: string;
   email: string;
-  contactNumber: number;
+  contactNumber: string;
   state: string;
   city: string;
   pincode: string;
   businessId: string;
-  dailyFee: number;
-  monthlyFee: number;
-  yearlyFee: number;
+  dailyFee: string;
+  monthlyFee: string;
+  yearlyFee: string;
   description: string;
   password: string;
   confirmPassword: string;
 }
 
-interface Image {
-  imageUrl: string;
-  public_id: string;
-}
 
 interface AppState {
   lat: number;
   long: number;
   details: GymDetails;
-  images: Image[];
+  images: any[];
 }
 
 interface iState {
@@ -116,7 +112,7 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
 
       // Append images to formData
       images.forEach((image) => {
-        formData.append(`images`, image);
+        formData.append(`images`, image );
       });
 
       // Append location data
@@ -188,14 +184,14 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
     if (
       details?.gymName?.length > 0 &&
       details?.email?.length > 0 &&
-      details?.contactNumber > 0 &&
+      details?.contactNumber?.length > 0 &&
       details?.businessId?.length > 0 &&
       details?.password?.length > 0 &&
       details?.confirmPassword?.length > 0 &&
       details?.description?.length > 0 &&
-      details.dailyFee > 0 &&
-      details.monthlyFee > 0 &&
-      details.yearlyFee > 0
+      details.dailyFee?.length > 0 &&
+      details.monthlyFee?.length > 0 &&
+      details.yearlyFee?.length > 0
     ) {
       if (!steps[1].completed) setComplete(1, true);
     } else {

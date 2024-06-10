@@ -20,11 +20,7 @@ const TrainerCallPage = () => {
   return (
     <>
       <CssBaseline />
-      <AppBar
-        sx={{ backgroundColor: "black", padding: 1 }}
-        position="fixed"
-        open={open}
-      >
+      <AppBar sx={{ backgroundColor: "black", padding: 1 }} position="fixed">
         <Toolbar>
           <IconButton
             color="inherit"

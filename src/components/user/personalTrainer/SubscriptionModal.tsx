@@ -18,7 +18,7 @@ const SubscriptionModal = ({
 }) => {
   console.log("setBookingTrainer", setBookingTrainer);
 
-  const { isLoading, mutate: bookTrainerMutate } = useMutation({
+  const {mutate: bookTrainerMutate } = useMutation({
     mutationFn: bookTrainer,
     onSuccess: async (res) => {
       const stripe = await loadStripe(STRIPE_PK);

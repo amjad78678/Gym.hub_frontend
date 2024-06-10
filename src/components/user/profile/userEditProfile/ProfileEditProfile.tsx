@@ -48,7 +48,9 @@ const ProfileEditProfile = ({ selected, setSelected, refetch, userData }) => {
         formData.append("oldPassword", values.oldPassword);
         formData.append("password", values.newPassword);
         if (values.profilePic) {
-          formData.append("profilePic", image);
+          if (image != null) {
+            formData.append("profilePic", image);
+          }
           mutate(formData);
         } else {
           mutate(formData);
@@ -75,7 +77,7 @@ const ProfileEditProfile = ({ selected, setSelected, refetch, userData }) => {
                 accept="image/*"
                 className="border w-11/12 mx-auto sm:mx-0 py-1 px-2 border-gray-200 my-2 bg-gray-800 rounded-lg"
                 onChange={(e) => {
-                  if (e.currentTarget.files[0]) {
+                  if (e.currentTarget.files && e.currentTarget.files[0]) {
                     console.log(e.currentTarget.files[0]);
                     setFieldValue("profilePic", e.currentTarget.files[0]);
                     setImage(e.currentTarget.files[0]);

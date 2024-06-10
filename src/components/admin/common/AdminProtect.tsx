@@ -1,9 +1,10 @@
+import { RootState } from "@/redux/store";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
 const AdminProtect = () => {
-  const { aLoggedIn } = useSelector((state) => state.auth);
+  const { aLoggedIn } = useSelector((state: RootState) => state.auth);
   return aLoggedIn ? (
     <section>{<Outlet />}</section>
   ) : (

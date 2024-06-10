@@ -35,7 +35,7 @@ const GymMemberships = ({ subscriptionData }) => {
     setSubscriptions(filtered);
   }, [search]);
 
-  const columns = useMemo(
+  const columns: any = useMemo(
     () => [
       {
         field: "profilePic",
@@ -146,8 +146,9 @@ const GymMemberships = ({ subscriptionData }) => {
           <Box
             display="flex"
             justifyContent="center"
-            items="center"
+            alignItems="center"
             width="100%"
+            component="div"
           >
             <img
               src={params.row.qrCode}
@@ -199,7 +200,7 @@ const GymMemberships = ({ subscriptionData }) => {
                   theme.palette.mode === "light" ? grey[200] : grey[900],
               },
             }}
-            getRowId={(row) => row._id}
+            getRowId={(row: { _id: string }) => row._id}
             getRowSpacing={(params) => ({
               top: params.isFirstVisible ? 0 : 5,
               bottom: params.isLastVisible ? 0 : 5,

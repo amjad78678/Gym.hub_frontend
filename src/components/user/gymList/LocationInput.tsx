@@ -9,7 +9,7 @@ const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 
 const LocationInput = ({setLocationData}) => {
 
-  const [location, setLocation] = useState({ latitude: null, longitude: null });
+  const [location, setLocation] = useState<any>({ latitude: null, longitude: null });
   const [streetAddress, setStreetAddress] = useState("");
 
   const fetchStreetAddress = async () => {

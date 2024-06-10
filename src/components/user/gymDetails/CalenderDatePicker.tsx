@@ -19,6 +19,8 @@ import { RootState } from "@/redux/store";
 const CalenderDatePicker: React.FC<{
   isOpen: boolean;
   onToggle: () => void;
+  subscriptionType: string;
+  gymDetailsData: any;
 }> = ({ isOpen, onToggle, subscriptionType, gymDetailsData }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,8 +34,8 @@ const CalenderDatePicker: React.FC<{
     },
   ]);
 
-  const startDate = useSelector((state) => state.dateRange.startDate);
-  const endDate = useSelector((state) => state.dateRange.endDate);
+  const startDate = useSelector((state: RootState) => state.dateRange.startDate);
+  const endDate = useSelector((state: RootState) => state.dateRange.endDate);
 
   const handleSelect = (ranges) => {
     const newDateRange = [

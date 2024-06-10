@@ -80,12 +80,12 @@ const ChatInput = ({
     setNewMessage(newMessage + emoji);
   };
 
-  const [imagePreviewUrls, setImagePreviewUrls] = useState([]);
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<any[]>([]);
   const [mainImageIndex, setMainImageIndex] = useState(0);
 
   useEffect(() => {
     if (file.length > 0) {
-      const newImagePreviewUrls = [];
+      const newImagePreviewUrls: any[] = [];
       file.forEach((image) => {
         const reader = new FileReader();
         reader.onloadend = () => {

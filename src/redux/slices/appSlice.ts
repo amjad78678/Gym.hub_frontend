@@ -4,7 +4,23 @@ const appSlice = createSlice({
   initialState: {
     lat: 0,
     long: 0,
-    details: {},
+    details: {
+   
+        gymName: '',
+        email: '',
+        contactNumber: '',
+        state: '',
+        city: '',
+        pincode: '',
+        businessId: '',
+        dailyFee: '',
+        monthlyFee: '',
+        yearlyFee: '',
+        description: '',
+        password: '',
+        confirmPassword: '',
+      
+    },
     images: [],
   },
   name: "app",

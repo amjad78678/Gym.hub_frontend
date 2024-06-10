@@ -4,10 +4,11 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import { GymSignupValidation } from "../../../../validation/GymSignupValidation";
 import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from "@/redux/slices/appSlice";
+import { RootState } from "@/redux/store";
 
 const AddDetails = () => {
   const dispatch = useDispatch();
-  const { details } = useSelector((state) => state.app);
+  const { details } = useSelector((state: RootState) => state.app);
 
   const initialValues = {
     gymName: details.gymName,
@@ -164,31 +165,29 @@ const AddDetails = () => {
             </Row>
           </Col>
           <Col lg={6}>
-            
-              <div className="my-3">
-                <h1>Businesss id</h1>
-                <input
-                  type="text"
-                  name="businessId"
-                  className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
-                  onChange={(e) => {
-                    handleChange(e);
+            <div className="my-3">
+              <h1>Businesss id</h1>
+              <input
+                type="text"
+                name="businessId"
+                className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
+                onChange={(e) => {
+                  handleChange(e);
 
-                    if (!errors.businessId) {
-                      dispatch(
-                        setDetails({ ...values, businessId: e.target.value })
-                      );
-                    }
-                  }}
-                  autoComplete="off"
-                  onBlur={handleBlur}
-                  value={values.businessId}
-                />
-                {errors.businessId && (
-                  <small className="text-red-500">{errors.businessId}</small>
-                )}
-              </div>
-     
+                  if (!errors.businessId) {
+                    dispatch(
+                      setDetails({ ...values, businessId: e.target.value })
+                    );
+                  }
+                }}
+                autoComplete="off"
+                onBlur={handleBlur}
+                value={values.businessId}
+              />
+              {errors.businessId && (
+                <small className="text-red-500">{errors.businessId}</small>
+              )}
+            </div>
 
             <Row className="my-3">
               <Col xs={6} lg={4}>
@@ -234,7 +233,7 @@ const AddDetails = () => {
                     }}
                     autoComplete="off"
                     onBlur={handleBlur}
-                    value={values.monthlyFee}
+                    value={values.monthlyFee}   
                   />
                   {errors.monthlyFee && (
                     <small className="text-red-500">{errors.monthlyFee}</small>

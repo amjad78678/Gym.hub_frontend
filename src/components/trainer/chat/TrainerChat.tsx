@@ -25,7 +25,9 @@ import { fileUploadChat } from "@/api/user";
 import Loader from "@/components/common/Loader";
 
 const TrainerChat = () => {
-  const [selectedChat, setSelectedChat] = useState(null);
+  const [selectedChat, setSelectedChat] = useState<{ userId: string } | null>(
+    null
+  );
   const socket = useSocket();
   const { trainerDetails } = useSelector((state: RootState) => state.auth);
   const trainerName = trainerDetails?.name.replaceAll(" ", "");
@@ -41,7 +43,7 @@ const TrainerChat = () => {
     queryKey: [
       "trainerMessages",
       trainerDetails.trainerId,
-      selectedChat?.userId,
+      selectedChat?.userId as string | null,
     ],
     queryFn: fetchTrainerChats,
     enabled: !!selectedChat,
@@ -66,7 +68,7 @@ const TrainerChat = () => {
   }, [socket, selectedChat]);
 
   const { isLoading: userDataLoading, data: userData } = useQuery({
-    queryKey: ["trainerUserData", selectedChat?.userId],
+    queryKey: ["trainerUserData", selectedChat?.userId as string | null],
     queryFn: fetchUserData,
     enabled: !!selectedChat,
   });
@@ -78,20 +80,19 @@ const TrainerChat = () => {
   }, [messageData]);
 
   const handleVedioCall = () => {
-    socket.emit("call:start", {
-      sender: trainerDetails.trainerId,
-      receiver: selectedChat.userId,
-    });
-    navigate(
-      `/trainer/video_call/${trainerDetails.trainerId}/${selectedChat.userId}`
-    );
+    if (selectedChat) {
+      socket.emit("call:start", {
+        sender: trainerDetails.trainerId,
+        receiver: selectedChat.userId,
+      });
+      navigate(
+        `/trainer/video_call/${trainerDetails.trainerId}/${selectedChat.userId}`
+      );
+    }
   };
 
   const { mutate: trainerChatCreateMutate } = useMutation({
     mutationFn: trainerChatCreate,
-    onSuccess: (res) => {
-      console.log("Message sent successfully", res.data);
-    },
   });
 
   const { mutate: fileUploadMutate } = useMutation({
@@ -147,43 +148,45 @@ const TrainerChat = () => {
   });
 
   const handleSendMessage = () => {
+    if (selectedChat) {
     if (file.length > 0) {
-      setImageSendLoading(true);
-      console.log("iam file length", file.length, file);
-      const formData = new FormData();
-      file.map((fil) => {
-        formData.append("files", fil);
-      });
-      formData.append("sender", trainerDetails.trainerId);
-      formData.append("receiver", selectedChat.userId);
-      fileUploadMutate(formData);
-    } else {
-      if (newMessage.trim() !== "") {
-        socket.emit("stop_typing", { typeTo: selectedChat.userId });
-        const time = new Date();
-        socket.emit("send_message", {
-          sender: trainerDetails.trainerId,
-          receiver: selectedChat.userId,
-          content: newMessage,
-          createdAt: time,
+        setImageSendLoading(true);
+        console.log("iam file length", file.length, file);
+        const formData = new FormData();
+        file.map((fil) => {
+          formData.append("files", fil);
         });
-
-        trainerChatCreateMutate({
-          sender: trainerDetails.trainerId,
-          receiver: selectedChat.userId,
-          content: newMessage,
-        });
-
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          {
+        formData.append("sender", trainerDetails.trainerId);
+        formData.append("receiver", selectedChat.userId);
+        fileUploadMutate(formData);
+      } else {
+        if (newMessage.trim() !== "") {
+          socket.emit("stop_typing", { typeTo: selectedChat.userId });
+          const time = new Date();
+          socket.emit("send_message", {
             sender: trainerDetails.trainerId,
             receiver: selectedChat.userId,
             content: newMessage,
-          },
-        ]);
+            createdAt: time,
+          });
 
-        setNewMessage("");
+          trainerChatCreateMutate({
+            sender: trainerDetails.trainerId,
+            receiver: selectedChat.userId,
+            content: newMessage,
+          });
+
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              sender: trainerDetails.trainerId,
+              receiver: selectedChat.userId,
+              content: newMessage,
+            },
+          ]);
+
+          setNewMessage("");
+        }
       }
     }
   };
@@ -196,7 +199,7 @@ const TrainerChat = () => {
   useEffect(() => {
     scrollToBottom();
     const isUserOnline = onlinedUsers.find(
-      (user) => user.userId === selectedChat?.userId
+      (user: any) => user.userId === selectedChat?.userId
     );
     if (isUserOnline) {
       setSocketConnected(true);

@@ -36,6 +36,7 @@ import TrainerCallPage from "../TrainerCallPage";
 import TrainerTrainee from "@/components/trainer/trainee/TrainerTrainee";
 import TrainerTraineePage from "../TrainerTraineePage";
 import TrainerProfilePage from "../TrainerProfilePage";
+import Loader from "@/components/common/Loader";
 
 const drawerWidth = 240;
 
@@ -86,16 +87,23 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const SideList = ({ open, setOpen }) => {
+interface SideListProps {
+  open: boolean;
+  setOpen: any;
+}
+const SideList: React.FC<SideListProps> = ({ open, setOpen }) => {
   const dispatch = useDispatch();
-  const { isLoading, refetch: refetchTrainer, data: trainerDetails } = useQuery({
+  const {
+    isLoading,
+    refetch: refetchTrainer,
+    data: trainerDetails,
+  } = useQuery({
     queryKey: ["trainerDataforTrainerSide"],
     queryFn: fetchTrainerData,
   });
-  
-  
+
   const [selectedLink, setSelectedLink] = useState("");
-  console.log('iam tr detis',trainerDetails)
+  console.log("iam tr detis", trainerDetails);
 
   const list = useMemo(
     () => [
@@ -118,7 +126,15 @@ const SideList = ({ open, setOpen }) => {
         icon: <EditNote />,
         link: "profile",
         component: (
-          <TrainerProfilePage {...{ setSelectedLink, link: "profile",refetchTrainer, isLoading, data: trainerDetails }} />
+          <TrainerProfilePage
+            {...{
+              setSelectedLink,
+              link: "profile",
+              refetchTrainer,
+              isLoading,
+              data: trainerDetails,
+            }}
+          />
         ),
       },
       {
@@ -149,7 +165,7 @@ const SideList = ({ open, setOpen }) => {
 
   const navigate = useNavigate();
 
-  return trainerDetails && (
+  return trainerDetails ? (
     <>
       <Drawer
         variant="permanent"
@@ -222,7 +238,9 @@ const SideList = ({ open, setOpen }) => {
 
         <Box sx={{ textAlign: "center" }}>
           {open ? (
-            <Typography variant="h6">{trainerDetails?.data.trainer.name}</Typography>
+            <Typography variant="h6">
+              {trainerDetails?.data.trainer.name}
+            </Typography>
           ) : null}
           <Typography variant="body2">TRAINER</Typography>
           <Tooltip title="Logout" sx={{ mt: 1 }}>
@@ -243,6 +261,8 @@ const SideList = ({ open, setOpen }) => {
         </Routes>
       </Box>
     </>
+  ) : (
+    <Loader />
   );
 };
 

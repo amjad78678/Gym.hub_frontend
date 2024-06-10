@@ -6,26 +6,38 @@ export const chatDropZoneValidation = Yup.object().shape({
     .of(
       Yup.mixed()
         .test("fileType", "Only images or videos are allowed", (file) => {
-          if (!file) return false;
-          return (
-            file.type.startsWith("image/") || file.type.startsWith("video/")
-          );
+          if (!file || typeof file !== "object") return false;
+          if ("type" in file) {
+            return (
+              (file as File).type.startsWith("image/") ||
+              (file as File).type.startsWith("video/")
+            );
+          }
+          return false;
         })
         .test("fileSize", "File size exceeds limit", (file) => {
-          if (!file) return false;
-          const maxSizeForVideos = 5 * 1024 * 1024; // 5MB
-          if (file.type.startsWith("video/")) {
-            return file.size <= maxSizeForVideos;
-          }
-          if (file.type.startsWith("image/")) {
-            return true;
+          if (!file || typeof file !== "object") return false;
+          if ("type" in file && "size" in file) {
+            const maxSizeForVideos = 5 * 1024 * 1024; // 5MB
+            if ((file as File).type.startsWith("video/")) {
+              return (file as File).size <= maxSizeForVideos;
+            }
+            if ((file as File).type.startsWith("image/")) {
+              return true;
+            }
           }
           return false;
         })
     )
     .test("mixedFiles", "Cannot mix images and videos", (value) => {
-      const images = value.filter((file) => file.type.startsWith("image/"));
-      const videos = value.filter((file) => file.type.startsWith("video/"));
+      const images = value.filter((file) => {
+        if (!file || typeof file !== "object") return false;
+        return "type" in file && (file as File).type.startsWith("image/");
+      });
+      const videos = value.filter((file) => {
+        if (!file || typeof file !== "object") return false;
+        return "type" in file && (file as File).type.startsWith("video/");
+      });
 
       if ((images.length > 0 && videos.length > 0) || videos.length > 1) {
         return false;
@@ -33,12 +45,21 @@ export const chatDropZoneValidation = Yup.object().shape({
       return true;
     })
     .test("maxImages", "You can upload up to 4 images", (value) => {
-      const images = value.filter((file) => file.type.startsWith("image/"));
+      const images = value.filter((file) => {
+        if (!file || typeof file !== "object") return false;
+        return "type" in file && (file as File).type.startsWith("image/");
+      });
       return images.length <= 4;
     })
     .test("largeImages", "Some images exceed 1MB", (value) => {
-      const images = value.filter((file) => file.type.startsWith("image/"));
-      const largeImages = images.filter((file) => file.size > 1024 * 1024);
+      const images = value.filter((file) => {
+        if (!file || typeof file !== "object") return false;
+        return "type" in file && (file as File).type.startsWith("image/");
+      });
+      const largeImages = images.filter((file) => {
+        if (!file || typeof file !== "object") return false;
+        return "size" in file && (file as File).size > 1024 * 1024;
+      });
       return largeImages.length === 0;
     }),
 });

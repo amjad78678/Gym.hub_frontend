@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useRef } from "react";
 import ReactMapGl, {
-  GeolocateControl, 
+  GeolocateControl,
   GeolocateResultEvent,
   Marker,
   NavigationControl,
@@ -21,7 +21,7 @@ interface iAppState {
 }
 
 const AddLocation = () => {
-  const mapRef = useRef();
+  const mapRef = useRef<any>();
 
   useEffect(() => {
     if (!lat && !long) {
@@ -78,7 +78,7 @@ const AddLocation = () => {
               dispatch(setLongitude(e.coords.longitude));
             }}
           />
-          <GeoCoder/>
+          <GeoCoder />
         </ReactMapGl>
       </Box>
     </div>

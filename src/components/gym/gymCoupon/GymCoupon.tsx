@@ -6,9 +6,7 @@ import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import { useQuery } from "@tanstack/react-query";
 import { grey } from "@mui/material/colors";
 import dayjs from "dayjs";
-import TrainerActions from "./TrainerActions";
 import { fetchTrainers } from "@/api/gym";
-import AddTrainerModal from "./AddTrainerModal";
 import CouponActions from "./CouponActions";
 import NoCouponComponent from "./NoCouponComponent";
 import SearchInput from "@/components/admin/common/SearchInput";
@@ -35,7 +33,7 @@ const GymCoupon = ({
   console.log("iamrowId", rowId);
   console.log("iamselectedRowId", selectedRowId);
 
-  const columns = useMemo(
+  const columns: any = useMemo(
     () => [
       {
         field: "name",
@@ -159,7 +157,7 @@ const GymCoupon = ({
                   theme.palette.mode === "light" ? grey[200] : grey[900],
               },
             }}
-            getRowId={(row) => row._id}
+            getRowId={(row: { _id: string }) => row._id}
             getRowSpacing={(params) => ({
               top: params.isFirstVisible ? 0 : 5,
               bottom: params.isLastVisible ? 0 : 5,

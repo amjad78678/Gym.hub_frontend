@@ -8,7 +8,7 @@ const PaymentFailure: React.FC = () => {
   const navigate = useNavigate();
   return (
     <div className="bg-black text-white">
-      <Navbar />
+      <Navbar {...{ fixed: true }} />
       <Container
         sx={{
           height: "100vh",

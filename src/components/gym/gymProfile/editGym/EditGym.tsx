@@ -18,9 +18,7 @@ import toast from "react-hot-toast";
 import { editGymProfile } from "@/api/gym";
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
-interface UserType {
-  setShowOtp: () => void;
-}
+
 
 interface GymDetails {
   gymName: string;
@@ -58,6 +56,10 @@ interface iRootState {
   auth: {
     gLoggedIn: boolean;
   };
+}
+interface UserType {
+ gym: GymDetails,
+ refetch: () => void
 }
 
 const EditGym: React.FC<UserType> = ({ gym, refetch }) => {

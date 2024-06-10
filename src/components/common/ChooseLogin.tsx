@@ -1,3 +1,4 @@
+import { RootState } from "@/redux/store";
 import React, { useEffect } from "react";
 import { Container, Col, Row, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
@@ -5,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const ChooseLogin = () => {
 
-const {uLoggedIn}= useSelector((state)=>state.auth)
+const {uLoggedIn}= useSelector((state: RootState)=>state.auth)
 const navigate=useNavigate()
   useEffect(()=>{
 

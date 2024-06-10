@@ -20,7 +20,7 @@ const AdminGymDetails = () => {
     data: gymData,
     refetch,
   } = useQuery({
-    queryKey: ["gymDetails", id],
+    queryKey: ["gymDetails", id as string],
     queryFn: fetchGymWithId,
   });
 

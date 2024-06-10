@@ -27,7 +27,7 @@ const EditLocation = ({
   isPending,
   handleSubmitEditDetails,
 }) => {
-  const mapRef = useRef();
+  const mapRef = useRef<any>();
   return (
     <div> 
       <Box

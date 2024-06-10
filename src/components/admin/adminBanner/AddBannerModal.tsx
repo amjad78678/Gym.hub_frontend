@@ -102,7 +102,11 @@ const AddBannerModal = ({ open, setOpen, refetch, modalType, selected }) => {
                       name="bannerImage"
                       type="file"
                       onChange={(e) => {
-                        if (e.currentTarget.files && e.currentTarget.files[0]) {
+                        if (
+                          e.currentTarget instanceof HTMLInputElement &&
+                          e.currentTarget.files &&
+                          e.currentTarget.files[0]
+                        ) {
                           setFieldValue(
                             "bannerImage",
                             e.currentTarget.files[0]
@@ -160,8 +164,10 @@ const AddBannerModal = ({ open, setOpen, refetch, modalType, selected }) => {
               const formData = new FormData();
               formData.append("title", values.title);
               formData.append("description", values.description);
-              formData.append("bannerImage", image);
               formData.append("id", selected._id);
+              if (image !== null) {
+                formData.append("bannerImage", image);
+              }
 
               editBannerMutate(formData);
               setSubmitting(false);
@@ -192,15 +198,15 @@ const AddBannerModal = ({ open, setOpen, refetch, modalType, selected }) => {
                       label="Image"
                       name="bannerImage"
                       type="file"
-                      onChange={(e) => {
-                        if (e.currentTarget.files && e.currentTarget.files[0]) {
-                          setFieldValue(
-                            "bannerImage",
-                            e.currentTarget.files[0]
-                          );
-                          setImage(e.currentTarget.files[0]);
+                    onChange={(e) => {
+                        if (e.currentTarget instanceof HTMLInputElement && e.currentTarget.files && e.currentTarget.files[0]) {
+                            setFieldValue(
+                                "bannerImage",
+                                e.currentTarget.files[0]
+                            );
+                            setImage(e.currentTarget.files[0]);
                         }
-                      }}
+                    }}
                       variant="outlined"
                       error={Boolean(errors.bannerImage && touched.bannerImage)}
                       helperText={touched.bannerImage && errors.bannerImage}

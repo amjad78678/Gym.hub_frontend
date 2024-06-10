@@ -9,15 +9,18 @@ import Loader from "../common/Loader";
 import { setUserDetails, setUserLogin } from "@/redux/slices/authSlice";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import { RootState } from "@/redux/store";
 
 const G_PASSWORD = import.meta.env.VITE_GOOGLE_PASSWORD;
 
-
-const UserLogin: React.FC = ({showForgotEmail}) => {
+interface UserLoginProps {
+  showForgotEmail: () => void;
+}
+const UserLogin: React.FC<UserLoginProps> = ({showForgotEmail}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { uLoggedIn } = useSelector((state) => state.auth);
+  const { uLoggedIn } = useSelector((state:RootState) => state.auth);
   useEffect(() => {
     if (uLoggedIn) {
       navigate("/");

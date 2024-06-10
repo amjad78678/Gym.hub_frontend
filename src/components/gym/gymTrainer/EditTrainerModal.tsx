@@ -79,7 +79,9 @@ const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
             formData.append("yearlyFee", values.yearlyFee);
             formData.append("_id", selectedRow._id);
             if (values.imageUrl) {
-              formData.append("imageUrl", image);
+              if (image != null) {
+                formData.append("imageUrl", image);
+              }
               mutate(formData);
             } else {
               mutate(formData);
@@ -104,9 +106,14 @@ const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
                     name="imageUrl"
                     type="file"
                     onChange={(e) => {
-                      if (e.currentTarget.files && e.currentTarget.files[0]) {
-                        setFieldValue("imageUrl", e.currentTarget.files[0]);
-                        setImage(e.currentTarget.files[0]);
+                      const target = e.currentTarget as HTMLInputElement;
+                      if (
+                        target.type === "file" &&
+                        target.files &&
+                        target.files[0]
+                      ) {
+                        setFieldValue("imageUrl", target.files[0]);
+                        setImage(target.files[0]);
                       }
                     }}
                     variant="outlined"
@@ -205,7 +212,7 @@ const EditTrainerModal = ({ editOpen, setEditOpen, refetch, selectedRow }) => {
                   disabled={isPending}
                   className="relative w-9/12"
                   variant="contained"
-                  sx={{  mx: "auto" }}
+                  sx={{ mx: "auto" }}
                 >
                   <span>{isPending ? "Updating..." : "Update"}</span>
                   {isPending && (

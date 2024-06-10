@@ -29,7 +29,7 @@ const GymRegisterPage = () => {
 
     {ReactDOM.createPortal(
       <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-20">
-        <OtpPage userType="gym" closeOtp={otpHandler} />
+        <OtpPage userType="gym" closeOtp={otpHandler} showChangePassword={() => {}} />
       </div>,
       document.getElementById("root-modal") as HTMLElement
     )}

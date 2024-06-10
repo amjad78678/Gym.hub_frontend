@@ -17,7 +17,7 @@ export const TrainerEditProfileValidation = Yup.object().shape({
     .min(0, "Monthly fee cannot be negative")
     .required("Monthly fee is required"),
   yearlyFee: Yup.number()
-    .min(0, "Yearly fee cannot be negative")
+    .min(0, "Yearly fee cannot be negative") 
     .required("Yearly fee is required"),
   image: Yup.mixed()
     .test("fileSize", "File size is too large", (value) => {
@@ -25,19 +25,30 @@ export const TrainerEditProfileValidation = Yup.object().shape({
         return true;
       }
 
-      return value.size <= 5 * 1024 * 1024; // 5 MB
+      // Type guard to check if value is a File object
+      if (value instanceof File) {
+        return value.size <= 5 * 1024 * 1024; // 5 MB
+      }
+
+      return false;
     })
     .test("fileType", "Unsupported file type", (value) => {
       if (!value || typeof value === "string") {
         return true;
       }
 
-      const supportedTypes = [
-        "image/jpeg",
-        "image/png",
-        "image/gif",
-        "image/webp",
-      ];
-      return supportedTypes.includes(value.type);
-    }).nullable(),
+      // Type guard to check if value is a File object
+      if (value instanceof File) {
+        const supportedTypes = [
+          "image/jpeg",
+          "image/png",
+          "image/gif",
+          "image/webp",
+        ];
+        return supportedTypes.includes(value.type);
+      }
+
+      return false;
+    })
+    .nullable(),
 });

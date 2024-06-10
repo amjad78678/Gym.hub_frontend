@@ -23,7 +23,7 @@ const Users = ({ usersData, refetch }) => {
 
   console.log("iam active users", activeUsers);
 
-  const columns = useMemo(
+  const columns: any = useMemo(
     () => [
       {
         field: "photoUrl",
@@ -159,7 +159,7 @@ const Users = ({ usersData, refetch }) => {
             },
             width: "100%",
           }}
-          getRowId={(row) => row._id}
+          getRowId={(row: { _id: string }) => row._id}
           getRowSpacing={(params) => ({
             top: params.isFirstVisible ? 0 : 5,
             bottom: params.isLastVisible ? 0 : 5,

@@ -1,19 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
+import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 import { Toaster } from "react-hot-toast";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Provider } from "react-redux";
-import store from "./redux/store.ts";
+import store from "./redux/store";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { SocketProvider } from "./utils/context/socketContext.tsx";
+import { SocketProvider } from "./utils/context/socketContext";
 
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-   <>
+  <>
     <Toaster position="top-right" reverseOrder={false} />
     <GoogleOAuthProvider clientId="517088487962-381ms18c3e4okdi43c1sbf8komek0ekb.apps.googleusercontent.com">
       <Provider store={store}>
@@ -24,5 +24,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </SocketProvider>
       </Provider>
     </GoogleOAuthProvider>
-    </>
+  </>
 );
