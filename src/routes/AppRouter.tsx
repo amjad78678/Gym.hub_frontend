@@ -4,9 +4,9 @@ import UserRoutes from "./UserRoutes";
 import GymRoutes from "./GymRoutes";
 import AdminRoutes from "./AdminRoutes";
 import TrainerRoutes from "./TrainerRoutes";
-import relativeTime from 'dayjs/plugin/relativeTime';
+import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
-dayjs.extend(relativeTime)
+dayjs.extend(relativeTime);
 
 const AppRouter = () => {
   return (
