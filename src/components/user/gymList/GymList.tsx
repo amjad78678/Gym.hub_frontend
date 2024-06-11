@@ -44,7 +44,7 @@ const GymList = ({
 
                 <div className="">
                   <LocationInput setLocationData={setLocation} />
-                  <h1 className="text-lg mt-2">Price</h1>
+                  <h1 className="text-lg text-white mt-4 mb-2">Price</h1>
                   {maxPrice > 0 && (
                     <Slider
                       sx={{ color: "white" }}
