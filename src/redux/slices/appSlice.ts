@@ -5,21 +5,19 @@ const appSlice = createSlice({
     lat: 0,
     long: 0,
     details: {
-   
-        gymName: '',
-        email: '',
-        contactNumber: '',
-        state: '',
-        city: '',
-        pincode: '',
-        businessId: '',
-        dailyFee: '',
-        monthlyFee: '',
-        yearlyFee: '',
-        description: '',
-        password: '',
-        confirmPassword: '',
-      
+      gymName: "",
+      email: "",
+      contactNumber: "",
+      state: "",
+      city: "",
+      pincode: "",
+      businessId: "",
+      dailyFee: "",
+      monthlyFee: "",
+      yearlyFee: "",
+      description: "",
+      password: "",
+      confirmPassword: "",
     },
     images: [],
   },
@@ -40,5 +38,6 @@ const appSlice = createSlice({
   },
 });
 
-export const { setLatitude, setLongitude,setDetails,setImages } = appSlice.actions;
+export const { setLatitude, setLongitude, setDetails, setImages } =
+  appSlice.actions;
 export default appSlice.reducer;
