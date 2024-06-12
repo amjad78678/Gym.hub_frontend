@@ -11,7 +11,7 @@ const GymDetailsSkeleton = () => {
         <div className="grid sm:grid-cols-12">
           <div className="sm:col-span-6">
             <div className="grid sm:grid-cols-12">
-              <div className="sm:col-span-4 mr-4">
+              <div className="hidden lg:col-span-4 mr-4">
                 <Skeleton width={170} count={4} height={80} />
               </div>
               <div className="sm:col-span-8 ml-2">
