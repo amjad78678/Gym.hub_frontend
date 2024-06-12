@@ -128,7 +128,7 @@ const ChatInput = ({
               <img
                 className="rounded-lg h-64 object-cover"
                 src={imagePreviewUrls[mainImageIndex]}
-                alt=""
+                alt="" 
               />
               <div className="flex  mt-2 mx-auto">
                 {imagePreviewUrls.map((imageUrl, index) => (
@@ -162,7 +162,7 @@ const ChatInput = ({
       )}
 
       {isTyping && <div className="text-green-500">typing...</div>}
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center mx-auto space-x-2">
         <EmojiEmotionsOutlined
           onClick={() => setEmojiOpen(!emojiOpen)}
           className="cursor-pointer text-yellow-500"

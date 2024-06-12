@@ -167,7 +167,7 @@ const ChatInput = ({
       )}
 
       {isTyping && <div className="text-green-500">typing...</div>}
-      <div className="flex items-center space-x-2  ">
+      <div className="flex items-center mx-auto space-x-2  ">
         <EmojiEmotionsOutlined
           onClick={() => setEmojiOpen(!emojiOpen)}
           className="cursor-pointer text-yellow-500"
