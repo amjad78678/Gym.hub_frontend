@@ -4,6 +4,7 @@ import PaymentSuccess from "@/components/user/payments/PaymentSuccess";
 import PaymentFailure from "@/components/user/payments/PaymentFailure";
 import UserProtect from "@/components/user/common/UserProtect";
 import LoadingSkeleton from "@/components/user/skeletons/LoadingSkeleton";
+import VideoCallPage from "@/pages/common/VideoCallPage";
 
 const LoginPage = lazy(() => import("../pages/common/LoginPage"));
 const UserLoginPage = lazy(() => import("../pages/user/UserLoginPage"));
@@ -41,7 +42,7 @@ const UserRoutes = () => {
           <Route path="workouts" element={<WorkoutsPage />} />
           <Route
             path="video_call/:trainerId/:userId"
-            element={<TrainerCallPage />}
+            element={<VideoCallPage />}
           />
         </Route>
         <Route element={<UserProtect />}></Route>

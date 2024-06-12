@@ -86,7 +86,7 @@ const TrainerChat = () => {
         receiver: selectedChat.userId,
       });
       navigate(
-        `/trainer/video_call/${trainerDetails.trainerId}/${selectedChat.userId}`
+        `/trainer/dashboard/video_call/${trainerDetails.trainerId}/${selectedChat.userId}`
       );
     }
   };
@@ -149,7 +149,7 @@ const TrainerChat = () => {
 
   const handleSendMessage = () => {
     if (selectedChat) {
-    if (file.length > 0) {
+      if (file.length > 0) {
         setImageSendLoading(true);
         console.log("iam file length", file.length, file);
         const formData = new FormData();

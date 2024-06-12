@@ -32,11 +32,11 @@ import TrainerDashboardPage from "../TrainerDashboardPage";
 import { fetchTrainerData, trainerLogout } from "@/api/trainer";
 import TrainerChatPage from "../TrainerChatPage";
 import ChatIcon from "@mui/icons-material/Chat";
-import TrainerCallPage from "../TrainerCallPage";
 import TrainerTrainee from "@/components/trainer/trainee/TrainerTrainee";
 import TrainerTraineePage from "../TrainerTraineePage";
 import TrainerProfilePage from "../TrainerProfilePage";
 import Loader from "@/components/common/Loader";
+import VideoCallPage from "@/pages/common/VideoCallPage";
 
 const drawerWidth = 240;
 
@@ -257,7 +257,10 @@ const SideList: React.FC<SideListProps> = ({ open, setOpen }) => {
           {list.map((item) => (
             <Route key={item.title} path={item.link} element={item.component} />
           ))}
-          <Route path="/call/:roomId" element={<TrainerCallPage />} />
+          <Route
+            path="video_call/:trainerId/:userId"
+            element={<VideoCallPage />}
+          />
         </Routes>
       </Box>
     </>
