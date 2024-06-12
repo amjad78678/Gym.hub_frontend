@@ -19,7 +19,6 @@ const PersonalTrainerPage = lazy(
 );
 const UserChatPage = lazy(() => import("@/pages/user/UserChatPage"));
 const WorkoutsPage = lazy(() => import("@/pages/user/WorkoutsPage"));
-const TrainerCallPage = lazy(() => import("@/pages/trainer/TrainerCallPage"));
 const Footer = lazy(() => import("@/components/common/Footer"));
 
 const UserRoutes = () => {
