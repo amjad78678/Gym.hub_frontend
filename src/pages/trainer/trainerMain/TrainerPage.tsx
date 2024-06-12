@@ -65,7 +65,11 @@ export default function TrainerPage() {
         }}
       >
         <CssBaseline />
-        <AppBar  sx={{ backgroundColor: !dark ? "#9f9f9f" : "#000000", padding: 1 }} position="fixed" open={open}>
+        <AppBar
+          sx={{ backgroundColor: !dark ? "#9f9f9f" : "#000000", padding: 1 }}
+          position="fixed"
+          open={open}
+        >
           <Toolbar>
             <IconButton
               color="inherit"
@@ -95,9 +99,9 @@ export default function TrainerPage() {
               Dashboard
             </Typography>
 
-            <IconButton onClick={() => setDark(!dark)}>
+            {/* <IconButton onClick={() => setDark(!dark)}>
               {dark ? <Brightness7 /> : <Brightness4Sharp />}
-            </IconButton>
+            </IconButton> */}
           </Toolbar>
         </AppBar>
 

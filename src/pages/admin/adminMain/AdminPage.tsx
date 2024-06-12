@@ -93,9 +93,9 @@ export default function AdminPage() {
               Dashboard
             </Typography>
 
-            <IconButton onClick={() => setDark(!dark)}>
+            {/* <IconButton onClick={() => setDark(!dark)}>
               {dark ? <Brightness7 /> : <Brightness4Sharp />}
-            </IconButton>
+            </IconButton> */}
           </Toolbar>
         </AppBar>
 
