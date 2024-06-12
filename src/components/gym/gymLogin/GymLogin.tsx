@@ -6,11 +6,11 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import { gymLogin } from "@/api/gym";
-import { useDispatch, useSelector } from "react-redux"; 
+import { useDispatch, useSelector } from "react-redux";
 import { setGymLogin } from "@/redux/slices/authSlice";
 import { RootState } from "@/redux/store";
 
-const GymLogin = ({showForgotEmail}) => {
+const GymLogin = ({ showForgotEmail }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -53,9 +53,8 @@ const GymLogin = ({showForgotEmail}) => {
   const { status, mutate: gymLoginMutate } = useMutation({
     mutationFn: gymLogin,
     onSuccess: (res) => {
-
       if (res) {
-      toast.success(res.data.message);
+        toast.success(res.data.message);
         navigate("/gym/dashboard");
         const data = {
           name: res.data.gym.gymName,
@@ -68,11 +67,11 @@ const GymLogin = ({showForgotEmail}) => {
   });
 
   return (
-    <div>
+    <div className="h-3/4">
       <section>
         <div className="grid grid-cols-1 lg:grid-cols-2 text-white bg-black">
           <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
-            <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
+            <div className="xl:mx-auto lg:mb-36 xl:w-full xl:max-w-sm 2xl:max-w-md">
               <h1 className="text-xl py-4">
                 Welcome back! Please enter Gym details.
               </h1>

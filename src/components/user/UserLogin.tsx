@@ -117,7 +117,7 @@ const UserLogin: React.FC<UserLoginProps> = ({showForgotEmail}) => {
       <section>
         <div className="grid grid-cols-1 lg:grid-cols-2 text-white bg-black">
           <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
-            <div className="xl:mx-auto mb-36 xl:w-full xl:max-w-sm 2xl:max-w-md">
+            <div className="xl:mx-auto lg:mb-36 xl:w-full xl:max-w-sm 2xl:max-w-md">
               <h1 className="text-xl pb-4">
                 Welcome back! Please enter your details.
               </h1>
@@ -225,7 +225,7 @@ const UserLogin: React.FC<UserLoginProps> = ({showForgotEmail}) => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center items-center">
+          <div className="hidden lg:flex justify-center items-center">
             <img
               className="mx-auto h-3.5/4 w-3.5/4  rounded-md object-cover"
               src={userlogin}

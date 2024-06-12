@@ -21,8 +21,6 @@ const navigate=useNavigate()
 
   return (
     <div className="bg-black text-white min-h-screen">
-
-      
       <Container>
         <Row>
           <Col lg={6} className="text-center">

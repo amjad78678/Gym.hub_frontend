@@ -1,20 +1,16 @@
-import React, { useState } from 'react'
-import UserLogin from '../../components/user/UserLogin'
-import Navbar from '@/components/common/Navbar'
+import React, { useState } from "react";
+import UserLogin from "../../components/user/UserLogin";
+import Navbar from "@/components/common/Navbar";
 import ReactDOM from "react-dom";
 import OtpPage from "../common/OtpPage";
 import Backdrop from "../common/Backdrop";
-import ForgotEmail from '../common/ForgotEmail';
-import ChangePassword from '../common/ChangePassword';
-
+import ForgotEmail from "../common/ForgotEmail";
+import ChangePassword from "../common/ChangePassword";
 
 const UserLoginPage = () => {
-
-
   const [showForgotEmail, setShowForgotEmail] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
-  const [showChangePassword,setShowPassword]=useState(false)
-
+  const [showChangePassword, setShowPassword] = useState(false);
 
   const otpHandler = () => {
     setShowOtp(!showOtp);
@@ -22,23 +18,21 @@ const UserLoginPage = () => {
 
   const changePasswordHandler = () => {
     setShowPassword(!showChangePassword);
-  }
+  };
 
   const forgotEmailHandler = () => {
-    
     setShowForgotEmail(!showForgotEmail);
+  };
 
-  }
-
-  console.log('iam show otp', showOtp)
+  console.log("iam show otp", showOtp);
 
   return (
     <>
-    <div className='bg-black'>
-    <Navbar {...{fixed: false}}/>
+      <div className="bg-black">
+        <Navbar {...{ fixed: true }} />
 
         <UserLogin showForgotEmail={forgotEmailHandler} />
-    </div>
+      </div>
       {showForgotEmail && (
         <>
           {ReactDOM.createPortal(
@@ -48,16 +42,18 @@ const UserLoginPage = () => {
 
           {ReactDOM.createPortal(
             <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-20">
-              <ForgotEmail user='user'  closeModal={forgotEmailHandler} otpShow={otpHandler} />
+              <ForgotEmail
+                user="user"
+                closeModal={forgotEmailHandler}
+                otpShow={otpHandler}
+              />
             </div>,
             document.getElementById("root-modal") as HTMLElement
           )}
-
-
         </>
       )}
 
-        {showOtp && (
+      {showOtp && (
         <>
           {ReactDOM.createPortal(
             <Backdrop />,
@@ -66,7 +62,11 @@ const UserLoginPage = () => {
 
           {ReactDOM.createPortal(
             <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-20">
-              <OtpPage userType="user-forgot-password" showChangePassword={changePasswordHandler} closeOtp={otpHandler} />
+              <OtpPage
+                userType="user-forgot-password"
+                showChangePassword={changePasswordHandler}
+                closeOtp={otpHandler}
+              />
             </div>,
             document.getElementById("root-modal") as HTMLElement
           )}
@@ -74,10 +74,10 @@ const UserLoginPage = () => {
       )}
 
       {showChangePassword && (
-        <ChangePassword userType="user"  closeModal={changePasswordHandler}   />
+        <ChangePassword userType="user" closeModal={changePasswordHandler} />
       )}
-      </>
-  )
-}
+    </>
+  );
+};
 
-export default UserLoginPage
+export default UserLoginPage;

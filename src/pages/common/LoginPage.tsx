@@ -6,7 +6,7 @@ import ChooseLogin from "../../components/common/ChooseLogin";
 const LoginPage = () => {
   return (
     <div className="bg-black">
-      <Navbar {...{ fixed: false }} />
+      <Navbar {...{ fixed: true }}/>
       <ChooseLogin/>
     </div>
 
