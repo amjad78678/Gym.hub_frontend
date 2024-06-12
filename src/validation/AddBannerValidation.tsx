@@ -3,10 +3,10 @@ import * as Yup from "yup";
 export const AddBannerValidation = Yup.object().shape({
   bannerImage: Yup.mixed()
     .required("Image is required")
-    .test("fileSize", "File size must be less than 2MB", (value) => {
+    .test("fileSize", "File size must be less than 4MB", (value) => {
       if (!value || typeof value === "string") return true;
       if (value instanceof File) {
-        return value.size <= 3 * 1024 * 1024;
+        return value.size <= 4 * 1024 * 1024;
       }
       return false;
     })
