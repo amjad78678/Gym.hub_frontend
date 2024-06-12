@@ -5,22 +5,16 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 const ChooseLogin = () => {
-
-const {uLoggedIn}= useSelector((state: RootState)=>state.auth)
-const navigate=useNavigate()
-  useEffect(()=>{
-
-
-   if(uLoggedIn){
-    navigate('/')
-   }
-
-
-  },[navigate,uLoggedIn])
-
+  const { uLoggedIn } = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (uLoggedIn) {
+      navigate("/");
+    }
+  }, [navigate, uLoggedIn]);
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="bg-black text-white">
       <Container>
         <Row>
           <Col lg={6} className="text-center">
@@ -39,13 +33,16 @@ const navigate=useNavigate()
               enhance the overall customer experience.
             </h5>
 
-            <Link to={"/gym/gym-login"}>  <Button
-              className="my-8 text-center inline-flex justify-center px-28"
-              variant="danger"
-              size="lg"
-            >
-             Login
-            </Button></Link>
+            <Link to={"/gym/gym-login"}>
+              {" "}
+              <Button
+                className="my-8 text-center inline-flex justify-center px-28"
+                variant="danger"
+                size="lg"
+              >
+                Login
+              </Button>
+            </Link>
           </Col>
 
           <Col lg={6} className="text-center">
@@ -53,7 +50,8 @@ const navigate=useNavigate()
               For Gym Users
             </h1>
             <p className="text-center pt-2 text-md">
-            Unlock and Maximize Your Fitness Potential with Our Personalized Workout Platform.
+              Unlock and Maximize Your Fitness Potential with Our Personalized
+              Workout Platform.
             </p>
             <h5 className="text-center text-xl pt-4">
               Discover a new way to achieve your fitness goals with our
@@ -63,13 +61,16 @@ const navigate=useNavigate()
               active, we've got you covered.
             </h5>
 
-           <Link to={"/user-login"}> <Button
-              className="my-14 text-center inline-flex justify-center px-28"
-              variant="danger"
-              size="lg"
-            >
-              Login
-            </Button></Link>
+            <Link to={"/user-login"}>
+              {" "}
+              <Button
+                className="my-14 text-center inline-flex justify-center px-28"
+                variant="danger"
+                size="lg"
+              >
+                Login
+              </Button>
+            </Link>
           </Col>
         </Row>
       </Container>

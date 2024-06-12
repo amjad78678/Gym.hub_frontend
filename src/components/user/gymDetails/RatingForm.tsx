@@ -39,6 +39,8 @@ const RatingForm = ({
         toast.success(res.data.message);
         handleShowReview();
         refetchGymReviews();
+        refetchGymDetails();
+        refetchUserReview();
       }
     },
   });
@@ -153,7 +155,7 @@ const RatingForm = ({
                       color="primary"
                       className="py-3 my-8 mt-4 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl text-white"
                     >
-                      Rate now
+                      Edit now
                     </Button>
                   </div>
                 </div>
