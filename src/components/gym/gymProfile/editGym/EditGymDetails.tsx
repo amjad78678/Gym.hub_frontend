@@ -42,7 +42,7 @@ const EditGymDetails = ({
               <input
                 type="text"
                 name="gymName"
-                className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
+                className="w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
                 onChange={handleChange}
                 autoComplete="off"
                 onBlur={handleBlur}

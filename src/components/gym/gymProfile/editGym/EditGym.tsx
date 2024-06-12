@@ -18,8 +18,6 @@ import toast from "react-hot-toast";
 import { editGymProfile } from "@/api/gym";
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
-
-
 interface GymDetails {
   gymName: string;
   email: string;
@@ -58,8 +56,8 @@ interface iRootState {
   };
 }
 interface UserType {
- gym: GymDetails,
- refetch: () => void
+  gym: GymDetails;
+  refetch: () => void;
 }
 
 const EditGym: React.FC<UserType> = ({ gym, refetch }) => {
@@ -108,52 +106,50 @@ const EditGym: React.FC<UserType> = ({ gym, refetch }) => {
 
   return (
     <div>
-      <Container sx={{ py: 5 }}>
-        <Stepper
-          alternativeLabel
-          nonLinear
-          activeStep={activeStep}
-          sx={{ mb: 4 }}
-        >
-          {steps.map((step, index) => (
-            <Step
-              sx={{ color: "white" }}
-              key={step.label}
-              completed={step.completed}
-            >
-              <StepButton onClick={() => setActiveStep(index)}>
-                <p className="text-white">{step.label}</p>
-              </StepButton>
-            </Step>
-          ))}
-        </Stepper>
+      <Stepper
+        alternativeLabel
+        nonLinear
+        activeStep={activeStep}
+        sx={{ mb: 4 }}
+      >
+        {steps.map((step, index) => (
+          <Step
+            sx={{ color: "white" }}
+            key={step.label}
+            completed={step.completed}
+          >
+            <StepButton onClick={() => setActiveStep(index)}>
+              <p className="text-white">{step.label}</p>
+            </StepButton>
+          </Step>
+        ))}
+      </Stepper>
 
-        <Box>
+      <Box>
+        {
           {
-            {
-              0: (
-                <EditLocation
-                  {...{
-                    gym,
-                    setLatitude,
-                    setLongitude,
-                    latitude,
-                    longitude,
-                    isPending,
-                    handleSubmitEditDetails,
-                  }}
-                />
-              ),
-              1: (
-                <EditGymDetails
-                  {...{ gym, setDetails, handleSubmitEditDetails, isPending }}
-                />
-              ),
-              2: <EditGymImages {...{ gym, refetch }} />,
-            }[activeStep]
-          }
-        </Box>
-      </Container>
+            0: (
+              <EditLocation
+                {...{
+                  gym,
+                  setLatitude,
+                  setLongitude,
+                  latitude,
+                  longitude,
+                  isPending,
+                  handleSubmitEditDetails,
+                }}
+              />
+            ),
+            1: (
+              <EditGymDetails
+                {...{ gym, setDetails, handleSubmitEditDetails, isPending }}
+              />
+            ),
+            2: <EditGymImages {...{ gym, refetch }} />,
+          }[activeStep]
+        }
+      </Box>
     </div>
   );
 };

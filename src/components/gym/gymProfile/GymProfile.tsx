@@ -65,7 +65,7 @@ const GymProfile = ({ gym,refetch }) => {
         </div>
 
         <Container>
-          <div className="font-semibold my-2  h-10 shadow-2xl text-white bg-black rounded-sm w-full flex justify-center items-center gap-4">
+          <div className="font-semibold mt-4 mb-2  h-10 shadow-2xl text-white bg-black rounded-sm w-full flex justify-center items-center gap-4">
             <h1
               className={`cursor-pointer hover:underline ${
                 toggle === "myGym" && "underline"
