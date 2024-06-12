@@ -20,7 +20,7 @@ const GymDetailsPage = () => {
   });
 
   const { uLoggedIn } = useSelector((state: RootState) => state.auth);
-  const { data: isPossible } = useQuery({
+  const { data: isPossible,refetch: refetchUserReview } = useQuery({
     queryKey: ["isReviewPossible", gymId],
     queryFn: isReviewPossible,
     enabled: uLoggedIn,
@@ -63,6 +63,7 @@ const GymDetailsPage = () => {
             handleShowReview,
             gymId,
             userReview: isPossible?.data.isUserReviewed,
+            refetchUserReview,
             refetchGymReviews,
             refetchGymDetails,
           }}

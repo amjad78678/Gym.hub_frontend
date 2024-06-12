@@ -23,6 +23,7 @@ const RatingForm = ({
   gymId,
   userReview,
   refetchGymReviews,
+  refetchUserReview,
   refetchGymDetails,
 }) => {
   const [rating, setRating] = useState(0);
@@ -50,6 +51,7 @@ const RatingForm = ({
         handleShowReview();
         refetchGymReviews();
         refetchGymDetails();
+        refetchUserReview();
       }
     },
   });
