@@ -9,15 +9,28 @@ export const ProfileEditValidation = Yup.object().shape({
     .required("Email is required"),
   mobileNumber: Yup.string().matches(/^[0-9]{10}$/, "Invalid mobile number"),
   profilePic: Yup.mixed()
+    .nullable()
     .test("fileSize", "File size must be less than 2MB", (value) => {
-      if (!value || typeof value === "string") return true; // Allow empty file or string
+      if (
+        !value ||
+        typeof value === "string" ||
+        value === null ||
+        value === undefined
+      )
+        return true;
       if (value instanceof File) {
-        return value.size <= 2 * 1024 * 1024; // 2MB in bytes
+        return value.size <= 2 * 1024 * 1024;
       }
       return false;
     })
     .test("fileType", "Unsupported file type", (value) => {
-      if (!value || typeof value === "string") return true; // Allow empty file or string
+      if (
+        !value ||
+        typeof value === "string" ||
+        value === null ||
+        value === undefined
+      )
+        return true;
       if (value instanceof File) {
         return (
           value.type === "image/jpeg" ||

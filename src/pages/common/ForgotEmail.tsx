@@ -6,82 +6,62 @@ import React, { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
-const ForgotEmail = ({user, closeModal,otpShow }) => {
+const ForgotEmail = ({ user, closeModal, otpShow }) => {
+  const [email, setEmail] = useState("");
 
-    const [email,setEmail]=useState("")
-
- 
-    const {mutate: forgotPassMutation}=useMutation({
-        mutationFn:forgotPassword,
-        onSuccess:(res)=>{
-            console.log('iam kittiyathu',res)
-            if(res){
-                if(res.data.success){
-     
-                    closeModal()
-                    otpShow()
-                    toast.success(res.data.message)
-
-                }
-            }
-         
+  const { mutate: forgotPassMutation } = useMutation({
+    mutationFn: forgotPassword,
+    onSuccess: (res) => {
+      console.log("iam kittiyathu", res);
+      if (res) {
+        if (res.data.success) {
+          closeModal();
+          otpShow();
+          toast.success(res.data.message);
         }
-    })
-
-    const {mutate: gForgotPassMutation}=useMutation({
-      mutationFn:gForgotPassword,
-      onSuccess:(res)=>{
-          console.log('iam kittiyathu',res)
-          if(res){
-              if(res.data.success){
-   
-                  closeModal()
-                  otpShow()
-                  toast.success(res.data.message)
-
-              }
-          }
-       
       }
-  })
+    },
+  });
 
-    const {mutate: tForgotPassMutation}=useMutation({
-      mutationFn:tForgotPassword,
-      onSuccess:(res)=>{
-          console.log('iam kittiyathu',res)
-          if(res){
-              if(res.data.success){
-   
-                  closeModal()
-                  otpShow()
-                  toast.success(res.data.message)
-
-              }
-          }
-       
+  const { mutate: gForgotPassMutation } = useMutation({
+    mutationFn: gForgotPassword,
+    onSuccess: (res) => {
+      console.log("iam kittiyathu", res);
+      if (res) {
+        if (res.data.success) {
+          closeModal();
+          otpShow();
+          toast.success(res.data.message);
+        }
       }
-  })
+    },
+  });
 
-
-
-    const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-
-      if(user==="user"){
-
-        forgotPassMutation(email)
-
-      }else if(user==="gym"){
-        
-        gForgotPassMutation(email)
-        
-      }else if(user==="trainer"){
-
-        tForgotPassMutation(email)
-
+  const { mutate: tForgotPassMutation } = useMutation({
+    mutationFn: tForgotPassword,
+    onSuccess: (res) => {
+      console.log("iam kittiyathu", res);
+      if (res) {
+        if (res.data.success) {
+          closeModal();
+          otpShow();
+          toast.success(res.data.message);
+        }
       }
+    },
+  });
 
+  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (user === "user") {
+      forgotPassMutation(email);
+    } else if (user === "gym") {
+      gForgotPassMutation(email);
+    } else if (user === "trainer") {
+      tForgotPassMutation(email);
     }
+  };
 
   return (
     <div>
@@ -115,12 +95,12 @@ const ForgotEmail = ({user, closeModal,otpShow }) => {
               </h1>
               <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                 Remember your password?
-                <Link to={"/user-login"}
+                <span
+                  onClick={() => closeModal()}
                   className="text-blue-600 decoration-2 hover:underline font-medium"
-                  
                 >
                   Login here
-                </Link>
+                </span>
               </p>
             </div>
 
@@ -139,7 +119,7 @@ const ForgotEmail = ({user, closeModal,otpShow }) => {
                         type="email"
                         id="email"
                         name="email"
-                        onChange={(e) =>setEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value)}
                         className="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
                         required
                         aria-describedby="email-error"
@@ -156,7 +136,6 @@ const ForgotEmail = ({user, closeModal,otpShow }) => {
                   <button
                     type="submit"
                     className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
-                   
                   >
                     Reset password
                   </button>

@@ -32,10 +32,10 @@ const ProfileEditProfile = ({ selected, setSelected, refetch, userData }) => {
         username: userData.username,
         email: userData.email,
         mobileNumber: userData.mobileNumber ? userData.mobileNumber : "",
-        profilePic: userData.profilePic,
         oldPassword: "",
         newPassword: "",
         confirmPassword: "",
+        profilePic: null,
       }}
       validationSchema={ProfileEditValidation}
       onSubmit={(values) => {
@@ -59,110 +59,118 @@ const ProfileEditProfile = ({ selected, setSelected, refetch, userData }) => {
     >
       {({ setFieldValue, handleSubmit }) => (
         <Form onSubmit={handleSubmit}>
-          <div className="lg:w-2/3 w-full flex flex-col justify-center items-center lg:mx-auto  rounded-md">
-            <div className="lg:w-2/3 flex flex-col">
-              <img
-                className="rounded-xl mx-auto object-cover lg:w-2/3"
-                src={
-                  image
-                    ? URL.createObjectURL(image)
-                    : userData.profilePic.imageUrl
-                }
-                alt="Selected Profile Pic"
-              />
-              <input
-                type="file"
-                placeholder="Upload your profile picture"
-                name="profilePic"
-                accept="image/*"
-                className="border w-11/12 mx-auto sm:mx-0 py-1 px-2 border-gray-200 my-2 bg-gray-800 rounded-lg"
-                onChange={(e) => {
-                  if (e.currentTarget.files && e.currentTarget.files[0]) {
-                    console.log(e.currentTarget.files[0]);
-                    setFieldValue("profilePic", e.currentTarget.files[0]);
-                    setImage(e.currentTarget.files[0]);
-                  }
-                }}
-              />
+          <div className="w-full flex flex-col justify-center items-center lg:mx-auto  rounded-md">
+            <div className="flex flex-col">
+              <div className="grid lg:grid-cols-2">
+                <div>
+                  <img
+                    className="rounded-xl mx-auto object-cover lg:w-2/3"
+                    src={
+                      image
+                        ? URL.createObjectURL(image)
+                        : userData.profilePic.imageUrl
+                    }
+                    alt="Selected Profile Pic"
+                  />
+                  <input
+                    type="file"
+                    placeholder="Upload your profile picture"
+                    name="profilePic"
+                    accept="image/*"
+                    className="border w-11/12 mx-auto sm:mx-0 py-1 px-2 border-gray-200 my-2 bg-gray-800 rounded-lg"
+                    onChange={(e) => {
+                      if (e.currentTarget.files && e.currentTarget.files[0]) {
+                        console.log(e.currentTarget.files[0]);
+                        setFieldValue("profilePic", e.currentTarget.files[0]);
+                        setImage(e.currentTarget.files[0]);
+                      }
+                    }}
+                  />
 
-              <ErrorMessage
-                name="profilePic"
-                component="div"
-                className="text-red-500"
-              />
-              <Field
-                type="text"
-                placeholder="Enter your name"
-                name="username"
-                className=" border py-1 px-2 mx-3 sm:mx-0 border-gray-200 my-2 bg-gray-800 rounded-lg "
-              />
-              <ErrorMessage
-                name="username"
-                component="div"
-                className="text-red-500"
-              />
-              <Field
-                type="text"
-                placeholder="Enter your email"
-                name="email"
-                className=" border py-1 px-2 mx-3 sm:mx-0 border-gray-200 my-2 bg-gray-800 rounded-lg"
-                readOnly
-              />
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="text-red-500"
-              />
-              <Field
-                type="text"
-                placeholder="Enter your mobile number"
-                name="mobileNumber"
-                className=" border py-1 px-2 mx-3 sm:mx-0 border-gray-200 my-2 bg-gray-800 rounded-lg "
-              />
-              <ErrorMessage
-                name="mobileNumber"
-                component="div"
-                className="text-red-500"
-              />
-              <Field
-                type="password"
-                name="oldPassword"
-                placeholder="Enter your old password"
-                className=" border py-1 px-2 mx-3 sm:mx-0 border-gray-200 my-2 bg-gray-800 rounded-lg "
-              />
-              <ErrorMessage
-                name="oldPassword"
-                component="div"
-                className="text-red-500"
-              />
-              <Field
-                type="password"
-                name="newPassword"
-                placeholder="Enter your new password"
-                className=" border py-1 px-2 mx-3 sm:mx-0 border-gray-200 my-2 bg-gray-800 rounded-lg "
-              />
-              <ErrorMessage
-                name="newPassword"
-                component="div"
-                className="text-red-500"
-              />
-              <Field
-                type="password"
-                name="confirmPassword"
-                placeholder="Enter your confirm new password"
-                className=" border py-1 px-2 mx-3 sm:mx-0 border-gray-200 my-2 bg-gray-800 rounded-lg "
-              />
-              <ErrorMessage
-                name="confirmPassword"
-                component="div"
-                className="text-red-500"
-              />
+                  <ErrorMessage
+                    name="profilePic"
+                    component="div"
+                    className="text-red-500"
+                  />
+                </div>
+
+                <div>
+                  <Field
+                    type="text"
+                    placeholder="Enter your name"
+                    name="username"
+                    className=" border  w-11/12 py-1 px-2  sm:mx-0 border-gray-200 my-2 bg-gray-800 rounded-lg "
+                  />
+                  <ErrorMessage
+                    name="username"
+                    component="div"
+                    className="text-red-500"
+                  />
+                  <Field
+                    type="text"
+                    placeholder="Enter your email"
+                    name="email"
+                    className=" border w-11/12 py-1 px-2  sm:mx-0 border-gray-200 my-2 bg-gray-800 rounded-lg"
+                    readOnly
+                  />
+                  <ErrorMessage
+                    name="email"
+                    component="div"
+                    className="text-red-500"
+                  />
+                  <Field
+                    type="text"
+                    placeholder="Enter your mobile number"
+                    name="mobileNumber"
+                    className=" border w-11/12 py-1 px-2  sm:mx-0 border-gray-200 my-2 bg-gray-800 rounded-lg "
+                  />
+                  <ErrorMessage
+                    name="mobileNumber"
+                    component="div"
+                    className="text-red-500"
+                  />
+                  <Field
+                    type="password"
+                    name="oldPassword"
+                    placeholder="Enter your old password"
+                    className=" border w-11/12 py-1 px-2  sm:mx-0 border-gray-200 my-2 bg-gray-800 rounded-lg "
+                  />
+                  <ErrorMessage
+                    name="oldPassword"
+                    component="div"
+                    className="text-red-500"
+                  />
+                  <Field
+                    type="password"
+                    name="newPassword"
+                    placeholder="Enter your new password"
+                    className="border w-11/12 py-1 px-2  sm:mx-0 border-gray-200 my-2 bg-gray-800 rounded-lg "
+                  />
+                  <ErrorMessage
+                    name="newPassword"
+                    component="div"
+                    className="text-red-500"
+                  />
+                  <Field
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Enter your confirm new password"
+                    className=" border w-11/12 py-1 px-2  sm:mx-0 border-gray-200 my-2 bg-gray-800 rounded-lg "
+                  />
+                  <ErrorMessage
+                    name="confirmPassword"
+                    component="div"
+                    className="text-red-500"
+                  />
+                </div>
+              </div>
+
               <button
                 type="submit"
                 disabled={isPending}
                 className={`relative bg-blue-500  ${
                   isPending ? "opacity-50" : ""
-                }  text-white my-2 py-2 px-2 mx-3 sm:mx-0 rounded-lg`}
+                }  text-white my-2 py-2 px-2 w-11/12 mx-auto sm:mx-0 rounded-lg`}
               >
                 <span>{isPending ? "Updating..." : "Update Profile"}</span>
                 {isPending && (
