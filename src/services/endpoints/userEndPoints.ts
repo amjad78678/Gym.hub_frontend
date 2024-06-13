@@ -37,6 +37,7 @@ const userRoutes={
     uploadChatFiles: '/upload_chat_files',
     fetchMaxPriceGym: '/max_price_gym',
     fetchMaxPriceTrainer: '/max_price_trainer',
+    setClientBrowserToken: '/set_client_token'
 
 }   
 

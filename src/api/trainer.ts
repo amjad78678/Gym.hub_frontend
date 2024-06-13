@@ -196,3 +196,13 @@ export const fetchDashboard = async()=>{
   }
 }
 
+export const setTrainerBrowserToken = async (token: string)=>{
+  try {
+    const response = await Api.post(trainerRoutes.setTrainerBrowserToken, { token });
+    return response;
+} catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+}
+}
+

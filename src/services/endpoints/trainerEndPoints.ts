@@ -19,6 +19,7 @@ const trainerRoutes = {
   fetchTrainerData: "/fetch_trainer_data",
   editProfile: "/edit_profile",
   fetchDashboard: "/fetch_dashboard",
+  setTrainerBrowserToken: "/set_trainer_browser_token",
 };
 
 export default trainerRoutes;
