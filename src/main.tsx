@@ -12,15 +12,6 @@ import { SocketProvider } from "./utils/context/socketContext";
 const queryClient = new QueryClient();
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("/firebase-messaging-sw.js")
-    .catch((error) => {
-      console.log(error.message);
-    });
-}
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <>
     <Toaster position="top-right" reverseOrder={false} />
