@@ -86,9 +86,9 @@ const GymList = ({
                 (gym) =>
                   !gym.isDeleted &&
                   !gym.isBlocked && (
-                    <>
-                      <GymCard key={gym._id} gym={gym} />
-                    </>
+                    <div key={gym._id}>
+                      <GymCard  gym={gym} />
+                    </div>
                   )
               )}
             </InfiniteScroll>
