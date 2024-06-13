@@ -9,13 +9,22 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { SocketProvider } from "./utils/context/socketContext";
-
 const queryClient = new QueryClient();
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("/firebase-messaging-sw.js")
+    .catch((error) => {
+      console.log(error.message);
+    });
+}
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <>
     <Toaster position="top-right" reverseOrder={false} />
-    <GoogleOAuthProvider clientId="517088487962-381ms18c3e4okdi43c1sbf8komek0ekb.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <Provider store={store}>
         <SocketProvider>
           <QueryClientProvider client={queryClient}>

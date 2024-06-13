@@ -29,3 +29,10 @@ messaging.onBackgroundMessage((payload) => {
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
+
+self.addEventListener("notificationclick", function (event) {
+  event.notification.close();
+
+  // Open the specified URL when the notification is clicked
+  event.waitUntil(clients.openWindow("https://gym-hub-frontend.vercel.app/"));
+});
