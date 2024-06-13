@@ -4,13 +4,13 @@ importScripts(
 );
 
 firebase.initializeApp({
-  apiKey: import.meta.env.VITE_F_API_KEY,
-  authDomain: import.meta.env.VITE_F_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_F_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_F_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_F_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_F_APP_ID,
-  measurementId: import.meta.env.VITE_F_MEASUREMENT_ID,
+  apiKey: "AIzaSyCeW1lTIwAweQjGtGkBf0-isBQ68-9hHYA",
+  authDomain: "gymhub-push-notification.firebaseapp.com",
+  projectId: "gymhub-push-notification",
+  storageBucket: "gymhub-push-notification.appspot.com",
+  messagingSenderId: "15808835291",
+  appId: "1:15808835291:web:5d8c7e438888643af7a6fe",
+  measurementId: "G-D418DK1NY1",
 });
 
 const messaging = firebase.messaging();
