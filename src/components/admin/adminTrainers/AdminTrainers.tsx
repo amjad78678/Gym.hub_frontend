@@ -21,7 +21,6 @@ const AdminTrainers = ({trainersData,refetch}) => {
     }
   }, [trainersData]);
 
-  console.log("iam active trainers", activeTrainers);
 
   const columns: any = useMemo(
     () => [

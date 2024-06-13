@@ -50,7 +50,6 @@ function GymNavbar({ fixed }) {
 
   const isScrolled = useScroll();
 
-  console.log("isscrolling", isScrolled);
 
   const position = fixed ? "fixed" : "static";
 

@@ -34,7 +34,6 @@ const AddCouponModal = ({ open, setOpen, refetch }) => {
     },
     validationSchema: AddCouponValidation,
     onSubmit: (values) => {
-      console.log("iam values from formik", values);
       mutate(values);
     },
   });

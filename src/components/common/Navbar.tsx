@@ -37,7 +37,6 @@ function Navbar({ fixed }) {
   const { status, mutate: handleLogout } = useMutation({
     mutationFn: userLogout,
     onSuccess: (res) => {
-      console.log(res);
       dispatch(setUserLogout());
       navigate("/login");
     },

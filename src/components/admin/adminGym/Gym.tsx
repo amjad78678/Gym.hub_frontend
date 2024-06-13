@@ -25,9 +25,7 @@ const Gym = () => {
     queryFn: getGymDetails,
   });
 
-  console.log("gyms", gyms);
   const [gymList, setGymList] = useState([]);
-  console.log("iamgyms", gymList);
 
   useEffect(() => {
     if (gyms) {
@@ -38,7 +36,6 @@ const Gym = () => {
   const { mutate: DeleteGym } = useMutation({
     mutationFn: deleteGym,
     onSuccess: (data) => {
-      console.log(data);
       refetch();
     },
   });
@@ -67,13 +64,11 @@ const Gym = () => {
   const { mutate: handleBlockAction } = useMutation({
     mutationFn: blockAdminAction,
     onSuccess: (data) => {
-      console.log(data);
       refetch();
     },
   });
 
   const handleApproval = (gymId) => {
-    console.log("gymIdappro", gymId);
     MySwal.fire({
       title: "Are you sure you want to verify this gym?",
       text: "You won't be able to revert this!",

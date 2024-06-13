@@ -16,7 +16,6 @@ const UsersActions = ({
 }) => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  console.log("iam selectedrow", selectedRowId);
 
   const { mutate: updateUserActions } = useMutation({
     mutationFn: updateUserAction,
@@ -42,8 +41,6 @@ const UsersActions = ({
     setTimeout(() => {
       try {
         const { isDeleted, isBlocked, _id } = params.row;
-        console.log("iamparamsrow", params.row);
-        console.log(isDeleted, isBlocked, _id);
         updateUserActions({ id: _id, isBlocked, isDeleted });
       } catch (error) {
         console.error("Error updating user:", error);

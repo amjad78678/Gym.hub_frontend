@@ -12,8 +12,6 @@ const Users = ({ usersData, refetch }) => {
   const [rowId, setRowId] = useState<string>("");
   const [selectedRowId, setSelectedRowId] = useState<string>("");
   const [activeUsers, setActiveUsers] = useState([]);
-  console.log("iamrowId", rowId);
-  console.log("iamselectedRowId", selectedRowId);
 
   useEffect(() => {
     if (usersData) {
@@ -21,7 +19,6 @@ const Users = ({ usersData, refetch }) => {
     }
   }, [usersData]);
 
-  console.log("iam active users", activeUsers);
 
   const columns: any = useMemo(
     () => [

@@ -24,7 +24,6 @@ const AdminGymDetails = () => {
     queryFn: fetchGymWithId,
   });
 
-  console.log("iam gymData", gymData);
 
   return gymData ? (
     <Container>
