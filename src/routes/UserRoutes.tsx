@@ -4,9 +4,9 @@ import PaymentSuccess from "@/components/user/payments/PaymentSuccess";
 import PaymentFailure from "@/components/user/payments/PaymentFailure";
 import UserProtect from "@/components/user/common/UserProtect";
 import LoadingSkeleton from "@/components/user/skeletons/LoadingSkeleton";
-import VideoCallPage from "@/pages/common/VideoCallPage";
+import LoginPage from "@/pages/common/LoginPage";
 
-const LoginPage = lazy(() => import("../pages/common/LoginPage"));
+const VideoCallPage = lazy(() => import("@/pages/common/VideoCallPage"));
 const UserLoginPage = lazy(() => import("../pages/user/UserLoginPage"));
 const UserRegisterPage = lazy(() => import("../pages/user/UserRegisterPage"));
 const UserHomePage = lazy(() => import("@/pages/user/UserHomePage"));
