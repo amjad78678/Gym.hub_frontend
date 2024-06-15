@@ -1,9 +1,6 @@
 import * as Yup from "yup";
 
 export const GymSignupValidation = Yup.object({
-
-
-
   gymName: Yup.string()
     .required("Gym name is required")
     .min(4, "Gym name must be at least 4 characters"),

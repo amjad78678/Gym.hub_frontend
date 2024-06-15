@@ -1,8 +1,12 @@
 import { Paper } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
-import { useDropzone } from "react-dropzone";
+import Dropzone, { useDropzone } from "react-dropzone";
 import { setImages } from "@/redux/slices/appSlice";
 import { useDispatch } from "react-redux";
+import { Field, Form, Formik } from "formik";
+import { gymRegisterGymImagesValidation } from "@/validation/GymRegisterGymImagesValidation";
+import * as Yup from "yup";
+import toast from "react-hot-toast";
 
 const AddGymImages = () => {
   const dispatch = useDispatch();
@@ -16,34 +20,17 @@ const AddGymImages = () => {
     });
   };
 
-  
-
-
-
   useEffect(() => {
-
-
     if (files.length > 0) {
       dispatch(setImages(files));
-      console.log('iam files ',files)
-    } 
+      console.log("iam files ", files);
+    }
   }, [files, dispatch]);
-
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    setFiles(acceptedFiles);
-    console.log(acceptedFiles);
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: { "image/*": [] },
-  });
 
   return (
     <div className="min-h-[320px]">
       <Paper
         sx={{
-          background: "black",
           cursor: "pointer",
           color: "#bdbdbd",
           border: "1px dashed #ccc",
@@ -52,17 +39,78 @@ const AddGymImages = () => {
           },
         }}
       >
-        <div className="p-4" {...getRootProps()}>
-          <input type="text" {...getInputProps()} />
+        <Formik
+          initialValues={{ files: [] }}
+          validationSchema={gymRegisterGymImagesValidation}
+          onSubmit={(values) => {
+            console.log("submitting");
+            console.log("iam value file", values);
+            setFiles(values.files);
+          }}
+        >
+          {({
+            setFieldValue,
+            errors,
+            touched,
+            values,
+            setErrors,
+            submitForm,
+            resetForm,
+          }) => (
+            <>
+              <Form>
+                <Field name="files">
+                  {({ field }) => (
+                    <Dropzone
+                      accept={{
+                        "image/*": [".jpeg", ".png", ".jpg", ".gif"],
+                      }}
+                      onDrop={(acceptedFiles) => {
+                        resetForm(); // Reset form state and errors
+                        const newValue = [...acceptedFiles];
+                        console.log("iam dropped", newValue);
+                        setFieldValue("files", newValue);
+                        if (!errors.files) {
+                          setTimeout(() => {
+                            submitForm();
+                          }, 0);
+                        }
+                      }}
+                    >
+                      {({ getRootProps, getInputProps, isDragActive }) => (
+                        <div className="p-4 bg-black" {...getRootProps()}>
+                          <input type="text" {...getInputProps()} />
 
-          {isDragActive ? (
-            <p className="text-green-500">Drop the files here</p>
-          ) : (
-            <p>Drag and drop exactly 4 images, then only you can finish your registration </p>
+                          {isDragActive ? (
+                            <p className="text-green-500">
+                              Drop the files here
+                            </p>
+                          ) : (
+                            <p>
+                              Drag and drop exactly 4 images, then only you can
+                              finish your registration{" "}
+                            </p>
+                          )}
+
+                          <em>
+                            images with *.jpeg *.png or *.jpg extension will be
+                            accepted{" "}
+                          </em>
+                        </div>
+                      )}
+                    </Dropzone>
+                  )}
+                </Field>
+              </Form>
+
+              {errors.files && (
+                <div className="text-red-500 bg-black font-mono flex justify-center">
+                  <div>{errors.files}</div>
+                </div>
+              )}
+            </>
           )}
-
-          <em>images with *.jpeg *.png or *.jpg extension will be accepted </em>
-        </div>
+        </Formik>
       </Paper>
 
       {files.map((fileObject, index) => (
@@ -97,7 +145,6 @@ const AddGymImages = () => {
           </button>
         </div>
       ))}
-
     </div>
   );
 };

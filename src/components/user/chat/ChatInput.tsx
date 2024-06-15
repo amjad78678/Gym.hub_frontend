@@ -187,7 +187,7 @@ const ChatInput = ({
           }`}
           disabled={imageSendLoading}
         />
-        <span>
+        <span> 
           <Formik
             initialValues={{ files: [] }}
             validationSchema={chatDropZoneValidation}

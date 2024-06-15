@@ -237,7 +237,7 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
         </Stepper>
 
         <Box>
-          {
+          { 
             {
               0: <AddLocation />,
               1: <AddDetails />,
