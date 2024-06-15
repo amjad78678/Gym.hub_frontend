@@ -173,9 +173,11 @@ function Navbar({ fixed }) {
                   </p>
                 </>
               ) : (
-                <p className="font-bold text-lg font-serif btn btn-danger">
-                  <Link to="/login">Login</Link>
-                </p>
+                <Link to="/login">
+                  <button className="font-bold w-full text-lg font-serif btn btn-danger">
+                    <span>Login</span>
+                  </button>
+                </Link>
               )}
             </div>
           </div>
