@@ -30,7 +30,6 @@ const UserLoginPage = () => {
     <>
       <div className="bg-black">
         <Navbar {...{ fixed: true }} />
-
         <UserLogin showForgotEmail={forgotEmailHandler} />
       </div>
       {showForgotEmail && (

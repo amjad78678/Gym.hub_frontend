@@ -11,7 +11,8 @@ const errorHandle = (error: Error | AxiosError) => {
     const errorResponse = axiosError.response.data as iErrorResponse;
 
     if (errorResponse.message.includes("Not authorized")) {
-      toast.error("Please login before proceeding");
+      // toast.error("Please login before proceeding");
+      console.log("Please login before proceeding now token has expired");
     } else if (errorResponse.message) {
       toast.error(errorResponse.message);
     } else {

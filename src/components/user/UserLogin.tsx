@@ -16,11 +16,11 @@ const G_PASSWORD = import.meta.env.VITE_GOOGLE_PASSWORD;
 interface UserLoginProps {
   showForgotEmail: () => void;
 }
-const UserLogin: React.FC<UserLoginProps> = ({showForgotEmail}) => {
+const UserLogin: React.FC<UserLoginProps> = ({ showForgotEmail }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { uLoggedIn } = useSelector((state:RootState) => state.auth);
+  const { uLoggedIn } = useSelector((state: RootState) => state.auth);
   useEffect(() => {
     if (uLoggedIn) {
       navigate("/");
@@ -57,17 +57,13 @@ const UserLogin: React.FC<UserLoginProps> = ({showForgotEmail}) => {
           password: G_PASSWORD,
         };
 
-        console.log("iam ayakkunnna data", data);
-
         const response2 = await userLogin(data);
         if (response2) {
-          console.log("iam response20", response2);
           dispatch(setUserLogin());
           dispatch(
             setUserDetails({
               name: response2.data.message.username,
               profilePic: response2.data.message.profilePic.imageUrl,
-              token: response2.data.token,
               userId: response2.data.message._id,
             })
           );
@@ -90,8 +86,6 @@ const UserLogin: React.FC<UserLoginProps> = ({showForgotEmail}) => {
     userLoginMutate(data);
   };
 
-  // const {uLoggedIn} = useSelector((state: iState)=>state.auth)
-
   const { status: userLoginStatus, mutate: userLoginMutate } = useMutation({
     mutationFn: userLogin,
     onSuccess: (response) => {
@@ -102,7 +96,6 @@ const UserLogin: React.FC<UserLoginProps> = ({showForgotEmail}) => {
         const data = {
           name: response.data.message.username,
           profilePic: response.data.message.profilePic.imageUrl,
-          token: response.data.token,
           userId: response.data.message._id,
         };
 
@@ -150,8 +143,8 @@ const UserLogin: React.FC<UserLoginProps> = ({showForgotEmail}) => {
                         {" "}
                         Password{" "}
                       </label>
-                      <a onClick={()=>showForgotEmail()}
-                       
+                      <a
+                        onClick={() => showForgotEmail()}
                         title=""
                         className="text-sm font-semibold text-blue-500 hover:underline"
                       >

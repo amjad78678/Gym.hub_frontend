@@ -38,21 +38,26 @@ Api.interceptors.response.use(
   }
 );
 
-Api.interceptors.request.use(
-  (config) => {
-    const userDetails = JSON.parse(localStorage.getItem("userDetails") as string);
-    const userToken = userDetails?.token;
+// Api.interceptors.request.use(
+//   (config) => {
+//     const userDetails = JSON.parse(
+//       localStorage.getItem("userDetails") as string
+//     );
+//     const userToken = userDetails?.token;
+//     const userRefreshToken = userDetails?.refreshToken;
 
-    if (userToken) {
-      config.headers["Authorization"] = `Bearer ${userToken}`;
-    }
+//     if (userToken) {
+//       config.headers[
+//         "Authorization"
+//       ] = `Bearer ${userToken} ${userRefreshToken}`;
+//     }
 
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
 
 export const signUp = async (userData: userFormData) => {
   try {
@@ -104,10 +109,22 @@ export const userLogout = async () => {
   }
 };
 
-export const fetchNearGymList = async ({ latitude, longitude, page,search,sliderValue }) => {
+export const fetchNearGymList = async ({
+  latitude,
+  longitude,
+  page,
+  search,
+  sliderValue,
+}) => {
   try {
     const response = await Api.get(
-      userRoutes.fetchNearGymList(latitude, longitude,page,search,sliderValue)
+      userRoutes.fetchNearGymList(
+        latitude,
+        longitude,
+        page,
+        search,
+        sliderValue
+      )
     );
     return response;
   } catch (error) {
@@ -248,9 +265,16 @@ export const fetchSubscriptions = async () => {
   }
 };
 
-export const fetchTrainers =  async ({page,search,sliderValue,experience}) => {
+export const fetchTrainers = async ({
+  page,
+  search,
+  sliderValue,
+  experience,
+}) => {
   try {
-    const response = await Api.get(userRoutes.fetchTrainers(page,search,sliderValue,experience));
+    const response = await Api.get(
+      userRoutes.fetchTrainers(page, search, sliderValue, experience)
+    );
     return response;
   } catch (error) {
     const err: Error = error as Error;
@@ -410,7 +434,7 @@ export const fetchBannersData = async () => {
   }
 };
 
-export const fileUploadChat = async (file: any) =>{
+export const fileUploadChat = async (file: any) => {
   try {
     const response = await Api.post(userRoutes.uploadChatFiles, file);
     return response;
@@ -418,34 +442,36 @@ export const fileUploadChat = async (file: any) =>{
     const err: Error = error as Error;
     return errorHandle(err);
   }
-}
+};
 
-export const fetchMaxPriceGym = async () =>{
+export const fetchMaxPriceGym = async () => {
   try {
-    const response = await Api.get(userRoutes.fetchMaxPriceGym)
+    const response = await Api.get(userRoutes.fetchMaxPriceGym);
     return response;
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
   }
-}
+};
 
-export const fetchMaxPriceTrainer = async () =>{
+export const fetchMaxPriceTrainer = async () => {
   try {
-    const response = await Api.get(userRoutes.fetchMaxPriceTrainer)
+    const response = await Api.get(userRoutes.fetchMaxPriceTrainer);
     return response;
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
   }
-}
+};
 
-export const setClientBrowserToken = async (token: string)=>{
+export const setClientBrowserToken = async (token: string) => {
   try {
-    const response = await Api.post(userRoutes.setClientBrowserToken, { token });
+    const response = await Api.post(userRoutes.setClientBrowserToken, {
+      token,
+    });
     return response;
-} catch (error) {
+  } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
-}
-}
+  }
+};
