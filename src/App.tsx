@@ -19,7 +19,6 @@ function App() {
   const { uLoggedIn, tLoggedIn } = useSelector(
     (state: RootState) => state.auth
   );
-
   useEffect(() => {
     onMessage(messaging, (payload) => {
       console.log("payload", payload);
@@ -33,9 +32,12 @@ function App() {
     try {
       const token = await getNotificationToken();
       if (token) {
-        await setClientBrowserToken(token as string);
-        await setTrainerBrowserToken(token as string);
-        console.log("setted token in db");
+        const currentPath = window.location.pathname;
+        if (currentPath.split("/").includes("trainer")) {
+          await setTrainerBrowserToken(token as string);
+        } else {
+          await setClientBrowserToken(token as string);
+        }
       } else {
         console.log("no token getted");
       }
