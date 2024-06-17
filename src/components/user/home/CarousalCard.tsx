@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const CarousalCard = ({gym}) => {
 
-    console.log('iam gym',gym)
+    
 
   return (
     !gym.isDeleted && (

@@ -14,9 +14,9 @@ const ProfileWalletHistory = ({
     refetch();
   }, []);
 
-  console.log(userData.walletHistory.length);
+  
   if (userData.walletHistory.length) {
-    console.log("length und");
+    
   }
 
   return userData.walletHistory.length ? (

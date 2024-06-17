@@ -34,7 +34,7 @@ const EditCouponModal = ({ editOpen, setEditOpen, selectedRow, refetch }) => {
     },
     validationSchema: AddCouponValidation,
     onSubmit: (values) => {
-      console.log("iam values from formik", values);
+      
       const obj = {
         ...values,
         couponId: selectedRow?._id,

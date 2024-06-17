@@ -10,7 +10,7 @@ const WorkoutsPage = () => {
     queryFn: getWorkoutsBodyList,
   });
 
-  console.log("workoutList", workoutList);
+  
 
   return isLoading || !workoutList ? (
     <Loader />

@@ -19,7 +19,7 @@ const GeoCoder = () => {
 
   geocoder.on("result", (e) => {
 
-    console.log('geocoderresult',e.result);
+    
     const coords = e.result.geometry.coordinates;
     dispatch(setLongitude(coords[0]));
     dispatch(setLatitude(coords[1]));

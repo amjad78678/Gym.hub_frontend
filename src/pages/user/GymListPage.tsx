@@ -54,7 +54,7 @@ const GymListPage = () => {
   }, [gymData]);
 
   const fetchMoreData = () => {
-    console.log("fetch more data", page);
+    
     setIsLoadingMore(true);
     setPage((prevPage) => prevPage + 1);
   };

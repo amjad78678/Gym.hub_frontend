@@ -34,7 +34,7 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
           `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${response.access_token}`
         );
 
-        console.log(res.data);
+        
 
         const obj = {
           imageUrl: res.data.picture,
@@ -63,7 +63,7 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
           navigate("/");
         }
       } catch (error) {
-        console.log(error);
+        
       }
     },
   });
@@ -80,7 +80,7 @@ const UserRegister: React.FC<UserType> = ({ setShowOtp }) => {
     },
     validationSchema: UserSignupValidation,
     onSubmit: async (values) => {
-      console.log("submitting button");
+      
       if (values.password && !values.confirmpassword) {
         toast.error("Please enter confirm password");
       } else {

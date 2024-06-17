@@ -19,7 +19,7 @@ const GymCheckoutPage = () => {
     setUserWallet(checkout?.data.userWallet);
   }, [checkout]);
 
-  console.log("couponData", couponData);
+  
   const handleShowCoupon = () => {
     setShowCoupon(!showCoupon);
   };

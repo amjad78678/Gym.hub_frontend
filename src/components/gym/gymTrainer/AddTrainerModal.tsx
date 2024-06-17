@@ -66,7 +66,7 @@ const AddTrainerModal = ({ open, setOpen, refetch }) => {
           }}
           validationSchema={AddTrainerValidation}
           onSubmit={(values) => {
-            console.log("iam submitted values", values);
+            
 
             const formData = new FormData();
             formData.append("name", values.name);

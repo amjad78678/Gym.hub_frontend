@@ -21,7 +21,7 @@ import { EditBannerValidation } from "@/validation/EditBannerValidation";
 import { BeatLoader } from "react-spinners";
 
 const AddBannerModal = ({ open, setOpen, refetch, modalType, selected }) => {
-  console.log("iam selected...............", selected);
+  
   const [image, setImage] = useState<File | null>(null);
   const { isPending: isPendingAdd, mutate } = useMutation({
     mutationFn: addBanner,
@@ -67,7 +67,7 @@ const AddBannerModal = ({ open, setOpen, refetch, modalType, selected }) => {
             }}
             validationSchema={AddBannerValidation}
             onSubmit={(values, { setSubmitting }) => {
-              console.log("valuesany", values);
+              
               const formData = new FormData();
               formData.append("title", values.title);
               formData.append("description", values.description);
@@ -160,7 +160,7 @@ const AddBannerModal = ({ open, setOpen, refetch, modalType, selected }) => {
             }}
             validationSchema={EditBannerValidation}
             onSubmit={(values, { setSubmitting }) => {
-              console.log("valuesany", values);
+              
               const formData = new FormData();
               formData.append("title", values.title);
               formData.append("description", values.description);

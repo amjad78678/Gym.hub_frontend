@@ -155,7 +155,7 @@ const SideList = ({ open, setOpen }) => {
   });
 
   const handleLogout = () => {
-    console.log("logout");
+    
     mutate();
   };
 

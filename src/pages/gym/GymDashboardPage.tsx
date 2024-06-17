@@ -16,7 +16,7 @@ const GymDashboardPage = () => {
     queryFn: fetchDashboardDetails,
   });
 
-  console.log("dashboardDetails", dashboardDetails);
+  
 
   return isLoading || isLoadingDetails || !dashboardDetails || !myGymData ? (
     <>

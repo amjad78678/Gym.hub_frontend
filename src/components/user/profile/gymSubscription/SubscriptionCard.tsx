@@ -3,7 +3,7 @@ import React from "react";
 
 const SubscriptionCard = ({ sub }) => {
   const cancelBtnHandler = () => {
-    console.log("helo");
+    
   };
   const diffDays = dayjs(sub.expiryDate).diff(dayjs(sub.date), "day");
 

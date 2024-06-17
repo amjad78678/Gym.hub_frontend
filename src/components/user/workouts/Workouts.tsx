@@ -21,13 +21,13 @@ const Workouts = ({ workoutList }) => {
     queryFn: getWorkoutDetails,
   });
 
-  console.log("workoutDetails", workoutDetails);
+  
   const [gifLoading, setGifLoading] = useState(true);
   const handleChange = (event: SelectChangeEvent<typeof part>) => {
     const {
       target: { value },
     } = event;
-    console.log(value);
+    
     setPart(value);
   };
   return (

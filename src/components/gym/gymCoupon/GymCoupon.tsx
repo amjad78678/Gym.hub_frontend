@@ -30,8 +30,8 @@ const GymCoupon = ({
   const [rowId, setRowId] = useState<string>("");
   const [selectedRowId, setSelectedRowId] = useState<string>("");
 
-  console.log("iamrowId", rowId);
-  console.log("iamselectedRowId", selectedRowId);
+  
+  
 
   const columns: any = useMemo(
     () => [

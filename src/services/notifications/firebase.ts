@@ -18,12 +18,12 @@ export const messaging = getMessaging(app);
 
 export const getNotificationToken = async () => {
   const permission = await Notification.requestPermission();
-  console.log("perm", permission);
+  
   if (permission === "granted") {
     const token = await getToken(messaging, { vapidKey: VAPID_KEY })
       .then(async (currentToken) => {
         if (currentToken) {
-          console.log("current token for client: ", currentToken);
+          
           return currentToken;
         } else {
           console.log(
@@ -33,11 +33,11 @@ export const getNotificationToken = async () => {
         }
       })
       .catch((err) => {
-        console.log("An error occurred while retrieving token. ", err);
+        
         return null;
       });
 
-    console.log("token", token);
+    
     return token;
   }
 };

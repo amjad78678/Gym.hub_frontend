@@ -29,8 +29,8 @@ const GymTrainersPage = () => {
     }
   }, [trainersData]);
 
-  console.log(trainers);
-  console.log("selectedRow", selectedRow);
+  
+  
 
   return isLoading || !trainers ? (
     <>

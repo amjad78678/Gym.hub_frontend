@@ -11,7 +11,7 @@ const GymProfilePage = () => {
     queryFn: fetchGymData,
   });
 
-  console.log(myGymData?.data.gymData);
+  
   return isLoading || !myGymData ? (
     <>
       <GymNavbar {...{ fixed: true }} />

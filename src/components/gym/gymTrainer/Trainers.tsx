@@ -16,7 +16,7 @@ const Trainers = ({
   refetch,
   setSelectedRow,
 }) => {
-  console.log("trainers", trainers);
+  
   const [activeTrainers, setActiveTrainers] = useState([]);
   useEffect(() => {
     if (trainers) {
@@ -27,8 +27,8 @@ const Trainers = ({
   const [rowId, setRowId] = useState<string>("");
   const [selectedRowId, setSelectedRowId] = useState<string>("");
 
-  console.log("iamrowId", rowId);
-  console.log("iamselectedRowId", selectedRowId);
+  
+  
 
   const columns: any = useMemo(
     () => [

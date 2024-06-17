@@ -17,7 +17,7 @@ const SubscriptionModal = ({
   trainer,
   setBookingTrainer,
 }) => {
-  console.log("setBookingTrainer", setBookingTrainer);
+  
 
   const { mutate: bookTrainerMutate } = useMutation({
     mutationFn: bookTrainer,
@@ -30,7 +30,7 @@ const SubscriptionModal = ({
 
         if (result.error) {
           const msg = result.error;
-          console.log(msg);
+          
         }
       }
     },

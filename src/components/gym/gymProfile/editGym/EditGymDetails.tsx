@@ -27,7 +27,7 @@ const EditGymDetails = ({
     initialValues: initialValues,
     validationSchema: GymProfileEditValidation,
     onSubmit: async (values) => {
-      console.log("submitting", values);
+      
       handleSubmitEditDetails(values);
     },
   });

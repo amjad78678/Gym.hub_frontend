@@ -34,7 +34,7 @@ const UserChat = () => {
   useEffect(() => {
     if (socket) {
       const debouncedHandleMessage = (data: iMessageType) => {
-        console.log("Received message:", data);
+        
         setMessages((prevMessages) => [...prevMessages, data]);
       };
 
@@ -71,7 +71,7 @@ const UserChat = () => {
     if (userChat) {
       setMessages(userChat.data.conversations);
     }
-    console.log("iam calling the first setMessages");
+    
   }, [userChat]);
   const { isLoading: trainerDataLoading, data: trainerData } = useQuery({
     queryKey: ["userTrainerData", trainerId ?? null],
@@ -86,7 +86,7 @@ const UserChat = () => {
     mutationFn: fileUploadChat,
     onSuccess: (res) => {
       if (res) {
-        console.log("iam success", res.data.messageData);
+        
 
         if (res.data.type === "image") {
           res.data.messageData.map((file: any) => {
@@ -136,7 +136,7 @@ const UserChat = () => {
   const handleSendMessage = () => {
     if (file.length > 0) {
       setImageSendLoading(true);
-      console.log("iam file length", file.length, file);
+      
       const formData = new FormData();
       file.map((fil) => {
         formData.append("files", fil);

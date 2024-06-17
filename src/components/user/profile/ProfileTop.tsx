@@ -24,7 +24,7 @@ const ProfileTop = ({ userData, refetch }) => {
   const [addMoneyOpen, setAddMoneyOpen] = useState(false);
   const handleCloseModalAddMoney = () => {
     setAddMoneyOpen(!addMoneyOpen);
-    console.log(addMoneyOpen);
+    
   };
   const divStyle = {
     backgroundImage:
@@ -36,7 +36,7 @@ const ProfileTop = ({ userData, refetch }) => {
   const { mutate: handleLogout } = useMutation({
     mutationFn: userLogout,
     onSuccess: (res) => {
-      console.log(res);
+      
       dispatch(setUserLogout());
       navigate("/login");
     },

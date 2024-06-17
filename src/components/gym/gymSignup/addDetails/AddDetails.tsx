@@ -30,7 +30,7 @@ const AddDetails = () => {
     initialValues: initialValues,
     validationSchema: GymSignupValidation,
     onSubmit: async (values) => {
-      console.log("val", values);
+      
     },
   });
 
@@ -47,7 +47,7 @@ const AddDetails = () => {
                 className=" w-full rounded-lg text-white p-1.5 bg-black border border-white my-2"
                 onChange={(e) => {
                   handleChange(e);
-                  console.log(errors);
+                  
                   if (!errors.gymName) {
                     dispatch(
                       setDetails({ ...values, gymName: e.target.value })

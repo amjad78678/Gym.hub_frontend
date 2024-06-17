@@ -79,7 +79,7 @@ const Dashboard = ({ dashboard }) => {
     },
   ];
 
-  console.log("paymentCountData", dashboard);
+  
   return (
     <div className="p-2">
       <Box

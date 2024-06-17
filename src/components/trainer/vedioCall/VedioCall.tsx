@@ -18,11 +18,11 @@ const VideoCall = () => {
 
   useLayoutEffect(() => {
     if (location.pathname.split("/").includes("trainer")) {
-      console.log("inside trainer");
+      
       setUserName(trainerDetails.name);
       setUniqueId(trainerDetails.trainerId);
     } else {
-      console.log("inside user");
+      
       setUserName(userDetails.name);
       setUniqueId(userDetails.userId);
     }
@@ -60,7 +60,7 @@ const VideoCall = () => {
 
   useEffect(() => {
     return () => {
-      console.log("Simulating component unmounting");
+      
       if (controllerRef.current) {
         controllerRef.current.destroy();
       }

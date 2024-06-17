@@ -119,11 +119,11 @@ const OtpPage: React.FC<UserType> = ({
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(otp);
+    
 
     const otpValue = otp.join("");
 
-    console.log(otpValue);
+    
 
     if (userType === "user") {
       const response = await userOtpVerify(parseInt(otpValue));

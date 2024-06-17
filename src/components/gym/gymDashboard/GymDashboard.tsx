@@ -50,7 +50,7 @@ const GymDashboard = ({ gym, dashboard }) => {
     },
   ];
 
-  console.log("dashboard in dashboard", dashboard);
+  
   return (
     dashboard && (
       <div className="">

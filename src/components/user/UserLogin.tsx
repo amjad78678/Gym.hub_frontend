@@ -50,7 +50,7 @@ const UserLogin: React.FC<UserLoginProps> = ({ showForgotEmail }) => {
           }
         );
 
-        console.log(res.data);
+        
 
         const data = {
           email: res.data.email,
@@ -71,7 +71,7 @@ const UserLogin: React.FC<UserLoginProps> = ({ showForgotEmail }) => {
           navigate("/");
         }
       } catch (error) {
-        console.log(error);
+        
       }
     },
   });
@@ -91,7 +91,7 @@ const UserLogin: React.FC<UserLoginProps> = ({ showForgotEmail }) => {
     onSuccess: (response) => {
       if (response) {
         navigate("/");
-        console.log("iam response in mutation", response);
+        
 
         const data = {
           name: response.data.message.username,

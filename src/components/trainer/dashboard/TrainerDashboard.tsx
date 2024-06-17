@@ -17,7 +17,7 @@ import dayjs from "dayjs";
 import React, { MouseEvent, useState } from "react";
 
 const TrainerDashboard = ({ dashboard }) => {
-  console.log("dashboard......", dashboard);
+  
   const [alignment, setAlignment] = useState("monthly");
   const handleChange = (
     event: MouseEvent<HTMLElement>,

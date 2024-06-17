@@ -23,7 +23,7 @@ const TrainerActions = ({
   const { mutate: trainerUpdateMutation } = useMutation({
     mutationFn: updateTrainer,
     onSuccess: (res) => {
-      console.log(res);
+      
       setSuccess(true);
       setRowId("");
       setSelectedRowId("");

@@ -23,7 +23,7 @@ const AddGymImages = () => {
   useEffect(() => {
     if (files.length > 0) {
       dispatch(setImages(files));
-      console.log("iam files ", files);
+      
     }
   }, [files, dispatch]);
 
@@ -43,8 +43,8 @@ const AddGymImages = () => {
           initialValues={{ files: [] }}
           validationSchema={gymRegisterGymImagesValidation}
           onSubmit={(values) => {
-            console.log("submitting");
-            console.log("iam value file", values);
+            
+            
             setFiles(values.files);
           }}
         >
@@ -68,7 +68,7 @@ const AddGymImages = () => {
                       onDrop={(acceptedFiles) => {
                         resetForm(); // Reset form state and errors
                         const newValue = [...acceptedFiles];
-                        console.log("iam dropped", newValue);
+                        
                         setFieldValue("files", newValue);
                         if (!errors.files) {
                           setTimeout(() => {

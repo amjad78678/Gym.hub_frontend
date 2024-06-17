@@ -16,7 +16,7 @@ const TrainerTrainee = () => {
     queryKey: ["fetchTrainerAlltrainerBookings"],
     queryFn: fetchTrainertrainerBookings,
   });
-  console.log("iam trainerBookings", trainerBookings);
+  
   const [rowId, setRowId] = useState<string>("");
   const [selectedRowId, setSelectedRowId] = useState<string>("");
   const [filteredTrainees, setFilteredTrainees] = useState([]);

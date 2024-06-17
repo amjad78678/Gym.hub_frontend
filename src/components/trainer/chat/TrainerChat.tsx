@@ -52,7 +52,7 @@ const TrainerChat = () => {
   useEffect(() => {
     if (socket) {
       const debounceHandleMessage = (data: iMessageType) => {
-        console.log("Received message:", data);
+        
         setMessages((prevMessages) => [...prevMessages, data]);
       };
 
@@ -99,7 +99,7 @@ const TrainerChat = () => {
     mutationFn: fileUploadChat,
     onSuccess: (res) => {
       if (res) {
-        console.log("iam success", res.data.messageData);
+        
 
         if (res.data.type === "image") {
           res.data.messageData.map((file: any) => {
@@ -151,7 +151,7 @@ const TrainerChat = () => {
     if (selectedChat) {
       if (file.length > 0) {
         setImageSendLoading(true);
-        console.log("iam file length", file.length, file);
+        
         const formData = new FormData();
         file.map((fil) => {
           formData.append("files", fil);

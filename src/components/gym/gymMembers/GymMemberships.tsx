@@ -15,7 +15,7 @@ const GymMemberships = ({ subscriptionData }) => {
   const [rowId, setRowId] = useState<string>("");
   const [selectedRowId, setSelectedRowId] = useState<string>("");
 
-  console.log("iamrowId", rowId);
+  
 
   useEffect(() => {
     if (subscriptionData) {

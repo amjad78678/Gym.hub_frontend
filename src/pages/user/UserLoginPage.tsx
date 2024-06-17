@@ -24,7 +24,7 @@ const UserLoginPage = () => {
     setShowForgotEmail(!showForgotEmail);
   };
 
-  console.log("iam show otp", showOtp);
+  
 
   return (
     <>

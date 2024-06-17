@@ -52,9 +52,9 @@ Api.interceptors.response.use(
   (error) => {
     if (error.response) {
       const { data } = error.response;
-      console.log("axio", data.message);
+      
     } else {
-      console.log(error);
+      
     }
     return Promise.reject(error);
   }
@@ -287,7 +287,7 @@ export const fetchDashboardDetails = async () => {
 
 export const editGymProfile = async (data: any) => {
   try {
-    console.log("iam passing to server", data);
+    
     const response = await Api.put(gymRoutes.editGymProfile, data);
     return response;
   } catch (error) {
@@ -298,7 +298,7 @@ export const editGymProfile = async (data: any) => {
 
 export const editImageProfile = async (data: any) => {
   try {
-    console.log("iam in api", data);
+    
     const response = await Api.patch(gymRoutes.editGymImages, data);
     return response;
   } catch (error) {

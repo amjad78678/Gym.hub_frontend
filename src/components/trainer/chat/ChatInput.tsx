@@ -188,7 +188,7 @@ const ChatInput = ({
             initialValues={{ files: [] }}
             validationSchema={chatDropZoneValidation}
             onSubmit={(values) => {
-              console.log("iam value file", values);
+              
               setFile(values.files);
             }}
             validate={(values) => {

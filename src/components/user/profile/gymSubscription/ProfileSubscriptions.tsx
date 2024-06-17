@@ -19,7 +19,7 @@ const ProfileSubscriptions = ({ selected, setSelected }) => {
     queryFn: fetchSubscriptions,
   });
 
-  console.log("iam subscriptionData", subscriptionData);
+  
 
   return !subscriptionData?.data.subscriptions.length ? (
     <div className="border h-full border-gray-800 flex flex-col justify-center items-center">

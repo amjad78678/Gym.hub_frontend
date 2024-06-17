@@ -2,8 +2,8 @@ import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 
 const PieChartPayment = ({ payments }) => {
-  console.log("dashboard", payments);
-  console.log("dashboardinPie", payments);
+  
+  
   const data = [
     {
       id: "Online Payment",
@@ -24,7 +24,7 @@ const PieChartPayment = ({ payments }) => {
       color: "hsl(192, 70%, 50%)",
     },
   ];
-  console.log("piedata", data);
+  
   return (
     <ResponsivePie
       data={data}

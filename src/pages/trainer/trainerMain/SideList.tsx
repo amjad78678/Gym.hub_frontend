@@ -103,7 +103,7 @@ const SideList: React.FC<SideListProps> = ({ open, setOpen }) => {
   });
 
   const [selectedLink, setSelectedLink] = useState("");
-  console.log("iam tr detis", trainerDetails);
+  
 
   const list = useMemo(
     () => [
@@ -159,7 +159,7 @@ const SideList: React.FC<SideListProps> = ({ open, setOpen }) => {
   });
 
   const handleLogout = () => {
-    console.log("logout");
+    
     mutate();
   };
 

@@ -30,9 +30,9 @@ Api.interceptors.response.use(
   (error) => {
     if (error.response) {
       const { data } = error.response;
-      console.log("axio", data.message);
+      
     } else {
-      console.log(error);
+      
     }
     return Promise.reject(error);
   }

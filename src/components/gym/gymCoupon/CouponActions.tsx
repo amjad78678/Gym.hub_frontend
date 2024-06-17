@@ -23,7 +23,7 @@ const CouponActions = ({
   const { mutate: couponUpdateMutation } = useMutation({
     mutationFn: updateCoupon,
     onSuccess: (res) => {
-      console.log(res);
+      
       setSuccess(true);
       setRowId("");
       setSelectedRowId("");

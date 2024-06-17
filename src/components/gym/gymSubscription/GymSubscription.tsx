@@ -37,7 +37,7 @@ const GymSubscription = () => {
   });
 
   const [subs, setSubs] = useState([]);
-  console.log("iam data", gymSubscriptionData);
+  
 
   useEffect(() => {
     if (gymSubscriptionData) {

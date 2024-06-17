@@ -11,7 +11,7 @@ const ProfileEditProfile = ({ selected, setSelected, refetch, userData }) => {
     setSelected(selected);
   }, []);
 
-  console.log("iam userdata kittunnu .........", userData);
+  
   const [image, setImage] = useState<File | null>(null);
   const { isPending, mutate } = useMutation({
     mutationFn: editProfile,
@@ -25,7 +25,7 @@ const ProfileEditProfile = ({ selected, setSelected, refetch, userData }) => {
     },
   });
 
-  console.log("iam userdaata", userData);
+  
   return (
     <Formik
       initialValues={{
@@ -39,7 +39,7 @@ const ProfileEditProfile = ({ selected, setSelected, refetch, userData }) => {
       }}
       validationSchema={ProfileEditValidation}
       onSubmit={(values) => {
-        console.log("iam formik values", values);
+        
 
         const formData = new FormData();
         formData.append("username", values.username);
@@ -80,7 +80,7 @@ const ProfileEditProfile = ({ selected, setSelected, refetch, userData }) => {
                     className="border w-11/12 mx-auto sm:mx-0 py-1 px-2 border-gray-200 my-2 bg-gray-800 rounded-lg"
                     onChange={(e) => {
                       if (e.currentTarget.files && e.currentTarget.files[0]) {
-                        console.log(e.currentTarget.files[0]);
+                        
                         setFieldValue("profilePic", e.currentTarget.files[0]);
                         setImage(e.currentTarget.files[0]);
                       }

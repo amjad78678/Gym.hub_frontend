@@ -33,7 +33,7 @@ const ChatInput = ({
   const [typing, setTyping] = useState(false);
   const [emojiOpen, setEmojiOpen] = useState(false);
 
-  console.log("iam files", file);
+  
   useEffect(() => {
     socket.on("typedUser", () => setIsTyping(true));
     socket.on("stopTypedUser", () => setIsTyping(false));
@@ -192,7 +192,7 @@ const ChatInput = ({
             initialValues={{ files: [] }}
             validationSchema={chatDropZoneValidation}
             onSubmit={(values) => {
-              console.log("iam value file", values);
+              
               setFile(values.files);
             }}
             validate={(values) => {
@@ -222,7 +222,7 @@ const ChatInput = ({
                       onDrop={(acceptedFiles) => {
                         resetForm(); // Reset form state and errors
                         const newValue = [...acceptedFiles];
-                        console.log("iam dropped", newValue);
+                        
                         setFieldValue("files", newValue, false); // false to avoid validation on change
                         setTimeout(() => {
                           submitForm();

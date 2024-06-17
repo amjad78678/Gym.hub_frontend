@@ -26,7 +26,7 @@ const AddLocation = () => {
   useEffect(() => {
     if (!lat && !long) {
       axios.get("https://ipapi.co/json").then((res) => {
-        console.log(res.data);
+        
 
         mapRef.current.flyTo({
           center: [res.data.longitude, res.data.latitude],

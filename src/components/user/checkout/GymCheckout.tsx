@@ -31,7 +31,7 @@ const GymCheckout = ({
 
         if (result.error) {
           const msg = result.error;
-          console.log(msg);
+          
         }
       } else {
         if (res && res.data) {
@@ -63,7 +63,7 @@ const GymCheckout = ({
     createSubscription(subscriptionData);
   };
 
-  console.log("checkoutData", checkoutData);
+  
 
   const { mutate: applyCouponMutate } = useMutation({
     mutationFn: validateCoupon,

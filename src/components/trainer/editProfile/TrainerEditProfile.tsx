@@ -46,7 +46,7 @@ const TrainerEditProfile = ({ trainerData, refetch }) => {
           validationSchema={TrainerEditProfileValidation}
           onSubmit={(values, { setSubmitting }) => {
             try {
-              console.log("Values from formik:", values);
+              
               const formData = new FormData();
 
               formData.append("name", values.name);

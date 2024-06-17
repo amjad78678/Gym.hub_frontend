@@ -21,7 +21,7 @@ function App() {
   );
   useEffect(() => {
     onMessage(messaging, (payload) => {
-      console.log("payload", payload);
+      
       if (payload?.notification?.body) {
         toast(payload.notification.body);
       }
@@ -39,10 +39,10 @@ function App() {
           await setClientBrowserToken(token as string);
         }
       } else {
-        console.log("no token getted");
+        
       }
     } catch (error) {
-      console.log(error);
+      
     }
   };
 
@@ -54,13 +54,13 @@ function App() {
           if (permission === "granted") {
             setBrowserToken();
           } else {
-            console.log("Notification permission denied");
+            
           }
         } else {
           setBrowserToken();
         }
       } catch (error) {
-        console.log("Error requesting notification permission:", error);
+        
       }
     };
 

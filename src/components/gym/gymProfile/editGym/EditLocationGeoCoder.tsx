@@ -15,7 +15,7 @@ const EditLocationGeoCoder = ({ setLatitude, setLongitude }) => {
   useControl(() => geocoder);
 
   geocoder.on("result", (e) => {
-    console.log("geocoderresult", e.result);
+    
     const coords = e.result.geometry.coordinates;
     setLongitude(coords[0]);
     setLatitude(coords[1]);

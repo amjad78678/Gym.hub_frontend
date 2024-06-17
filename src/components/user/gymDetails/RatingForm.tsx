@@ -82,7 +82,7 @@ const RatingForm = ({
             description: Yup.string(),
           })}
           onSubmit={(values: any) => {
-            console.log("iam values from formik", values);
+            
             if (currentRating > 0) {
               updateRatingMutate({
                 ...values,
@@ -175,7 +175,7 @@ const RatingForm = ({
             description: Yup.string().required("Description is required"),
           })}
           onSubmit={(values: any) => {
-            console.log("iam values from formik", values);
+            
             if (rating > 0) {
               ratingMutate({ ...values, rating, gymId });
             } else {

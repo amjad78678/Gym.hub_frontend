@@ -12,7 +12,7 @@ const ForgotEmail = ({ user, closeModal, otpShow }) => {
   const { mutate: forgotPassMutation } = useMutation({
     mutationFn: forgotPassword,
     onSuccess: (res) => {
-      console.log("iam kittiyathu", res);
+      
       if (res) {
         if (res.data.success) {
           closeModal();
@@ -26,7 +26,7 @@ const ForgotEmail = ({ user, closeModal, otpShow }) => {
   const { mutate: gForgotPassMutation } = useMutation({
     mutationFn: gForgotPassword,
     onSuccess: (res) => {
-      console.log("iam kittiyathu", res);
+      
       if (res) {
         if (res.data.success) {
           closeModal();
@@ -40,7 +40,7 @@ const ForgotEmail = ({ user, closeModal, otpShow }) => {
   const { mutate: tForgotPassMutation } = useMutation({
     mutationFn: tForgotPassword,
     onSuccess: (res) => {
-      console.log("iam kittiyathu", res);
+      
       if (res) {
         if (res.data.success) {
           closeModal();

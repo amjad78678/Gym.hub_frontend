@@ -10,7 +10,7 @@ export const gymRegisterGymImagesValidation = Yup.object().shape({
         if (!file || typeof file !== "object" || !("size" in file)) return sum;
         return sum + (file as File).size;
       }, 0);
-      console.log("totalSize", totalSize);
+      
       return totalSize <= 9 * 1024 * 1024; // 9MB
     })
     .of(

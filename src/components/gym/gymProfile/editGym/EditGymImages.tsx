@@ -38,7 +38,7 @@ const EditGymImages = ({ gym, refetch }) => {
   const { isPending, mutate: imageEditMutation } = useMutation({
     mutationFn: editImageProfile,
     onSuccess: (res) => {
-      console.log("success");
+      
       if (res && res.data.success) {
         refetch();
         toast.success(res.data.message);
@@ -77,7 +77,7 @@ const EditGymImages = ({ gym, refetch }) => {
               <div className="w-full inline-flex justify-center">
                 <Dropzone
                   onDrop={(acceptedFiles) => {
-                    console.log(acceptedFiles, "hamare index", index);
+                    
                     setUpdatedImageFiles((prevState) => ({
                       ...prevState,
                       [index]: acceptedFiles[0],

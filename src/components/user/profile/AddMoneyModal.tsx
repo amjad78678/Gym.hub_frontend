@@ -34,7 +34,7 @@ const AddMoneyModal = ({
 
           if (result.error) {
             const msg = result.error;
-            console.log(msg);
+            
           }
         }
         toast.success(res.data.message);

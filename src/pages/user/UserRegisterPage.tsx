@@ -9,7 +9,7 @@ import Navbar from "@/components/common/Navbar";
 const UserRegisterPage = () => {
   const [showOtp, setShowOtp] = useState(false);
 
-  console.log("iam showOtp", showOtp);
+  
 
   const otpHandler = () => {
     setShowOtp(!showOtp);

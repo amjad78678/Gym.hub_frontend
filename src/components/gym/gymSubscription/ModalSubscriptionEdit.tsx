@@ -27,12 +27,12 @@ const ModalSubscriptionEdit: React.FC<iType> = ({
   setSubscription,
   refetch,
 }) => {
-  console.log("iam subscriptionman", subscription);
+  
 
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
-    console.log("iamid", id);
+    
 
     if (id === "subscription") {
       if (subscription) {
@@ -66,7 +66,7 @@ const ModalSubscriptionEdit: React.FC<iType> = ({
   };
 
   useEffect(() => {
-    console.log("subscro", subscription);
+    
   }, [subscription]);
 
   return (

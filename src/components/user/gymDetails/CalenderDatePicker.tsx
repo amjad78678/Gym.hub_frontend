@@ -45,7 +45,7 @@ const CalenderDatePicker: React.FC<{
       },
     ];
 
-    console.log("newdate", newDateRange);
+    
 
     const startDate = dayjs(newDateRange[0].startDate);
     const endDate = dayjs(newDateRange[0].endDate);

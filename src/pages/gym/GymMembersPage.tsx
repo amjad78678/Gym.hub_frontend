@@ -15,7 +15,7 @@ const GymMembersPage = () => {
     queryFn: fetchGymMembershipsBooked,
   });
 
-  console.log("iam membership data", memberShipData);
+  
   return isLoading || !memberShipData ? (
     <>
     <GymNavbar {...{ fixed: false }} />

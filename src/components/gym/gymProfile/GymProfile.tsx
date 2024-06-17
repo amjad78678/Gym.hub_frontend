@@ -38,7 +38,7 @@ const GymProfile = ({ gym,refetch }) => {
     },
   });
 
-  console.log("aim gym", gym);
+  
 
   return (
     gym && (

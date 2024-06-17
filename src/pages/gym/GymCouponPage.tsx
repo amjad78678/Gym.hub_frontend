@@ -24,8 +24,8 @@ useEffect(() => {
   }
 }, [couponsData]);
 
-console.log('iam coupons',coupons);
-console.log('selectedRow',selectedRow)
+
+
 
 
 

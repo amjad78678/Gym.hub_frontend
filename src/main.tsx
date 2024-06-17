@@ -16,7 +16,7 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("/firebase-messaging-sw.js")
     .catch((error) => {
-      console.log(error.message);
+      
     });
 }
 

@@ -19,7 +19,7 @@ const ProfilePersonalTrainers = ({ selected, setSelected }) => {
     queryFn: fetchBookedTrainers,
   });
 
-  console.log("profile trainer", trainerData);
+  
 
   if (isLoading) return <Loader />;
   if (error) return <div>An error occurred: {error.message}</div>;
@@ -28,7 +28,7 @@ const ProfilePersonalTrainers = ({ selected, setSelected }) => {
     <div className="grid sm:grid-cols-12 gap-2">
       {trainerData?.data.trainers.map((trainer, index) => (
         <>
-          {console.log("profile trainer each", trainer)}
+         
           <TrainerCard key={index} {...{ trainer }} />
         </>
       ))}
