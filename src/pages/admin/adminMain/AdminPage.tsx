@@ -79,7 +79,7 @@ export default function AdminPage() {
             </IconButton>
 
             <Tooltip title="Go back to home page">
-              <IconButton sx={{ mr: 1 }} onClick={() => navigate("/")}>
+              <IconButton sx={{ mr: 1 }} onClick={() => navigate("/admin/dashboard")}>
                 <Home />
               </IconButton>
             </Tooltip>

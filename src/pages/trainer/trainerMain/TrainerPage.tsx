@@ -85,7 +85,7 @@ export default function TrainerPage() {
             </IconButton>
 
             <Tooltip title="Go back to home page">
-              <IconButton sx={{ mr: 1 }} onClick={() => navigate("/")}>
+              <IconButton sx={{ mr: 1 }} onClick={() => navigate("/trainer/dashboard")}>
                 <Home />
               </IconButton>
             </Tooltip>
