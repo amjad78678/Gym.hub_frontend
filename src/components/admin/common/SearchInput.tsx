@@ -18,6 +18,8 @@ const SearchInput = ({search,setSearch}) => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
+
+      {/* <h1>Amjad ali mk</h1> */}
     </div>
   </div>
   )
