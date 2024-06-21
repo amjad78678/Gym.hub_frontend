@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { ResponsiveLine } from "@nivo/line";
 
 const LineChartSales = ({ data, alignment }) => {
+  const chartData = data[0].data.length === 0 ? [{ id: 'No Data', data: [{ x: 0, y: 0 }] }] : data;
   const [margin, setMargin] = useState({ top: 50, right: 110, bottom: 50, left: 60 });
-
+ 
   useEffect(() => {
       const updateMargins = () => {
           if (window.innerWidth < 600) {
@@ -22,7 +23,7 @@ const LineChartSales = ({ data, alignment }) => {
   }, []);
   return (
     <ResponsiveLine
-      data={data}
+      data={chartData}
       theme={{
         text: {
           fontSize: 11,

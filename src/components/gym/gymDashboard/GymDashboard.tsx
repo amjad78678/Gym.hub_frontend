@@ -21,6 +21,7 @@ import dayjs from "dayjs";
 import { MouseEvent, useState } from "react";
 
 const GymDashboard = ({ gym, dashboard }) => {
+  console.log('i am dashboard',dashboard)
   const divStyle = {
     backgroundImage: `url("${gym[0].images[0].imageUrl}")`,
     backgroundSize: "cover",
