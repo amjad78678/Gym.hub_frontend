@@ -13,3 +13,5 @@ const TrainerTraineePage = ({ setSelectedLink, link }) => {
 };
 
 export default TrainerTraineePage;
+
+//Not requesting to backend then showing error
