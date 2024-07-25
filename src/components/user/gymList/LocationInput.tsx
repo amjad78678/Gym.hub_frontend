@@ -4,12 +4,13 @@ import MyLocationOutlinedIcon from "@mui/icons-material/MyLocationOutlined";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Audio } from "react-loader-spinner";
-const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
+const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
-
-const LocationInput = ({setLocationData}) => {
-
-  const [location, setLocation] = useState<any>({ latitude: null, longitude: null });
+const LocationInput = ({ setLocationData }) => {
+  const [location, setLocation] = useState<any>({
+    latitude: null,
+    longitude: null,
+  });
   const [streetAddress, setStreetAddress] = useState("");
 
   const fetchStreetAddress = async () => {
@@ -30,7 +31,6 @@ const LocationInput = ({setLocationData}) => {
     }
   }, [streetAddressData]);
 
-
   useEffect(() => {
     getCurrentLocation();
   }, []);
@@ -45,8 +45,7 @@ const LocationInput = ({setLocationData}) => {
       (position) => {
         const { latitude, longitude } = position.coords;
         setLocation({ latitude, longitude });
-        setLocationData({latitude, longitude})
-        
+        setLocationData({ latitude, longitude });
       },
       (error) => {
         console.error("Error getting location", error);

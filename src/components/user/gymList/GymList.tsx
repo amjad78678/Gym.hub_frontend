@@ -86,7 +86,7 @@ const GymList = ({
                 (gym) =>
                   !gym.isDeleted &&
                   !gym.isBlocked &&
-                  !gym.isVerified && (
+                  gym.isVerified && (
                     <div key={gym._id}>
                       <GymCard gym={gym} />
                     </div>
