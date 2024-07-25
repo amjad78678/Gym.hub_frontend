@@ -47,7 +47,6 @@ interface GymDetails {
   confirmPassword: string;
 }
 
-
 interface AppState {
   lat: number;
   long: number;
@@ -94,32 +93,27 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
 
   const handleSubmitAllDetails = () => {
     if (streetAddress) {
-      const formData = new FormData();
-      formData.append("gymName", details.gymName);
-      formData.append("email", details.email);
-      formData.append("contactNumber", details.contactNumber);
-      formData.append("state", details.state);
-      formData.append("city", details.city);
-      formData.append("pincode", details.pincode);
-      formData.append("dailyFee", details.dailyFee);
-      formData.append("monthlyFee", details.monthlyFee);
-      formData.append("yearlyFee", details.yearlyFee);
-      formData.append("description", details.description);
-      formData.append("businessId", details.businessId);
-      formData.append("password", details.password);
-      formData.append("confirmPassword", details.confirmPassword);
-      formData.append("address", streetAddress);
+      const gymData = {
+        gymName: details.gymName,
+        email: details.email,
+        contactNumber: details.contactNumber,
+        state: details.state,
+        city: details.city,
+        pincode: details.pincode,
+        dailyFee: details.dailyFee,
+        monthlyFee: details.monthlyFee,
+        yearlyFee: details.yearlyFee,
+        description: details.description,
+        businessId: details.businessId,
+        password: details.password,
+        confirmPassword: details.confirmPassword,
+        address: streetAddress,
+        images: images,
+        long: long.toString(),
+        lat: lat.toString(),
+      };
 
-      // Append images to formData
-      images.forEach((image) => {
-        formData.append(`images`, image );
-      });
-
-      // Append location data
-      formData.append("long", long.toString());
-      formData.append("lat", lat.toString());
-
-      gymRegisterMutate(formData);
+      gymRegisterMutate(gymData);
     }
   };
 
@@ -237,7 +231,7 @@ const GymRegister: React.FC<UserType> = ({ setShowOtp }) => {
         </Stepper>
 
         <Box>
-          { 
+          {
             {
               0: <AddLocation />,
               1: <AddDetails />,

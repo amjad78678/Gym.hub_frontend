@@ -5,7 +5,8 @@ import { setImages } from "@/redux/slices/appSlice";
 import { useDispatch } from "react-redux";
 import { Field, Form, Formik } from "formik";
 import { gymRegisterGymImagesValidation } from "@/validation/GymRegisterGymImagesValidation";
-import * as Yup from "yup";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import toast from "react-hot-toast";
 
 const AddGymImages = () => {
@@ -20,12 +21,81 @@ const AddGymImages = () => {
     });
   };
 
+  //----------------------------------------------------------------------------
+  const [uploadProgress, setUploadProgress] = useState({});
+  const preset_key = import.meta.env.VITE_CLOUDINARY_PRESET_KEY;
+  const cloud_name = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+
+  const uploadImages = async () => {
+    setUploadProgress({});
+    try {
+      const uploadedImages = await Promise.all(
+        files.map(async (file, index) => {
+          try {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", preset_key);
+
+            const res = await axios.post(
+              `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload?folder=gymRegisterClient`,
+              formData,
+              {
+                onUploadProgress: (progressEvent: any) => {
+                  const percentCompleted = Math.round(
+                    (progressEvent.loaded * 100) / progressEvent.total
+                  );
+                  setUploadProgress((prev) => ({
+                    ...prev,
+                    [index]: percentCompleted,
+                  }));
+                },
+              }
+            );
+
+            return {
+              imageUrl: res.data.secure_url,
+              public_id: res.data.public_id,
+            };
+          } catch (error) {
+            console.error(`Error uploading image ${file.name}:`, error);
+            return null;
+          }
+        })
+      );
+
+      const successfulUploads = uploadedImages.filter((img) => img !== null);
+      console.log("Successfully uploaded images:", successfulUploads);
+      dispatch(setImages(successfulUploads));
+
+      if (successfulUploads.length !== files.length) {
+        toast.error(
+          `${files.length - successfulUploads.length} images failed to upload.`
+        );
+      }
+    } catch (error) {
+      console.error("Error in uploadImages:", error);
+    }
+  };
+
+  const { status: uploadStatus, mutate: uploadImagesMutation } = useMutation({
+    mutationFn: uploadImages,
+    onSuccess: (res) => {
+      console.log(res);
+    },
+  });
+
   useEffect(() => {
     if (files.length > 0) {
-      dispatch(setImages(files));
-      
+      uploadImagesMutation();
     }
   }, [files, dispatch]);
+
+  //------------------------------------------------------------------------
+  // useEffect(() => {
+  //   if (files.length > 0) {
+  //     dispatch(setImages(files));
+  //   }
+  // }, [files, dispatch]);
 
   return (
     <div className="min-h-[320px]">
@@ -43,8 +113,6 @@ const AddGymImages = () => {
           initialValues={{ files: [] }}
           validationSchema={gymRegisterGymImagesValidation}
           onSubmit={(values) => {
-            
-            
             setFiles(values.files);
           }}
         >
@@ -68,7 +136,7 @@ const AddGymImages = () => {
                       onDrop={(acceptedFiles) => {
                         resetForm(); // Reset form state and errors
                         const newValue = [...acceptedFiles];
-                        
+
                         setFieldValue("files", newValue);
                         if (!errors.files) {
                           setTimeout(() => {
@@ -124,6 +192,23 @@ const AddGymImages = () => {
             src={URL.createObjectURL(fileObject)}
             alt="images"
           />
+
+          {/* Progress Overlay */}
+          {uploadProgress[index] !== undefined &&
+            uploadProgress[index] < 100 && (
+              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div className="w-3/4 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                  <div
+                    className="bg-blue-600 h-2.5 rounded-full"
+                    style={{ width: `${uploadProgress[index]}%` }}
+                  ></div>
+                </div>
+                <span className="absolute text-white font-bold">
+                  {uploadProgress[index]}%
+                </span>
+              </div>
+            )}
+
           <button
             className="absolute top-10 right-10 p-1 bg-transparent border-none cursor-pointer"
             onClick={() => handleImageRemove(index)}
