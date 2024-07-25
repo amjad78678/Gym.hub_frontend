@@ -85,9 +85,10 @@ const GymList = ({
               {allGyms?.map(
                 (gym) =>
                   !gym.isDeleted &&
-                  !gym.isBlocked && (
+                  !gym.isBlocked &&
+                  !gym.isVerified && (
                     <div key={gym._id}>
-                      <GymCard  gym={gym} />
+                      <GymCard gym={gym} />
                     </div>
                   )
               )}
