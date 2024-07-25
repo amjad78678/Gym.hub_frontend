@@ -39,7 +39,6 @@ const PersonalTrainer = ({
 
   const [dropDown, setDropDown] = useState(false);
   const handleChange = (event) => {
-    
     setExperience(event.target.name);
   };
 

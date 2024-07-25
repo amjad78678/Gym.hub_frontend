@@ -38,27 +38,6 @@ Api.interceptors.response.use(
   }
 );
 
-// Api.interceptors.request.use(
-//   (config) => {
-//     const userDetails = JSON.parse(
-//       localStorage.getItem("userDetails") as string
-//     );
-//     const userToken = userDetails?.token;
-//     const userRefreshToken = userDetails?.refreshToken;
-
-//     if (userToken) {
-//       config.headers[
-//         "Authorization"
-//       ] = `Bearer ${userToken} ${userRefreshToken}`;
-//     }
-
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-
 export const signUp = async (userData: userFormData) => {
   try {
     const response = await Api.post(userRoutes.signup, userData);

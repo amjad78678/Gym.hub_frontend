@@ -34,8 +34,10 @@ function App() {
       if (token) {
         const currentPath = window.location.pathname;
         if (currentPath.split("/").includes("trainer")) {
+          console.log('iam setting trainer browser token')
           await setTrainerBrowserToken(token as string);
         } else {
+          console.log('iam setting user browser token')
           await setClientBrowserToken(token as string);
         }
       } else {
