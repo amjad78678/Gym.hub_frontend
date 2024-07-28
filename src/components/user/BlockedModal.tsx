@@ -33,11 +33,11 @@ const BlockedModal = ({ isOpen, onClose }) => {
           </h3>
           <div className="bg-gray-100 rounded-lg p-6">
             <p className="text-black leading-relaxed">
-              Hey friend! 👋 We've had to hit pause on your account for now. Our
+              Hey friend! 👋 I've had to hit pause on your account for now. My
               AWS bills are skyrocketing faster than a SpaceX rocket! 🚀💸 We're
               keeping the site alive for job hunts and to impress potential
-              employers. Sorry for any hiccups this causes! We'll be back in
-              action as soon as we can.
+              employers. Sorry for any hiccups this causes! If you need any
+              further help contact me.
             </p>
           </div>
           <div className="mt-8">
