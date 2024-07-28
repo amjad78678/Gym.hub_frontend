@@ -2,14 +2,10 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import GymNavbar from "./GymNavbar";
+import { RootState } from "@/redux/store";
 
-interface iType {
-  auth: {
-    gLoggedIn: boolean;
-  };
-}
 const GymProtect = () => {
-  const { gLoggedIn } = useSelector((state: iType) => state.auth);
+  const { gLoggedIn } = useSelector((state: RootState) => state.auth);
 
   return (
     <div className="bg-black min-h-screen">

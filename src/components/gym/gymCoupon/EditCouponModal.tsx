@@ -34,10 +34,10 @@ const EditCouponModal = ({ editOpen, setEditOpen, selectedRow, refetch }) => {
     },
     validationSchema: AddCouponValidation,
     onSubmit: (values) => {
-      
       const obj = {
         ...values,
         couponId: selectedRow?._id,
+        editing: true,
       };
       mutate(obj);
     },
@@ -82,7 +82,9 @@ const EditCouponModal = ({ editOpen, setEditOpen, selectedRow, refetch }) => {
                 value={formik.values.name.toUpperCase()}
                 onChange={formik.handleChange}
                 error={formik.touched.name && Boolean(formik.errors.name)}
-                helperText={formik.touched.name && formik.errors.name as string}
+                helperText={
+                  formik.touched.name && (formik.errors.name as string)
+                }
                 variant="outlined"
               />
               <TextField
@@ -95,7 +97,8 @@ const EditCouponModal = ({ editOpen, setEditOpen, selectedRow, refetch }) => {
                   Boolean(formik.errors.description)
                 }
                 helperText={
-                  formik.touched.description && formik.errors.description as string
+                  formik.touched.description &&
+                  (formik.errors.description as string)
                 }
                 variant="outlined"
               />
@@ -110,7 +113,10 @@ const EditCouponModal = ({ editOpen, setEditOpen, selectedRow, refetch }) => {
                   error={
                     formik.touched.discount && Boolean(formik.errors.discount)
                   }
-                  helperText={formik.touched.discount && formik.errors.discount as string}
+                  helperText={
+                    formik.touched.discount &&
+                    (formik.errors.discount as string)
+                  }
                   variant="outlined"
                 />
 
@@ -123,7 +129,10 @@ const EditCouponModal = ({ editOpen, setEditOpen, selectedRow, refetch }) => {
                   error={
                     formik.touched.minPrice && Boolean(formik.errors.minPrice)
                   }
-                  helperText={formik.touched.minPrice && formik.errors.minPrice as string}
+                  helperText={
+                    formik.touched.minPrice &&
+                    (formik.errors.minPrice as string)
+                  }
                   variant="outlined"
                 />
               </Stack>
@@ -144,7 +153,7 @@ const EditCouponModal = ({ editOpen, setEditOpen, selectedRow, refetch }) => {
                           Boolean(formik.errors.startingDate),
                         helperText:
                           formik.touched.startingDate &&
-                          formik.errors.startingDate as string, 
+                          (formik.errors.startingDate as string),
                       },
                     }}
                   />
@@ -158,7 +167,8 @@ const EditCouponModal = ({ editOpen, setEditOpen, selectedRow, refetch }) => {
                     slotProps={{
                       textField: {
                         helperText:
-                          formik.touched.endingDate && formik.errors.endingDate as string,
+                          formik.touched.endingDate &&
+                          (formik.errors.endingDate as string),
                         error:
                           formik.touched.endingDate &&
                           Boolean(formik.errors.endingDate),

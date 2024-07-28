@@ -1,11 +1,9 @@
-import { updateCoupon, updateTrainer } from "@/api/gym";
+import { updateCoupon } from "@/api/gym";
 import { Check, Delete, Edit, Save } from "@mui/icons-material";
 import { Box, CircularProgress, Fab, IconButton, Tooltip } from "@mui/material";
-import { green } from "@mui/material/colors";
 import { useMutation } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const CouponActions = ({
@@ -15,37 +13,20 @@ const CouponActions = ({
   setRowId,
   refetch,
   setEditOpen,
-  setSelectedRow
+  setSelectedRow,
 }) => {
-  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
   const { mutate: couponUpdateMutation } = useMutation({
     mutationFn: updateCoupon,
     onSuccess: (res) => {
-      
-      setSuccess(true);
-      setRowId("");
-      setSelectedRowId("");
-      refetch();
+      if (res) {
+        setSuccess(true);
+        setRowId("");
+        setSelectedRowId("");
+        refetch();
+      }
     },
   });
-
-  const handleSubmit = async () => {
-    setLoading(true);
-
-    setTimeout(() => {
-      const { isBlocked } = params.row;
-
-      try {
-        couponUpdateMutation({ isBlocked, _id: params.row._id });
-      } catch (error) {
-        console.error("Error updating user:", error);
-      } finally {
-        setLoading(false);
-      }
-    }, 1000);
-  };
 
   useEffect(() => {
     if (selectedRowId === params.row._id && success) setSuccess(false);
@@ -62,13 +43,13 @@ const CouponActions = ({
       customClass: {
         container: "custom-swal-container",
       },
-      width: 400, 
+      width: 400,
       background: "#f0f0f0",
       iconHtml: '<i class="bi bi-trash" style="font-size:30px"></i>',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        couponUpdateMutation({ _id: row._id, isDeleted: true });
-        toast.success("Trainer deleted successfully");
+        couponUpdateMutation({ _id: row._id, data: "delete" });
+        toast.success("Coupon deleted successfully");
       }
     });
   };
@@ -76,11 +57,10 @@ const CouponActions = ({
   const handleEditButton = () => {
     setEditOpen(true);
     setSelectedRow(params.row);
-  }
+  };
 
   return (
     <>
-
       <Box>
         <Tooltip title="Edit this trainer">
           <IconButton onClick={handleEditButton}>

@@ -32,19 +32,21 @@ const UserRoutes = () => {
           <Route path="" element={<UserHomePage />} />
           <Route path="book-gym" element={<GymListPage />} />
           <Route path="gym-details" element={<GymDetailsPage />} />
+          <Route path="personal-trainer/*" element={<PersonalTrainerPage />} />
+          <Route path="workouts" element={<WorkoutsPage />} />
+          <Route element={<UserProtect />}>
           <Route path="checkout" element={<GymCheckoutPage />} />
           <Route path="success/*" element={<PaymentSuccess />} />
           <Route path="cancel/*" element={<PaymentFailure />} />
           <Route path="profile/*" element={<UserProfilePage />} />
-          <Route path="personal-trainer/*" element={<PersonalTrainerPage />} />
           <Route path="chat/:userId/:trainerId" element={<UserChatPage />} />
-          <Route path="workouts" element={<WorkoutsPage />} />
           <Route
             path="video_call/:trainerId/:userId"
             element={<VideoCallPage />}
           />
         </Route>
-        <Route element={<UserProtect />}></Route>
+        </Route>
+
       </Routes>
     </Suspense>
   );
