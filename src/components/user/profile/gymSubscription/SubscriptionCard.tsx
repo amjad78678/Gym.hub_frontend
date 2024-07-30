@@ -1,11 +1,9 @@
 import dayjs from "dayjs";
-import React from "react";
+import NoSubscriptionComponent from "./NoSubscriptionComponent";
 
 const SubscriptionCard = ({ sub }) => {
-  const cancelBtnHandler = () => {
-    
-  };
-  const diffDays = dayjs(sub.expiryDate).diff(dayjs(sub.date), "day");
+  const diffDays = dayjs(sub.expiryDate).diff(dayjs(), "day");
+  console.log("current date", dayjs());
 
   return (
     <div className="grid sm:grid-cols-12 border justify-between">
@@ -49,7 +47,7 @@ const SubscriptionCard = ({ sub }) => {
         <img src={sub.qrCode} alt="QR code" className="mx-auto p-2 h-full" />
       </div>
     </div>
-  );
+  )
 };
 
 export default SubscriptionCard;

@@ -96,7 +96,7 @@ const Dashboard = ({ dashboard }) => {
           {...{
             title: "Total Sales",
             icon: <PointOfSale sx={{ color: "#46c7a5", fontSize: "80px" }} />,
-            price: `₹${dashboard?.totalSales}`,
+            price: `₹${dashboard?.totalSales?dashboard?.totalSales:0}`,
           }}
         />
         <StatusCount
