@@ -34,7 +34,9 @@ const CalenderDatePicker: React.FC<{
     },
   ]);
 
-  const startDate = useSelector((state: RootState) => state.dateRange.startDate);
+  const startDate = useSelector(
+    (state: RootState) => state.dateRange.startDate
+  );
   const endDate = useSelector((state: RootState) => state.dateRange.endDate);
 
   const handleSelect = (ranges) => {
@@ -44,8 +46,6 @@ const CalenderDatePicker: React.FC<{
         key: "selection",
       },
     ];
-
-    
 
     const startDate = dayjs(newDateRange[0].startDate);
     const endDate = dayjs(newDateRange[0].endDate);
@@ -92,7 +92,6 @@ const CalenderDatePicker: React.FC<{
 
       addCartMutation(data);
     } else {
-      toast.error("Please login first before proceeding");
       navigate("/user-login");
     }
   };

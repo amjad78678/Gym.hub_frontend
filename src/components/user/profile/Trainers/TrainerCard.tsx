@@ -8,13 +8,8 @@ import dayjs from "dayjs";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const TrainerCard = ({ trainer }) => {
-  
-
   const navigate = useNavigate();
-  const differenceDays = dayjs(trainer.expiryDate).diff(
-    dayjs(trainer.bookinDate),
-    "day"
-  );
+  const differenceDays = dayjs(trainer.expiryDate).diff(dayjs(), "day");
 
   return (
     trainer && (

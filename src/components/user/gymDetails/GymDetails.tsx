@@ -72,9 +72,9 @@ const GymDetails = ({
           navigate("/checkout");
         } else if (res.data.failure) {
           toast.error(res.data.message);
+        } else {
+          navigate("/user-login");
         }
-      } else {
-        navigate("/user-login");
       }
     },
   });
@@ -107,7 +107,7 @@ const GymDetails = ({
     }
   };
 
-  return (isLoading || !gymDetailsData) ? (
+  return isLoading || !gymDetailsData ? (
     <Loader />
   ) : (
     <>

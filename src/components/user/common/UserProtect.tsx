@@ -1,20 +1,16 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { Navigate, Outlet } from 'react-router-dom'
-
+import React from "react";
+import { useSelector } from "react-redux";
+import { Navigate, Outlet } from "react-router-dom";
 
 interface iType {
   auth: {
-      uLoggedIn: boolean
-  }
+    uLoggedIn: boolean;
+  };
 }
 const UserProtect = () => {
+  const { uLoggedIn } = useSelector((state: iType) => state.auth);
 
-const {uLoggedIn}=useSelector((state: iType)=>state.auth)
+  return uLoggedIn ? <Outlet /> : <Navigate to="/login" replace />;
+};
 
-  return (
-   uLoggedIn?<Outlet/> : <Navigate to='/login' replace />
-  )
-}
-
-export default UserProtect
+export default UserProtect;
