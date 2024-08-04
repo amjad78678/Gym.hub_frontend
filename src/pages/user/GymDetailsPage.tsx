@@ -6,7 +6,6 @@ import { fetchGymDetails, fetchGymReviews, isReviewPossible } from "@/api/user";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import Loader from "@/components/common/Loader";
 import GymDetailsSkeleton from "@/components/user/skeletons/GymDetailsSkeleton";
 
 const GymDetailsPage = () => {
