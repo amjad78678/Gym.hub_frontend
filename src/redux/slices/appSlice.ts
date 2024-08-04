@@ -20,6 +20,7 @@ const appSlice = createSlice({
       confirmPassword: "",
     },
     images: [],
+    navPage: "home",
   },
   name: "app",
   reducers: {
@@ -35,9 +36,12 @@ const appSlice = createSlice({
     setImages: (state, action) => {
       state.images = action.payload;
     },
+    setNavPage: (state, action) => {
+      state.navPage = action.payload;
+    },
   },
 });
 
-export const { setLatitude, setLongitude, setDetails, setImages } =
+export const { setLatitude, setLongitude, setDetails, setImages,setNavPage } =
   appSlice.actions;
 export default appSlice.reducer;

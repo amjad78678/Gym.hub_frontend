@@ -5,6 +5,8 @@ import { fetchMaxPriceTrainer, fetchTrainers } from "@/api/user";
 import { useCallback, useEffect, useState } from "react";
 import GymListSkeleton from "@/components/user/skeletons/GymListSkeleton";
 import debounce from "@/utils/miscillenious/debounce";
+import { useDispatch } from "react-redux";
+import { setNavPage } from "@/redux/slices/appSlice";
 
 const PersonalTrainerPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -14,7 +16,13 @@ const PersonalTrainerPage = () => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [search, setSearch] = useState("");
   const [sliderValue, setSliderValue] = useState(0);
-  const [experience,setExperience]=useState('All');
+  const [experience, setExperience] = useState("All");
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setNavPage("book_personal_trainer"));
+  }, []);
   const { data: maxPriceData } = useQuery({
     queryKey: ["maxPriceInPersonalTrainerPage"],
     queryFn: fetchMaxPriceTrainer,
@@ -46,7 +54,7 @@ const PersonalTrainerPage = () => {
         page: page,
         search: search,
         sliderValue: sliderValue,
-        experience: experience
+        experience: experience,
       });
     },
     enabled: sliderValue > 0,
@@ -73,7 +81,7 @@ const PersonalTrainerPage = () => {
     debouncedRefetch();
     setAllTrainers([]);
     setPage(1);
-  }, [search, sliderValue,experience, debouncedRefetch]);
+  }, [search, sliderValue, experience, debouncedRefetch]);
 
   useEffect(() => {
     if (!isFetching && isLoadingMore) {
@@ -108,7 +116,7 @@ const PersonalTrainerPage = () => {
           sliderValue,
           maxPrice: maxPriceData?.data.maxPrice[0].maxPrice,
           setExperience,
-          experience
+          experience,
         }}
       />
     </div>

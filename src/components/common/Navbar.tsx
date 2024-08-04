@@ -13,6 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import { userLogout } from "@/api/user";
 import { setUserLogout } from "@/redux/slices/authSlice";
 import useScroll from "@/utils/hooks/useScroll";
+import { RootState } from "@/redux/store";
 
 interface iState {
   auth: {
@@ -28,7 +29,8 @@ interface iState {
 function Navbar({ fixed }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { uLoggedIn } = useSelector((state: iState) => state.auth);
+  const { navPage } = useSelector((state: RootState) => state.app);
+  const { uLoggedIn } = useSelector((state: RootState) => state.auth);
   const [dropMenu, setDropMenu] = useState(false);
   const handleDropMenu = () => {
     setDropMenu((prevDropMenu) => !prevDropMenu);
@@ -46,7 +48,6 @@ function Navbar({ fixed }) {
   };
 
   const isScrolled = useScroll();
-
   const position = fixed ? "fixed" : "static";
   return (
     <div className="relative z-10">
@@ -80,25 +81,121 @@ function Navbar({ fixed }) {
               <Box
                 sx={{
                   flexGrow: 1,
-                  display: { xs: "none", md: "flex" },
+                  display: { xs: "none", md: "flex", gap: 4 },
                   justifyContent: "center",
                 }}
               >
                 <Link to="/">
-                  <Button sx={{ my: 2, color: "white" }}>Home</Button>
+                  <Button
+                    sx={{
+                      my: 2,
+                      color: "white",
+                      position: "relative",
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        height: "2px",
+                        backgroundColor: "rgb(241,214,5)",
+                        marginTop: "2px",
+                        transform:
+                          navPage === "home" ? "scaleX(1)" : "scaleX(0)",
+                        transition: "transform 0.3s ease-in-out",
+                      },
+                      "&:hover::after": {
+                        transform: "scaleX(1)",
+                      },
+                    }}
+                  >
+                    Home
+                  </Button>
                 </Link>
                 <Link to="/book-gym">
-                  <Button sx={{ my: 2, color: "white" }}>
+                  <Button
+                    sx={{
+                      my: 2,
+                      color: "white",
+                      position: "relative",
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        height: "2px",
+                        backgroundColor: "rgb(241,214,5)",
+                        marginTop: "2px",
+                        transform:
+                          navPage === "book_offline_gym"
+                            ? "scaleX(1)"
+                            : "scaleX(0)",
+                        transition: "transform 0.3s ease-in-out",
+                      },
+                      "&:hover::after": {
+                        transform: "scaleX(1)",
+                      },
+                    }}
+                  >
                     Book offline gym
                   </Button>
                 </Link>
                 <Link to="/personal-trainer">
-                  <Button sx={{ my: 2, color: "white" }}>
+                  <Button
+                    sx={{
+                      my: 2,
+                      color: "white",
+                      position: "relative",
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        height: "2px",
+                        backgroundColor: "rgb(241,214,5)",
+                        marginTop: "2px",
+                        transform:
+                          navPage === "book_personal_trainer"
+                            ? "scaleX(1)"
+                            : "scaleX(0)",
+                        transition: "transform 0.3s ease-in-out",
+                      },
+                      "&:hover::after": {
+                        transform: "scaleX(1)",
+                      },
+                    }}
+                  >
                     Book personal trainer
                   </Button>
                 </Link>
                 <Link to="/workouts">
-                  <Button sx={{ my: 2, color: "white" }}>Workouts</Button>
+                  <Button
+                    sx={{
+                      my: 2,
+                      color: "white",
+                      position: "relative",
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        height: "2px",
+                        backgroundColor: "rgb(241,214,5)",
+                        marginTop: "2px",
+                        transform:
+                          navPage === "workouts" ? "scaleX(1)" : "scaleX(0)",
+                        transition: "transform 0.3s ease-in-out",
+                      },
+                      "&:hover::after": {
+                        transform: "scaleX(1)",
+                      },
+                    }}
+                  >
+                    Workouts
+                  </Button>
                 </Link>
               </Box>
 

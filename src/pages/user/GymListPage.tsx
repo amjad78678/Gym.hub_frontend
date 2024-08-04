@@ -2,9 +2,11 @@ import { fetchMaxPriceGym, fetchNearGymList } from "@/api/user";
 import Navbar from "@/components/common/Navbar";
 import GymList from "@/components/user/gymList/GymList";
 import GymListSkeleton from "@/components/user/skeletons/GymListSkeleton";
+import { setNavPage } from "@/redux/slices/appSlice";
 import debounce from "@/utils/miscillenious/debounce";
 import { useQuery } from "@tanstack/react-query";
 import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 const GymListPage = () => {
   const [location, setLocation] = useState({ latitude: null, longitude: null });
@@ -13,6 +15,12 @@ const GymListPage = () => {
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
   const [allGyms, setAllGyms] = useState<any[]>([]);
   const [sliderValue, setSliderValue] = useState<number>(0);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setNavPage("book_offline_gym"));
+  }, []);
+
   const { data: maxPriceData } = useQuery({
     queryKey: ["maxPriceInGymListPage"],
     queryFn: fetchMaxPriceGym,
@@ -54,7 +62,6 @@ const GymListPage = () => {
   }, [gymData]);
 
   const fetchMoreData = () => {
-    
     setIsLoadingMore(true);
     setPage((prevPage) => prevPage + 1);
   };
