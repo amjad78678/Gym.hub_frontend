@@ -35,14 +35,13 @@ const MySliderBanner = () => {
   return isLoading || !bannerData ? (
     <HomeSkeleton />
   ) : (
-    <Slider {...settings}>
+    <Slider className="min-h-screen" {...settings}>
       {activeBanners.map((banner: any) => (
         <div key={banner._id}>
           <div
-            className="bg-no-repeat bg-cover bg-center flex items-center justify-center w-full"
+            className="bg-no-repeat bg-cover bg-center flex items-center justify-center w-full h-[90vh] lg:h-screen"
             style={{
               backgroundImage: `url(${banner?.bannerImage?.imageUrl})`,
-              height: "90vh",
               transition: "background-image 0.5s ease-in-out", // Adjust the height as required
             }}
           ></div>

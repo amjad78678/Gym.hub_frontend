@@ -14,18 +14,10 @@ import { userLogout } from "@/api/user";
 import { setUserLogout } from "@/redux/slices/authSlice";
 import useScroll from "@/utils/hooks/useScroll";
 import { RootState } from "@/redux/store";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+gsap.registerPlugin(useGSAP);
 
-interface iState {
-  auth: {
-    uLoggedIn: boolean;
-
-    userDetails: {
-      id: string;
-      name: string;
-      profilePic: string;
-    };
-  };
-}
 function Navbar({ fixed }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -49,6 +41,16 @@ function Navbar({ fixed }) {
 
   const isScrolled = useScroll();
   const position = fixed ? "fixed" : "static";
+
+  useGSAP(() => {
+    gsap.from(".navItems", {
+      y: -50,
+      duration: 1,
+      opacity: 0,
+      stagger: 0.2,
+    });
+  });
+
   return (
     <div className="relative z-10">
       <AppBar
@@ -74,8 +76,11 @@ function Navbar({ fixed }) {
                 width: "100%",
               }}
             >
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <img className="w-28" src="/removebg.png" alt="GymHub Logo" />
+              <Box
+                className="navItems"
+                sx={{ display: "flex", alignItems: "center" }}
+              >
+                <img className=" w-28" src="/removebg.png" alt="GymHub Logo" />
               </Box>
 
               <Box
@@ -87,6 +92,7 @@ function Navbar({ fixed }) {
               >
                 <Link to="/">
                   <Button
+                    className="navItems"
                     sx={{
                       my: 2,
                       color: "white",
@@ -114,6 +120,7 @@ function Navbar({ fixed }) {
                 </Link>
                 <Link to="/book-gym">
                   <Button
+                    className="navItems"
                     sx={{
                       my: 2,
                       color: "white",
@@ -143,6 +150,7 @@ function Navbar({ fixed }) {
                 </Link>
                 <Link to="/personal-trainer">
                   <Button
+                    className="navItems"
                     sx={{
                       my: 2,
                       color: "white",
@@ -172,6 +180,7 @@ function Navbar({ fixed }) {
                 </Link>
                 <Link to="/workouts">
                   <Button
+                    className="navItems"
                     sx={{
                       my: 2,
                       color: "white",
@@ -207,12 +216,14 @@ function Navbar({ fixed }) {
               >
                 {uLoggedIn ? (
                   <AccountCircleOutlinedIcon
+                    className="navItems"
                     onClick={() => navigate("/profile/subscriptions")}
                     sx={{ fontSize: 33, cursor: "pointer", color: "white" }}
                   />
                 ) : (
                   <Link to="/login">
                     <Button
+                      className="navItems"
                       variant="contained"
                       sx={{ backgroundColor: "gold", color: "black" }}
                     >
