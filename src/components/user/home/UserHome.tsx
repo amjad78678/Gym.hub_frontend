@@ -25,12 +25,12 @@ const UserHome = () => {
   }, [gymsQuery]);
 
   useGSAP(() => {
-    gsap.from("#exploreText", {
+    gsap.from(".exploreTxt", {
       x: 50,
       duration: 1,
       opacity: 0,
       scrollTrigger: {
-        trigger: "#exploreText",
+        trigger: ".exploreTxt",
         scroller: "body",
         start: "top 90%",
         toggleActions: "play none none reverse",
@@ -44,7 +44,6 @@ const UserHome = () => {
       scrollTrigger: {
         trigger: "#carouselCards",
         scroller: "body",
-        markers: true,
         start: "top 80%",
         toggleActions: "play none none reverse",
       },
@@ -61,7 +60,7 @@ const UserHome = () => {
           <Container>
             <Row>
               <Col xs={12}>
-                <h1 id="exploreText" className="text-2xl font-bold mt-4 mb-10">
+                <h1 className="exploreTxt text-2xl font-bold mt-4 mb-10">
                   EXPLORE OUR GYMS
                 </h1>
 
