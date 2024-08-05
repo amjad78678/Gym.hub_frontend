@@ -26,25 +26,13 @@ const UserHome = () => {
 
   useGSAP(() => {
     gsap.from(".exploreTxt", {
-      x: 50,
+      x: 30,
       duration: 1,
       opacity: 0,
       scrollTrigger: {
         trigger: ".exploreTxt",
         scroller: "body",
         start: "top 90%",
-        toggleActions: "play none none reverse",
-      },
-    });
-
-    gsap.from("#carouselCards", {
-      scale: 0.8,
-      opacity: 0,
-      duration: 0.8,
-      scrollTrigger: {
-        trigger: "#carouselCards",
-        scroller: "body",
-        start: "top 80%",
         toggleActions: "play none none reverse",
       },
     });

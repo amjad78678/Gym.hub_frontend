@@ -44,10 +44,9 @@ function Navbar({ fixed }) {
 
   useGSAP(() => {
     gsap.from(".navItems", {
-      y: -50,
-      duration: 1,
+      y: -10,
+      duration: 0.5,
       opacity: 0,
-      stagger: 0.2,
     });
   });
 

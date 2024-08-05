@@ -29,7 +29,7 @@ const CarousalGyms = ({ loading, gyms }) => {
 
   return (
     gyms?.length > 0 && (
-      <div id="carouselCards">
+      <div className="carouselCards">
         <Carousel responsive={responsive}>
           {gyms.map((gym, index) => {
             return <CarousalCard key={index} gym={gym} />;
