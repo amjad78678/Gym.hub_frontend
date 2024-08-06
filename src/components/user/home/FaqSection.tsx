@@ -23,7 +23,7 @@ const FaqSection = () => {
   useGSAP(() => {
     gsap.from(".faqQuestion", {
       x: -50,
-      stagger: 0.3,
+      stagger: 0.2,
       scrollTrigger: {
         trigger: ".faqQuestion",
         scroller: "body",
@@ -33,8 +33,8 @@ const FaqSection = () => {
     });
   });
   return (
-    <section className="bg-black text-white px-0 lg:px-14 xl:px-28 mt-20">
-      <div className="container lg:py-10 mx-auto">
+    <section className="bg-black text-white px-0 lg:pt-10 xl:pt-10">
+      <div className="container lg:pt-5 mx-auto">
         <h1 className="faqQuestion text-xl lg:text-3xl font-serif lg:font-sans lg:font-semibold text-white ">
           Frequently asked questions
         </h1>
@@ -168,7 +168,7 @@ const FaqSection = () => {
                 className="flex items-center justify-between w-full px-4 lg:px-8"
                 onClick={toggleAccordion2}
               >
-                <h1 className=" font-semibold text-gray-200  text-sm lg:text-2xl py-4">
+                <h1 className="font-semibold text-gray-200  text-sm lg:text-2xl py-4">
                   Is my payment information secure?
                 </h1>
 
