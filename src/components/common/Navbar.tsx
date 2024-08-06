@@ -14,9 +14,7 @@ import { userLogout } from "@/api/user";
 import { setUserLogout } from "@/redux/slices/authSlice";
 import useScroll from "@/utils/hooks/useScroll";
 import { RootState } from "@/redux/store";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-gsap.registerPlugin(useGSAP);
+import { motion } from "framer-motion";
 
 function Navbar({ fixed }) {
   const navigate = useNavigate();
@@ -42,14 +40,6 @@ function Navbar({ fixed }) {
   const isScrolled = useScroll();
   const position = fixed ? "fixed" : "static";
 
-  useGSAP(() => {
-    gsap.from(".navItems", {
-      y: -10,
-      duration: 0.5,
-      opacity: 0,
-    });
-  });
-
   return (
     <div className="relative z-10">
       <AppBar
@@ -67,13 +57,11 @@ function Navbar({ fixed }) {
       >
         <Container className="bg-transparent p-2 border-none">
           <Toolbar disableGutters>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
+            <motion.div
+              className="flex items-center justify-between w-full"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
             >
               <Box
                 className="navItems"
@@ -239,7 +227,7 @@ function Navbar({ fixed }) {
                   ml: 2,
                 }}
               />
-            </Box>
+            </motion.div>
           </Toolbar>
         </Container>
         {status === "pending" && <Loader />}

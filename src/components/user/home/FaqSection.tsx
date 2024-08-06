@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+import { motion } from "framer-motion";
 
 const FaqSection = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,26 +17,24 @@ const FaqSection = () => {
     setIsOpen2(!isOpen2);
   };
 
-  useGSAP(() => {
-    gsap.from(".faqQuestion", {
-      x: -50,
-      stagger: 0.2,
-      scrollTrigger: {
-        trigger: ".faqQuestion",
-        scroller: "body",
-        start: "top 80%",
-        toggleActions: "play none none reverse",
-      },
-    });
-  });
   return (
     <section className="bg-black text-white px-0 lg:pt-10 xl:pt-10">
-      <div className="container lg:pt-5 mx-auto">
-        <h1 className="faqQuestion text-xl lg:text-3xl font-serif lg:font-sans lg:font-semibold text-white ">
+      <motion.div className="container lg:pt-5 mx-auto">
+        <motion.h1
+          initial={{ opacity: 0, x: -50 }}
+          transition={{ duration: 1 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          className="faqQuestion text-xl lg:text-3xl font-serif lg:font-sans lg:font-semibold text-white "
+        >
           Frequently asked questions
-        </h1>
+        </motion.h1>
 
-        <div className="mt-12 space-y-4">
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          transition={{ duration: 1 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          className="mt-12 space-y-4"
+        >
           <div className="faqQuestion border-2 border-gray-100 rounded-lg">
             <button
               className="flex items-center justify-between w-full px-4 lg:px-8"
@@ -222,8 +217,8 @@ const FaqSection = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 };

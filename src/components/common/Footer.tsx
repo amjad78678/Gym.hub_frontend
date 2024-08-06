@@ -1,11 +1,9 @@
 import { SubscriptionsOutlined } from "@mui/icons-material";
 import { Link, Outlet } from "react-router-dom";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+
 const Footer = () => {
+  
   return (
     <div className="pt-20 lg:pt-24 bg-black">
       <Outlet />

@@ -8,10 +8,7 @@ import FaqSection from "./FaqSection";
 import MySliderBanner from "./MySliderBanner";
 import Footer from "@/components/common/Footer";
 import HomeSkeleton from "../skeletons/HomeSkeleton";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+
 
 const UserHome = () => {
   const [gymList, setGymList] = useState([]);
@@ -24,19 +21,19 @@ const UserHome = () => {
     setGymList(gymsQuery?.data.message);
   }, [gymsQuery]);
 
-  useGSAP(() => {
-    gsap.from(".exploreTxt", {
-      x: 30,
-      duration: 1,
-      opacity: 0,
-      scrollTrigger: {
-        trigger: ".exploreTxt",
-        scroller: "body",
-        start: "top 90%",
-        toggleActions: "play none none reverse",
-      },
-    });
-  });
+  // useGSAP(() => {
+  //   gsap.from(".exploreTxt", {
+  //     x: 30,
+  //     duration: 1,
+  //     opacity: 0,
+  //     scrollTrigger: {
+  //       trigger: ".exploreTxt",
+  //       scroller: "body",
+  //       start: "top 90%",
+  //       toggleActions: "play none none reverse",
+  //     },
+  //   });
+  // });
 
   return isLoading ? (
     <HomeSkeleton />

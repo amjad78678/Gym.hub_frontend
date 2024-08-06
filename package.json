@@ -13,7 +13,6 @@
   "dependencies": {
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",
-    "@gsap/react": "^2.1.1",
     "@mapbox/mapbox-gl-geocoder": "^5.0.2",
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.18",
@@ -42,6 +41,7 @@
     "emoji-mart": "^5.6.0",
     "firebase": "^10.12.2",
     "formik": "^2.4.5",
+    "framer-motion": "^11.3.21",
     "jwt-decode": "^4.0.0",
     "lottie-react": "^2.4.0",
     "mapbox-gl": "^3.3.0",
