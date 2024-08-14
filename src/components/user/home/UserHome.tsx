@@ -9,7 +9,6 @@ import MySliderBanner from "./MySliderBanner";
 import Footer from "@/components/common/Footer";
 import HomeSkeleton from "../skeletons/HomeSkeleton";
 
-
 const UserHome = () => {
   const [gymList, setGymList] = useState([]);
   const { isLoading, data: gymsQuery } = useQuery({
@@ -20,20 +19,6 @@ const UserHome = () => {
   useEffect(() => {
     setGymList(gymsQuery?.data.message);
   }, [gymsQuery]);
-
-  // useGSAP(() => {
-  //   gsap.from(".exploreTxt", {
-  //     x: 30,
-  //     duration: 1,
-  //     opacity: 0,
-  //     scrollTrigger: {
-  //       trigger: ".exploreTxt",
-  //       scroller: "body",
-  //       start: "top 90%",
-  //       toggleActions: "play none none reverse",
-  //     },
-  //   });
-  // });
 
   return isLoading ? (
     <HomeSkeleton />
