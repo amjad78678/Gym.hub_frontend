@@ -33,6 +33,7 @@ const GymListPage = () => {
 
   const {
     isFetching,
+    isLoading,
     data: gymData,
     refetch: refetchImmediately,
   } = useQuery({
@@ -88,7 +89,7 @@ const GymListPage = () => {
     debouncedRefetch,
   ]);
 
-  return isFetching && page === 1 && !search && !sliderValue ? (
+  return isLoading && !allGyms && !gymData ? (
     <GymListSkeleton />
   ) : (
     <div className="bg-black">

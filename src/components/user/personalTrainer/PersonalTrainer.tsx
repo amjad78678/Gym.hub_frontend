@@ -1,4 +1,5 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Col, Container, Row } from "react-bootstrap";
 import SearchBar from "../gymList/SearchBar";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
@@ -36,40 +37,88 @@ const PersonalTrainer = ({
     setSliderValue(newValue);
   };
 
-
   const [dropDown, setDropDown] = useState(false);
   const handleChange = (event) => {
     setExperience(event.target.name);
   };
 
-  return (
-    <>
-      <Container>
-        <Row>
-          <Col md={4} lg={3}>
-            <div>
-              <SearchBar searchHandler={searchHandler} />
-              <div>
-                <span className="text-xl">
-                  <span>Filters</span>{" "}
-                  <FilterListOutlinedIcon
-                    sx={{ color: "white", float: "right", fontSize: "27px" }}
-                  />
-                </span>
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
 
-                <div>
-                  <div className="flex justify-between items-center py-2 mt-4">
-                    <h1 className=" text-lg  mb-2">Experiance</h1>
-                    <span
-                      className="cursor-pointer"
-                      onClick={() => setDropDown(!dropDown)}
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
+    }
+  };
+
+  const filterVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
+    }
+  };
+
+  return (
+    <Container>
+      <Row>
+        <Col md={4} lg={3}>
+          <motion.div
+            variants={filterVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <SearchBar searchHandler={searchHandler} />
+            <div>
+              <span className="text-xl">
+                <span>Filters</span>{" "}
+                <FilterListOutlinedIcon
+                  sx={{ color: "white", float: "right", fontSize: "27px" }}
+                />
+              </span>
+
+              <motion.div
+                initial={{ height: 0 }}
+                animate={{ height: "auto" }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="flex justify-between items-center py-2 mt-4">
+                  <h1 className=" text-lg  mb-2">Experience</h1>
+                  <motion.span
+                    className="cursor-pointer"
+                    onClick={() => setDropDown(!dropDown)}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <KeyboardArrowDownOutlined />
+                  </motion.span>
+                </div>
+                <AnimatePresence>
+                  {dropDown && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
                     >
-                      <KeyboardArrowDownOutlined />
-                    </span>
-                  </div>
-                  <div>
-                    {dropDown && (
-                      <FormGroup>
+                    <FormGroup>
                         <FormControlLabel
                           control={
                             <Checkbox
@@ -115,55 +164,60 @@ const PersonalTrainer = ({
                           label="5+ years"
                         />
                       </FormGroup>
-                    )}
-                  </div>
-                </div>
-
-                <div className="">
-                  <h1 className=" text-lg mt-4 mb-2">Price</h1>
-                  {maxPrice > 0 && (
-                    <Slider
-                      aria-label="Small steps"
-                      sx={{ color: "white", ml: 0, mr: 6 }}
-                      valueLabelDisplay="auto"
-                      value={sliderValue}
-                      max={maxPrice}
-                      onChange={handleSliderChange}
-                    />
+                    </motion.div>
                   )}
-                </div>
+                </AnimatePresence>
+              </motion.div>
+
+              <div className="">
+                <h1 className=" text-lg mt-4 mb-2">Price</h1>
+                {maxPrice > 0 && (
+                  <Slider
+                    aria-label="Small steps"
+                    sx={{ color: "white", ml: 0, mr: 6 }}
+                    valueLabelDisplay="auto"
+                    value={sliderValue}
+                    max={maxPrice}
+                    onChange={handleSliderChange}
+                  />
+                )}
               </div>
             </div>
-          </Col>
+          </motion.div>
+        </Col>
 
-          <Col
-            lg={9}
-            md={8}
-            id="scrollableDiv"
-            className="rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
+        <Col
+          lg={9}
+          md={8}
+          id="scrollableDiv"
+          className="rounded-lg overflow-y-scroll no-scrollbar max-h-screen"
+        >
+          <InfiniteScroll
+            dataLength={allTrainers.length}
+            next={fetchMoreData}
+            hasMore={trainerData && trainerData.length > 0}
+            scrollableTarget="scrollableDiv"
+            loader={
+              isLoadingMore ? (
+                <div className="text-center py-4">
+                  <ClipLoader color="white" />
+                </div>
+              ) : null
+            }
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
           >
-            <InfiniteScroll
-              dataLength={allTrainers.length}
-              next={fetchMoreData}
-              hasMore={trainerData && trainerData.length > 0}
-              scrollableTarget="scrollableDiv"
-              loader={
-                isLoadingMore ? (
-                  <div className="text-center py-4">
-                    <ClipLoader color="white" />
-                  </div>
-                ) : null
-              }
-              endMessage={
-                <p style={{ textAlign: "center" }}>
-                  <b>Yay! You have seen it all</b>
-                </p>
-              }
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
             >
               {allTrainers.map((trainer) => (
-                <>
+                <motion.div key={trainer._id} variants={itemVariants}>
                   <TrainerCard
-                    key={trainer._id}
                     {...{
                       trainer,
                       handleModal,
@@ -173,13 +227,13 @@ const PersonalTrainer = ({
                       setBookingTrainer,
                     }}
                   />
-                </>
+                </motion.div>
               ))}
-            </InfiniteScroll>
-          </Col>
-        </Row>
-      </Container>
-    </>
+            </motion.div>
+          </InfiniteScroll>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

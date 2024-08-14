@@ -45,6 +45,7 @@ const PersonalTrainerPage = () => {
 
   const {
     isFetching,
+    isLoading,
     data: trainerData,
     refetch: refetchImmediately,
   } = useQuery({
@@ -94,7 +95,7 @@ const PersonalTrainerPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  return isFetching && page == 1 && !search && !sliderValue ? (
+  return isLoading && !allTrainers && !trainerData ? (
     <GymListSkeleton />
   ) : (
     <div className="bg-black text-white">
