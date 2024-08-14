@@ -35,18 +35,17 @@ const UserRoutes = () => {
           <Route path="personal-trainer/*" element={<PersonalTrainerPage />} />
           <Route path="workouts" element={<WorkoutsPage />} />
           <Route element={<UserProtect />}>
-          <Route path="checkout" element={<GymCheckoutPage />} />
-          <Route path="success/*" element={<PaymentSuccess />} />
-          <Route path="cancel/*" element={<PaymentFailure />} />
-          <Route path="profile/*" element={<UserProfilePage />} />
-          <Route path="chat/:userId/:trainerId" element={<UserChatPage />} />
-          <Route
-            path="video_call/:trainerId/:userId"
-            element={<VideoCallPage />}
-          />
+            <Route path="checkout" element={<GymCheckoutPage />} />
+            <Route path="success/*" element={<PaymentSuccess />} />
+            <Route path="cancel/*" element={<PaymentFailure />} />
+            <Route path="profile/*" element={<UserProfilePage />} />
+            <Route path="chat/:userId/:trainerId" element={<UserChatPage />} />
+            <Route
+              path="video_call/:trainerId/:userId"
+              element={<VideoCallPage />}
+            />
+          </Route>
         </Route>
-        </Route>
-
       </Routes>
     </Suspense>
   );

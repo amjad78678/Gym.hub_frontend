@@ -2,7 +2,7 @@ import { fetchTrainerData } from "@/api/trainer";
 import Loader from "@/components/common/Loader";
 import TrainerEditProfile from "@/components/trainer/editProfile/TrainerEditProfile";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 const TrainerProfilePage = ({ setSelectedLink, link, refetchTrainer }) => {
   useEffect(() => {

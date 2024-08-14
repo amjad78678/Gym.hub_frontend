@@ -1,6 +1,5 @@
 import { SubscriptionsOutlined } from "@mui/icons-material";
 import { Link, Outlet } from "react-router-dom";
-import { useRef } from "react";
 
 const Footer = () => {
   

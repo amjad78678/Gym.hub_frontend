@@ -8,8 +8,6 @@ import { useEffect } from "react";
 import { setNavPage } from "@/redux/slices/appSlice";
 
 const WorkoutsPage = () => {
-
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,11 +18,9 @@ const WorkoutsPage = () => {
     queryFn: getWorkoutsBodyList,
   });
 
-  
-
   return isLoading || !workoutList ? (
     <Loader />
-  ): (
+  ) : (
     <div className="bg-black text-gray-200">
       <Navbar {...{ fixed: true }} />
       <Workouts {...{ workoutList: workoutList?.data.workoutList }} />
