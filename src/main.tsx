@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { SocketProvider } from "./utils/context/socketContext";
+import Chatbot from "./components/common/Chatbot";
 const queryClient = new QueryClient();
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
@@ -16,7 +17,7 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("/firebase-messaging-sw.js")
     .catch((error) => {
-     console.log(error)
+      console.log(error);
     });
 }
 
@@ -28,6 +29,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <SocketProvider>
           <QueryClientProvider client={queryClient}>
             <App />
+            <Chatbot />
           </QueryClientProvider>
         </SocketProvider>
       </Provider>
