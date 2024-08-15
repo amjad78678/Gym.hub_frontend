@@ -98,59 +98,61 @@ const Chatbot = () => {
                 <FaTimes size={24} />
               </motion.button>
             </motion.div>
-            <motion.div
-              ref={chatContainerRef}
-              className="p-6 h-[360px] overflow-y-auto text-white custom-scrollbar"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              {messages.map((message, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ x: message.isUser ? 20 : -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                  className={`mb-4 p-3 rounded-lg inline-block ${
-                    message.isUser
-                      ? "bg-blue-600 text-white self-end"
-                      : "bg-gray-800 text-white"
-                  }`}
-                >
-                  {message.text}
-                </motion.div>
-              ))}
-              {isLoading && (
-                <div className="flex justify-center items-center">
-                  <ClipLoader color="#FACC15" size={40} />
-                </div>
-              )}
-            </motion.div>
-            <motion.div
-              className="p-4 border-t border-gray-700"
-              initial={{ y: 40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
-            >
-              <form onSubmit={handleSubmit}>
-                <div className="relative">
-                  <input
-                    ref={inputRef}
-                    type="text"
-                    placeholder="Type your message..."
-                    value={inputMessage}
-                    onChange={(e) => setInputMessage(e.target.value)}
-                    className="w-full p-3 pr-12 rounded-full bg-gray-800 text-white border border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-yellow-400 hover:text-yellow-300"
+            <div className="flex flex-col justify-between h-[70vh] ">
+              <motion.div
+                ref={chatContainerRef}
+                className="p-6 overflow-y-auto text-white no-scrollbar"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                {messages.map((message, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ x: message.isUser ? 20 : -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: index * 0.1 }}
+                    className={`mb-4 p-3 rounded-lg inline-block ${
+                      message.isUser
+                        ? "bg-blue-600 text-white self-end"
+                        : "bg-gray-800 text-white"
+                    }`}
                   >
-                    <FaPaperPlane size={20} />
-                  </button>
-                </div>
-              </form>
-            </motion.div>
+                    {message.text}
+                  </motion.div>
+                ))}
+                {isLoading && (
+                  <div className="flex justify-center items-center">
+                    <ClipLoader color="#FACC15" size={40} />
+                  </div>
+                )}
+              </motion.div>
+              <motion.div
+                className="absolute bottom-0 w-full p-4 border-t border-gray-700 "
+                initial={{ y: 40, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                <form onSubmit={handleSubmit}>
+                  <div className="relative">
+                    <input
+                      ref={inputRef}
+                      type="text"
+                      placeholder="Type your message..."
+                      value={inputMessage}
+                      onChange={(e) => setInputMessage(e.target.value)}
+                      className="w-full p-3 pr-12 rounded-full bg-gray-800 text-white border border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                    />
+                    <button
+                      type="submit"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-yellow-400 hover:text-yellow-300"
+                    >
+                      <FaPaperPlane size={20} />
+                    </button>
+                  </div>
+                </form>
+              </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
