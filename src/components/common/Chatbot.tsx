@@ -98,7 +98,7 @@ const Chatbot = () => {
                 <FaTimes size={24} />
               </motion.button>
             </motion.div>
-            <div className="flex flex-col justify-between h-[70vh] ">
+            <div className="flex flex-col justify-between h-[70vh]">
               <motion.div
                 ref={chatContainerRef}
                 className="p-6 overflow-y-auto text-white no-scrollbar"
@@ -122,9 +122,13 @@ const Chatbot = () => {
                   </motion.div>
                 ))}
                 {isLoading && (
-                  <div className="flex justify-center items-center">
-                    <ClipLoader color="#FACC15" size={40} />
-                  </div>
+                  <motion.div
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    className=" text-white p-3 rounded-lg inline-block"
+                  >
+                    <ClipLoader color="#FACC15" size={25} />
+                  </motion.div>
                 )}
               </motion.div>
               <motion.div

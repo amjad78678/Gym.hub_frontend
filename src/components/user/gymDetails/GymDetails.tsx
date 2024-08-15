@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import ReactDOM from "react-dom";
 import CalenderDatePicker from "@/components/user/gymDetails/CalenderDatePicker";
 import Backdrop from "@/pages/common/Backdrop";
+import { motion } from "framer-motion";
 import {
   CheckCircle,
   Star,
@@ -53,13 +54,11 @@ const GymDetails = ({
   }
 
   const [alignment, setAlignment] = useState("");
-
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
   };
 
   const [mainImageIndex, setMainImageIndex] = useState(0);
-
   const handleImageHover = (index) => {
     setMainImageIndex(index);
   };
@@ -107,7 +106,7 @@ const GymDetails = ({
     }
   };
 
-  return isLoading || !gymDetailsData ? (
+  return isLoading && !gymDetailsData ? (
     <Loader />
   ) : (
     <>
@@ -132,7 +131,10 @@ const GymDetails = ({
                 </Col>
 
                 <Col lg={9}>
-                  <img
+                  <motion.img
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 1 }}
                     className="rounded-lg w-full h-full object-cover"
                     src={
                       gymDetailsData?.data.message[0].images[mainImageIndex]
@@ -163,42 +165,48 @@ const GymDetails = ({
             </Col>
 
             <Col lg={6}>
-              <h1 className="text-2xl font-serif">
-                {gymDetailsData?.data.message[0].gymName}
-              </h1>
-
-              <Box
-                sx={{
-                  width: 200,
-                  display: "flex",
-                  alignItems: "center",
-                }}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
               >
-                {gymDetailsData?.data.message[0].averageRating > 0 && (
-                  <>
-                    <Rating
-                      name="hover-feedback"
-                      value={gymDetailsData?.data.message[0].averageRating}
-                      precision={0.5}
-                      getLabelText={() =>
-                        getLabelText(
-                          gymDetailsData?.data.message[0].averageRating
-                        )
-                      }
-                      emptyIcon={
-                        <StarIcon
-                          style={{ opacity: 0.55 }}
-                          fontSize="inherit"
-                        />
-                      }
-                      readOnly
-                    />
-                    <Box sx={{ ml: 2 }}>
-                      {labels[gymDetailsData?.data.message[0].averageRating]}
-                    </Box>
-                  </>
-                )}
-              </Box>
+                <h1 className="text-2xl font-serif">
+                  {gymDetailsData?.data.message[0].gymName}
+                </h1>
+
+                <Box
+                  sx={{
+                    width: 200,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {gymDetailsData?.data.message[0].averageRating > 0 && (
+                    <>
+                      <Rating
+                        name="hover-feedback"
+                        value={gymDetailsData?.data.message[0].averageRating}
+                        precision={0.5}
+                        getLabelText={() =>
+                          getLabelText(
+                            gymDetailsData?.data.message[0].averageRating
+                          )
+                        }
+                        emptyIcon={
+                          <StarIcon
+                            style={{ opacity: 0.55 }}
+                            fontSize="inherit"
+                          />
+                        }
+                        readOnly
+                      />
+                      <Box sx={{ ml: 2 }}>
+                        {labels[gymDetailsData?.data.message[0].averageRating]}
+                      </Box>
+                    </>
+                  )}
+                </Box>
+              </motion.div>
               <p className="my-3 text-sm">
                 {" "}
                 This fitness membership is perfect for any occasion. Crafted to
@@ -250,7 +258,7 @@ const GymDetails = ({
                     },
                   }}
                 >
-                  Purchase now
+                  Get membership
                 </Button>
               </div>
             </Col>
