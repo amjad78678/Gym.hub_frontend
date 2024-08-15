@@ -1,11 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaRobot, FaTimes, FaPaperPlane } from "react-icons/fa";
+import { sendMessageToChatbot } from "@/api/user";
+import { ClipLoader } from "react-spinners";
+
+interface Message {
+  text: string;
+  isUser: boolean;
+}
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   const toggleChat = () => setIsOpen(!isOpen);
+  const [inputMessage, setInputMessage] = useState("");
+  const [messages, setMessages] = useState<Message[]>([
+    { text: "Hello! How can I assist you today?", isUser: false },
+  ]);
+  const [isLoading, setIsLoading] = useState(false);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages, isOpen]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (inputMessage.trim()) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: inputMessage, isUser: true },
+      ]);
+      setInputMessage("");
+      setIsLoading(true);
+
+      try {
+        const response = await sendMessageToChatbot({ message: inputMessage });
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: response?.data, isUser: false },
+        ]);
+      } catch (error) {
+        console.error("Error sending message to chatbot:", error);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            text: "Sorry, there was an error processing your request.",
+            isUser: false,
+          },
+        ]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
 
   return (
     <>
@@ -48,19 +99,32 @@ const Chatbot = () => {
               </motion.button>
             </motion.div>
             <motion.div
+              ref={chatContainerRef}
               className="p-6 h-[360px] overflow-y-auto text-white custom-scrollbar"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              <motion.p
-                initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="bg-gray-800 p-3 rounded-lg inline-block mb-4"
-              >
-                Welcome to GymHub! How can I assist you today?
-              </motion.p>
+              {messages.map((message, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ x: message.isUser ? 20 : -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: index * 0.1 }}
+                  className={`mb-4 p-3 rounded-lg inline-block ${
+                    message.isUser
+                      ? "bg-blue-600 text-white self-end"
+                      : "bg-gray-800 text-white"
+                  }`}
+                >
+                  {message.text}
+                </motion.div>
+              ))}
+              {isLoading && (
+                <div className="flex justify-center items-center">
+                  <ClipLoader color="#FACC15" size={40} />
+                </div>
+              )}
             </motion.div>
             <motion.div
               className="p-4 border-t border-gray-700"
@@ -68,16 +132,24 @@ const Chatbot = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Type your message..."
-                  className="w-full p-3 pr-12 rounded-full bg-gray-800 text-white border border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                />
-                <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-yellow-400 hover:text-yellow-300">
-                  <FaPaperPlane size={20} />
-                </button>
-              </div>
+              <form onSubmit={handleSubmit}>
+                <div className="relative">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    placeholder="Type your message..."
+                    value={inputMessage}
+                    onChange={(e) => setInputMessage(e.target.value)}
+                    className="w-full p-3 pr-12 rounded-full bg-gray-800 text-white border border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  />
+                  <button
+                    type="submit"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-yellow-400 hover:text-yellow-300"
+                  >
+                    <FaPaperPlane size={20} />
+                  </button>
+                </div>
+              </form>
             </motion.div>
           </motion.div>
         )}

@@ -52,6 +52,7 @@ const userRoutes = {
   fetchMaxPriceGym: "/max_price_gym",
   fetchMaxPriceTrainer: "/max_price_trainer",
   setClientBrowserToken: "/set_client_token",
+  sendChatbotMessage: "/send_chatbot_message",
 };
 
 export default userRoutes;

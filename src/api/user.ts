@@ -454,3 +454,12 @@ export const setClientBrowserToken = async (token: string) => {
     return errorHandle(err);
   }
 };
+export const sendMessageToChatbot = async (message) => {
+  try {
+    const response = await Api.post(userRoutes.sendChatbotMessage, message);
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
