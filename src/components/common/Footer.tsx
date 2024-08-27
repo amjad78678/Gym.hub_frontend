@@ -4,17 +4,18 @@ import { showCustomToast } from "@/utils/miscillenious/showCustomToast";
 import { SubscriptionsOutlined } from "@mui/icons-material";
 import { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Link, Outlet } from "react-router-dom"; 
+import { Link, Outlet } from "react-router-dom";
 
 const Footer = () => {
   const { userDetails } = useSelector((state: RootState) => state.auth);
   const socket = useSocket();
   const handleMessageReceived = useCallback(({ name, profilePic, message }) => {
+    console.log("in handleMessageReceived", name, profilePic);
     showCustomToast(message, name, profilePic);
   }, []);
   useEffect(() => {
     socket.on("message_received", handleMessageReceived);
-    socket.emit("add_user", userDetails.userId);
+    socket.emit("add_user", userDetails?.userId);
 
     return () => {
       socket.off("message_received", handleMessageReceived);

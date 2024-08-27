@@ -5,11 +5,6 @@ import React, { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
-interface iType {
-  auth: {
-    tLoggedIn: boolean;
-  };
-}
 const TrainerProtect = () => {
   const { trainerDetails } = useSelector((state: RootState) => state.auth);
   const socket = useSocket();
@@ -45,7 +40,7 @@ const TrainerProtect = () => {
   //   };
   // }, [socket, trainerDetails]);
 
-  const { tLoggedIn } = useSelector((state: iType) => state.auth);
+  const { tLoggedIn } = useSelector((state: RootState) => state.auth);
   return tLoggedIn ? <Outlet /> : <Navigate to="/trainer" replace />;
 };
 
