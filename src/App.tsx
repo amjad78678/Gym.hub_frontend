@@ -21,7 +21,6 @@ function App() {
   );
   useEffect(() => {
     onMessage(messaging, (payload) => {
-      
       if (payload?.notification?.body) {
         toast(payload.notification.body);
       }

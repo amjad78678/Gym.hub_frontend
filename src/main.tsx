@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -23,13 +23,13 @@ if ("serviceWorker" in navigator) {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <>
-    <Toaster position="top-right" reverseOrder={false} />
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <Provider store={store}>
         <SocketProvider>
           <QueryClientProvider client={queryClient}>
             <App />
             <Chatbot />
+            <Toaster position="top-right" reverseOrder={false} />
           </QueryClientProvider>
         </SocketProvider>
       </Provider>

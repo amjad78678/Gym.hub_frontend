@@ -30,7 +30,6 @@ const TrainerChat = () => {
   );
   const socket = useSocket();
   const { trainerDetails } = useSelector((state: RootState) => state.auth);
-  const trainerName = trainerDetails?.name.replaceAll(" ", "");
   const [messages, setMessages] = useState<iMessageType[]>([]);
   const [socketConnected, setSocketConnected] = useState(false);
   const [newMessage, setNewMessage] = useState("");
@@ -52,7 +51,6 @@ const TrainerChat = () => {
   useEffect(() => {
     if (socket) {
       const debounceHandleMessage = (data: iMessageType) => {
-        
         setMessages((prevMessages) => [...prevMessages, data]);
       };
 

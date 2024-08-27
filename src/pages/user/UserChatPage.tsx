@@ -2,6 +2,7 @@ import Navbar from "@/components/common/Navbar";
 import UserChat from "@/components/user/chat/UserChat";
 import { RootState } from "@/redux/store";
 import { useSocket } from "@/utils/context/socketContext";
+import { showCustomToast } from "@/utils/miscillenious/showCustomToast";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
@@ -29,8 +30,13 @@ const UserChatPage = () => {
     };
   }, [socket, userDetails]);
 
+  const handleClick = () => {
+    showCustomToast("Enda mone kalikk");
+  };
+
   return (
     <div className="bg-black ">
+      <button className="bg-red-500" onClick={handleClick}>Some</button>
       <Navbar {...{ fixed: true }} />
       <UserChat />
     </div>
