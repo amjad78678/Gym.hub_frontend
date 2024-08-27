@@ -99,9 +99,7 @@ export default function TrainerPage() {
               Dashboard
             </Typography>
 
-            {/* <IconButton onClick={() => setDark(!dark)}>
-              {dark ? <Brightness7 /> : <Brightness4Sharp />}
-            </IconButton> */}
+    
           </Toolbar>
         </AppBar>
 

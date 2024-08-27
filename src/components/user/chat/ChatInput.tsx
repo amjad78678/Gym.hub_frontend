@@ -17,6 +17,8 @@ import toast from "react-hot-toast";
 import { Formik, Field, Form } from "formik";
 import { chatDropZoneValidation } from "@/validation/ChatDropZoneValidation";
 import * as Yup from "yup";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const ChatInput = ({
   userId,
@@ -32,7 +34,7 @@ const ChatInput = ({
   const [isTyping, setIsTyping] = useState(false);
   const [typing, setTyping] = useState(false);
   const [emojiOpen, setEmojiOpen] = useState(false);
-
+  const {userDetails}=useSelector((state:RootState)=>state.auth)
   
   useEffect(() => {
     socket.on("typedUser", () => setIsTyping(true));
@@ -46,6 +48,12 @@ const ChatInput = ({
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
+      socket.emit("sended_message", {
+        typeTo: trainerId,
+        name: userDetails.name,
+        profilePic: userDetails.profilePic,
+        message: newMessage,
+      });
       handleSendMessage();
       setEmojiOpen(false);
       setImagePreviewUrls([]);
