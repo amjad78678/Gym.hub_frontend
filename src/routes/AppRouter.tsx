@@ -4,6 +4,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
 import LoadingSkeleton from "@/components/user/skeletons/LoadingSkeleton";
 import TestPage from "@/pages/user/TestPage";
+import NotFound from "@/components/common/NotFound";
 dayjs.extend(relativeTime);
 
 const UserRoutes = lazy(() => import("./UserRoutes"));
@@ -19,8 +20,7 @@ const AppRouter = () => {
         <Route path="/gym/*" element={<GymRoutes />} />
         <Route path="/admin/*" element={<AdminRoutes />} />
         <Route path="/trainer/*" element={<TrainerRoutes />} />
-        <Route path="/test/*" element={<TestPage {...{isOpen: true,onClose: false}}/>} />
-        
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
   );

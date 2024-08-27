@@ -26,8 +26,8 @@ const GymLoginPage = () => {
 
   return (
     <div className="bg-black">
-       <Navbar {...{ fixed: true }} />
-       <div className="bg-black mt-20">
+      <Navbar {...{ fixed: true }} />
+      <div className="bg-black mt-20">
         <GymLogin showForgotEmail={forgotEmailHandler} />
       </div>
       {showForgotEmail && (
