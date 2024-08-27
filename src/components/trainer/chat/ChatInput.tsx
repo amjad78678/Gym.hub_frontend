@@ -16,6 +16,8 @@ import toast from "react-hot-toast";
 import { Formik, Field, Form } from "formik";
 import { chatDropZoneValidation } from "@/validation/ChatDropZoneValidation";
 import * as Yup from "yup";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const ChatInput = ({
   selectedChat,
@@ -30,6 +32,7 @@ const ChatInput = ({
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [emojiOpen, setEmojiOpen] = useState(false);
+  const { trainerDetails } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     socket.on("typedUser", () => setIsTyping(true));
@@ -43,6 +46,12 @@ const ChatInput = ({
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
+      socket.emit("sended_message", {
+        typeTo: selectedChat.userId,
+        name: trainerDetails.name,
+        profilePic: trainerDetails.image,
+        message: newMessage,
+      });
       handleSendMessage();
       setEmojiOpen(false);
     }
@@ -128,7 +137,7 @@ const ChatInput = ({
               <img
                 className="rounded-lg h-64 object-cover"
                 src={imagePreviewUrls[mainImageIndex]}
-                alt="" 
+                alt=""
               />
               <div className="flex  mt-2 mx-auto">
                 {imagePreviewUrls.map((imageUrl, index) => (
@@ -188,7 +197,6 @@ const ChatInput = ({
             initialValues={{ files: [] }}
             validationSchema={chatDropZoneValidation}
             onSubmit={(values) => {
-              
               setFile(values.files);
             }}
             validate={(values) => {

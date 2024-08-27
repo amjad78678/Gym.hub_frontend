@@ -19,13 +19,14 @@ function App() {
   const { uLoggedIn, tLoggedIn } = useSelector(
     (state: RootState) => state.auth
   );
-  useEffect(() => {
-    onMessage(messaging, (payload) => {
-      if (payload?.notification?.body) {
-        toast(payload.notification.body);
-      }
-    });
-  }, []);
+
+  // useEffect(() => {
+  //   onMessage(messaging, (payload) => {
+  //     if (payload?.notification?.body) {
+  //       toast(payload.notification.body);
+  //     }
+  //   });
+  // }, []);
 
   const setBrowserToken = async () => {
     try {
@@ -33,18 +34,15 @@ function App() {
       if (token) {
         const currentPath = window.location.pathname;
         if (currentPath.split("/").includes("trainer")) {
-          console.log('iam setting trainer browser token')
+          console.log("iam setting trainer browser token");
           await setTrainerBrowserToken(token as string);
         } else {
-          console.log('iam setting user browser token')
+          console.log("iam setting user browser token");
           await setClientBrowserToken(token as string);
         }
       } else {
-        
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -55,14 +53,11 @@ function App() {
           if (permission === "granted") {
             setBrowserToken();
           } else {
-            
           }
         } else {
           setBrowserToken();
         }
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     };
 
     if (uLoggedIn) {

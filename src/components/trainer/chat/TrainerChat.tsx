@@ -97,8 +97,6 @@ const TrainerChat = () => {
     mutationFn: fileUploadChat,
     onSuccess: (res) => {
       if (res) {
-        
-
         if (res.data.type === "image") {
           res.data.messageData.map((file: any) => {
             setMessages((prevMessages) => [
@@ -149,7 +147,7 @@ const TrainerChat = () => {
     if (selectedChat) {
       if (file.length > 0) {
         setImageSendLoading(true);
-        
+
         const formData = new FormData();
         file.map((fil) => {
           formData.append("files", fil);
