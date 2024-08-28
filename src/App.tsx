@@ -20,6 +20,8 @@ function App() {
     (state: RootState) => state.auth
   );
 
+  console.log('iam amjad')
+
   // useEffect(() => {
   //   onMessage(messaging, (payload) => {
   //     if (payload?.notification?.body) {

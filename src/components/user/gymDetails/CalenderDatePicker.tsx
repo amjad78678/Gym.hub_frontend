@@ -25,6 +25,9 @@ const CalenderDatePicker: React.FC<{
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { uLoggedIn } = useSelector((state: RootState) => state.auth);
+  const { endDate, startDate } = useSelector(
+    (state: RootState) => state.dateRange
+  );
 
   const [dateRange, setDateRangeState] = useState([
     {
@@ -33,11 +36,6 @@ const CalenderDatePicker: React.FC<{
       key: "selection",
     },
   ]);
-
-  const startDate = useSelector(
-    (state: RootState) => state.dateRange.startDate
-  );
-  const endDate = useSelector((state: RootState) => state.dateRange.endDate);
 
   const handleSelect = (ranges) => {
     const newDateRange = [
@@ -77,11 +75,11 @@ const CalenderDatePicker: React.FC<{
 
   const handlePurchase = () => {
     if (uLoggedIn) {
-      const daysDifference = endDate.diff(startDate, "day");
+      const daysDifference = dayjs(endDate).diff(dayjs(startDate), "day");
       const data = {
         gymId: gymDetailsData._id,
-        date: startDate,
-        expiryDate: endDate,
+        date: dayjs(startDate),
+        expiryDate: dayjs(endDate),
         subscriptionType: subscriptionType,
         amount: gymDetailsData?.subscriptions.Daily,
         totalPrice:
