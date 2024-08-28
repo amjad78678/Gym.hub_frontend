@@ -1,7 +1,11 @@
 import CustomMessageToast from "@/components/common/CustomMessageToast";
 import toast from "react-hot-toast";
 
-export const showCustomToast = (message: string, name: string, profilePic: string) => {
+export const showCustomToast = (
+  message: string,
+  name: string,
+  profilePic: string
+) => {
   toast.custom(
     (t) => (
       <CustomMessageToast
@@ -13,7 +17,7 @@ export const showCustomToast = (message: string, name: string, profilePic: strin
       />
     ),
     {
-      duration: 2000,
+      duration: 20000,
       position: "bottom-right",
     }
   );
